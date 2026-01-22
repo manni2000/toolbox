@@ -45,8 +45,8 @@ const GSTCalculatorTool = () => {
     <ToolLayout
       title="GST Calculator"
       description="Calculate GST, CGST, and SGST amounts"
-      category="Finance Tools"
-      categoryPath="/category/finance"
+      category="Education Tools"
+      categoryPath="/category/education"
     >
       <div className="mx-auto max-w-xl space-y-6">
         {/* Calculation Type */}
