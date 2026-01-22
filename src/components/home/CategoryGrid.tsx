@@ -3,7 +3,16 @@ import { motion } from "framer-motion";
 import { ArrowRight, LayoutGrid } from "lucide-react";
 import { toolCategories } from "@/data/toolCategories";
 
+// IDs to move to the end (already featured in Popular Tools)
+const featuredCategoryIds = ["image", "pdf", "video", "education", "zip"];
+
 const CategoryGrid = () => {
+  // Reorder: non-featured first, featured at the end
+  const reorderedCategories = [
+    ...toolCategories.filter(cat => !featuredCategoryIds.includes(cat.id)),
+    ...toolCategories.filter(cat => featuredCategoryIds.includes(cat.id)),
+  ];
+
   return (
     <section className="relative overflow-hidden py-24 lg:py-32">
       {/* Background */}
@@ -42,7 +51,7 @@ const CategoryGrid = () => {
 
         {/* Categories Grid */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {toolCategories.map((category, index) => {
+          {reorderedCategories.map((category, index) => {
             const Icon = category.icon;
             return (
               <motion.div
