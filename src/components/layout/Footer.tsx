@@ -75,10 +75,10 @@ const Footer = () => {
   return (
     <footer className="border-t border-border bg-card">
       <div className="container py-12">
-        {/* Main Footer Grid */}
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {/* Top Section - Brand + Popular Tools */}
+        <div className="grid gap-8 sm:grid-cols-2 mb-10">
           {/* Brand */}
-          <div className="space-y-4 sm:col-span-2 md:col-span-3 lg:col-span-4">
+          <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
                 <Wrench className="h-5 w-5 text-primary-foreground" />
@@ -91,23 +91,12 @@ const Footer = () => {
               50+ free online tools for images, PDFs, videos, text, and more. 
               No signup required. 100% browser-based.
             </p>
-            <div className="flex gap-3">
-              <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground">
-                About
-              </Link>
-              <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
-                Privacy
-              </Link>
-              <Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground">
-                Terms
-              </Link>
-            </div>
           </div>
 
           {/* Popular Tools */}
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">Popular Tools</h4>
-            <ul className="space-y-2">
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
               {popularTools.map(tool => (
                 <li key={tool.path}>
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
@@ -117,6 +106,10 @@ const Footer = () => {
               ))}
             </ul>
           </div>
+        </div>
+
+        {/* Main Footer Grid */}
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border-t border-border pt-8">
 
           {/* PDF Tools */}
           <div className="space-y-4">
@@ -220,10 +213,21 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 border-t border-border pt-8">
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} ToolBox. All rights reserved.
           </p>
+          <div className="flex items-center gap-4">
+            <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground">
+              About
+            </Link>
+            <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
+              Privacy
+            </Link>
+            <Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground">
+              Terms
+            </Link>
+          </div>
           <p className="flex items-center gap-1 text-sm text-muted-foreground">
             Made with <Heart className="h-4 w-4 text-destructive" /> for everyone
           </p>
