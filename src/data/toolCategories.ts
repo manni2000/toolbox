@@ -171,6 +171,7 @@ export const toolCategories: ToolCategory[] = [
       { id: "cron-generator", name: "Cron Expression Generator", description: "Build cron schedule expressions", path: "/cron-generator", isAvailable: true },
       { id: "http-header", name: "HTTP Header Checker", description: "Check HTTP response headers", path: "/http-header-checker", isAvailable: true },
       { id: "website-screenshot", name: "Website Screenshot", description: "Capture website screenshots", path: "/website-screenshot", isAvailable: true },
+      { id: "token-calculator", name: "Token Calculator", description: "Estimate token count for LLM APIs", path: "/token-calculator", isAvailable: true },
     ],
   },
   {

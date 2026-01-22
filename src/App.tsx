@@ -95,6 +95,7 @@ import RobotsTxtTool from "./pages/tools/dev/RobotsTxtTool";
 import CronGeneratorTool from "./pages/tools/dev/CronGeneratorTool";
 import HTTPHeaderTool from "./pages/tools/dev/HTTPHeaderTool";
 import WebsiteScreenshotTool from "./pages/tools/dev/WebsiteScreenshotTool";
+import TokenCalculatorTool from "./pages/tools/dev/TokenCalculatorTool";
 
 // Internet Tools
 import IPLookupTool from "./pages/tools/internet/IPLookupTool";
@@ -228,6 +229,7 @@ const App = () => (
           <Route path="/cron-generator" element={<CronGeneratorTool />} />
           <Route path="/http-header-checker" element={<HTTPHeaderTool />} />
           <Route path="/website-screenshot" element={<WebsiteScreenshotTool />} />
+          <Route path="/token-calculator" element={<TokenCalculatorTool />} />
           
           {/* Internet Tools */}
           <Route path="/ip-lookup" element={<IPLookupTool />} />
