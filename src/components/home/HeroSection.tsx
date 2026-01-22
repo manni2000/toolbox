@@ -64,9 +64,9 @@ const HeroSection = () => {
   }, []);
 
   const quickTools = [
-    { name: "QR Code", path: "/tools/image/qr-generator" },
-    { name: "Password", path: "/tools/security/password-generator" },
-    { name: "JSON", path: "/tools/dev/json-formatter" },
+    { name: "Background Remover", path: "/tools/image/background-remover" },
+    { name: "Download Insta Reels", path: "/tools/video/video-downloader" },
+    { name: "PNG to JPG", path: "/tools/image/image-converter" },
   ];
 
   return (
