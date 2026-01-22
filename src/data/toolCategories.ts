@@ -183,6 +183,7 @@ export const toolCategories: ToolCategory[] = [
     icon: GraduationCap,
     color: "150 60% 45%",
     tools: [
+      { id: "scientific-calculator", name: "Scientific Calculator", description: "Advanced calculator with trig and log functions", path: "/tools/education/scientific-calculator", isAvailable: true },
       { id: "percentage-calc", name: "Percentage Calculator", description: "Calculate percentages easily", path: "/tools/education/percentage-calculator", isAvailable: true },
       { id: "cgpa-percentage", name: "CGPA to Percentage", description: "Convert CGPA to percentage", path: "/tools/education/cgpa-percentage", isAvailable: true },
       { id: "unit-converter", name: "Unit Converter", description: "Convert length, weight, temperature", path: "/tools/education/unit-converter", isAvailable: true },
