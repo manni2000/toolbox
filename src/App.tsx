@@ -14,9 +14,26 @@ import TermsOfService from "./pages/TermsOfService";
 
 // Image Tools
 import QRGeneratorTool from "./pages/tools/image/QRGeneratorTool";
+import QRScannerTool from "./pages/tools/image/QRScannerTool";
 import ImageCompressorTool from "./pages/tools/image/ImageCompressorTool";
 import ImageConverterTool from "./pages/tools/image/ImageConverterTool";
 import ImageResizeTool from "./pages/tools/image/ImageResizeTool";
+import ImageCropTool from "./pages/tools/image/ImageCropTool";
+import BackgroundRemoverTool from "./pages/tools/image/BackgroundRemoverTool";
+import WhatsAppStatusTool from "./pages/tools/image/WhatsAppStatusTool";
+import ImageBase64Tool from "./pages/tools/image/ImageBase64Tool";
+import ImageDPITool from "./pages/tools/image/ImageDPITool";
+import EXIFViewerTool from "./pages/tools/image/EXIFViewerTool";
+import FaviconGeneratorTool from "./pages/tools/image/FaviconGeneratorTool";
+
+// PDF Tools
+import PDFMergeTool from "./pages/tools/pdf/PDFMergeTool";
+import PDFSplitTool from "./pages/tools/pdf/PDFSplitTool";
+import PDFToImageTool from "./pages/tools/pdf/PDFToImageTool";
+import PDFPasswordTool from "./pages/tools/pdf/PDFPasswordTool";
+import PDFUnlockTool from "./pages/tools/pdf/PDFUnlockTool";
+import PDFPageRemoverTool from "./pages/tools/pdf/PDFPageRemoverTool";
+import PDFRotateTool from "./pages/tools/pdf/PDFRotateTool";
 
 // Video Tools
 import VideoDownloaderTool from "./pages/tools/video/VideoDownloaderTool";
@@ -25,6 +42,12 @@ import VideoDownloaderTool from "./pages/tools/video/VideoDownloaderTool";
 import WordCounterTool from "./pages/tools/text/WordCounterTool";
 import CaseConverterTool from "./pages/tools/text/CaseConverterTool";
 import MarkdownHTMLTool from "./pages/tools/text/MarkdownHTMLTool";
+import RemoveSpacesTool from "./pages/tools/text/RemoveSpacesTool";
+import LineSorterTool from "./pages/tools/text/LineSorterTool";
+import DuplicateRemoverTool from "./pages/tools/text/DuplicateRemoverTool";
+import TextSummarizerTool from "./pages/tools/text/TextSummarizerTool";
+import TextDiffTool from "./pages/tools/text/TextDiffTool";
+import MemeGeneratorTool from "./pages/tools/text/MemeGeneratorTool";
 
 // Security Tools
 import PasswordGeneratorTool from "./pages/tools/security/PasswordGeneratorTool";
@@ -36,6 +59,8 @@ import UUIDGeneratorTool from "./pages/tools/security/UUIDGeneratorTool";
 // Date & Time Tools
 import AgeCalculatorTool from "./pages/tools/date-time/AgeCalculatorTool";
 import DateDifferenceTool from "./pages/tools/date-time/DateDifferenceTool";
+import WorkingDaysTool from "./pages/tools/date-time/WorkingDaysTool";
+import CountdownTimerTool from "./pages/tools/date-time/CountdownTimerTool";
 
 // Developer Tools
 import JSONFormatterTool from "./pages/tools/dev/JSONFormatterTool";
@@ -43,6 +68,20 @@ import RegexTesterTool from "./pages/tools/dev/RegexTesterTool";
 import URLEncoderTool from "./pages/tools/dev/URLEncoderTool";
 import ColorConverterTool from "./pages/tools/dev/ColorConverterTool";
 import LoremGeneratorTool from "./pages/tools/dev/LoremGeneratorTool";
+import JWTDecoderTool from "./pages/tools/dev/JWTDecoderTool";
+import URLShortenerTool from "./pages/tools/dev/URLShortenerTool";
+import SitemapGeneratorTool from "./pages/tools/dev/SitemapGeneratorTool";
+import RobotsTxtTool from "./pages/tools/dev/RobotsTxtTool";
+import CronGeneratorTool from "./pages/tools/dev/CronGeneratorTool";
+import HTTPHeaderTool from "./pages/tools/dev/HTTPHeaderTool";
+import WebsiteScreenshotTool from "./pages/tools/dev/WebsiteScreenshotTool";
+
+// Internet Tools
+import IPLookupTool from "./pages/tools/internet/IPLookupTool";
+import UserAgentTool from "./pages/tools/internet/UserAgentTool";
+import DNSLookupTool from "./pages/tools/internet/DNSLookupTool";
+import SSLCheckerTool from "./pages/tools/internet/SSLCheckerTool";
+import WebsitePingTool from "./pages/tools/internet/WebsitePingTool";
 
 // Education Tools
 import PercentageCalculatorTool from "./pages/tools/education/PercentageCalculatorTool";
@@ -77,9 +116,26 @@ const App = () => (
           
           {/* Image Tools */}
           <Route path="/tools/image/qr-generator" element={<QRGeneratorTool />} />
+          <Route path="/tools/image/qr-scanner" element={<QRScannerTool />} />
           <Route path="/tools/image/compressor" element={<ImageCompressorTool />} />
           <Route path="/tools/image/converter" element={<ImageConverterTool />} />
           <Route path="/tools/image/resize" element={<ImageResizeTool />} />
+          <Route path="/tools/image/crop" element={<ImageCropTool />} />
+          <Route path="/tools/image/background-remover" element={<BackgroundRemoverTool />} />
+          <Route path="/tools/image/whatsapp-status" element={<WhatsAppStatusTool />} />
+          <Route path="/tools/image/base64" element={<ImageBase64Tool />} />
+          <Route path="/tools/image/dpi-checker" element={<ImageDPITool />} />
+          <Route path="/tools/image/exif-viewer" element={<EXIFViewerTool />} />
+          <Route path="/tools/image/favicon" element={<FaviconGeneratorTool />} />
+          
+          {/* PDF Tools */}
+          <Route path="/tools/pdf/merge" element={<PDFMergeTool />} />
+          <Route path="/tools/pdf/split" element={<PDFSplitTool />} />
+          <Route path="/tools/pdf/to-image" element={<PDFToImageTool />} />
+          <Route path="/tools/pdf/password" element={<PDFPasswordTool />} />
+          <Route path="/tools/pdf/unlock" element={<PDFUnlockTool />} />
+          <Route path="/tools/pdf/remove-pages" element={<PDFPageRemoverTool />} />
+          <Route path="/tools/pdf/rotate" element={<PDFRotateTool />} />
           
           {/* Video Tools */}
           <Route path="/tools/video/downloader" element={<VideoDownloaderTool />} />
@@ -88,6 +144,12 @@ const App = () => (
           <Route path="/tools/text/word-counter" element={<WordCounterTool />} />
           <Route path="/tools/text/case-converter" element={<CaseConverterTool />} />
           <Route path="/tools/text/markdown-html" element={<MarkdownHTMLTool />} />
+          <Route path="/tools/text/remove-spaces" element={<RemoveSpacesTool />} />
+          <Route path="/tools/text/line-sorter" element={<LineSorterTool />} />
+          <Route path="/tools/text/duplicate-remover" element={<DuplicateRemoverTool />} />
+          <Route path="/tools/text/summarizer" element={<TextSummarizerTool />} />
+          <Route path="/tools/text/diff" element={<TextDiffTool />} />
+          <Route path="/tools/text/meme-generator" element={<MemeGeneratorTool />} />
           
           {/* Security Tools */}
           <Route path="/tools/security/password-generator" element={<PasswordGeneratorTool />} />
@@ -99,6 +161,8 @@ const App = () => (
           {/* Date & Time Tools */}
           <Route path="/tools/date-time/age-calculator" element={<AgeCalculatorTool />} />
           <Route path="/tools/date-time/date-difference" element={<DateDifferenceTool />} />
+          <Route path="/tools/date-time/working-days" element={<WorkingDaysTool />} />
+          <Route path="/tools/date-time/countdown" element={<CountdownTimerTool />} />
           
           {/* Developer Tools */}
           <Route path="/tools/dev/json-formatter" element={<JSONFormatterTool />} />
@@ -106,6 +170,20 @@ const App = () => (
           <Route path="/tools/dev/url-encoder" element={<URLEncoderTool />} />
           <Route path="/tools/dev/color-converter" element={<ColorConverterTool />} />
           <Route path="/tools/dev/lorem-generator" element={<LoremGeneratorTool />} />
+          <Route path="/tools/dev/jwt-decoder" element={<JWTDecoderTool />} />
+          <Route path="/tools/dev/url-shortener" element={<URLShortenerTool />} />
+          <Route path="/tools/dev/sitemap-generator" element={<SitemapGeneratorTool />} />
+          <Route path="/tools/dev/robots-checker" element={<RobotsTxtTool />} />
+          <Route path="/tools/dev/cron-generator" element={<CronGeneratorTool />} />
+          <Route path="/tools/dev/http-header" element={<HTTPHeaderTool />} />
+          <Route path="/tools/dev/website-screenshot" element={<WebsiteScreenshotTool />} />
+          
+          {/* Internet Tools */}
+          <Route path="/tools/internet/ip-lookup" element={<IPLookupTool />} />
+          <Route path="/tools/internet/user-agent" element={<UserAgentTool />} />
+          <Route path="/tools/internet/dns-lookup" element={<DNSLookupTool />} />
+          <Route path="/tools/internet/ssl-checker" element={<SSLCheckerTool />} />
+          <Route path="/tools/internet/ping" element={<WebsitePingTool />} />
           
           {/* Education Tools */}
           <Route path="/tools/education/percentage-calculator" element={<PercentageCalculatorTool />} />
