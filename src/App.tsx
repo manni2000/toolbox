@@ -107,6 +107,7 @@ import WebsitePingTool from "./pages/tools/internet/WebsitePingTool";
 import ScientificCalculatorTool from "./pages/tools/education/ScientificCalculatorTool";
 import PercentageCalculatorTool from "./pages/tools/education/PercentageCalculatorTool";
 import UnitConverterTool from "./pages/tools/education/UnitConverterTool";
+import CompoundInterestTool from "./pages/tools/education/CompoundInterestTool";
 
 // Finance Tools
 import EMICalculatorTool from "./pages/tools/finance/EMICalculatorTool";
@@ -238,6 +239,7 @@ const App = () => (
           <Route path="/scientific-calculator" element={<ScientificCalculatorTool />} />
           <Route path="/percentage-calculator" element={<PercentageCalculatorTool />} />
           <Route path="/unit-converter" element={<UnitConverterTool />} />
+          <Route path="/compound-interest-calculator" element={<CompoundInterestTool />} />
           
           {/* Finance Tools */}
           <Route path="/emi-calculator" element={<EMICalculatorTool />} />

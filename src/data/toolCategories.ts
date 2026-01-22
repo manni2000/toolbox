@@ -198,6 +198,7 @@ export const toolCategories: ToolCategory[] = [
       { id: "percentage-calc", name: "Percentage Calculator", description: "Calculate percentages easily", path: "/percentage-calculator", isAvailable: true },
       { id: "unit-converter", name: "Unit Converter", description: "Convert length, weight, temperature", path: "/unit-converter", isAvailable: true },
       { id: "age-calculator", name: "Age Calculator", description: "Calculate exact age from birthdate", path: "/age-calculator", isAvailable: true },
+      { id: "compound-interest", name: "Compound Interest Calculator", description: "Calculate compound interest with frequency options", path: "/compound-interest-calculator", isAvailable: true },
     ],
   },
   {
