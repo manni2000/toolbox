@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, QrCode, Type, Lock, FileJson, Calendar, Image } from "lucide-react";
+import { ArrowRight, QrCode, Type, Lock, FileJson, Calendar, Image, Sparkles } from "lucide-react";
 
 const popularTools = [
   {
@@ -9,7 +9,8 @@ const popularTools = [
     description: "Create QR codes from any URL or text instantly",
     path: "/tools/image/qr-generator",
     icon: QrCode,
-    color: "173 80% 40%",
+    gradient: "from-emerald-500 to-teal-500",
+    bgGradient: "from-emerald-500/10 to-teal-500/10",
   },
   {
     id: "word-counter",
@@ -17,7 +18,8 @@ const popularTools = [
     description: "Count words, characters, sentences, and paragraphs",
     path: "/tools/text/word-counter",
     icon: Type,
-    color: "280 80% 50%",
+    gradient: "from-violet-500 to-purple-500",
+    bgGradient: "from-violet-500/10 to-purple-500/10",
   },
   {
     id: "password-generator",
@@ -25,7 +27,8 @@ const popularTools = [
     description: "Generate secure random passwords instantly",
     path: "/tools/security/password-generator",
     icon: Lock,
-    color: "0 80% 55%",
+    gradient: "from-rose-500 to-pink-500",
+    bgGradient: "from-rose-500/10 to-pink-500/10",
   },
   {
     id: "json-formatter",
@@ -33,7 +36,8 @@ const popularTools = [
     description: "Format, validate, and beautify JSON data",
     path: "/tools/dev/json-formatter",
     icon: FileJson,
-    color: "210 80% 55%",
+    gradient: "from-blue-500 to-cyan-500",
+    bgGradient: "from-blue-500/10 to-cyan-500/10",
   },
   {
     id: "age-calculator",
@@ -41,7 +45,8 @@ const popularTools = [
     description: "Calculate exact age from your birthdate",
     path: "/tools/date-time/age-calculator",
     icon: Calendar,
-    color: "45 90% 50%",
+    gradient: "from-amber-500 to-orange-500",
+    bgGradient: "from-amber-500/10 to-orange-500/10",
   },
   {
     id: "image-compressor",
@@ -49,60 +54,101 @@ const popularTools = [
     description: "Compress images without losing quality",
     path: "/tools/image/compressor",
     icon: Image,
-    color: "150 60% 45%",
+    gradient: "from-green-500 to-emerald-500",
+    bgGradient: "from-green-500/10 to-emerald-500/10",
   },
 ];
 
 const PopularTools = () => {
   return (
-    <section className="border-y border-border bg-muted/30 py-20">
-      <div className="container">
-        <div className="mb-12 flex items-center justify-between">
+    <section className="relative py-24 lg:py-32">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-b from-muted/50 via-transparent to-transparent" />
+      
+      <div className="container relative">
+        {/* Section Header */}
+        <div className="mb-16 flex flex-col items-center justify-between gap-6 md:flex-row">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">Popular Tools</h2>
-            <p className="mt-2 text-muted-foreground">
-              Most used tools by our users
-            </p>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary"
+            >
+              <Sparkles className="h-4 w-4" />
+              Most Popular
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl font-bold tracking-tight md:text-5xl"
+            >
+              Popular Tools
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="mt-3 text-lg text-muted-foreground"
+            >
+              The most used tools by thousands of users daily
+            </motion.p>
           </div>
-          <Link
-            to="/categories"
-            className="hidden items-center gap-2 text-sm font-medium text-primary hover:underline md:flex"
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
           >
-            View all tools
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+            <Link
+              to="/categories"
+              className="group hidden items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground transition-all hover:bg-primary/90 md:flex"
+            >
+              View All Tools
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
         </div>
 
+        {/* Tools Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {popularTools.map((tool, index) => {
             const Icon = tool.icon;
             return (
               <motion.div
                 key={tool.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
               >
                 <Link
                   to={tool.path}
-                  className="tool-card group flex items-start gap-4"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5"
                 >
-                  <div
-                    className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl"
-                    style={{ backgroundColor: `hsl(${tool.color} / 0.15)` }}
-                  >
-                    <Icon
-                      className="h-6 w-6"
-                      style={{ color: `hsl(${tool.color})` }}
-                    />
+                  {/* Gradient overlay on hover */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${tool.bgGradient} opacity-0 transition-opacity group-hover:opacity-100`} />
+                  
+                  <div className="relative flex items-start gap-4">
+                    <div className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${tool.gradient} shadow-lg`}>
+                      <Icon className="h-7 w-7 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg font-semibold text-card-foreground transition-colors group-hover:text-primary">
+                        {tool.name}
+                      </h3>
+                      <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">
+                        {tool.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-card-foreground group-hover:text-primary">
-                      {tool.name}
-                    </h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {tool.description}
-                    </p>
+                  
+                  <div className="relative mt-6 flex items-center justify-between border-t border-border/50 pt-4">
+                    <span className="text-sm font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                      Use Tool
+                    </span>
+                    <ArrowRight className="h-5 w-5 text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
                   </div>
                 </Link>
               </motion.div>
@@ -110,13 +156,21 @@ const PopularTools = () => {
           })}
         </div>
 
-        <Link
-          to="/categories"
-          className="mt-8 flex items-center justify-center gap-2 text-sm font-medium text-primary hover:underline md:hidden"
+        {/* Mobile CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-10 text-center md:hidden"
         >
-          View all tools
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+          <Link
+            to="/categories"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground"
+          >
+            View All Tools
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
