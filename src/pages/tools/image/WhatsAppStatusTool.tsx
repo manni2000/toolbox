@@ -105,8 +105,8 @@ const WhatsAppStatusTool = () => {
     <ToolLayout
       title="WhatsApp Status Generator"
       description="Create perfectly sized images for WhatsApp Status (1080×1920)"
-      category="Image Tools"
-      categoryPath="/category/image"
+      category="Social Media"
+      categoryPath="/category/social"
     >
       <canvas ref={canvasRef} className="hidden" />
 

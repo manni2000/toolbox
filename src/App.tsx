@@ -138,7 +138,7 @@ const App = () => (
           <Route path="/tools/image/resize" element={<ImageResizeTool />} />
           <Route path="/tools/image/crop" element={<ImageCropTool />} />
           <Route path="/tools/image/background-remover" element={<BackgroundRemoverTool />} />
-          <Route path="/tools/image/whatsapp-status" element={<WhatsAppStatusTool />} />
+          <Route path="/tools/social/whatsapp-status" element={<WhatsAppStatusTool />} />
           <Route path="/tools/image/base64" element={<ImageBase64Tool />} />
           <Route path="/tools/image/dpi-checker" element={<ImageDPITool />} />
           <Route path="/tools/image/exif-viewer" element={<EXIFViewerTool />} />
