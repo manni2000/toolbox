@@ -25,6 +25,8 @@ import ImageBase64Tool from "./pages/tools/image/ImageBase64Tool";
 import ImageDPITool from "./pages/tools/image/ImageDPITool";
 import EXIFViewerTool from "./pages/tools/image/EXIFViewerTool";
 import FaviconGeneratorTool from "./pages/tools/image/FaviconGeneratorTool";
+import ImageToPDFTool from "./pages/tools/image/ImageToPDFTool";
+import ImageToWordTool from "./pages/tools/image/ImageToWordTool";
 
 // PDF Tools
 import PDFMergeTool from "./pages/tools/pdf/PDFMergeTool";
@@ -149,6 +151,8 @@ const App = () => (
           <Route path="/tools/image/dpi-checker" element={<ImageDPITool />} />
           <Route path="/tools/image/exif-viewer" element={<EXIFViewerTool />} />
           <Route path="/tools/image/favicon" element={<FaviconGeneratorTool />} />
+          <Route path="/tools/image/to-pdf" element={<ImageToPDFTool />} />
+          <Route path="/tools/image/to-word" element={<ImageToWordTool />} />
           
           {/* PDF Tools */}
           <Route path="/tools/pdf/merge" element={<PDFMergeTool />} />
