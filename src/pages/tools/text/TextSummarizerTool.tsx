@@ -30,8 +30,12 @@ const TextSummarizerTool = () => {
 
     // 3. Score each sentence
     const scored = sentenceList.map((sentence, index) => {
-      const words = sentence.toLowerCase().match(/\b[a-z]{3,}\b/g) || [];
-      const score = words.reduce((sum: number, word: string) => sum + (wordFreq[word] || 0), 0) / (words.length || 1);
+      const words: string[] = sentence.toLowerCase().match(/\b[a-z]{3,}\b/g) || [];
+      let score = 0;
+      words.forEach((word) => {
+        score += wordFreq[word] || 0;
+      });
+      score = score / (words.length || 1);
       // Boost first sentence
       const positionBonus = index === 0 ? 2 : 0;
       return { sentence: sentence.trim(), score: score + positionBonus };
