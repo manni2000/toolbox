@@ -202,12 +202,14 @@ export const toolCategories: ToolCategory[] = [
   {
     id: "finance",
     name: "Finance Tools",
-    description: "EMI, GST, salary calculators",
+    description: "EMI, GST, salary, currency calculators",
     icon: DollarSign,
     color: "140 70% 40%",
     tools: [
       { id: "emi-calculator", name: "EMI Calculator", description: "Calculate loan EMI payments", path: "/emi-calculator", isAvailable: true },
       { id: "gst-calculator", name: "GST Calculator", description: "Calculate GST amounts", path: "/gst-calculator", isAvailable: true },
+      { id: "salary-calculator", name: "Salary Calculator", description: "Convert hourly, monthly, yearly salary", path: "/salary-calculator", isAvailable: true },
+      { id: "currency-converter", name: "Currency Converter", description: "Convert between currencies", path: "/currency-converter", isAvailable: true },
     ],
   },
   {

@@ -111,6 +111,8 @@ import UnitConverterTool from "./pages/tools/education/UnitConverterTool";
 // Finance Tools
 import EMICalculatorTool from "./pages/tools/finance/EMICalculatorTool";
 import GSTCalculatorTool from "./pages/tools/finance/GSTCalculatorTool";
+import SalaryCalculatorTool from "./pages/tools/finance/SalaryCalculatorTool";
+import CurrencyConverterTool from "./pages/tools/finance/CurrencyConverterTool";
 
 // ZIP Tools
 import CreateZipTool from "./pages/tools/zip/CreateZipTool";
@@ -240,6 +242,8 @@ const App = () => (
           {/* Finance Tools */}
           <Route path="/emi-calculator" element={<EMICalculatorTool />} />
           <Route path="/gst-calculator" element={<GSTCalculatorTool />} />
+          <Route path="/salary-calculator" element={<SalaryCalculatorTool />} />
+          <Route path="/currency-converter" element={<CurrencyConverterTool />} />
           
           {/* ZIP Tools */}
           <Route path="/create-zip" element={<CreateZipTool />} />
