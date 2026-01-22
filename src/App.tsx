@@ -34,6 +34,12 @@ import PDFPasswordTool from "./pages/tools/pdf/PDFPasswordTool";
 import PDFUnlockTool from "./pages/tools/pdf/PDFUnlockTool";
 import PDFPageRemoverTool from "./pages/tools/pdf/PDFPageRemoverTool";
 import PDFRotateTool from "./pages/tools/pdf/PDFRotateTool";
+import PDFToWordTool from "./pages/tools/pdf/PDFToWordTool";
+import PDFToPowerPointTool from "./pages/tools/pdf/PDFToPowerPointTool";
+import PDFToExcelTool from "./pages/tools/pdf/PDFToExcelTool";
+import WordToPDFTool from "./pages/tools/pdf/WordToPDFTool";
+import PowerPointToPDFTool from "./pages/tools/pdf/PowerPointToPDFTool";
+import HTMLToPDFTool from "./pages/tools/pdf/HTMLToPDFTool";
 
 // Video Tools
 import VideoDownloaderTool from "./pages/tools/video/VideoDownloaderTool";
@@ -152,6 +158,12 @@ const App = () => (
           <Route path="/tools/pdf/unlock" element={<PDFUnlockTool />} />
           <Route path="/tools/pdf/remove-pages" element={<PDFPageRemoverTool />} />
           <Route path="/tools/pdf/rotate" element={<PDFRotateTool />} />
+          <Route path="/tools/pdf/to-word" element={<PDFToWordTool />} />
+          <Route path="/tools/pdf/to-powerpoint" element={<PDFToPowerPointTool />} />
+          <Route path="/tools/pdf/to-excel" element={<PDFToExcelTool />} />
+          <Route path="/tools/pdf/word-to-pdf" element={<WordToPDFTool />} />
+          <Route path="/tools/pdf/powerpoint-to-pdf" element={<PowerPointToPDFTool />} />
+          <Route path="/tools/pdf/html-to-pdf" element={<HTMLToPDFTool />} />
           
           {/* Video Tools */}
           <Route path="/tools/video/downloader" element={<VideoDownloaderTool />} />
