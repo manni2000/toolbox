@@ -36,8 +36,35 @@ const Footer = () => {
     { name: "Base64 Encoder", path: "/base64-encoder" },
     { name: "URL Encoder", path: "/url-encoder" },
     { name: "JWT Decoder", path: "/jwt-decoder" },
-    { name: "Color Converter", path: "/color-converter" },
     { name: "Regex Tester", path: "/regex-tester" },
+    { name: "Cron Generator", path: "/cron-generator" },
+  ];
+
+  const educationTools = [
+    { name: "Unit Converter", path: "/unit-converter" },
+    { name: "Scientific Calculator", path: "/scientific-calculator" },
+    { name: "Percentage Calculator", path: "/percentage-calculator" },
+    { name: "EMI Calculator", path: "/emi-calculator" },
+    { name: "GST Calculator", path: "/gst-calculator" },
+    { name: "Age Calculator", path: "/age-calculator" },
+  ];
+
+  const socialMediaTools = [
+    { name: "Hashtag Generator", path: "/hashtag-generator" },
+    { name: "Video Downloader", path: "/video-downloader" },
+    { name: "Video Thumbnail", path: "/video-thumbnail" },
+    { name: "WhatsApp Status", path: "/whatsapp-status-saver" },
+    { name: "Meme Generator", path: "/meme-generator" },
+    { name: "QR Code Generator", path: "/qr-code-generator" },
+  ];
+
+  const textTools = [
+    { name: "Word Counter", path: "/word-counter" },
+    { name: "Case Converter", path: "/case-converter" },
+    { name: "Text Diff", path: "/text-diff" },
+    { name: "Markdown to HTML", path: "/markdown-to-html" },
+    { name: "Remove Spaces", path: "/remove-spaces" },
+    { name: "Color Converter", path: "/color-converter" },
   ];
 
   const categories = toolCategories.slice(0, 8).map(cat => ({
@@ -49,9 +76,9 @@ const Footer = () => {
     <footer className="border-t border-border bg-card">
       <div className="container py-12">
         {/* Main Footer Grid */}
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-6">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {/* Brand */}
-          <div className="space-y-4 lg:col-span-2">
+          <div className="space-y-4 sm:col-span-2 md:col-span-3 lg:col-span-4">
             <Link to="/" className="flex items-center gap-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
                 <Wrench className="h-5 w-5 text-primary-foreground" />
@@ -60,7 +87,7 @@ const Footer = () => {
                 Tool<span className="gradient-text">Box</span>
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground">
+            <p className="max-w-md text-sm text-muted-foreground">
               50+ free online tools for images, PDFs, videos, text, and more. 
               No signup required. 100% browser-based.
             </p>
@@ -124,6 +151,48 @@ const Footer = () => {
             <h4 className="text-sm font-semibold">Developer Tools</h4>
             <ul className="space-y-2">
               {devTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Education Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Education Tools</h4>
+            <ul className="space-y-2">
+              {educationTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Social Media Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Social Media Tools</h4>
+            <ul className="space-y-2">
+              {socialMediaTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Text Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Text Tools</h4>
+            <ul className="space-y-2">
+              {textTools.map(tool => (
                 <li key={tool.path}>
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
                     {tool.name}
