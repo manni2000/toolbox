@@ -43,7 +43,7 @@ const popularTools = [
     id: "qr-generator",
     name: "QR Code Generator",
     description: "Create QR codes from any URL or text instantly",
-    path: "/tools/image/qr-generator",
+    path: "/qr-code-generator",
     icon: QrCode,
     gradient: "from-emerald-500 to-teal-500",
     bgGradient: "from-emerald-500/10 to-teal-500/10",

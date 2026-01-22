@@ -64,9 +64,9 @@ const HeroSection = () => {
   }, []);
 
   const quickTools = [
-    { name: "Background Remover", path: "/tools/image/background-remover" },
-    { name: "Download Insta Reels", path: "/tools/video/video-downloader" },
-    { name: "PNG to JPG", path: "/tools/image/image-converter" },
+    { name: "Background Remover", path: "/background-remover" },
+    { name: "Download Insta Reels", path: "/video-downloader" },
+    { name: "PNG to JPG", path: "/image-converter" },
   ];
 
   return (
