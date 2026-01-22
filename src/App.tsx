@@ -120,6 +120,10 @@ import CompressionZipTool from "./pages/tools/zip/CompressionZipTool";
 
 // Social Tools
 import HashtagGeneratorTool from "./pages/tools/social/HashtagGeneratorTool";
+import BioGeneratorTool from "./pages/tools/social/BioGeneratorTool";
+import CaptionFormatterTool from "./pages/tools/social/CaptionFormatterTool";
+import LineBreakGeneratorTool from "./pages/tools/social/LineBreakGeneratorTool";
+import LinkInBioTool from "./pages/tools/social/LinkInBioTool";
 
 const queryClient = new QueryClient();
 
@@ -245,6 +249,10 @@ const App = () => (
           
           {/* Social Tools */}
           <Route path="/hashtag-generator" element={<HashtagGeneratorTool />} />
+          <Route path="/bio-generator" element={<BioGeneratorTool />} />
+          <Route path="/caption-formatter" element={<CaptionFormatterTool />} />
+          <Route path="/line-break-generator" element={<LineBreakGeneratorTool />} />
+          <Route path="/link-in-bio" element={<LinkInBioTool />} />
           <Route path="/whatsapp-status-generator" element={<WhatsAppStatusTool />} />
           
           <Route path="*" element={<NotFound />} />

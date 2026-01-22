@@ -226,11 +226,15 @@ export const toolCategories: ToolCategory[] = [
   {
     id: "social",
     name: "Social Media",
-    description: "Hashtag generators, bio tools",
+    description: "Hashtag generators, bio tools, caption formatters",
     icon: Share2,
     color: "330 80% 55%",
     tools: [
       { id: "hashtag-generator", name: "Hashtag Generator", description: "Generate relevant hashtags", path: "/hashtag-generator", isAvailable: true },
+      { id: "bio-generator", name: "Bio Generator", description: "Create character-limited bios", path: "/bio-generator", isAvailable: true },
+      { id: "caption-formatter", name: "Caption Formatter", description: "Style captions with Unicode fonts", path: "/caption-formatter", isAvailable: true },
+      { id: "line-break-generator", name: "Line Break Generator", description: "Create invisible line breaks", path: "/line-break-generator", isAvailable: true },
+      { id: "link-in-bio", name: "Link-in-Bio Generator", description: "Create link-in-bio pages", path: "/link-in-bio", isAvailable: true },
       { id: "whatsapp-status", name: "WhatsApp Status Generator", description: "Create perfect WhatsApp status images", path: "/whatsapp-status-generator", isAvailable: true },
     ],
   },
