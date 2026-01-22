@@ -37,6 +37,14 @@ import PDFRotateTool from "./pages/tools/pdf/PDFRotateTool";
 
 // Video Tools
 import VideoDownloaderTool from "./pages/tools/video/VideoDownloaderTool";
+import VideoToAudioTool from "./pages/tools/video/VideoToAudioTool";
+import VideoTrimTool from "./pages/tools/video/VideoTrimTool";
+import VideoSpeedTool from "./pages/tools/video/VideoSpeedTool";
+import VideoThumbnailTool from "./pages/tools/video/VideoThumbnailTool";
+import VideoResolutionTool from "./pages/tools/video/VideoResolutionTool";
+
+// Audio Tools
+import AudioConverterTool from "./pages/tools/audio/AudioConverterTool";
 
 // Text Tools
 import WordCounterTool from "./pages/tools/text/WordCounterTool";
@@ -93,6 +101,9 @@ import GSTCalculatorTool from "./pages/tools/finance/GSTCalculatorTool";
 
 // ZIP Tools
 import CreateZipTool from "./pages/tools/zip/CreateZipTool";
+import ExtractZipTool from "./pages/tools/zip/ExtractZipTool";
+import PasswordZipTool from "./pages/tools/zip/PasswordZipTool";
+import CompressionZipTool from "./pages/tools/zip/CompressionZipTool";
 
 // Social Tools
 import HashtagGeneratorTool from "./pages/tools/social/HashtagGeneratorTool";
@@ -139,6 +150,14 @@ const App = () => (
           
           {/* Video Tools */}
           <Route path="/tools/video/downloader" element={<VideoDownloaderTool />} />
+          <Route path="/tools/video/to-audio" element={<VideoToAudioTool />} />
+          <Route path="/tools/video/trim" element={<VideoTrimTool />} />
+          <Route path="/tools/video/speed" element={<VideoSpeedTool />} />
+          <Route path="/tools/video/thumbnail" element={<VideoThumbnailTool />} />
+          <Route path="/tools/video/resolution" element={<VideoResolutionTool />} />
+          
+          {/* Audio Tools */}
+          <Route path="/tools/audio/converter" element={<AudioConverterTool />} />
           
           {/* Text Tools */}
           <Route path="/tools/text/word-counter" element={<WordCounterTool />} />
@@ -195,6 +214,9 @@ const App = () => (
           
           {/* ZIP Tools */}
           <Route path="/tools/zip/create" element={<CreateZipTool />} />
+          <Route path="/tools/zip/extract" element={<ExtractZipTool />} />
+          <Route path="/tools/zip/password" element={<PasswordZipTool />} />
+          <Route path="/tools/zip/compression" element={<CompressionZipTool />} />
           
           {/* Social Tools */}
           <Route path="/tools/social/hashtag-generator" element={<HashtagGeneratorTool />} />

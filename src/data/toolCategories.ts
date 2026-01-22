@@ -74,11 +74,26 @@ export const toolCategories: ToolCategory[] = [
   {
     id: "video",
     name: "Video Tools",
-    description: "Download videos from YouTube, Instagram, Facebook",
+    description: "Convert, trim, and process video files",
     icon: Video,
     color: "350 80% 55%",
     tools: [
       { id: "video-downloader", name: "Video Downloader", description: "Download from YouTube, Instagram, Facebook", path: "/tools/video/downloader", isAvailable: true },
+      { id: "video-to-audio", name: "Video to Audio", description: "Extract audio from video files", path: "/tools/video/to-audio", isAvailable: true },
+      { id: "video-trim", name: "Video Trim", description: "Cut and trim video clips", path: "/tools/video/trim", isAvailable: true },
+      { id: "video-speed", name: "Video Speed Controller", description: "Change video playback speed", path: "/tools/video/speed", isAvailable: true },
+      { id: "video-thumbnail", name: "Video Thumbnail Generator", description: "Extract thumbnails from videos", path: "/tools/video/thumbnail", isAvailable: true },
+      { id: "video-resolution", name: "Video Resolution Converter", description: "Change video resolution", path: "/tools/video/resolution", isAvailable: true },
+    ],
+  },
+  {
+    id: "audio",
+    name: "Audio Tools",
+    description: "Convert and process audio files",
+    icon: Music,
+    color: "290 80% 55%",
+    tools: [
+      { id: "audio-converter", name: "Audio Format Converter", description: "Convert between MP3, WAV, AAC formats", path: "/tools/audio/converter", isAvailable: true },
     ],
   },
   {
@@ -196,6 +211,8 @@ export const toolCategories: ToolCategory[] = [
     tools: [
       { id: "create-zip", name: "Create ZIP", description: "Create ZIP from multiple files", path: "/tools/zip/create", isAvailable: true },
       { id: "extract-zip", name: "Extract ZIP", description: "Extract files from ZIP archive", path: "/tools/zip/extract", isAvailable: true },
+      { id: "password-zip", name: "Password-Protected ZIP", description: "Create encrypted ZIP archives", path: "/tools/zip/password", isAvailable: true },
+      { id: "compression-zip", name: "Compression Level ZIP", description: "ZIP with custom compression", path: "/tools/zip/compression", isAvailable: true },
     ],
   },
   {
