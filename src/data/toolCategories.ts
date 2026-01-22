@@ -48,7 +48,6 @@ export const toolCategories: ToolCategory[] = [
       { id: "image-resize", name: "Image Resize Tool", description: "Resize images to any dimension", path: "/tools/image/resize", isAvailable: true },
       { id: "image-crop", name: "Image Crop Tool", description: "Crop images with custom dimensions", path: "/tools/image/crop", isAvailable: true },
       { id: "background-remover", name: "Background Remover", description: "Remove background from images", path: "/tools/image/background-remover", isAvailable: true },
-      { id: "whatsapp-status", name: "WhatsApp Status Generator", description: "Create perfect WhatsApp status images", path: "/tools/image/whatsapp-status", isAvailable: true },
       { id: "base64-image", name: "Image ↔ Base64", description: "Convert images to/from Base64", path: "/tools/image/base64", isAvailable: true },
       { id: "image-dpi", name: "Image DPI Checker", description: "Check image DPI and print sizes", path: "/tools/image/dpi-checker", isAvailable: true },
       { id: "exif-viewer", name: "EXIF Metadata Viewer", description: "View photo metadata and camera info", path: "/tools/image/exif-viewer", isAvailable: true },
@@ -230,6 +229,7 @@ export const toolCategories: ToolCategory[] = [
       { id: "hashtag-generator", name: "Hashtag Generator", description: "Generate relevant hashtags", path: "/tools/social/hashtag-generator", isAvailable: true },
       { id: "bio-generator", name: "Bio Generator", description: "Create social media bios", path: "/tools/social/bio-generator", isAvailable: true },
       { id: "line-break", name: "Line Break Generator", description: "Add line breaks for Instagram", path: "/tools/social/line-break", isAvailable: true },
+      { id: "whatsapp-status", name: "WhatsApp Status Generator", description: "Create perfect WhatsApp status images", path: "/tools/social/whatsapp-status", isAvailable: true },
     ],
   },
   {
