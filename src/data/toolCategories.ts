@@ -116,6 +116,7 @@ export const toolCategories: ToolCategory[] = [
     tools: [
       { id: "word-counter", name: "Word & Character Counter", description: "Count words, characters, sentences", path: "/word-counter", isAvailable: true },
       { id: "case-converter", name: "Case Converter", description: "Convert text case (upper, lower, title)", path: "/case-converter", isAvailable: true },
+      { id: "color-converter", name: "Color Converter", description: "Convert between HEX, RGB, HSL", path: "/color-converter", isAvailable: true },
       { id: "remove-spaces", name: "Remove Extra Spaces", description: "Clean up extra whitespace from text", path: "/remove-spaces", isAvailable: true },
       { id: "line-sorter", name: "Line Sorter", description: "Sort lines alphabetically or numerically", path: "/line-sorter", isAvailable: true },
       { id: "duplicate-remover", name: "Duplicate Line Remover", description: "Remove duplicate lines from text", path: "/duplicate-remover", isAvailable: true },
@@ -164,7 +165,6 @@ export const toolCategories: ToolCategory[] = [
       { id: "jwt-decoder", name: "JWT Decoder", description: "Decode and inspect JWT tokens", path: "/jwt-decoder", isAvailable: true },
       { id: "url-encoder", name: "URL Encoder/Decoder", description: "Encode or decode URLs", path: "/url-encoder", isAvailable: true },
       { id: "url-shortener", name: "URL Shortener", description: "Generate short URL codes", path: "/url-shortener", isAvailable: true },
-      { id: "color-converter", name: "Color Converter", description: "Convert between HEX, RGB, HSL", path: "/color-converter", isAvailable: true },
       { id: "lorem-generator", name: "Lorem Ipsum Generator", description: "Generate placeholder text", path: "/lorem-ipsum-generator", isAvailable: true },
       { id: "sitemap-generator", name: "Sitemap Generator", description: "Create XML sitemaps", path: "/sitemap-generator", isAvailable: true },
       { id: "robots-checker", name: "Robots.txt Checker", description: "Validate robots.txt files", path: "/robots-txt-checker", isAvailable: true },
