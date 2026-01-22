@@ -16,6 +16,10 @@ import TermsOfService from "./pages/TermsOfService";
 import QRGeneratorTool from "./pages/tools/image/QRGeneratorTool";
 import ImageCompressorTool from "./pages/tools/image/ImageCompressorTool";
 import ImageConverterTool from "./pages/tools/image/ImageConverterTool";
+import ImageResizeTool from "./pages/tools/image/ImageResizeTool";
+
+// Video Tools
+import VideoDownloaderTool from "./pages/tools/video/VideoDownloaderTool";
 
 // Text Tools
 import WordCounterTool from "./pages/tools/text/WordCounterTool";
@@ -75,6 +79,10 @@ const App = () => (
           <Route path="/tools/image/qr-generator" element={<QRGeneratorTool />} />
           <Route path="/tools/image/compressor" element={<ImageCompressorTool />} />
           <Route path="/tools/image/converter" element={<ImageConverterTool />} />
+          <Route path="/tools/image/resize" element={<ImageResizeTool />} />
+          
+          {/* Video Tools */}
+          <Route path="/tools/video/downloader" element={<VideoDownloaderTool />} />
           
           {/* Text Tools */}
           <Route path="/tools/text/word-counter" element={<WordCounterTool />} />
