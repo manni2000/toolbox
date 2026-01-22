@@ -4,6 +4,56 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Delete, RotateCcw } from "lucide-react";
 
+// Define button components outside the main component to prevent recreation on each render
+const ScientificButton = ({ 
+  label, 
+  onClick, 
+  className = "" 
+}: { 
+  label: string; 
+  onClick: () => void; 
+  className?: string;
+}) => (
+  <Button
+    variant="outline"
+    className={`h-12 text-sm font-medium transition-all hover:bg-primary hover:text-primary-foreground ${className}`}
+    onClick={onClick}
+  >
+    {label}
+  </Button>
+);
+
+const NumberButton = ({ 
+  label, 
+  onClick 
+}: { 
+  label: string; 
+  onClick: () => void;
+}) => (
+  <Button
+    variant="secondary"
+    className="h-14 text-lg font-semibold"
+    onClick={onClick}
+  >
+    {label}
+  </Button>
+);
+
+const OperatorButton = ({ 
+  label, 
+  onClick 
+}: { 
+  label: string; 
+  onClick: () => void;
+}) => (
+  <Button
+    className="h-14 text-lg font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
+    onClick={onClick}
+  >
+    {label}
+  </Button>
+);
+
 const ScientificCalculatorTool = () => {
   const [display, setDisplay] = useState("0");
   const [expression, setExpression] = useState("");
@@ -71,6 +121,15 @@ const ScientificCalculatorTool = () => {
       setDisplay("Error");
       setExpression("");
     }
+  };
+
+  const factorial = (n: number): number => {
+    if (n < 0 || !Number.isInteger(n)) return NaN;
+    if (n === 0 || n === 1) return 1;
+    if (n > 170) return Infinity;
+    let result = 1;
+    for (let i = 2; i <= n; i++) result *= i;
+    return result;
   };
 
   const handleScientific = (func: string) => {
@@ -147,15 +206,6 @@ const ScientificCalculatorTool = () => {
     }
   };
 
-  const factorial = (n: number): number => {
-    if (n < 0 || !Number.isInteger(n)) return NaN;
-    if (n === 0 || n === 1) return 1;
-    if (n > 170) return Infinity;
-    let result = 1;
-    for (let i = 2; i <= n; i++) result *= i;
-    return result;
-  };
-
   const handleConstant = (constant: string) => {
     switch (constant) {
       case "pi":
@@ -192,55 +242,6 @@ const ScientificCalculatorTool = () => {
     setExpression(expression + display + "**");
     setDisplay("0");
   };
-
-  const ScientificButton = ({ 
-    label, 
-    onClick, 
-    className = "" 
-  }: { 
-    label: string; 
-    onClick: () => void; 
-    className?: string;
-  }) => (
-    <Button
-      variant="outline"
-      className={`h-12 text-sm font-medium transition-all hover:bg-primary hover:text-primary-foreground ${className}`}
-      onClick={onClick}
-    >
-      {label}
-    </Button>
-  );
-
-  const NumberButton = ({ 
-    label, 
-    onClick 
-  }: { 
-    label: string; 
-    onClick: () => void;
-  }) => (
-    <Button
-      variant="secondary"
-      className="h-14 text-lg font-semibold"
-      onClick={onClick}
-    >
-      {label}
-    </Button>
-  );
-
-  const OperatorButton = ({ 
-    label, 
-    onClick 
-  }: { 
-    label: string; 
-    onClick: () => void;
-  }) => (
-    <Button
-      className="h-14 text-lg font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
-      onClick={onClick}
-    >
-      {label}
-    </Button>
-  );
 
   return (
     <ToolLayout
