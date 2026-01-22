@@ -199,6 +199,7 @@ export const toolCategories: ToolCategory[] = [
       { id: "unit-converter", name: "Unit Converter", description: "Convert length, weight, temperature", path: "/unit-converter", isAvailable: true },
       { id: "age-calculator", name: "Age Calculator", description: "Calculate exact age from birthdate", path: "/age-calculator", isAvailable: true },
       { id: "compound-interest", name: "Compound Interest Calculator", description: "Calculate compound interest with frequency options", path: "/compound-interest-calculator", isAvailable: true },
+      { id: "simple-interest", name: "Simple Interest Calculator", description: "Calculate simple interest on principal", path: "/simple-interest-calculator", isAvailable: true },
     ],
   },
   {
