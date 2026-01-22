@@ -3,13 +3,16 @@ import { motion } from "framer-motion";
 import { ArrowRight, LayoutGrid } from "lucide-react";
 import { toolCategories } from "@/data/toolCategories";
 
-// IDs to move to the end (already featured in Popular Tools)
+// Priority categories to show first
+const priorityCategoryIds = ["audio", "social", "finance", "viewers", "dev"];
+// Categories to move to the end (already featured in Popular Tools)
 const featuredCategoryIds = ["image", "pdf", "video", "education", "zip"];
 
 const CategoryGrid = () => {
-  // Reorder: non-featured first, featured at the end
+  // Reorder: priority first, then others, then featured at the end
   const reorderedCategories = [
-    ...toolCategories.filter(cat => !featuredCategoryIds.includes(cat.id)),
+    ...toolCategories.filter(cat => priorityCategoryIds.includes(cat.id)),
+    ...toolCategories.filter(cat => !priorityCategoryIds.includes(cat.id) && !featuredCategoryIds.includes(cat.id)),
     ...toolCategories.filter(cat => featuredCategoryIds.includes(cat.id)),
   ];
 
