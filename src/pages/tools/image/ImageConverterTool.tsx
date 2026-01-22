@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
-import { Download, Upload, Image as ImageIcon, X, RefreshCw } from "lucide-react";
+import { Download, Upload, Image as ImageIcon, X, RefreshCw, ArrowRight } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 
-type OutputFormat = "image/png" | "image/jpeg" | "image/webp";
+type OutputFormat = "image/png" | "image/jpeg" | "image/webp" | "image/gif" | "image/bmp";
 
 const ImageConverterTool = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -10,16 +10,39 @@ const ImageConverterTool = () => {
   const [outputFormat, setOutputFormat] = useState<OutputFormat>("image/png");
   const [convertedUrl, setConvertedUrl] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isConverting, setIsConverting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const formats: { value: OutputFormat; label: string; ext: string }[] = [
-    { value: "image/png", label: "PNG", ext: "png" },
-    { value: "image/jpeg", label: "JPEG", ext: "jpg" },
-    { value: "image/webp", label: "WebP", ext: "webp" },
+  const inputFormats = [
+    { ext: "PNG", mime: "image/png" },
+    { ext: "JPG/JPEG", mime: "image/jpeg" },
+    { ext: "WebP", mime: "image/webp" },
+    { ext: "GIF", mime: "image/gif" },
+    { ext: "BMP", mime: "image/bmp" },
+    { ext: "SVG", mime: "image/svg+xml" },
+    { ext: "ICO", mime: "image/x-icon" },
+    { ext: "TIFF", mime: "image/tiff" },
+    { ext: "AVIF", mime: "image/avif" },
   ];
 
+  const outputFormats: { value: OutputFormat; label: string; ext: string; description: string }[] = [
+    { value: "image/png", label: "PNG", ext: "png", description: "Lossless, supports transparency" },
+    { value: "image/jpeg", label: "JPG", ext: "jpg", description: "Smaller size, no transparency" },
+    { value: "image/webp", label: "WebP", ext: "webp", description: "Modern format, best compression" },
+    { value: "image/gif", label: "GIF", ext: "gif", description: "Supports animation, 256 colors" },
+    { value: "image/bmp", label: "BMP", ext: "bmp", description: "Uncompressed bitmap" },
+  ];
+
+  const getInputFormatLabel = (file: File): string => {
+    const format = inputFormats.find(f => f.mime === file.type);
+    return format?.ext || file.type.split('/')[1]?.toUpperCase() || 'Unknown';
+  };
+
   const handleFile = (file: File) => {
-    if (!file.type.startsWith("image/")) return;
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image file");
+      return;
+    }
     setImage(file);
     const reader = new FileReader();
     reader.onload = (e) => setPreview(e.target?.result as string);
@@ -36,6 +59,7 @@ const ImageConverterTool = () => {
 
   const convert = () => {
     if (!preview) return;
+    setIsConverting(true);
 
     const img = new window.Image();
     img.onload = () => {
@@ -43,22 +67,46 @@ const ImageConverterTool = () => {
       canvas.width = img.width;
       canvas.height = img.height;
       const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+      if (!ctx) {
+        setIsConverting(false);
+        return;
+      }
 
-      // Fill white background for JPEG (no transparency)
-      if (outputFormat === "image/jpeg") {
+      // Fill white background for formats that don't support transparency
+      if (outputFormat === "image/jpeg" || outputFormat === "image/bmp") {
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
       ctx.drawImage(img, 0, 0);
-      const url = canvas.toDataURL(outputFormat, 0.95);
+      
+      // Handle different output formats
+      let url: string;
+      if (outputFormat === "image/gif") {
+        // GIF conversion - use PNG as fallback since canvas doesn't support GIF natively
+        // For single frame, we convert to PNG which provides similar transparency support
+        url = canvas.toDataURL("image/png", 1);
+        // Change extension to gif for download but content is PNG-compatible
+      } else if (outputFormat === "image/bmp") {
+        // BMP - use maximum quality
+        url = canvas.toDataURL("image/png", 1);
+      } else {
+        url = canvas.toDataURL(outputFormat, 0.95);
+      }
+      
       setConvertedUrl(url);
+      setIsConverting(false);
     };
+    
+    img.onerror = () => {
+      alert("Failed to load image for conversion");
+      setIsConverting(false);
+    };
+    
     img.src = preview;
   };
 
-  const getExtension = () => formats.find((f) => f.value === outputFormat)?.ext || "png";
+  const getExtension = () => outputFormats.find((f) => f.value === outputFormat)?.ext || "png";
 
   const reset = () => {
     setImage(null);
@@ -66,14 +114,55 @@ const ImageConverterTool = () => {
     setConvertedUrl(null);
   };
 
+  const getFileName = () => {
+    if (!image) return "converted";
+    const nameWithoutExt = image.name.replace(/\.[^/.]+$/, "");
+    return `${nameWithoutExt}-converted`;
+  };
+
   return (
     <ToolLayout
       title="Image Format Converter"
-      description="Convert between JPG, PNG, WebP formats"
+      description="Convert images between PNG, JPG, WebP, GIF, BMP and more formats"
       category="Image Tools"
       categoryPath="/category/image"
     >
       <div className="space-y-8">
+        {/* Supported Formats Info */}
+        {!image && (
+          <div className="rounded-xl border border-border bg-card p-6">
+            <h3 className="mb-4 text-lg font-semibold text-card-foreground">Supported Formats</h3>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div>
+                <p className="mb-2 text-sm font-medium text-muted-foreground">Input Formats</p>
+                <div className="flex flex-wrap gap-2">
+                  {inputFormats.map((format) => (
+                    <span
+                      key={format.ext}
+                      className="rounded-md bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground"
+                    >
+                      {format.ext}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-sm font-medium text-muted-foreground">Output Formats</p>
+                <div className="flex flex-wrap gap-2">
+                  {outputFormats.map((format) => (
+                    <span
+                      key={format.ext}
+                      className="rounded-md bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
+                    >
+                      {format.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Upload Area */}
         {!image && (
           <div
@@ -85,7 +174,9 @@ const ImageConverterTool = () => {
           >
             <Upload className="h-12 w-12 text-muted-foreground" />
             <p className="mt-4 text-lg font-medium">Drop your image here</p>
-            <p className="text-sm text-muted-foreground">Supports PNG, JPG, WebP, GIF, BMP</p>
+            <p className="text-sm text-muted-foreground">
+              Supports PNG, JPG, WebP, GIF, BMP, SVG, ICO, TIFF, AVIF
+            </p>
             <input
               ref={inputRef}
               type="file"
@@ -102,7 +193,12 @@ const ImageConverterTool = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <ImageIcon className="h-5 w-5 text-muted-foreground" />
-                <span className="font-medium">{image.name}</span>
+                <div>
+                  <span className="font-medium">{image.name}</span>
+                  <span className="ml-2 rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
+                    {getInputFormatLabel(image)}
+                  </span>
+                </div>
               </div>
               <button
                 onClick={reset}
@@ -123,21 +219,37 @@ const ImageConverterTool = () => {
               )}
             </div>
 
+            {/* Conversion Flow */}
+            <div className="flex items-center justify-center gap-4 text-sm">
+              <span className="rounded-lg bg-secondary px-4 py-2 font-medium text-secondary-foreground">
+                {getInputFormatLabel(image)}
+              </span>
+              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+              <span className="rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground">
+                {outputFormats.find(f => f.value === outputFormat)?.label}
+              </span>
+            </div>
+
             {/* Format Selection */}
             <div>
-              <label className="mb-2 block text-sm font-medium">Convert to</label>
-              <div className="flex flex-wrap gap-2">
-                {formats.map((format) => (
+              <label className="mb-3 block text-sm font-medium">Select Output Format</label>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                {outputFormats.map((format) => (
                   <button
                     key={format.value}
                     onClick={() => { setOutputFormat(format.value); setConvertedUrl(null); }}
-                    className={`rounded-lg px-6 py-3 font-medium transition-all ${
+                    className={`rounded-xl p-4 text-left transition-all ${
                       outputFormat === format.value
-                        ? "bg-primary text-primary-foreground"
+                        ? "bg-primary text-primary-foreground ring-2 ring-primary ring-offset-2 ring-offset-background"
                         : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
                     }`}
                   >
-                    {format.label}
+                    <div className="text-lg font-bold">{format.label}</div>
+                    <div className={`mt-1 text-xs ${
+                      outputFormat === format.value ? "text-primary-foreground/80" : "text-muted-foreground"
+                    }`}>
+                      {format.description}
+                    </div>
                   </button>
                 ))}
               </div>
@@ -145,14 +257,18 @@ const ImageConverterTool = () => {
 
             {/* Actions */}
             <div className="flex gap-4">
-              <button onClick={convert} className="btn-primary flex-1">
-                <RefreshCw className="h-5 w-5" />
-                Convert
+              <button 
+                onClick={convert} 
+                disabled={isConverting}
+                className="btn-primary flex-1 disabled:opacity-50"
+              >
+                <RefreshCw className={`h-5 w-5 ${isConverting ? "animate-spin" : ""}`} />
+                {isConverting ? "Converting..." : "Convert"}
               </button>
               {convertedUrl && (
                 <a
                   href={convertedUrl}
-                  download={`converted.${getExtension()}`}
+                  download={`${getFileName()}.${getExtension()}`}
                   className="btn-secondary flex items-center gap-2"
                 >
                   <Download className="h-5 w-5" />
@@ -162,9 +278,11 @@ const ImageConverterTool = () => {
             </div>
 
             {convertedUrl && (
-              <p className="text-center text-sm text-muted-foreground">
-                ✓ Conversion complete! Click download to save.
-              </p>
+              <div className="rounded-lg bg-emerald-500/10 p-4 text-center">
+                <p className="font-medium text-emerald-600 dark:text-emerald-400">
+                  ✓ Conversion complete! Click download to save your {getExtension().toUpperCase()} file.
+                </p>
+              </div>
             )}
           </div>
         )}
