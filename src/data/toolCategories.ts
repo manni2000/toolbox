@@ -197,6 +197,9 @@ export const toolCategories: ToolCategory[] = [
       { id: "scientific-calculator", name: "Scientific Calculator", description: "Advanced calculator with trig and log functions", path: "/scientific-calculator", isAvailable: true },
       { id: "percentage-calc", name: "Percentage Calculator", description: "Calculate percentages easily", path: "/percentage-calculator", isAvailable: true },
       { id: "unit-converter", name: "Unit Converter", description: "Convert length, weight, temperature", path: "/unit-converter", isAvailable: true },
+      { id: "emi-calculator", name: "EMI Calculator", description: "Calculate loan EMI payments", path: "/emi-calculator", isAvailable: true },
+      { id: "gst-calculator", name: "GST Calculator", description: "Calculate GST, CGST, SGST amounts", path: "/gst-calculator", isAvailable: true },
+      { id: "age-calculator", name: "Age Calculator", description: "Calculate exact age from birthdate", path: "/age-calculator", isAvailable: true },
     ],
   },
   {
