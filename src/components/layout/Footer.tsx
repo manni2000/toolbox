@@ -95,7 +95,7 @@ const Footer = () => {
 
           {/* Popular Tools */}
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Popular Tools</h4>
+            <h4 className="text-sm font-semibold text-center">Popular Tools</h4>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
               {popularTools.map(tool => (
                 <li key={tool.path}>
