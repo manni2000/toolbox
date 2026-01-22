@@ -96,9 +96,9 @@ const Footer = () => {
           {/* Popular Tools */}
           <div className="space-y-4">
             <h4 className="text-sm font-semibold text-center">Popular Tools</h4>
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+            <ul className="grid grid-cols-2 gap-x-8 gap-y-2">
               {popularTools.map(tool => (
-                <li key={tool.path}>
+                <li key={tool.path} className="text-center">
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
                     {tool.name}
                   </Link>
