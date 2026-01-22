@@ -92,6 +92,7 @@ import SSLCheckerTool from "./pages/tools/internet/SSLCheckerTool";
 import WebsitePingTool from "./pages/tools/internet/WebsitePingTool";
 
 // Education Tools
+import ScientificCalculatorTool from "./pages/tools/education/ScientificCalculatorTool";
 import PercentageCalculatorTool from "./pages/tools/education/PercentageCalculatorTool";
 import UnitConverterTool from "./pages/tools/education/UnitConverterTool";
 
@@ -205,6 +206,7 @@ const App = () => (
           <Route path="/tools/internet/ping" element={<WebsitePingTool />} />
           
           {/* Education Tools */}
+          <Route path="/tools/education/scientific-calculator" element={<ScientificCalculatorTool />} />
           <Route path="/tools/education/percentage-calculator" element={<PercentageCalculatorTool />} />
           <Route path="/tools/education/unit-converter" element={<UnitConverterTool />} />
           
