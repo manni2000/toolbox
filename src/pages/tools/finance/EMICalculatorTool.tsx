@@ -52,8 +52,8 @@ const EMICalculatorTool = () => {
     <ToolLayout
       title="EMI Calculator"
       description="Calculate loan EMI payments"
-      category="Education Tools"
-      categoryPath="/category/education"
+      category="Finance Tools"
+      categoryPath="/category/finance"
     >
       <div className="mx-auto max-w-2xl space-y-6">
         {/* Inputs */}
