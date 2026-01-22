@@ -45,6 +45,10 @@ import VideoResolutionTool from "./pages/tools/video/VideoResolutionTool";
 
 // Audio Tools
 import AudioConverterTool from "./pages/tools/audio/AudioConverterTool";
+import SpeechToTextTool from "./pages/tools/audio/SpeechToTextTool";
+import AudioTrimmerTool from "./pages/tools/audio/AudioTrimmerTool";
+import AudioMergerTool from "./pages/tools/audio/AudioMergerTool";
+import AudioSpeedTool from "./pages/tools/audio/AudioSpeedTool";
 
 // Text Tools
 import WordCounterTool from "./pages/tools/text/WordCounterTool";
@@ -159,6 +163,10 @@ const App = () => (
           
           {/* Audio Tools */}
           <Route path="/tools/audio/converter" element={<AudioConverterTool />} />
+          <Route path="/tools/audio/speech-to-text" element={<SpeechToTextTool />} />
+          <Route path="/tools/audio/trimmer" element={<AudioTrimmerTool />} />
+          <Route path="/tools/audio/merger" element={<AudioMergerTool />} />
+          <Route path="/tools/audio/speed" element={<AudioSpeedTool />} />
           
           {/* Text Tools */}
           <Route path="/tools/text/word-counter" element={<WordCounterTool />} />

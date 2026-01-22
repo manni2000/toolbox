@@ -94,6 +94,10 @@ export const toolCategories: ToolCategory[] = [
     color: "290 80% 55%",
     tools: [
       { id: "audio-converter", name: "Audio Format Converter", description: "Convert between MP3, WAV, AAC formats", path: "/tools/audio/converter", isAvailable: true },
+      { id: "speech-to-text", name: "Speech to Text", description: "Convert audio to text with language support", path: "/tools/audio/speech-to-text", isAvailable: true },
+      { id: "audio-trimmer", name: "Audio Trimmer", description: "Cut and trim audio files", path: "/tools/audio/trimmer", isAvailable: true },
+      { id: "audio-merger", name: "Audio Merger", description: "Merge multiple audio files into one", path: "/tools/audio/merger", isAvailable: true },
+      { id: "audio-speed", name: "Audio Speed Changer", description: "Change speed from 0.5x to 2x with pitch control", path: "/tools/audio/speed", isAvailable: true },
     ],
   },
   {
