@@ -1,8 +1,44 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, QrCode, Type, Lock, FileJson, Calendar, Image, Sparkles } from "lucide-react";
+import { ArrowRight, Image, FileText, Video, GraduationCap, QrCode, Archive, Sparkles } from "lucide-react";
 
 const popularTools = [
+  {
+    id: "image-tools",
+    name: "Image Tools",
+    description: "Compress, convert, resize and edit images easily",
+    path: "/category/image",
+    icon: Image,
+    gradient: "from-pink-500 to-rose-500",
+    bgGradient: "from-pink-500/10 to-rose-500/10",
+  },
+  {
+    id: "pdf-tools",
+    name: "PDF Tools",
+    description: "Merge, split, compress and convert PDF files",
+    path: "/category/pdf",
+    icon: FileText,
+    gradient: "from-red-500 to-orange-500",
+    bgGradient: "from-red-500/10 to-orange-500/10",
+  },
+  {
+    id: "video-tools",
+    name: "Video Tools",
+    description: "Download, trim, convert and edit videos",
+    path: "/category/video",
+    icon: Video,
+    gradient: "from-purple-500 to-violet-500",
+    bgGradient: "from-purple-500/10 to-violet-500/10",
+  },
+  {
+    id: "education-tools",
+    name: "Education Tools",
+    description: "Calculators, converters and learning utilities",
+    path: "/category/education",
+    icon: GraduationCap,
+    gradient: "from-blue-500 to-cyan-500",
+    bgGradient: "from-blue-500/10 to-cyan-500/10",
+  },
   {
     id: "qr-generator",
     name: "QR Code Generator",
@@ -13,49 +49,13 @@ const popularTools = [
     bgGradient: "from-emerald-500/10 to-teal-500/10",
   },
   {
-    id: "word-counter",
-    name: "Word Counter",
-    description: "Count words, characters, sentences, and paragraphs",
-    path: "/tools/text/word-counter",
-    icon: Type,
-    gradient: "from-violet-500 to-purple-500",
-    bgGradient: "from-violet-500/10 to-purple-500/10",
-  },
-  {
-    id: "password-generator",
-    name: "Password Generator",
-    description: "Generate secure random passwords instantly",
-    path: "/tools/security/password-generator",
-    icon: Lock,
-    gradient: "from-rose-500 to-pink-500",
-    bgGradient: "from-rose-500/10 to-pink-500/10",
-  },
-  {
-    id: "json-formatter",
-    name: "JSON Formatter",
-    description: "Format, validate, and beautify JSON data",
-    path: "/tools/dev/json-formatter",
-    icon: FileJson,
-    gradient: "from-blue-500 to-cyan-500",
-    bgGradient: "from-blue-500/10 to-cyan-500/10",
-  },
-  {
-    id: "age-calculator",
-    name: "Age Calculator",
-    description: "Calculate exact age from your birthdate",
-    path: "/tools/date-time/age-calculator",
-    icon: Calendar,
-    gradient: "from-amber-500 to-orange-500",
-    bgGradient: "from-amber-500/10 to-orange-500/10",
-  },
-  {
-    id: "image-compressor",
-    name: "Image Compressor",
-    description: "Compress images without losing quality",
-    path: "/tools/image/compressor",
-    icon: Image,
-    gradient: "from-green-500 to-emerald-500",
-    bgGradient: "from-green-500/10 to-emerald-500/10",
+    id: "zip-tools",
+    name: "Zip Tools",
+    description: "Create, extract and manage compressed files",
+    path: "/category/zip",
+    icon: Archive,
+    gradient: "from-amber-500 to-yellow-500",
+    bgGradient: "from-amber-500/10 to-yellow-500/10",
   },
 ];
 
