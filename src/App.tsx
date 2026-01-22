@@ -138,114 +138,114 @@ const App = () => (
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           
-          {/* Image Tools */}
-          <Route path="/tools/image/qr-generator" element={<QRGeneratorTool />} />
-          <Route path="/tools/image/qr-scanner" element={<QRScannerTool />} />
-          <Route path="/tools/image/compressor" element={<ImageCompressorTool />} />
-          <Route path="/tools/image/converter" element={<ImageConverterTool />} />
-          <Route path="/tools/image/resize" element={<ImageResizeTool />} />
-          <Route path="/tools/image/crop" element={<ImageCropTool />} />
-          <Route path="/tools/image/background-remover" element={<BackgroundRemoverTool />} />
-          <Route path="/tools/social/whatsapp-status" element={<WhatsAppStatusTool />} />
-          <Route path="/tools/image/base64" element={<ImageBase64Tool />} />
-          <Route path="/tools/image/dpi-checker" element={<ImageDPITool />} />
-          <Route path="/tools/image/exif-viewer" element={<EXIFViewerTool />} />
-          <Route path="/tools/image/favicon" element={<FaviconGeneratorTool />} />
-          <Route path="/tools/image/to-pdf" element={<ImageToPDFTool />} />
-          <Route path="/tools/image/to-word" element={<ImageToWordTool />} />
+          {/* Image Tools - SEO friendly routes */}
+          <Route path="/qr-code-generator" element={<QRGeneratorTool />} />
+          <Route path="/qr-code-scanner" element={<QRScannerTool />} />
+          <Route path="/image-compressor" element={<ImageCompressorTool />} />
+          <Route path="/image-converter" element={<ImageConverterTool />} />
+          <Route path="/image-resize" element={<ImageResizeTool />} />
+          <Route path="/image-crop" element={<ImageCropTool />} />
+          <Route path="/background-remover" element={<BackgroundRemoverTool />} />
+          <Route path="/image-base64" element={<ImageBase64Tool />} />
+          <Route path="/image-dpi-checker" element={<ImageDPITool />} />
+          <Route path="/exif-viewer" element={<EXIFViewerTool />} />
+          <Route path="/favicon-generator" element={<FaviconGeneratorTool />} />
+          <Route path="/image-to-pdf" element={<ImageToPDFTool />} />
+          <Route path="/image-to-word" element={<ImageToWordTool />} />
           
           {/* PDF Tools */}
-          <Route path="/tools/pdf/merge" element={<PDFMergeTool />} />
-          <Route path="/tools/pdf/split" element={<PDFSplitTool />} />
-          <Route path="/tools/pdf/to-image" element={<PDFToImageTool />} />
-          <Route path="/tools/pdf/password" element={<PDFPasswordTool />} />
-          <Route path="/tools/pdf/unlock" element={<PDFUnlockTool />} />
-          <Route path="/tools/pdf/remove-pages" element={<PDFPageRemoverTool />} />
-          <Route path="/tools/pdf/rotate" element={<PDFRotateTool />} />
-          <Route path="/tools/pdf/to-word" element={<PDFToWordTool />} />
-          <Route path="/tools/pdf/to-powerpoint" element={<PDFToPowerPointTool />} />
-          <Route path="/tools/pdf/to-excel" element={<PDFToExcelTool />} />
-          <Route path="/tools/pdf/word-to-pdf" element={<WordToPDFTool />} />
-          <Route path="/tools/pdf/powerpoint-to-pdf" element={<PowerPointToPDFTool />} />
-          <Route path="/tools/pdf/html-to-pdf" element={<HTMLToPDFTool />} />
+          <Route path="/pdf-merge" element={<PDFMergeTool />} />
+          <Route path="/pdf-split" element={<PDFSplitTool />} />
+          <Route path="/pdf-to-jpg" element={<PDFToImageTool />} />
+          <Route path="/pdf-password" element={<PDFPasswordTool />} />
+          <Route path="/pdf-unlock" element={<PDFUnlockTool />} />
+          <Route path="/pdf-page-remover" element={<PDFPageRemoverTool />} />
+          <Route path="/pdf-rotate" element={<PDFRotateTool />} />
+          <Route path="/pdf-to-word" element={<PDFToWordTool />} />
+          <Route path="/pdf-to-powerpoint" element={<PDFToPowerPointTool />} />
+          <Route path="/pdf-to-excel" element={<PDFToExcelTool />} />
+          <Route path="/word-to-pdf" element={<WordToPDFTool />} />
+          <Route path="/powerpoint-to-pdf" element={<PowerPointToPDFTool />} />
+          <Route path="/html-to-pdf" element={<HTMLToPDFTool />} />
           
           {/* Video Tools */}
-          <Route path="/tools/video/downloader" element={<VideoDownloaderTool />} />
-          <Route path="/tools/video/to-audio" element={<VideoToAudioTool />} />
-          <Route path="/tools/video/trim" element={<VideoTrimTool />} />
-          <Route path="/tools/video/speed" element={<VideoSpeedTool />} />
-          <Route path="/tools/video/thumbnail" element={<VideoThumbnailTool />} />
-          <Route path="/tools/video/resolution" element={<VideoResolutionTool />} />
+          <Route path="/video-downloader" element={<VideoDownloaderTool />} />
+          <Route path="/video-to-audio" element={<VideoToAudioTool />} />
+          <Route path="/video-trim" element={<VideoTrimTool />} />
+          <Route path="/video-speed" element={<VideoSpeedTool />} />
+          <Route path="/video-thumbnail" element={<VideoThumbnailTool />} />
+          <Route path="/video-resolution" element={<VideoResolutionTool />} />
           
           {/* Audio Tools */}
-          <Route path="/tools/audio/converter" element={<AudioConverterTool />} />
-          <Route path="/tools/audio/speech-to-text" element={<SpeechToTextTool />} />
-          <Route path="/tools/audio/trimmer" element={<AudioTrimmerTool />} />
-          <Route path="/tools/audio/merger" element={<AudioMergerTool />} />
-          <Route path="/tools/audio/speed" element={<AudioSpeedTool />} />
+          <Route path="/audio-converter" element={<AudioConverterTool />} />
+          <Route path="/speech-to-text" element={<SpeechToTextTool />} />
+          <Route path="/audio-trimmer" element={<AudioTrimmerTool />} />
+          <Route path="/audio-merger" element={<AudioMergerTool />} />
+          <Route path="/audio-speed" element={<AudioSpeedTool />} />
           
           {/* Text Tools */}
-          <Route path="/tools/text/word-counter" element={<WordCounterTool />} />
-          <Route path="/tools/text/case-converter" element={<CaseConverterTool />} />
-          <Route path="/tools/text/markdown-html" element={<MarkdownHTMLTool />} />
-          <Route path="/tools/text/remove-spaces" element={<RemoveSpacesTool />} />
-          <Route path="/tools/text/line-sorter" element={<LineSorterTool />} />
-          <Route path="/tools/text/duplicate-remover" element={<DuplicateRemoverTool />} />
-          <Route path="/tools/text/summarizer" element={<TextSummarizerTool />} />
-          <Route path="/tools/text/diff" element={<TextDiffTool />} />
-          <Route path="/tools/text/meme-generator" element={<MemeGeneratorTool />} />
+          <Route path="/word-counter" element={<WordCounterTool />} />
+          <Route path="/case-converter" element={<CaseConverterTool />} />
+          <Route path="/markdown-to-html" element={<MarkdownHTMLTool />} />
+          <Route path="/remove-spaces" element={<RemoveSpacesTool />} />
+          <Route path="/line-sorter" element={<LineSorterTool />} />
+          <Route path="/duplicate-remover" element={<DuplicateRemoverTool />} />
+          <Route path="/text-summarizer" element={<TextSummarizerTool />} />
+          <Route path="/text-diff" element={<TextDiffTool />} />
+          <Route path="/meme-generator" element={<MemeGeneratorTool />} />
           
           {/* Security Tools */}
-          <Route path="/tools/security/password-generator" element={<PasswordGeneratorTool />} />
-          <Route path="/tools/security/password-strength" element={<PasswordStrengthTool />} />
-          <Route path="/tools/security/hash-generator" element={<HashGeneratorTool />} />
-          <Route path="/tools/security/base64" element={<Base64Tool />} />
-          <Route path="/tools/security/uuid-generator" element={<UUIDGeneratorTool />} />
+          <Route path="/password-generator" element={<PasswordGeneratorTool />} />
+          <Route path="/password-strength" element={<PasswordStrengthTool />} />
+          <Route path="/hash-generator" element={<HashGeneratorTool />} />
+          <Route path="/base64-encoder" element={<Base64Tool />} />
+          <Route path="/uuid-generator" element={<UUIDGeneratorTool />} />
           
           {/* Date & Time Tools */}
-          <Route path="/tools/date-time/age-calculator" element={<AgeCalculatorTool />} />
-          <Route path="/tools/date-time/date-difference" element={<DateDifferenceTool />} />
-          <Route path="/tools/date-time/working-days" element={<WorkingDaysTool />} />
-          <Route path="/tools/date-time/countdown" element={<CountdownTimerTool />} />
+          <Route path="/age-calculator" element={<AgeCalculatorTool />} />
+          <Route path="/date-difference" element={<DateDifferenceTool />} />
+          <Route path="/working-days-calculator" element={<WorkingDaysTool />} />
+          <Route path="/countdown-timer" element={<CountdownTimerTool />} />
           
           {/* Developer Tools */}
-          <Route path="/tools/dev/json-formatter" element={<JSONFormatterTool />} />
-          <Route path="/tools/dev/regex-tester" element={<RegexTesterTool />} />
-          <Route path="/tools/dev/url-encoder" element={<URLEncoderTool />} />
-          <Route path="/tools/dev/color-converter" element={<ColorConverterTool />} />
-          <Route path="/tools/dev/lorem-generator" element={<LoremGeneratorTool />} />
-          <Route path="/tools/dev/jwt-decoder" element={<JWTDecoderTool />} />
-          <Route path="/tools/dev/url-shortener" element={<URLShortenerTool />} />
-          <Route path="/tools/dev/sitemap-generator" element={<SitemapGeneratorTool />} />
-          <Route path="/tools/dev/robots-checker" element={<RobotsTxtTool />} />
-          <Route path="/tools/dev/cron-generator" element={<CronGeneratorTool />} />
-          <Route path="/tools/dev/http-header" element={<HTTPHeaderTool />} />
-          <Route path="/tools/dev/website-screenshot" element={<WebsiteScreenshotTool />} />
+          <Route path="/json-formatter" element={<JSONFormatterTool />} />
+          <Route path="/regex-tester" element={<RegexTesterTool />} />
+          <Route path="/url-encoder" element={<URLEncoderTool />} />
+          <Route path="/color-converter" element={<ColorConverterTool />} />
+          <Route path="/lorem-ipsum-generator" element={<LoremGeneratorTool />} />
+          <Route path="/jwt-decoder" element={<JWTDecoderTool />} />
+          <Route path="/url-shortener" element={<URLShortenerTool />} />
+          <Route path="/sitemap-generator" element={<SitemapGeneratorTool />} />
+          <Route path="/robots-txt-checker" element={<RobotsTxtTool />} />
+          <Route path="/cron-generator" element={<CronGeneratorTool />} />
+          <Route path="/http-header-checker" element={<HTTPHeaderTool />} />
+          <Route path="/website-screenshot" element={<WebsiteScreenshotTool />} />
           
           {/* Internet Tools */}
-          <Route path="/tools/internet/ip-lookup" element={<IPLookupTool />} />
-          <Route path="/tools/internet/user-agent" element={<UserAgentTool />} />
-          <Route path="/tools/internet/dns-lookup" element={<DNSLookupTool />} />
-          <Route path="/tools/internet/ssl-checker" element={<SSLCheckerTool />} />
-          <Route path="/tools/internet/ping" element={<WebsitePingTool />} />
+          <Route path="/ip-lookup" element={<IPLookupTool />} />
+          <Route path="/user-agent-parser" element={<UserAgentTool />} />
+          <Route path="/dns-lookup" element={<DNSLookupTool />} />
+          <Route path="/ssl-checker" element={<SSLCheckerTool />} />
+          <Route path="/website-ping" element={<WebsitePingTool />} />
           
           {/* Education Tools */}
-          <Route path="/tools/education/scientific-calculator" element={<ScientificCalculatorTool />} />
-          <Route path="/tools/education/percentage-calculator" element={<PercentageCalculatorTool />} />
-          <Route path="/tools/education/unit-converter" element={<UnitConverterTool />} />
+          <Route path="/scientific-calculator" element={<ScientificCalculatorTool />} />
+          <Route path="/percentage-calculator" element={<PercentageCalculatorTool />} />
+          <Route path="/unit-converter" element={<UnitConverterTool />} />
           
           {/* Finance Tools */}
-          <Route path="/tools/finance/emi-calculator" element={<EMICalculatorTool />} />
-          <Route path="/tools/finance/gst-calculator" element={<GSTCalculatorTool />} />
+          <Route path="/emi-calculator" element={<EMICalculatorTool />} />
+          <Route path="/gst-calculator" element={<GSTCalculatorTool />} />
           
           {/* ZIP Tools */}
-          <Route path="/tools/zip/create" element={<CreateZipTool />} />
-          <Route path="/tools/zip/extract" element={<ExtractZipTool />} />
-          <Route path="/tools/zip/password" element={<PasswordZipTool />} />
-          <Route path="/tools/zip/compression" element={<CompressionZipTool />} />
+          <Route path="/create-zip" element={<CreateZipTool />} />
+          <Route path="/extract-zip" element={<ExtractZipTool />} />
+          <Route path="/password-zip" element={<PasswordZipTool />} />
+          <Route path="/compression-zip" element={<CompressionZipTool />} />
           
           {/* Social Tools */}
-          <Route path="/tools/social/hashtag-generator" element={<HashtagGeneratorTool />} />
+          <Route path="/hashtag-generator" element={<HashtagGeneratorTool />} />
+          <Route path="/whatsapp-status-generator" element={<WhatsAppStatusTool />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
