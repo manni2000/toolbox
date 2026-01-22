@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import PopularTools from "@/components/home/PopularTools";
+import ContactSection from "@/components/home/ContactSection";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
         <HeroSection />
         <PopularTools />
         <CategoryGrid />
+        <ContactSection />
       </main>
       <Footer />
     </div>
