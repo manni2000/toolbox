@@ -100,8 +100,8 @@ const ColorConverterTool = () => {
     <ToolLayout
       title="Color Converter"
       description="Convert between HEX, RGB, and HSL color formats"
-      category="Developer Tools"
-      categoryPath="/category/dev"
+      category="Text Tools"
+      categoryPath="/category/text"
     >
       <div className="mx-auto max-w-xl space-y-6">
         {/* Color Preview */}
