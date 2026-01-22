@@ -55,19 +55,19 @@ const Header = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute left-0 top-full pt-2"
+                    className="absolute left-1/2 top-full pt-2 -translate-x-1/2"
                   >
-                    <div className="grid w-[500px] grid-cols-2 gap-1 rounded-2xl border border-border bg-card p-3 shadow-xl">
-                      {toolCategories.slice(0, 10).map((category) => {
+                    <div className="grid w-[680px] grid-cols-3 gap-1 rounded-2xl border border-border bg-card p-3 shadow-xl">
+                      {toolCategories.map((category) => {
                         const Icon = category.icon;
                         return (
                           <Link
                             key={category.id}
                             to={`/category/${category.id}`}
-                            className="flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-accent"
+                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-accent"
                           >
                             <div
-                              className="flex h-9 w-9 items-center justify-center rounded-lg"
+                              className="flex h-8 w-8 items-center justify-center rounded-lg"
                               style={{ backgroundColor: `hsl(${category.color} / 0.12)` }}
                             >
                               <Icon className="h-4 w-4" style={{ color: `hsl(${category.color})` }} />
@@ -122,7 +122,7 @@ const Header = () => {
               <MobileNavLink to="/categories" onClick={() => setIsMenuOpen(false)}>All Tools</MobileNavLink>
               <div className="my-2 border-t border-border" />
               <p className="px-4 py-2 text-xs font-semibold uppercase text-muted-foreground">Categories</p>
-              {toolCategories.slice(0, 6).map((category) => {
+              {toolCategories.map((category) => {
                 const Icon = category.icon;
                 return (
                   <Link
@@ -133,6 +133,7 @@ const Header = () => {
                   >
                     <Icon className="h-4 w-4" />
                     <span>{category.name}</span>
+                    <span className="ml-auto text-xs text-muted-foreground">{category.tools.length}</span>
                   </Link>
                 );
               })}
