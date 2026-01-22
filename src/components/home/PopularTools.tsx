@@ -1,34 +1,16 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Image, FileText, Video, GraduationCap, Archive, Sparkles, Eraser, Instagram } from "lucide-react";
+import { ArrowRight, Image, FileText, Video, GraduationCap, QrCode, Archive, Sparkles } from "lucide-react";
 
 const popularTools = [
   {
-    id: "background-remover",
-    name: "Background Remover",
-    description: "Remove background from any image instantly",
-    path: "/tools/image/background-remover",
-    icon: Eraser,
+    id: "image-tools",
+    name: "Image Tools",
+    description: "Compress, convert, resize and edit images easily",
+    path: "/category/image",
+    icon: Image,
     gradient: "from-pink-500 to-rose-500",
     bgGradient: "from-pink-500/10 to-rose-500/10",
-  },
-  {
-    id: "video-downloader",
-    name: "Download Insta Reels",
-    description: "Download videos from Instagram, YouTube & more",
-    path: "/tools/video/downloader",
-    icon: Instagram,
-    gradient: "from-purple-500 to-fuchsia-500",
-    bgGradient: "from-purple-500/10 to-fuchsia-500/10",
-  },
-  {
-    id: "image-converter",
-    name: "PNG to JPG Converter",
-    description: "Convert images between PNG, JPG, WEBP formats",
-    path: "/tools/image/converter",
-    icon: Image,
-    gradient: "from-emerald-500 to-teal-500",
-    bgGradient: "from-emerald-500/10 to-teal-500/10",
   },
   {
     id: "pdf-tools",
@@ -45,8 +27,26 @@ const popularTools = [
     description: "Download, trim, convert and edit videos",
     path: "/category/video",
     icon: Video,
-    gradient: "from-violet-500 to-purple-500",
-    bgGradient: "from-violet-500/10 to-purple-500/10",
+    gradient: "from-purple-500 to-violet-500",
+    bgGradient: "from-purple-500/10 to-violet-500/10",
+  },
+  {
+    id: "education-tools",
+    name: "Education Tools",
+    description: "Calculators, converters and learning utilities",
+    path: "/category/education",
+    icon: GraduationCap,
+    gradient: "from-blue-500 to-cyan-500",
+    bgGradient: "from-blue-500/10 to-cyan-500/10",
+  },
+  {
+    id: "qr-generator",
+    name: "QR Code Generator",
+    description: "Create QR codes from any URL or text instantly",
+    path: "/tools/image/qr-generator",
+    icon: QrCode,
+    gradient: "from-emerald-500 to-teal-500",
+    bgGradient: "from-emerald-500/10 to-teal-500/10",
   },
   {
     id: "zip-tools",
