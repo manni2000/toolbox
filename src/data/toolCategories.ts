@@ -50,6 +50,16 @@ export const toolCategories: ToolCategory[] = [
     ],
   },
   {
+    id: "video",
+    name: "Video Tools",
+    description: "Download videos from YouTube, Instagram, Facebook",
+    icon: Video,
+    color: "350 80% 55%",
+    tools: [
+      { id: "video-downloader", name: "Video Downloader", description: "Download from YouTube, Instagram, Facebook", path: "/tools/video/downloader", isAvailable: true },
+    ],
+  },
+  {
     id: "text",
     name: "Text Tools",
     description: "Word count, case conversion, formatting",
