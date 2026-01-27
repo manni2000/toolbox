@@ -8,15 +8,19 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "manage.py"
+      "dest": "toolbox.wsgi.application"
     }
   ],
   "env": {
     "DJANGO_SETTINGS_MODULE": "toolbox.settings"
   },
   "functions": {
-    "manage.py": {
+    "toolbox/wsgi.py": {
       "runtime": "python3.9"
     }
   }

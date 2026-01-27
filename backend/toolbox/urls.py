@@ -17,8 +17,25 @@ Including another URLconf
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
+
+def api_root(request):
+    return JsonResponse({
+        'status': 'Django running on Vercel 🚀',
+        'message': 'ToolBox API is running',
+        'version': '1.0.0',
+        'endpoints': [
+            '/api/image/',
+            '/api/pdf/',
+            '/api/video/',
+            '/api/audio/',
+            '/api/zip/',
+        ]
+    })
 
 urlpatterns = [
+    path('', api_root, name='api_root'),
+    path('api/', api_root, name='api_root_with_slash'),
     path('api/image/', include('image.urls')),
     path('api/pdf/', include('pdf.urls')),
     path('api/video/', include('video.urls')),
