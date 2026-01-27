@@ -1,16 +1,26 @@
 import { useState, useRef } from "react";
-import { Upload, Eraser, AlertCircle, Image as ImageIcon, X } from "lucide-react";
+import { Upload, Eraser, Image as ImageIcon, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { useToast } from "@/hooks/use-toast";
 
 const BackgroundRemoverTool = () => {
-  const [image, setImage] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
+  const [image, setImage] = useState<string | null>(null);
+  const [processedImage, setProcessedImage] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const fileRef = useRef<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const handleFile = (file: File) => {
     if (!file.type.startsWith("image/")) return;
     setFileName(file.name);
+    setFile(file);
+    fileRef.current = file;
+    setProcessedImage(null);
 
     const reader = new FileReader();
     reader.onload = (e) => setImage(e.target?.result as string);
@@ -26,7 +36,48 @@ const BackgroundRemoverTool = () => {
 
   const reset = () => {
     setImage(null);
+    setProcessedImage(null);
     setFileName("");
+    fileRef.current = null;
+  };
+
+  const removeBackground = async () => {
+    if (!fileRef.current) return;
+
+    setIsProcessing(true);
+    const formData = new FormData();
+    formData.append('image', fileRef.current);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/image/remove-background/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setProcessedImage(result.image);
+        toast({
+          title: "Success!",
+          description: "Background removed successfully.",
+        });
+        // Scroll to download section after successful conversion
+        setTimeout(() => {
+          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        throw new Error(result.error || 'Failed to remove background');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to remove background",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -37,23 +88,6 @@ const BackgroundRemoverTool = () => {
       categoryPath="/category/image"
     >
       <div className="space-y-6">
-        {/* Info Notice */}
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5">
-          <div className="flex gap-4">
-            <AlertCircle className="h-5 w-5 shrink-0 text-amber-500" />
-            <div>
-              <h4 className="font-semibold text-amber-600 dark:text-amber-400">
-                Backend Processing Required
-              </h4>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Background removal requires server-side processing using libraries like rembg. 
-                This tool needs backend integration with Lovable Cloud to function. 
-                The preview below shows your uploaded image.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Upload Area */}
         {!image && (
           <div
@@ -97,7 +131,7 @@ const BackgroundRemoverTool = () => {
                 </div>
               </div>
               <div className="rounded-xl border border-border bg-card p-4">
-                <h3 className="mb-3 text-sm font-medium text-muted-foreground">Result (Preview)</h3>
+                <h3 className="mb-3 text-sm font-medium text-muted-foreground">Background Removed</h3>
                 <div
                   className="flex items-center justify-center rounded-lg p-4"
                   style={{
@@ -109,25 +143,77 @@ const BackgroundRemoverTool = () => {
                     backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
                   }}
                 >
-                  <img src={image} alt="Result" className="max-h-64 rounded-lg object-contain opacity-50" />
+                  {processedImage ? (
+                    <img src={processedImage} alt="Result" className="max-h-64 rounded-lg object-contain" />
+                  ) : (
+                    <div className="text-center text-muted-foreground">
+                      <p>Click "Remove Background" to process</p>
+                    </div>
+                  )}
                 </div>
-                <p className="mt-2 text-center text-xs text-muted-foreground">
-                  Actual processing requires backend integration
-                </p>
               </div>
             </div>
 
-            {/* Disabled Action Button */}
+            {/* Action Button */}
             <button
-              disabled
-              className="btn-primary w-full cursor-not-allowed opacity-50"
+              onClick={removeBackground}
+              disabled={isProcessing}
+              className="btn-primary w-full"
             >
-              <Eraser className="h-5 w-5" />
-              Remove Background
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Eraser className="h-5 w-5" />
+                  Remove Background
+                </>
+              )}
             </button>
-            <p className="text-center text-sm text-muted-foreground">
-              Enable Lovable Cloud to process images with AI-powered background removal
-            </p>
+            
+            {processedImage && (
+              <div ref={downloadSectionRef} className="space-y-4">
+                <h3 className="text-lg font-medium text-center">Background Removed</h3>
+                <div className="rounded-xl border border-border bg-card overflow-hidden">
+                  <div className="p-6">
+                    <div className="mb-4 flex justify-center">
+                      <div className="w-32 h-32 bg-muted/30 rounded-lg overflow-hidden flex items-center justify-center">
+                        {processedImage && (
+                          <img 
+                            src={processedImage} 
+                            alt="Processed image" 
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="text-center mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">Background has been removed from your image</p>
+                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, "_no_bg.png")}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <a
+                        href={processedImage}
+                        download={`no_bg_${fileName}`}
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 flex-1"
+                      >
+                        <ImageIcon className="h-5 w-5" />
+                        Download Image
+                      </a>
+                      <button 
+                        onClick={reset} 
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                      >
+                        <X className="h-5 w-5" />
+                        Start Over
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

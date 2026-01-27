@@ -1,17 +1,29 @@
 import { useState, useRef } from "react";
-import { Upload, FileText, Download, X, FileType } from "lucide-react";
+import { Upload, FileText, Download, X, FileType, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
+import { useToast } from "@/hooks/use-toast";
 
 const PDFToWordTool = () => {
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
+  const [docxData, setDocxData] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const handleFile = async (f: File) => {
-    if (f.type !== "application/pdf") return;
+    if (f.type !== "application/pdf") {
+      toast({
+        title: "Invalid file",
+        description: "Please select a PDF file",
+        variant: "destructive",
+      });
+      return;
+    }
     setFile(f);
+    setDocxData(null);
 
     try {
       const arrayBuffer = await f.arrayBuffer();
@@ -19,6 +31,11 @@ const PDFToWordTool = () => {
       setPageCount(pdf.getPageCount());
     } catch (error) {
       console.error("Error loading PDF:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load PDF file",
+        variant: "destructive",
+      });
     }
   };
 
@@ -31,6 +48,42 @@ const PDFToWordTool = () => {
   const reset = () => {
     setFile(null);
     setPageCount(0);
+    setDocxData(null);
+  };
+
+  const convertToWord = async () => {
+    if (!file) return;
+
+    setIsProcessing(true);
+    const formData = new FormData();
+    formData.append('pdf', file);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/pdf/to-word/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setDocxData(result.docx);
+        toast({
+          title: "Success!",
+          description: "PDF converted to Word document successfully",
+        });
+      } else {
+        throw new Error(result.error || 'Failed to convert PDF to Word');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to convert PDF to Word",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -41,21 +94,6 @@ const PDFToWordTool = () => {
       categoryPath="/category/pdf"
     >
       <div className="space-y-6">
-        <div className="rounded-xl border border-primary/30 bg-primary/10 p-5">
-          <div className="flex gap-4">
-            <FileType className="h-5 w-5 shrink-0 text-primary" />
-            <div>
-              <h4 className="font-semibold text-primary">
-                Backend Processing Required
-              </h4>
-              <p className="mt-1 text-sm text-muted-foreground">
-                PDF to Word conversion requires server-side processing to maintain formatting.
-                Enable Lovable Cloud for full functionality.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {!file && (
           <div
             onDrop={handleDrop}
@@ -114,14 +152,40 @@ const PDFToWordTool = () => {
               </ul>
             </div>
 
-            <button disabled className="btn-primary w-full cursor-not-allowed opacity-50">
-              <Download className="h-5 w-5" />
-              Convert to Word (.docx)
+            <button
+              onClick={convertToWord}
+              disabled={isProcessing}
+              className="btn-primary w-full"
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Converting to Word...
+                </>
+              ) : (
+                <>
+                  <Download className="h-5 w-5" />
+                  Convert to Word (.docx)
+                </>
+              )}
             </button>
 
-            <p className="text-center text-sm text-muted-foreground">
-              Enable backend integration for PDF to Word conversion
-            </p>
+            {docxData && (
+              <div className="flex gap-4">
+                <a
+                  href={docxData}
+                  download="converted.docx"
+                  className="btn-secondary flex items-center gap-2"
+                >
+                  <Download className="h-5 w-5" />
+                  Download Word Document
+                </a>
+                <button onClick={reset} className="btn-secondary flex items-center gap-2">
+                  <X className="h-5 w-5" />
+                  Convert Another
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -1,7 +1,96 @@
-import { Scissors, Upload, Info } from "lucide-react";
+import { useState, useRef } from "react";
+import { Scissors, Upload, Download, X, Loader2, Video } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { useToast } from "@/hooks/use-toast";
 
 const VideoTrimTool = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState("");
+  const [videoData, setVideoData] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(10);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const handleFile = (f: File) => {
+    if (!f.type.startsWith("video/")) {
+      toast({
+        title: "Invalid file",
+        description: "Please select a video file",
+        variant: "destructive",
+      });
+      return;
+    }
+    setFile(f);
+    setFileName(f.name);
+    setVideoData(null);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
+
+  const reset = () => {
+    setFile(null);
+    setFileName("");
+    setVideoData(null);
+  };
+
+  const trimVideo = async () => {
+    if (!file) return;
+
+    if (startTime >= endTime) {
+      toast({
+        title: "Invalid time range",
+        description: "Start time must be less than end time",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    const formData = new FormData();
+    formData.append('video', file);
+    formData.append('start_time', startTime.toString());
+    formData.append('end_time', endTime.toString());
+
+    try {
+      const response = await fetch('/api/video/trim/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setVideoData(result.video); // Backend returns 'video' field
+        toast({
+          title: "Success!",
+          description: "Video trimming completed successfully",
+        });
+        // Scroll to download section after successful conversion
+        setTimeout(() => {
+          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        throw new Error(result.error || 'Failed to process file');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to trim video",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
   return (
     <ToolLayout
       title="Video Trim Tool"
@@ -10,58 +99,115 @@ const VideoTrimTool = () => {
       categoryPath="/category/video"
     >
       <div className="space-y-6">
-        <div className="rounded-lg border border-border bg-card p-6">
-          <div className="flex items-start gap-4">
-            <div className="rounded-full bg-primary/10 p-3">
-              <Info className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold">Backend Processing Required</h3>
-              <p className="mt-2 text-muted-foreground">
-                Video trimming requires server-side processing with FFmpeg. 
-                This tool needs a backend API to:
-              </p>
-              <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                <li>Accept video file uploads</li>
-                <li>Process start and end timestamps</li>
-                <li>Trim video without re-encoding (fast) or with re-encoding</li>
-                <li>Return trimmed video file</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="file-drop opacity-50 cursor-not-allowed">
-          <Upload className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">Drop video file here</p>
-          <p className="text-sm text-muted-foreground">Requires backend integration</p>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-2 block text-sm font-medium">Start Time</label>
+        {/* Upload Area */}
+        {!file && (
+          <div
+            onDrop={handleDrop}
+            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={() => setIsDragging(false)}
+            onClick={() => inputRef.current?.click()}
+            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
+          >
+            <Upload className="h-12 w-12 text-muted-foreground" />
+            <p className="mt-4 text-lg font-medium">Drop video file here</p>
+            <p className="text-sm text-muted-foreground">MP4, AVI, MOV, MKV, WebM supported</p>
             <input
-              type="text"
-              placeholder="00:00:00"
-              disabled
-              className="input-tool opacity-50"
+              ref={inputRef}
+              type="file"
+              accept="video/*"
+              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+              className="hidden"
             />
           </div>
-          <div>
-            <label className="mb-2 block text-sm font-medium">End Time</label>
-            <input
-              type="text"
-              placeholder="00:00:30"
-              disabled
-              className="input-tool opacity-50"
-            />
-          </div>
-        </div>
+        )}
 
-        <button disabled className="btn-primary w-full opacity-50 cursor-not-allowed">
-          <Scissors className="h-5 w-5" />
-          Trim Video
-        </button>
+        {file && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+              <div className="flex items-center gap-3">
+                <Video className="h-6 w-6 text-primary" />
+                <div>
+                  <p className="font-medium">{fileName}</p>
+                  <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                </div>
+              </div>
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Time Selection */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-medium">Start Time (seconds)</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={startTime}
+                  onChange={(e) => setStartTime(Number(e.target.value))}
+                  className="input-tool"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-medium">End Time (seconds)</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={endTime}
+                  onChange={(e) => setEndTime(Number(e.target.value))}
+                  className="input-tool"
+                />
+              </div>
+            </div>
+
+            {/* Trim Button */}
+            <button
+              onClick={trimVideo}
+              disabled={isProcessing}
+              className="btn-primary w-full"
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Trimming Video...
+                </>
+              ) : (
+                <>
+                  <Scissors className="h-5 w-5" />
+                  Trim Video
+                </>
+              )}
+            </button>
+
+            {/* Download Section */}
+            {videoData && (
+              <div ref={downloadSectionRef} className="space-y-4">
+                <h3 className="text-lg font-medium text-center">Trimmed Video</h3>
+                <div className="rounded-xl border border-border bg-card overflow-hidden">
+                  <div className="p-6">
+                    <div className="mb-4 flex justify-center">
+                      <div className="w-32 h-32 bg-muted/30 rounded-lg flex items-center justify-center">
+                        <Video className="h-16 w-16 text-muted-foreground" />
+                      </div>
+                    </div>
+                    <div className="text-center mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">Your video has been trimmed</p>
+                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, "_trimmed.mp4")}</p>
+                    </div>
+                    <a
+                      href={videoData}
+                      download={fileName.replace(/\.[^/.]+$/, "_trimmed.mp4")}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
+                    >
+                      <Download className="h-5 w-5" />
+                      Download Trimmed Video
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </ToolLayout>
   );

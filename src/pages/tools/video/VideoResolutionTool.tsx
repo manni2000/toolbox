@@ -1,61 +1,323 @@
-import { Monitor, Upload, Info } from "lucide-react";
+import { useState, useRef } from "react";
+import { Video, Upload, Download, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { useToast } from "@/hooks/use-toast";
 
 const VideoResolutionTool = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState("");
+  const [resultData, setResultData] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [width, setWidth] = useState(1280);
+  const [height, setHeight] = useState(720);
+  const [processingStage, setProcessingStage] = useState("");
+  const [processingStartTime, setProcessingStartTime] = useState<number | null>(null);
+  const [abortController, setAbortController] = useState<AbortController | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const handleFile = (f: File) => {
+    setFile(f);
+    setFileName(f.name);
+    setResultData(null);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
+
+  const reset = () => {
+    setFile(null);
+    setFileName("");
+    setResultData(null);
+    setProcessingStage("");
+    setProcessingStartTime(null);
+    if (abortController) {
+      abortController.abort();
+      setAbortController(null);
+    }
+  };
+
+  const cancelProcessing = () => {
+    if (abortController) {
+      abortController.abort();
+      setAbortController(null);
+      setIsProcessing(false);
+      setProcessingStage("");
+      setProcessingStartTime(null);
+      toast({
+        title: "Processing Cancelled",
+        description: "Video processing has been cancelled",
+        variant: "default",
+      });
+    }
+  };
+
+  const processFile = async () => {
+    if (!file) return;
+
+    const controller = new AbortController();
+    setAbortController(controller);
+    setIsProcessing(true);
+    setProcessingStartTime(Date.now());
+    setProcessingStage("Initializing video processing...");
+
+    const formData = new FormData();
+    formData.append('video', file); // Backend expects 'video' not 'file'
+    formData.append('width', width.toString());
+    formData.append('height', height.toString());
+
+    // Simulate progress updates
+    const progressStages = [
+      { delay: 1000, message: "Loading video file..." },
+      { delay: 3000, message: "Analyzing video dimensions..." },
+      { delay: 5000, message: "Resizing video (this may take a while)..." },
+      { delay: 10000, message: "Processing audio track..." },
+      { delay: 15000, message: "Finalizing video output..." },
+    ];
+
+    let stageTimeouts: NodeJS.Timeout[] = [];
+    
+    progressStages.forEach((stage, index) => {
+      const timeout = setTimeout(() => {
+        if (!controller.signal.aborted) {
+          setProcessingStage(stage.message);
+        }
+      }, stage.delay);
+      stageTimeouts.push(timeout);
+    });
+
+    try {
+      setProcessingStage("Sending request to server...");
+      
+      const response = await fetch('/api/video/resolution/', {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal,
+      });
+
+      // Clear all pending stage updates
+      stageTimeouts.forEach(timeout => clearTimeout(timeout));
+      
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      setProcessingStage("Processing completed successfully!");
+      
+      const result = await response.json();
+
+      if (result.success) {
+        setResultData(result.video); // Backend returns 'video' field
+        toast({
+          title: "Success!",
+          description: "Video resolution conversion completed successfully",
+        });
+        // Scroll to download section after successful conversion
+        setTimeout(() => {
+          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        throw new Error(result.error || 'Failed to process file');
+      }
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        // User cancelled, don't show error
+        return;
+      }
+      
+      stageTimeouts.forEach(timeout => clearTimeout(timeout));
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to process file",
+        variant: "destructive",
+      });
+    } finally {
+      stageTimeouts.forEach(timeout => clearTimeout(timeout));
+      setIsProcessing(false);
+      setProcessingStage("");
+      setProcessingStartTime(null);
+      setAbortController(null);
+    }
+  };
+
   return (
     <ToolLayout
       title="Video Resolution Converter"
-      description="Change video resolution - upscale or downscale video quality"
+      description="Change video resolution and dimensions"
       category="Video Tools"
       categoryPath="/category/video"
     >
       <div className="space-y-6">
-        <div className="rounded-lg border border-border bg-card p-6">
-          <div className="flex items-start gap-4">
-            <div className="rounded-full bg-primary/10 p-3">
-              <Info className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold">Backend Processing Required</h3>
-              <p className="mt-2 text-muted-foreground">
-                Video resolution conversion requires server-side processing with FFmpeg. 
-                This tool needs a backend API to:
-              </p>
-              <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                <li>Accept video file uploads</li>
-                <li>Transcode to target resolution</li>
-                <li>Support common resolutions (360p to 4K)</li>
-                <li>Maintain aspect ratio</li>
-              </ul>
-            </div>
+        {!file && (
+          <div
+            onDrop={handleDrop}
+            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={() => setIsDragging(false)}
+            onClick={() => inputRef.current?.click()}
+            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
+          >
+            <Upload className="h-12 w-12 text-muted-foreground" />
+            <p className="mt-4 text-lg font-medium">Drop file here</p>
+            <p className="text-sm text-muted-foreground">Click to browse or drag and drop</p>
+            <input
+              ref={inputRef}
+              type="file"
+              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+              className="hidden"
+            />
           </div>
-        </div>
+        )}
 
-        <div className="file-drop opacity-50 cursor-not-allowed">
-          <Upload className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">Drop video file here</p>
-          <p className="text-sm text-muted-foreground">Requires backend integration</p>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">Target Resolution</label>
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-            {["360p", "480p", "720p", "1080p", "1440p", "4K"].map((res) => (
-              <button
-                key={res}
-                disabled
-                className="rounded-lg border border-border bg-card p-3 text-center text-sm opacity-50 cursor-not-allowed"
-              >
-                {res}
+        {file && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+              <div className="flex items-center gap-3">
+                <Video className="h-6 w-6 text-primary" />
+                <div>
+                  <p className="font-medium">{fileName}</p>
+                  <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                </div>
+              </div>
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+                <X className="h-5 w-5" />
               </button>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        <button disabled className="btn-primary w-full opacity-50 cursor-not-allowed">
-          <Monitor className="h-5 w-5" />
-          Convert Resolution
-        </button>
+            {/* Resolution Selection */}
+            <div className="rounded-xl border border-border bg-card p-4">
+              <h3 className="mb-3 font-medium">Output Resolution</h3>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-2 block text-sm font-medium">Width (pixels)</label>
+                  <input
+                    type="number"
+                    min="160"
+                    max="3840"
+                    value={width}
+                    onChange={(e) => setWidth(Number(e.target.value))}
+                    className="input-tool"
+                  />
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-medium">Height (pixels)</label>
+                  <input
+                    type="number"
+                    min="90"
+                    max="2160"
+                    value={height}
+                    onChange={(e) => setHeight(Number(e.target.value))}
+                    className="input-tool"
+                  />
+                </div>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <button
+                  type="button"
+                  onClick={() => { setWidth(1920); setHeight(1080); }}
+                  className="rounded-lg border p-2 text-sm transition-colors hover:bg-muted"
+                >
+                  1080p (1920×1080)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setWidth(1280); setHeight(720); }}
+                  className="rounded-lg border p-2 text-sm transition-colors hover:bg-muted"
+                >
+                  720p (1280×720)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setWidth(854); setHeight(480); }}
+                  className="rounded-lg border p-2 text-sm transition-colors hover:bg-muted"
+                >
+                  480p (854×480)
+                </button>
+              </div>
+            </div>
+
+            {/* Processing Progress */}
+            {isProcessing && (
+              <div className="rounded-xl border border-blue-200 bg-blue-50 p-6">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-medium text-blue-800">Processing Video</h3>
+                    <button
+                      onClick={cancelProcessing}
+                      className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                      <span className="text-sm text-blue-700">{processingStage}</span>
+                    </div>
+                    
+                    {processingStartTime && (
+                      <div className="text-xs text-blue-600">
+                        Processing time: {Math.floor((Date.now() - processingStartTime) / 1000)}s
+                      </div>
+                    )}
+                    
+                    <div className="w-full bg-blue-100 rounded-full h-2">
+                      <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-blue-600 bg-blue-100 rounded-lg p-3">
+                    <strong>Tip:</strong> Video processing can take 30-60 seconds depending on file size and resolution. Please keep this tab open.
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {!isProcessing && (
+              <button
+                onClick={processFile}
+                disabled={isProcessing}
+                className="btn-primary w-full"
+              >
+                <Video className="h-5 w-5" />
+                Process File
+              </button>
+            )}
+
+            {resultData && (
+              <div ref={downloadSectionRef} className="space-y-4">
+                <h3 className="text-lg font-medium text-center">Converted Video</h3>
+                <div className="rounded-xl border border-border bg-card overflow-hidden">
+                  <div className="p-6">
+                    <div className="mb-4 flex justify-center">
+                      <div className="w-32 h-32 bg-muted/30 rounded-lg flex items-center justify-center">
+                        <Video className="h-16 w-16 text-muted-foreground" />
+                      </div>
+                    </div>
+                    <div className="text-center mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">Your video has been converted to the new resolution</p>
+                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, "_converted.mp4")}</p>
+                    </div>
+                    <a
+                      href={resultData}
+                      download={fileName.replace(/\.[^/.]+$/, "_converted.mp4")}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
+                    >
+                      <Download className="h-5 w-5" />
+                      Download Video
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </ToolLayout>
   );

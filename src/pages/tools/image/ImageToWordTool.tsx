@@ -1,183 +1,163 @@
 import { useState, useRef } from "react";
-import { Upload, FileText, Download, X, Plus, GripVertical, FileType } from "lucide-react";
+import { FileText, Upload, Download, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
-
-interface ImageFile {
-  id: string;
-  file: File;
-  preview: string;
-}
+import { useToast } from "@/hooks/use-toast";
 
 const ImageToWordTool = () => {
-  const [images, setImages] = useState<ImageFile[]>([]);
+  const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState("");
+  const [resultData, setResultData] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
-  const handleFiles = (files: FileList) => {
-    const newImages: ImageFile[] = [];
-    let loadedCount = 0;
-    
-    Array.from(files).forEach((file) => {
-      if (file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          newImages.push({
-            id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-            file,
-            preview: e.target?.result as string,
-          });
-          loadedCount++;
-          if (loadedCount === Array.from(files).filter(f => f.type.startsWith("image/")).length) {
-            setImages((prev) => [...prev, ...newImages]);
-          }
-        };
-        reader.readAsDataURL(file);
-      }
-    });
+  const handleFile = (f: File) => {
+    setFile(f);
+    setFileName(f.name);
+    setResultData(null);
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    if (e.dataTransfer.files.length > 0) {
-      handleFiles(e.dataTransfer.files);
-    }
-  };
-
-  const removeImage = (id: string) => {
-    setImages((prev) => prev.filter((img) => img.id !== id));
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
   };
 
   const reset = () => {
-    setImages([]);
+    setFile(null);
+    setFileName("");
+    setResultData(null);
+  };
+
+  const processFile = async () => {
+    if (!file) return;
+
+    setIsProcessing(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/image/to-word/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setResultData(result.data || result.result || result.file || result.image || result.pdf || result.video);
+        toast({
+          title: "Success!",
+          description: "Image to Word completed successfully",
+        });
+        // Scroll to download section after successful conversion
+        setTimeout(() => {
+          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        throw new Error(result.error || 'Failed to process file');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to process file",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
     <ToolLayout
       title="Image to Word"
-      description="Convert images to editable Word documents with OCR text extraction"
+      description="Convert images to Word documents using OCR"
       category="Image Tools"
       categoryPath="/category/image"
     >
       <div className="space-y-6">
-        <div className="rounded-xl border border-primary/30 bg-primary/10 p-5">
-          <div className="flex gap-4">
-            <FileType className="h-5 w-5 shrink-0 text-primary" />
-            <div>
-              <h4 className="font-semibold text-primary">
-                Backend Processing Required
-              </h4>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Image to Word conversion with OCR requires server-side processing.
-                Enable Lovable Cloud for full functionality with text extraction.
-              </p>
-            </div>
+        {!file && (
+          <div
+            onDrop={handleDrop}
+            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={() => setIsDragging(false)}
+            onClick={() => inputRef.current?.click()}
+            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
+          >
+            <Upload className="h-12 w-12 text-muted-foreground" />
+            <p className="mt-4 text-lg font-medium">Drop file here</p>
+            <p className="text-sm text-muted-foreground">Click to browse or drag and drop</p>
+            <input
+              ref={inputRef}
+              type="file"
+              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+              className="hidden"
+            />
           </div>
-        </div>
+        )}
 
-        {/* Upload Area */}
-        <div
-          onDrop={handleDrop}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-          onDragLeave={() => setIsDragging(false)}
-          onClick={() => inputRef.current?.click()}
-          className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-        >
-          <Upload className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">Drop images here or click to upload</p>
-          <p className="text-sm text-muted-foreground">Supports JPG, PNG, WebP • Multiple files allowed</p>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => e.target.files && handleFiles(e.target.files)}
-            className="hidden"
-          />
-        </div>
-
-        {/* Image List */}
-        {images.length > 0 && (
+        {file && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold">{images.length} image{images.length > 1 ? "s" : ""} selected</h3>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => inputRef.current?.click()}
-                  className="btn-secondary text-sm"
-                >
-                  <Plus className="h-4 w-4" />
-                  Add More
-                </button>
-                <button onClick={reset} className="text-sm text-muted-foreground hover:text-foreground">
-                  Clear All
-                </button>
-              </div>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {images.map((img, index) => (
-                <div
-                  key={img.id}
-                  className="group relative flex items-center gap-3 rounded-xl border border-border bg-card p-3"
-                >
-                  <div className="cursor-move text-muted-foreground hover:text-foreground">
-                    <GripVertical className="h-5 w-5" />
-                  </div>
-                  <img
-                    src={img.preview}
-                    alt={img.file.name}
-                    className="h-16 w-16 rounded-lg object-cover"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium">{img.file.name}</p>
-                    <p className="text-xs text-muted-foreground">Page {index + 1}</p>
-                  </div>
-                  <button
-                    onClick={() => removeImage(img.id)}
-                    className="rounded-lg p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-muted hover:text-foreground group-hover:opacity-100"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+              <div className="flex items-center gap-3">
+                <FileText className="h-6 w-6 text-primary" />
+                <div>
+                  <p className="font-medium">{fileName}</p>
+                  <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
-              ))}
+              </div>
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+                <X className="h-5 w-5" />
+              </button>
             </div>
 
-            {/* Options */}
-            <div className="rounded-xl border border-border bg-muted/30 p-6">
-              <h3 className="mb-3 font-semibold">Conversion Features</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  OCR text extraction from images
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Preserves image layout and formatting
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Editable text in Word document
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Multiple language support
-                </li>
-              </ul>
-            </div>
-
-            {/* Convert Button */}
             <button
-              disabled
-              className="btn-primary w-full cursor-not-allowed opacity-50"
+              onClick={processFile}
+              disabled={isProcessing}
+              className="btn-primary w-full"
             >
-              <Download className="h-5 w-5" />
-              Convert to Word (.docx)
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <FileText className="h-5 w-5" />
+                  Process File
+                </>
+              )}
             </button>
 
-            <p className="text-center text-sm text-muted-foreground">
-              Enable backend integration for Image to Word conversion with OCR
-            </p>
+            {resultData && (
+              <div ref={downloadSectionRef} className="space-y-4">
+                <h3 className="text-lg font-medium text-center">Converted Word Document</h3>
+                <div className="rounded-xl border border-border bg-card overflow-hidden">
+                  <div className="p-6">
+                    <div className="mb-4 flex justify-center">
+                      <div className="w-32 h-32 bg-muted/30 rounded-lg flex items-center justify-center">
+                        <FileText className="h-16 w-16 text-muted-foreground" />
+                      </div>
+                    </div>
+                    <div className="text-center mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">Your image has been converted to Word using OCR</p>
+                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, ".docx")}</p>
+                    </div>
+                    <a
+                      href={resultData}
+                      download={fileName.replace(/\.[^/.]+$/, ".docx")}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
+                    >
+                      <Download className="h-5 w-5" />
+                      Download Word
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

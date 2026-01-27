@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Download, Link2, AlertCircle, Youtube, Instagram, Facebook, Film } from "lucide-react";
+import { Download, Link2, AlertCircle, Youtube, Instagram, Facebook, Film, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 
 type Platform = "youtube" | "instagram" | "facebook" | "unknown";
@@ -7,6 +7,9 @@ type Platform = "youtube" | "instagram" | "facebook" | "unknown";
 const VideoDownloaderTool = () => {
   const [url, setUrl] = useState("");
   const [platform, setPlatform] = useState<Platform>("unknown");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [videoInfo, setVideoInfo] = useState<any>(null);
 
   const detectPlatform = (inputUrl: string): Platform => {
     const lower = inputUrl.toLowerCase();
@@ -19,6 +22,53 @@ const VideoDownloaderTool = () => {
   const handleUrlChange = (value: string) => {
     setUrl(value);
     setPlatform(detectPlatform(value));
+    setError("");
+    setVideoInfo(null);
+  };
+
+  const handleDownload = async () => {
+    if (!url) return;
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch('/api/video/download/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          url: url,
+          quality: 'best'
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setVideoInfo(data.info);
+        
+        // If video data is returned, trigger download
+        if (data.video) {
+          const link = document.createElement('a');
+          link.href = data.video;
+          link.download = data.filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else if (data.info?.download_blocked) {
+          // Show message for blocked downloads
+          setError(`Download blocked: ${data.info.block_reason}. ${data.message || ''}`);
+        }
+      } else {
+        setError(data.error || 'Failed to download video');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const platformInfo = {
@@ -93,92 +143,188 @@ const VideoDownloaderTool = () => {
           })}
         </div>
 
-        {/* URL Input */}
-        <div className="rounded-xl border border-border bg-card p-6">
-          <label className="mb-3 block text-sm font-medium">Video URL</label>
-          <div className="relative">
-            <Link2 className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+        {/* URL Input – Premium */}
+        <div className="relative rounded-2xl border bg-card p-6 shadow-sm">
+          <label
+            htmlFor="video-url"
+            className="mb-2 block text-sm font-semibold text-foreground"
+          >
+            Video URL
+          </label>
+
+          <div
+            className={`relative flex items-center rounded-xl border transition-all duration-200
+              ${
+                url
+                  ? "border-primary/60 ring-2 ring-primary/20"
+                  : "border-border hover:border-primary/40"
+              }
+            `}
+            style={{
+              boxShadow:
+                platform !== "unknown"
+                  ? `0 0 0 2px ${currentPlatform.color}33` 
+                  : undefined,
+            }}
+          >
+            {/* Left Icon */}
+            <div className="flex h-12 w-12 items-center justify-center">
+              <Link2 className="h-5 w-5 text-muted-foreground" />
+            </div>
+
+            {/* Input */}
             <input
+              id="video-url"
               type="url"
               value={url}
               onChange={(e) => handleUrlChange(e.target.value)}
-              placeholder="Paste video URL here (e.g., https://youtube.com/watch?v=...)"
-              className="input-field w-full pl-12"
+              placeholder="Paste YouTube / Instagram / Facebook video link…"
+              className="h-12 w-full bg-transparent pr-10 text-sm outline-none placeholder:text-muted-foreground"
             />
+
+            {/* Clear Button */}
+            {url && (
+              <button
+                onClick={() => handleUrlChange("")}
+                className="absolute right-3 rounded-full p-1 text-muted-foreground hover:bg-muted"
+              >
+                ✕
+              </button>
+            )}
           </div>
 
-          {url && platform !== "unknown" && (
-            <div className="mt-4 flex items-center gap-2 text-sm">
-              <PlatformIcon className="h-4 w-4" style={{ color: currentPlatform.color }} />
-              <span className="text-muted-foreground">
-                Detected: <span className="font-medium text-foreground">{currentPlatform.name}</span>
+          {/* Helper / Detection */}
+          <div className="mt-3 flex items-center justify-between text-xs">
+            <span className="text-muted-foreground">
+              Example: https://youtube.com/watch?v=xxxx
+            </span>
+
+            {platform !== "unknown" && (
+              <span className="flex items-center gap-1 font-medium">
+                <PlatformIcon
+                  className="h-4 w-4"
+                  style={{ color: currentPlatform.color }}
+                />
+                <span style={{ color: currentPlatform.color }}>
+                  {currentPlatform.name} detected
+                </span>
               </span>
-            </div>
-          )}
-        </div>
-
-        {/* Info Notice */}
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5">
-          <div className="flex gap-4">
-            <AlertCircle className="h-5 w-5 shrink-0 text-amber-500" />
-            <div>
-              <h4 className="font-semibold text-amber-600 dark:text-amber-400">
-                Server Processing Required
-              </h4>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Video downloading requires server-side processing to fetch and convert videos. 
-                This feature needs a backend integration to work. Enable Lovable Cloud to unlock 
-                full video downloading capabilities.
-              </p>
-            </div>
+            )}
           </div>
         </div>
 
-        {/* Supported Formats */}
-        <div className="rounded-xl border border-border bg-card p-6">
-          <h3 className="mb-4 font-semibold">Supported Platforms & Formats</h3>
-          <div className="space-y-4">
-            <div className="flex items-start gap-4">
-              <Youtube className="h-5 w-5 shrink-0 text-red-500" />
+        {/* Error Display */}
+        {error && (
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-500 mt-0.5" />
               <div>
-                <p className="font-medium">YouTube</p>
-                <p className="text-sm text-muted-foreground">
-                  Regular videos, Shorts, Music videos • MP4, WEBM • Up to 4K quality
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <Instagram className="h-5 w-5 shrink-0 text-pink-500" />
-              <div>
-                <p className="font-medium">Instagram</p>
-                <p className="text-sm text-muted-foreground">
-                  Reels, Stories, IGTV, Posts • MP4 format • Original quality
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <Facebook className="h-5 w-5 shrink-0 text-blue-500" />
-              <div>
-                <p className="font-medium">Facebook</p>
-                <p className="text-sm text-muted-foreground">
-                  Videos, Reels, Watch content • MP4 format • HD quality
-                </p>
+                <p className="text-sm font-medium text-red-800">Error</p>
+                <p className="text-sm text-red-600 mt-1">{error}</p>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Download Button (disabled state) */}
+        {/* Video Info Display */}
+        {videoInfo && (
+          <div className={`rounded-xl border p-4 ${
+            videoInfo.download_blocked 
+              ? 'border-orange-200 bg-orange-50' 
+              : 'border-green-200 bg-green-50'
+          }`}>
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                {/* Thumbnail Image */}
+                {videoInfo.thumbnail && (
+                  <div className="flex-shrink-0">
+                    <img 
+                      src={videoInfo.thumbnail} 
+                      alt="Video thumbnail"
+                      className="w-32 h-24 object-cover rounded-lg border border-green-300"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
+                
+                {/* Video Info */}
+                <div className="flex-1">
+                  <p className={`text-sm font-medium ${
+                    videoInfo.download_blocked 
+                      ? 'text-orange-800' 
+                      : 'text-green-800'
+                  }`}>
+                    {videoInfo.download_blocked ? 'Video Information Retrieved' : 'Video Downloaded Successfully!'}
+                  </p>
+                  <p className={`text-sm mt-1 ${
+                    videoInfo.download_blocked 
+                      ? 'text-orange-600' 
+                      : 'text-green-600'
+                  }`}>
+                    {videoInfo.title}
+                  </p>
+                  {videoInfo.download_blocked && (
+                    <p className="text-xs text-orange-500 mt-1">
+                      Download blocked: {videoInfo.block_reason}
+                    </p>
+                  )}
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className={videoInfo.download_blocked ? 'text-orange-600' : 'text-green-600'}>Duration:</span>
+                  <span className={`ml-2 ${videoInfo.download_blocked ? 'text-orange-800' : 'text-green-800'}`}>
+                    {Math.floor(videoInfo.duration / 60)}:{(videoInfo.duration % 60).toString().padStart(2, '0')}
+                  </span>
+                </div>
+                <div>
+                  <span className={videoInfo.download_blocked ? 'text-orange-600' : 'text-green-600'}>Uploader:</span>
+                  <span className={`ml-2 ${videoInfo.download_blocked ? 'text-orange-800' : 'text-green-800'}`}>
+                    {videoInfo.uploader}
+                  </span>
+                </div>
+                {videoInfo.file_size && videoInfo.file_size > 0 && (
+                  <div>
+                    <span className={videoInfo.download_blocked ? 'text-orange-600' : 'text-green-600'}>File Size:</span>
+                    <span className={`ml-2 ${videoInfo.download_blocked ? 'text-orange-800' : 'text-green-800'}`}>
+                      {(videoInfo.file_size / (1024 * 1024)).toFixed(2)} MB
+                    </span>
+                  </div>
+                )}
+                {videoInfo.view_count && (
+                  <div>
+                    <span className={videoInfo.download_blocked ? 'text-orange-600' : 'text-green-600'}>Views:</span>
+                    <span className={`ml-2 ${videoInfo.download_blocked ? 'text-orange-800' : 'text-green-800'}`}>
+                      {videoInfo.view_count.toLocaleString()}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Download Button */}
         <button
-          disabled
-          className="btn-primary w-full cursor-not-allowed opacity-50"
+          onClick={handleDownload}
+          disabled={!url || isLoading}
+          className="btn-primary w-full"
         >
-          <Download className="h-5 w-5" />
-          Download Video
+          {isLoading ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              Downloading...
+            </>
+          ) : (
+            <>
+              <Download className="h-5 w-5" />
+              Download Video
+            </>
+          )}
         </button>
-        <p className="text-center text-sm text-muted-foreground">
-          Enable backend integration to start downloading videos
-        </p>
       </div>
     </ToolLayout>
   );

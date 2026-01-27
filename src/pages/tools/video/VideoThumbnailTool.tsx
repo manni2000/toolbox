@@ -1,7 +1,86 @@
-import { Image, Upload, Info } from "lucide-react";
+import { useState, useRef } from "react";
+import { Camera, Upload, Download, X, Loader2, Video } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { useToast } from "@/hooks/use-toast";
 
 const VideoThumbnailTool = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState("");
+  const [thumbnailData, setThumbnailData] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [thumbnailTime, setThumbnailTime] = useState(1);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const handleFile = (f: File) => {
+    if (!f.type.startsWith("video/")) {
+      toast({
+        title: "Invalid file",
+        description: "Please select a video file",
+        variant: "destructive",
+      });
+      return;
+    }
+    setFile(f);
+    setFileName(f.name);
+    setThumbnailData(null);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
+
+  const reset = () => {
+    setFile(null);
+    setFileName("");
+    setThumbnailData(null);
+  };
+
+  const extractThumbnail = async () => {
+    if (!file) return;
+
+    setIsProcessing(true);
+    const formData = new FormData();
+    formData.append('video', file);
+    formData.append('timestamp', thumbnailTime.toString());
+
+    try {
+      const response = await fetch('/api/video/thumbnail/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setThumbnailData(result.thumbnail); // Backend returns 'thumbnail' field
+        toast({
+          title: "Success!",
+          description: "Thumbnail extraction completed successfully",
+        });
+        // Scroll to download section after successful conversion
+        setTimeout(() => {
+          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        throw new Error(result.error || 'Failed to process file');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to extract thumbnail",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <ToolLayout
       title="Video Thumbnail Generator"
@@ -10,56 +89,113 @@ const VideoThumbnailTool = () => {
       categoryPath="/category/video"
     >
       <div className="space-y-6">
-        <div className="rounded-lg border border-border bg-card p-6">
-          <div className="flex items-start gap-4">
-            <div className="rounded-full bg-primary/10 p-3">
-              <Info className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold">Backend Processing Required</h3>
-              <p className="mt-2 text-muted-foreground">
-                Video thumbnail extraction requires server-side processing with FFmpeg. 
-                This tool needs a backend API to:
-              </p>
-              <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                <li>Accept video file uploads</li>
-                <li>Extract frames at specified timestamps</li>
-                <li>Generate multiple thumbnails at intervals</li>
-                <li>Output as JPG or PNG images</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="file-drop opacity-50 cursor-not-allowed">
-          <Upload className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">Drop video file here</p>
-          <p className="text-sm text-muted-foreground">Requires backend integration</p>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-2 block text-sm font-medium">Timestamp</label>
+        {/* Upload Area */}
+        {!file && (
+          <div
+            onDrop={handleDrop}
+            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={() => setIsDragging(false)}
+            onClick={() => inputRef.current?.click()}
+            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
+          >
+            <Upload className="h-12 w-12 text-muted-foreground" />
+            <p className="mt-4 text-lg font-medium">Drop video file here</p>
+            <p className="text-sm text-muted-foreground">MP4, AVI, MOV, MKV, WebM supported</p>
             <input
-              type="text"
-              placeholder="00:00:05"
-              disabled
-              className="input-tool opacity-50"
+              ref={inputRef}
+              type="file"
+              accept="video/*"
+              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+              className="hidden"
             />
           </div>
-          <div>
-            <label className="mb-2 block text-sm font-medium">Output Format</label>
-            <select disabled className="input-tool opacity-50">
-              <option>JPG</option>
-              <option>PNG</option>
-            </select>
-          </div>
-        </div>
+        )}
 
-        <button disabled className="btn-primary w-full opacity-50 cursor-not-allowed">
-          <Image className="h-5 w-5" />
-          Generate Thumbnail
-        </button>
+        {file && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+              <div className="flex items-center gap-3">
+                <Video className="h-6 w-6 text-primary" />
+                <div>
+                  <p className="font-medium">{fileName}</p>
+                  <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                </div>
+              </div>
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Timestamp Selection */}
+            <div>
+              <label className="mb-2 block text-sm font-medium">Timestamp (seconds)</label>
+              <input
+                type="number"
+                min="0"
+                step="0.1"
+                value={thumbnailTime}
+                onChange={(e) => setThumbnailTime(Number(e.target.value))}
+                className="input-tool"
+              />
+              <p className="mt-1 text-sm text-muted-foreground">
+                Extract thumbnail at {thumbnailTime} seconds
+              </p>
+            </div>
+
+            {/* Extract Button */}
+            <button
+              onClick={extractThumbnail}
+              disabled={isProcessing}
+              className="btn-primary w-full"
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Extracting Thumbnail...
+                </>
+              ) : (
+                <>
+                  <Camera className="h-5 w-5" />
+                  Generate Thumbnail
+                </>
+              )}
+            </button>
+
+            {/* Download Section */}
+            {thumbnailData && (
+              <div ref={downloadSectionRef} className="space-y-4">
+                <h3 className="text-lg font-medium text-center">Video Thumbnail</h3>
+                <div className="rounded-xl border border-border bg-card overflow-hidden">
+                  <div className="p-6">
+                    <div className="mb-4 flex justify-center">
+                      <div className="w-64 h-64 bg-muted/30 rounded-lg overflow-hidden flex items-center justify-center">
+                        {thumbnailData && (
+                          <img 
+                            src={thumbnailData} 
+                            alt="Thumbnail preview" 
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="text-center mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">Thumbnail extracted from your video</p>
+                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, "_thumbnail.png")}</p>
+                    </div>
+                    <a
+                      href={thumbnailData}
+                      download={fileName.replace(/\.[^/.]+$/, "_thumbnail.png")}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
+                    >
+                      <Download className="h-5 w-5" />
+                      Download Thumbnail
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </ToolLayout>
   );

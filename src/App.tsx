@@ -110,6 +110,8 @@ import PercentageCalculatorTool from "./pages/tools/education/PercentageCalculat
 import UnitConverterTool from "./pages/tools/education/UnitConverterTool";
 import CompoundInterestTool from "./pages/tools/education/CompoundInterestTool";
 import SimpleInterestTool from "./pages/tools/education/SimpleInterestTool";
+import CGPAToPercentageTool from "./pages/tools/education/CGPAToPercentageTool";
+import LCMHCFTool from "./pages/tools/education/LCMHCFTool";
 
 // Finance Tools
 import EMICalculatorTool from "./pages/tools/finance/EMICalculatorTool";
@@ -244,6 +246,8 @@ const App = () => (
           <Route path="/unit-converter" element={<UnitConverterTool />} />
           <Route path="/compound-interest-calculator" element={<CompoundInterestTool />} />
           <Route path="/simple-interest-calculator" element={<SimpleInterestTool />} />
+          <Route path="/cgpa-to-percentage" element={<CGPAToPercentageTool />} />
+          <Route path="/lcm-hcf-calculator" element={<LCMHCFTool />} />
           
           {/* Finance Tools */}
           <Route path="/emi-calculator" element={<EMICalculatorTool />} />

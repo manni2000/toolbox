@@ -1,61 +1,84 @@
 import { useState, useRef } from "react";
-import { Upload, FileText, Download, X, Presentation } from "lucide-react";
+import { FileText, Upload, Download, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
-import { PDFDocument } from "pdf-lib";
+import { useToast } from "@/hooks/use-toast";
 
 const PDFToPowerPointTool = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [pageCount, setPageCount] = useState(0);
+  const [fileName, setFileName] = useState("");
+  const [resultData, setResultData] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
-  const handleFile = async (f: File) => {
-    if (f.type !== "application/pdf") return;
+  const handleFile = (f: File) => {
     setFile(f);
-
-    try {
-      const arrayBuffer = await f.arrayBuffer();
-      const pdf = await PDFDocument.load(arrayBuffer);
-      setPageCount(pdf.getPageCount());
-    } catch (error) {
-      console.error("Error loading PDF:", error);
-    }
+    setFileName(f.name);
+    setResultData(null);
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
   };
 
   const reset = () => {
     setFile(null);
-    setPageCount(0);
+    setFileName("");
+    setResultData(null);
+  };
+
+  const processFile = async () => {
+    if (!file) return;
+
+    setIsProcessing(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/pdf/to-powerpoint/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setResultData(result.data || result.result || result.file || result.image || result.pdf || result.video || result.pptx);
+        toast({
+          title: "Success!",
+          description: "PDF to PowerPoint completed successfully",
+        });
+        // Scroll to download section after successful conversion
+        setTimeout(() => {
+          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        throw new Error(result.error || 'Failed to process file');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to process file",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
     <ToolLayout
       title="PDF to PowerPoint"
-      description="Convert PDF documents to editable PowerPoint presentations (.pptx)"
+      description="Convert PDF to PowerPoint presentations"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
       <div className="space-y-6">
-        <div className="rounded-xl border border-primary/30 bg-primary/10 p-5">
-          <div className="flex gap-4">
-            <Presentation className="h-5 w-5 shrink-0 text-primary" />
-            <div>
-              <h4 className="font-semibold text-primary">
-                Backend Processing Required
-              </h4>
-              <p className="mt-1 text-sm text-muted-foreground">
-                PDF to PowerPoint conversion requires server-side processing.
-                Enable Lovable Cloud for full functionality.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {!file && (
           <div
             onDrop={handleDrop}
@@ -65,12 +88,11 @@ const PDFToPowerPointTool = () => {
             className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
           >
             <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your PDF here</p>
-            <p className="text-sm text-muted-foreground">Convert to editable PowerPoint slides</p>
+            <p className="mt-4 text-lg font-medium">Drop file here</p>
+            <p className="text-sm text-muted-foreground">Click to browse or drag and drop</p>
             <input
               ref={inputRef}
               type="file"
-              accept="application/pdf"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               className="hidden"
             />
@@ -83,8 +105,8 @@ const PDFToPowerPointTool = () => {
               <div className="flex items-center gap-3">
                 <FileText className="h-6 w-6 text-primary" />
                 <div>
-                  <p className="font-medium">{file.name}</p>
-                  <p className="text-sm text-muted-foreground">{pageCount} pages → {pageCount} slides</p>
+                  <p className="font-medium">{fileName}</p>
+                  <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
               </div>
               <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
@@ -92,36 +114,50 @@ const PDFToPowerPointTool = () => {
               </button>
             </div>
 
-            <div className="rounded-xl border border-border bg-muted/30 p-6">
-              <h3 className="mb-3 font-semibold">Conversion Features</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Each PDF page becomes a slide
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Preserves images and graphics
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Editable text boxes
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Compatible with PowerPoint & Google Slides
-                </li>
-              </ul>
-            </div>
-
-            <button disabled className="btn-primary w-full cursor-not-allowed opacity-50">
-              <Download className="h-5 w-5" />
-              Convert to PowerPoint (.pptx)
+            <button
+              onClick={processFile}
+              disabled={isProcessing}
+              className="btn-primary w-full"
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <FileText className="h-5 w-5" />
+                  Process File
+                </>
+              )}
             </button>
 
-            <p className="text-center text-sm text-muted-foreground">
-              Enable backend integration for PDF to PowerPoint conversion
-            </p>
+            {resultData && (
+              <div ref={downloadSectionRef} className="space-y-4">
+                <h3 className="text-lg font-medium text-center">Converted PowerPoint</h3>
+                <div className="rounded-xl border border-border bg-card overflow-hidden">
+                  <div className="p-6">
+                    <div className="mb-4 flex justify-center">
+                      <div className="w-72 h-96 bg-muted/30 rounded-lg flex items-center justify-center">
+                        <FileText className="h-16 w-16 text-muted-foreground" />
+                      </div>
+                    </div>
+                    <div className="text-center mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">Your PDF has been converted to PowerPoint</p>
+                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, ".pptx")}</p>
+                    </div>
+                    <a
+                      href={resultData}
+                      download={fileName.replace(/\.[^/.]+$/, ".pptx")}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
+                    >
+                      <Download className="h-5 w-5" />
+                      Download PowerPoint
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

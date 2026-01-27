@@ -22,40 +22,105 @@ const Footer = () => {
     { name: "HTML to PDF", path: "/html-to-pdf" },
   ];
 
+  const dateTimeTools = [
+    { name: "Date Difference Calculator", path: "/date-difference" },
+    { name: "Age Calculator", path: "/age-calculator" },
+    { name: "Working Days Calculator", path: "/working-days-calculator" },
+    { name: "Countdown Timer", path: "/countdown-timer" },
+  ];
+
+  const zipTools = [
+    { name: "Create ZIP", path: "/create-zip" },
+    { name: "Extract ZIP", path: "/extract-zip" },
+    { name: "Password-Protected ZIP", path: "/password-zip" },
+    { name: "Compression Level ZIP", path: "/compression-zip" },
+  ];
+
+  const audioTools = [
+    { name: "Audio Converter", path: "/audio-converter" },
+    { name: "Speech to Text", path: "/speech-to-text" },
+    { name: "Audio Trimmer", path: "/audio-trimmer" },
+    { name: "Audio Merger", path: "/audio-merger" },
+    { name: "Audio Speed Changer", path: "/audio-speed" },
+  ];
+
+  const securityTools = [
+    { name: "Password Generator", path: "/password-generator" },
+    { name: "Password Strength Checker", path: "/password-strength" },
+    { name: "Hash Generator", path: "/hash-generator" },
+    { name: "Base64 Encoder", path: "/base64-encoder" },
+    { name: "UUID Generator", path: "/uuid-generator" },
+  ];
+
+  const internetTools = [
+    { name: "IP Address Lookup", path: "/ip-lookup" },
+    { name: "User-Agent Parser", path: "/user-agent-parser" },
+    { name: "DNS Lookup", path: "/dns-lookup" },
+    { name: "SSL Certificate Checker", path: "/ssl-checker" },
+    { name: "Website Ping Test", path: "/website-ping" },
+  ];
+
   const imageTools = [
+    { name: "QR Code Generator", path: "/qr-code-generator" },
+    { name: "QR Code Scanner", path: "/qr-code-scanner" },
     { name: "Image Compressor", path: "/image-compressor" },
     { name: "Image Converter", path: "/image-converter" },
-    { name: "Image to PDF", path: "/image-to-pdf" },
+    { name: "Image Resize", path: "/image-resize" },
+    { name: "Image Crop", path: "/image-crop" },
     { name: "Background Remover", path: "/background-remover" },
-    { name: "QR Code Generator", path: "/qr-code-generator" },
+    { name: "Image to PDF", path: "/image-to-pdf" },
+    { name: "Image to Word", path: "/image-to-word" },
+    { name: "Image Base64", path: "/image-base64" },
     { name: "Favicon Generator", path: "/favicon-generator" },
+    { name: "EXIF Viewer", path: "/exif-viewer" },
+  ];
+
+  const financeTools = [
+    { name: "EMI Calculator", path: "/emi-calculator" },
+    { name: "GST Calculator", path: "/gst-calculator" },
+    { name: "Salary Calculator", path: "/salary-calculator" },
+    { name: "Currency Converter", path: "/currency-converter" },
   ];
 
   const devTools = [
     { name: "JSON Formatter", path: "/json-formatter" },
-    { name: "Base64 Encoder", path: "/base64-encoder" },
-    { name: "URL Encoder", path: "/url-encoder" },
-    { name: "JWT Decoder", path: "/jwt-decoder" },
     { name: "Regex Tester", path: "/regex-tester" },
+    { name: "JWT Decoder", path: "/jwt-decoder" },
+    { name: "URL Encoder", path: "/url-encoder" },
+    { name: "Base64 Encoder", path: "/base64-encoder" },
+    { name: "UUID Generator", path: "/uuid-generator" },
+    { name: "Color Converter", path: "/color-converter" },
+    { name: "Lorem Ipsum Generator", path: "/lorem-ipsum-generator" },
     { name: "Cron Generator", path: "/cron-generator" },
+    { name: "Sitemap Generator", path: "/sitemap-generator" },
+    { name: "HTTP Header Checker", path: "/http-header-checker" },
+    { name: "Website Screenshot", path: "/website-screenshot" },
+    { name: "Token Calculator", path: "/token-calculator" },
   ];
 
   const educationTools = [
-    { name: "Unit Converter", path: "/unit-converter" },
     { name: "Scientific Calculator", path: "/scientific-calculator" },
+    { name: "CGPA to Percentage", path: "/cgpa-to-percentage" },
+    { name: "LCM HCF Calculator", path: "/lcm-hcf-calculator" },
     { name: "Percentage Calculator", path: "/percentage-calculator" },
-    { name: "EMI Calculator", path: "/emi-calculator" },
-    { name: "GST Calculator", path: "/gst-calculator" },
+    { name: "Unit Converter", path: "/unit-converter" },
     { name: "Age Calculator", path: "/age-calculator" },
+    { name: "Compound Interest", path: "/compound-interest-calculator" },
+    { name: "Simple Interest", path: "/simple-interest-calculator" },
   ];
 
   const socialMediaTools = [
     { name: "Hashtag Generator", path: "/hashtag-generator" },
+    { name: "Bio Generator", path: "/bio-generator" },
+    { name: "Caption Formatter", path: "/caption-formatter" },
+    { name: "Line Break Generator", path: "/line-break-generator" },
+    { name: "Link-in-Bio", path: "/link-in-bio" },
+    { name: "WhatsApp Status Generator", path: "/whatsapp-status-generator" },
     { name: "Video Downloader", path: "/video-downloader" },
+    { name: "Video to Audio", path: "/video-to-audio" },
     { name: "Video Thumbnail", path: "/video-thumbnail" },
-    { name: "WhatsApp Status", path: "/whatsapp-status-saver" },
-    { name: "Meme Generator", path: "/meme-generator" },
     { name: "QR Code Generator", path: "/qr-code-generator" },
+    { name: "Meme Generator", path: "/meme-generator" },
   ];
 
   const textTools = [
@@ -64,7 +129,10 @@ const Footer = () => {
     { name: "Text Diff", path: "/text-diff" },
     { name: "Markdown to HTML", path: "/markdown-to-html" },
     { name: "Remove Spaces", path: "/remove-spaces" },
-    { name: "Color Converter", path: "/color-converter" },
+    { name: "Line Sorter", path: "/line-sorter" },
+    { name: "Duplicate Remover", path: "/duplicate-remover" },
+    { name: "Text Summarizer", path: "/text-summarizer" },
+    { name: "Meme Generator", path: "/meme-generator" },
   ];
 
   const categories = toolCategories.slice(0, 8).map(cat => ({
@@ -88,7 +156,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="max-w-md text-sm text-muted-foreground">
-              50+ free online tools for images, PDFs, videos, text, and more. 
+              95+ free online tools for images, PDFs, videos, text, and more. 
               No signup required. 100% browser-based.
             </p>
           </div>
@@ -186,6 +254,90 @@ const Footer = () => {
             <h4 className="text-sm font-semibold">Text Tools</h4>
             <ul className="space-y-2">
               {textTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Audio Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Audio Tools</h4>
+            <ul className="space-y-2">
+              {audioTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Security Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Security Tools</h4>
+            <ul className="space-y-2">
+              {securityTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Internet Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Internet Tools</h4>
+            <ul className="space-y-2">
+              {internetTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Date & Time Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Date & Time Tools</h4>
+            <ul className="space-y-2">
+              {dateTimeTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ZIP Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">ZIP Tools</h4>
+            <ul className="space-y-2">
+              {zipTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Finance Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Finance Tools</h4>
+            <ul className="space-y-2">
+              {financeTools.map(tool => (
                 <li key={tool.path}>
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
                     {tool.name}

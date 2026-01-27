@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const About = () => {
   const stats = [
-    { label: "Free Tools", value: "50+" },
+    { label: "Free Tools", value: "95+" },
     { label: "Monthly Users", value: "100K+" },
     { label: "Files Processed", value: "1M+" },
     { label: "Uptime", value: "99.9%" },

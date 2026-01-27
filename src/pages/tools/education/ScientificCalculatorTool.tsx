@@ -72,6 +72,64 @@ const ScientificCalculatorTool = () => {
     }
   };
 
+  const handleKeywordInput = (input: string) => {
+    const lowerInput = input.toLowerCase();
+    
+    // Check for keyword constants
+    const keywordMap: { [key: string]: string } = {
+      'pi': Math.PI.toString(),
+      'e': Math.E.toString(),
+      'phi': ((1 + Math.sqrt(5)) / 2).toString(),
+      'golden': ((1 + Math.sqrt(5)) / 2).toString(),
+      'goldenratio': ((1 + Math.sqrt(5)) / 2).toString(),
+      'sqrt2': Math.sqrt(2).toString(),
+      'sqrt3': Math.sqrt(3).toString(),
+      'c': '299792458',
+      'light': '299792458',
+      'lightspeed': '299792458',
+      'g': '9.80665',
+      'gravity': '9.80665',
+      'avogadro': '6.02214076e23',
+      'na': '6.02214076e23',
+      'planck': '6.62607015e-34',
+      'h': '6.62607015e-34',
+      'ans': lastAnswer.toString(),
+      'answer': lastAnswer.toString(),
+    };
+
+    // Check if input matches any keyword
+    if (keywordMap[lowerInput]) {
+      setDisplay(keywordMap[lowerInput]);
+      return;
+    }
+
+    // Check if input contains any keyword
+    for (const [keyword, value] of Object.entries(keywordMap)) {
+      if (lowerInput.includes(keyword)) {
+        const parts = lowerInput.split(keyword);
+        if (parts[0] === '') {
+          // Keyword at the beginning
+          setDisplay(value + lowerInput.slice(keyword.length));
+        } else {
+          // Keyword in the middle or end
+          setDisplay(parts[0] + value + (parts[1] || ''));
+        }
+        return;
+      }
+    }
+
+    // If no keyword found, just set the display
+    setDisplay(input);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleEquals();
+    } else if (e.key === 'Escape') {
+      handleClear();
+    }
+  };
+
   const handleOperator = (op: string) => {
     if (display === "Error") return;
     setExpression(expression + display + op);
@@ -217,6 +275,27 @@ const ScientificCalculatorTool = () => {
       case "ans":
         setDisplay(lastAnswer.toString());
         break;
+      case "golden_ratio":
+        setDisplay(((1 + Math.sqrt(5)) / 2).toString());
+        break;
+      case "sqrt2":
+        setDisplay(Math.sqrt(2).toString());
+        break;
+      case "sqrt3":
+        setDisplay(Math.sqrt(3).toString());
+        break;
+      case "light_speed":
+        setDisplay("299792458"); // m/s
+        break;
+      case "gravity":
+        setDisplay("9.80665"); // m/s²
+        break;
+      case "avogadro":
+        setDisplay("6.02214076e23"); // mol⁻¹
+        break;
+      case "planck":
+        setDisplay("6.62607015e-34"); // J⋅s
+        break;
     }
   };
 
@@ -256,9 +335,14 @@ const ScientificCalculatorTool = () => {
           <div className="text-right text-sm text-muted-foreground h-5 overflow-hidden">
             {expression || " "}
           </div>
-          <div className="text-right text-3xl font-bold text-foreground overflow-x-auto">
-            {display}
-          </div>
+          <input
+            type="text"
+            value={display}
+            onChange={(e) => handleKeywordInput(e.target.value)}
+            onKeyDown={handleKeyPress}
+            className="w-full text-right text-3xl font-bold text-foreground bg-transparent border-none outline-none overflow-x-auto"
+            placeholder="0"
+          />
         </div>
 
         {/* Mode Toggle */}
@@ -304,20 +388,37 @@ const ScientificCalculatorTool = () => {
           <ScientificButton label="eˣ" onClick={() => handleScientific("exp")} />
           <ScientificButton label="n!" onClick={() => handleScientific("factorial")} />
           
-          <ScientificButton label="π" onClick={() => handleConstant("pi")} />
-          <ScientificButton label="e" onClick={() => handleConstant("e")} />
-          <ScientificButton label="ANS" onClick={() => handleConstant("ans")} />
           <ScientificButton label="1/x" onClick={() => handleScientific("inv")} />
           <ScientificButton label="|x|" onClick={() => handleScientific("abs")} />
+          <ScientificButton label="%" onClick={() => handleScientific("percent")} />
+          <ScientificButton label="±" onClick={() => handleScientific("negate")} />
+          <ScientificButton label="ANS" onClick={() => handleConstant("ans")} />
         </div>
 
         {/* Memory Functions */}
-        <div className="mb-2 grid grid-cols-5 gap-1">
+        <div className="mb-2 grid grid-cols-4 gap-1">
           <ScientificButton label="MC" onClick={() => handleMemory("MC")} className="text-xs" />
           <ScientificButton label="MR" onClick={() => handleMemory("MR")} className="text-xs" />
           <ScientificButton label="M+" onClick={() => handleMemory("M+")} className="text-xs" />
           <ScientificButton label="M-" onClick={() => handleMemory("M-")} className="text-xs" />
-          <ScientificButton label="%" onClick={() => handleScientific("percent")} />
+        </div>
+
+        {/* User Keyword Numbers & Calculator Numbers */}
+        <div className="mb-2">
+          <div className="text-xs text-muted-foreground mb-1">Quick Numbers & Constants</div>
+          <div className="grid grid-cols-5 gap-1">
+            <ScientificButton label="π" onClick={() => handleConstant("pi")} />
+            <ScientificButton label="e" onClick={() => handleConstant("e")} />
+            <ScientificButton label="φ" onClick={() => handleConstant("golden_ratio")} />
+            <ScientificButton label="√2" onClick={() => handleConstant("sqrt2")} />
+            <ScientificButton label="√3" onClick={() => handleConstant("sqrt3")} />
+            
+            <ScientificButton label="c" onClick={() => handleConstant("light_speed")} className="text-xs" />
+            <ScientificButton label="g" onClick={() => handleConstant("gravity")} className="text-xs" />
+            <ScientificButton label="Nₐ" onClick={() => handleConstant("avogadro")} className="text-xs" />
+            <ScientificButton label="h" onClick={() => handleConstant("planck")} className="text-xs" />
+            <ScientificButton label="ANS" onClick={() => handleConstant("ans")} />
+          </div>
         </div>
 
         {/* Number Pad */}

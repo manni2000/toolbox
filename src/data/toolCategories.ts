@@ -201,6 +201,8 @@ export const toolCategories: ToolCategory[] = [
       { id: "age-calculator", name: "Age Calculator", description: "Calculate exact age from birthdate", path: "/age-calculator", isAvailable: true },
       { id: "compound-interest", name: "Compound Interest Calculator", description: "Calculate compound interest with frequency options", path: "/compound-interest-calculator", isAvailable: true },
       { id: "simple-interest", name: "Simple Interest Calculator", description: "Calculate simple interest on principal", path: "/simple-interest-calculator", isAvailable: true },
+      { id: "cgpa-percentage", name: "CGPA to Percentage Calculator", description: "Convert CGPA to percentage with different grading scales", path: "/cgpa-to-percentage", isAvailable: true },
+      { id: "lcm-hcf", name: "LCM HCF Calculator", description: "Calculate LCM and HCF of multiple numbers", path: "/lcm-hcf-calculator", isAvailable: true },
     ],
   },
   {
