@@ -1,6 +1,8 @@
 import { useState, useCallback } from "react";
-import { Download, Upload, Image, X } from "lucide-react";
+import { Upload, Image, X } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const ImageCompressorTool = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -160,17 +162,20 @@ const ImageCompressorTool = () => {
               <button onClick={compressImage} className="btn-primary flex-1">
                 Compress Image
               </button>
-              {compressedUrl && (
-                <a
-                  href={compressedUrl}
-                  download={`compressed-${image.name.split('.')[0]}.webp`}
-                  className="btn-secondary flex items-center gap-2"
-                >
-                  <Download className="h-5 w-5" />
-                  Download
-                </a>
-              )}
             </div>
+
+            {compressedUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={compressedUrl}
+                  fileName={`compressed-${image.name.split('.')[0]}.webp`}
+                  fileType="image"
+                  title="Image Compressed Successfully"
+                  description={`Original: ${(originalSize / 1024).toFixed(1)}KB → Compressed: ${(compressedSize / 1024).toFixed(1)}KB (${Math.round((1 - compressedSize / originalSize) * 100)}% reduction)`}
+                  fileSize={`${(compressedSize / 1024).toFixed(1)} KB`}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

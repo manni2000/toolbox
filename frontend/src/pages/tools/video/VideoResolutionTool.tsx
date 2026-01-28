@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { Video, Upload, Download, X, Loader2 } from "lucide-react";
+import { Video, Upload, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const VideoResolutionTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -300,18 +302,15 @@ const VideoResolutionTool = () => {
                         <Video className="h-16 w-16 text-muted-foreground" />
                       </div>
                     </div>
-                    <div className="text-center mb-4">
-                      <p className="text-sm text-muted-foreground mb-2">Your video has been converted to the new resolution</p>
-                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, "_converted.mp4")}</p>
-                    </div>
-                    <a
-                      href={resultData}
-                      download={fileName.replace(/\.[^/.]+$/, "_converted.mp4")}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
-                    >
-                      <Download className="h-5 w-5" />
-                      Download Video
-                    </a>
+                    
+                    <EnhancedDownload
+                      data={resultData}
+                      fileName={fileName.replace(/\.[^/.]+$/, "_converted.mp4")}
+                      fileType="zip"
+                      title="Video Resolution Changed Successfully"
+                      description={`Video converted to ${width}×${height}px resolution`}
+                      fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
+                    />
                   </div>
                 </div>
               </div>

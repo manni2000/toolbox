@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react";
-import { Download, Upload, Archive, X, File, Gauge } from "lucide-react";
+import { Upload, Archive, X, File, Gauge } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const CompressionZipTool = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -10,6 +12,7 @@ const CompressionZipTool = () => {
   const [compressionLevel, setCompressionLevel] = useState<number>(6);
   const [isCreating, setIsCreating] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [zipUrl, setZipUrl] = useState<string | null>(null);
 
   const compressionLevels = [
     { value: 0, label: "Store (No compression)", description: "Fastest, largest file" },
@@ -61,7 +64,8 @@ const CompressionZipTool = () => {
           level: compressionLevel as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9,
         },
       });
-      saveAs(blob, `${zipName || "archive"}.zip`);
+      const url = URL.createObjectURL(blob);
+      setZipUrl(url);
     } catch (error) {
       console.error("Error creating ZIP:", error);
     } finally {
@@ -200,6 +204,22 @@ const CompressionZipTool = () => {
                 </>
               )}
             </button>
+
+            {zipUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={zipUrl}
+                  fileName={`${zipName || "archive"}.zip`}
+                  fileType="zip"
+                  title="Compressed ZIP Created Successfully"
+                  description={`${files.length} file(s) compressed with level ${compressionLevel} compression`}
+                  fileSize={files.reduce((acc, file) => acc + file.size, 0) > 0 
+                    ? formatSize(files.reduce((acc, file) => acc + file.size, 0))
+                    : 'Unknown size'
+                  }
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { Gauge, Upload, Play, Pause, Download, RotateCcw, Volume2 } from "lucide-react";
+import { Gauge, Upload, Play, Pause, RotateCcw, Volume2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const AudioSpeedTool = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -15,6 +17,7 @@ const AudioSpeedTool = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [processedUrl, setProcessedUrl] = useState<string | null>(null);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -117,11 +120,7 @@ const AudioSpeedTool = () => {
 
     const blob = new Blob([JSON.stringify(info, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${audioFile.name.replace(/\.[^.]+$/, "")}_${speed}x_info.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    setProcessedUrl(url);
 
     toast({
       title: "Note",
@@ -296,9 +295,22 @@ const AudioSpeedTool = () => {
 
             {/* Download */}
             <Button onClick={downloadProcessed} variant="secondary" className="w-full">
-              <Download className="h-4 w-4 mr-2" />
-              Download Processed Audio
+              <Gauge className="h-4 w-4 mr-2" />
+              Process Audio Speed
             </Button>
+
+            {processedUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={processedUrl}
+                  fileName={`${audioFile.name.replace(/\.[^.]+$/, "")}_${speed}x_info.json`}
+                  fileType="zip"
+                  title="Audio Speed Processing Info Ready"
+                  description={`Audio speed change settings for ${speed}x playback with pitch preservation: ${preservePitch ? 'enabled' : 'disabled'}`}
+                  fileSize={audioFile ? `${(audioFile.size / 1024).toFixed(1)} KB` : 'Unknown size'}
+                />
+              </div>
+            )}
 
             {/* Info */}
             <Card className="p-4 bg-muted/50">

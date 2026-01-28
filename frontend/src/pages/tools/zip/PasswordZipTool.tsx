@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { Lock, Upload, Download, X, Loader2, FileText } from "lucide-react";
+import { Lock, Upload, X, Loader2, FileText } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PasswordZipTool = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -240,23 +242,28 @@ const PasswordZipTool = () => {
                   <p className="text-sm text-muted-foreground mb-2">Your password-protected ZIP is ready</p>
                   <p className="font-medium">{fileName.replace(/\.[^/.]+$/, "_protected.zip")}</p>
                 </div>
-                <div className="flex gap-2">
-                  <a
-                    href={zipData}
-                    download="protected_archive.zip"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 flex-1"
-                  >
-                    <Download className="h-5 w-5" />
-                    Download Protected ZIP
-                  </a>
-                  <button 
-                    onClick={reset} 
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                  >
-                    <X className="h-5 w-5" />
-                    Create Another
-                  </button>
-                </div>
+                
+                <EnhancedDownload
+                  data={zipData}
+                  fileName="protected_archive.zip"
+                  fileType="zip"
+                  title="Password-Protected ZIP Created Successfully"
+                  description={`${files.length} file(s) encrypted with ${encryptionMethod.toUpperCase()} protection`}
+                  fileSize={(() => {
+                    const totalSize = files.reduce((acc, file) => acc + file.size, 0);
+                    if (totalSize < 1024) return `${totalSize} B`;
+                    if (totalSize < 1024 * 1024) return `${(totalSize / 1024).toFixed(1)} KB`;
+                    return `${(totalSize / (1024 * 1024)).toFixed(1)} MB`;
+                  })()}
+                />
+                
+                <button 
+                  onClick={reset} 
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full mt-4"
+                >
+                  <X className="h-5 w-5" />
+                  Create Another
+                </button>
               </div>
             </div>
           </div>

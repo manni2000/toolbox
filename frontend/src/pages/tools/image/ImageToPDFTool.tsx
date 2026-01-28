@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Upload, FileText, Download, X, Plus, GripVertical, Image as ImageIcon } from "lucide-react";
+import { Upload, FileText, X, Plus, GripVertical, Image as ImageIcon, Download } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
 

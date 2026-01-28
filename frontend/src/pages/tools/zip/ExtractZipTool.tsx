@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react";
-import { FolderOpen, Upload, Download, File, Archive } from "lucide-react";
+import { FolderOpen, Upload, File, Archive } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 interface ExtractedFile {
   name: string;
@@ -14,6 +16,7 @@ interface ExtractedFile {
 const ExtractZipTool = () => {
   const [zipFile, setZipFile] = useState<File | null>(null);
   const [extractedFiles, setExtractedFiles] = useState<ExtractedFile[]>([]);
+  const [extractedUrls, setExtractedUrls] = useState<Array<{ url: string; name: string }>>([]);
   const [isExtracting, setIsExtracting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -38,10 +41,12 @@ const ExtractZipTool = () => {
   const extractZip = async (file: File) => {
     setIsExtracting(true);
     setExtractedFiles([]);
+    setExtractedUrls([]);
 
     try {
       const zip = await JSZip.loadAsync(file);
       const files: ExtractedFile[] = [];
+      const urls: Array<{ url: string; name: string }> = [];
 
       for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
         if (zipEntry.dir) {
@@ -59,6 +64,13 @@ const ExtractZipTool = () => {
             isDirectory: false,
             content,
           });
+          
+          // Create URL for non-directory files
+          const url = URL.createObjectURL(content);
+          urls.push({
+            url,
+            name: relativePath.split("/").pop() || relativePath
+          });
         }
       }
 
@@ -70,6 +82,7 @@ const ExtractZipTool = () => {
       });
 
       setExtractedFiles(files);
+      setExtractedUrls(urls);
     } catch (error) {
       console.error("Error extracting ZIP:", error);
     } finally {
@@ -155,48 +168,23 @@ const ExtractZipTool = () => {
               </div>
             ) : (
               <>
-                {extractedFiles.length > 0 && (
-                  <button
-                    onClick={downloadAllFiles}
-                    className="btn-primary w-full"
-                  >
-                    <Download className="h-5 w-5" />
-                    Download All Files
-                  </button>
+                {extractedUrls.length > 0 && (
+                  <div className="flex justify-center mt-6">
+                    <EnhancedDownload
+                      data=""
+                      fileName=""
+                      fileType="zip"
+                      title="ZIP Extracted Successfully"
+                      description={`${extractedUrls.length} file(s) extracted from ZIP archive`}
+                      fileSize={zipFile ? formatSize(zipFile.size) : 'Unknown size'}
+                      multipleFiles={extractedUrls.map((file, index) => ({
+                        url: file.url,
+                        name: file.name,
+                        page: index + 1
+                      }))}
+                    />
+                  </div>
                 )}
-
-                <div className="max-h-96 space-y-2 overflow-y-auto">
-                  {extractedFiles.map((file, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between rounded-lg border border-border bg-card p-3"
-                    >
-                      <div className="flex items-center gap-3">
-                        {file.isDirectory ? (
-                          <FolderOpen className="h-5 w-5 text-primary" />
-                        ) : (
-                          <File className="h-5 w-5 text-muted-foreground" />
-                        )}
-                        <div>
-                          <p className="text-sm font-medium">{file.name}</p>
-                          {!file.isDirectory && (
-                            <p className="text-xs text-muted-foreground">
-                              {formatSize(file.size)}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      {!file.isDirectory && (
-                        <button
-                          onClick={() => downloadFile(file)}
-                          className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
-                        >
-                          <Download className="h-4 w-4" />
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
               </>
             )}
           </div>

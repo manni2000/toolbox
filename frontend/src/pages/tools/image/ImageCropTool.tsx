@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
-import { Upload, Crop, Download, X, RotateCcw } from "lucide-react";
+import { Upload, Crop, X, RotateCcw } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const ImageCropTool = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -214,24 +216,19 @@ const ImageCropTool = () => {
                 <Crop className="h-5 w-5" />
                 Crop Image
               </button>
-              {croppedUrl && (
-                <a
-                  href={croppedUrl}
-                  download={`cropped-${cropArea.width}x${cropArea.height}.png`}
-                  className="btn-secondary flex items-center gap-2"
-                >
-                  <Download className="h-5 w-5" />
-                  Download
-                </a>
-              )}
             </div>
 
             {croppedUrl && (
-              <div className="text-center">
-                <p className="mb-2 text-sm text-muted-foreground">Cropped Result:</p>
-                <div className="inline-block rounded-xl border border-border bg-muted/30 p-4">
-                  <img src={croppedUrl} alt="Cropped" className="max-h-48 rounded-lg" />
-                </div>
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={croppedUrl}
+                  fileName={`cropped-${cropArea.width}x${cropArea.height}.png`}
+                  fileType="image"
+                  title="Image Cropped Successfully"
+                  description={`Cropped to ${cropArea.width}×${cropArea.height}px from original ${originalSize.width}×${originalSize.height}px`}
+                  fileSize="Unknown size"
+                  dimensions={{ width: cropArea.width, height: cropArea.height }}
+                />
               </div>
             )}
           </div>

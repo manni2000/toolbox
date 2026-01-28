@@ -20,7 +20,7 @@ const ContactSection = () => {
           </p>
           
           <a
-            href="mailto:hello@toolbox.com"
+            href="mailto:info@dailytools247.com"
             className="mt-6 inline-flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-4 transition-all hover:border-primary/50 hover:shadow-lg group"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
@@ -28,7 +28,7 @@ const ContactSection = () => {
             </div>
             <div className="text-left">
               <p className="text-sm text-muted-foreground">Email us at</p>
-              <p className="font-semibold text-foreground">hello@toolbox.com</p>
+              <p className="font-semibold text-foreground">info@dailytools247.com</p>
             </div>
             <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" />
           </a>

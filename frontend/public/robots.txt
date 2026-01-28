@@ -1,11 +1,11 @@
-# ToolBox Robots.txt
-# https://daily-crafts-hub.lovable.app
+# Dailytools247 Robots.txt
+# https://dailyTools247.com
 
 User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://daily-crafts-hub.lovable.app/sitemap.xml
+Sitemap: https://dailyTools247.com/sitemap.xml
 
 # Crawl-delay for polite crawling
 Crawl-delay: 1

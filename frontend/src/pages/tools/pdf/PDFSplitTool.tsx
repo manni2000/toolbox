@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
-import { Upload, Scissors, Download, FileText, X } from "lucide-react";
+import { Upload, Scissors, FileText, X } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PDFSplitTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -201,17 +202,20 @@ const PDFSplitTool = () => {
                 <Scissors className="h-5 w-5" />
                 {isProcessing ? "Processing..." : "Split PDF"}
               </button>
-              {resultUrl && (
-                <a
-                  href={resultUrl}
-                  download="split.pdf"
-                  className="btn-secondary flex items-center gap-2"
-                >
-                  <Download className="h-5 w-5" />
-                  Download
-                </a>
-              )}
             </div>
+
+            {resultUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={resultUrl}
+                  fileName="split.pdf"
+                  fileType="pdf"
+                  title="PDF Split Successfully"
+                  description={`Your PDF has been split according to your specifications`}
+                  fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

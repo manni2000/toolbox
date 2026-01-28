@@ -1,6 +1,9 @@
 import { useState, useRef } from "react";
-import { Upload, Lock, Download, FileText, X, Eye, EyeOff } from "lucide-react";
+import { Upload, Lock, Download, FileText, X, Eye, EyeOff, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PDFPasswordTool = () => {
   const [file, setFile] = useState<File | null>(null);

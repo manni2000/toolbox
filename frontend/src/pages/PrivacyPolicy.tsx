@@ -38,7 +38,7 @@ const PrivacyPolicy = () => {
                 <div className="rounded-xl border border-border bg-card p-6">
                   <h2 className="text-xl font-semibold mb-4">Introduction</h2>
                   <p className="text-muted-foreground">
-                    Welcome to ToolBox. We respect your privacy and are committed to protecting your personal data. 
+                    Welcome to Dailytools247. We respect your privacy and are committed to protecting your personal data. 
                     This privacy policy explains how we handle your information when you use our website and tools.
                   </p>
                 </div>
@@ -46,7 +46,7 @@ const PrivacyPolicy = () => {
                 <div className="rounded-xl border border-border bg-card p-6">
                   <h2 className="text-xl font-semibold mb-4">Information We Collect</h2>
                   <p className="text-muted-foreground mb-4">
-                    <strong>We prioritize your privacy.</strong> ToolBox is designed to process data locally in your browser whenever possible. Here's what you should know:
+                    <strong>We prioritize your privacy.</strong> Dailytools247 is designed to process data locally in your browser whenever possible. Here's what you should know:
                   </p>
                   <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                     <li><strong>Files You Upload:</strong> Files processed by our tools (images, documents, etc.) are handled entirely in your browser and are never uploaded to our servers.</li>

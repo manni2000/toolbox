@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { Music2, Upload, Download, X, Loader2 } from "lucide-react";
+import { Music2, Upload, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const AudioConverterTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -164,29 +166,15 @@ const AudioConverterTool = () => {
 
             {/* Download Section */}
             {audioData && (
-              <div ref={downloadSectionRef} className="space-y-4">
-                <h3 className="text-lg font-medium text-center">Converted Audio</h3>
-                <div className="rounded-xl border border-border bg-card overflow-hidden">
-                  <div className="p-6">
-                    <div className="mb-4 flex justify-center">
-                      <div className="w-32 h-32 bg-muted/30 rounded-lg flex items-center justify-center">
-                        <Music2 className="h-16 w-16 text-muted-foreground" />
-                      </div>
-                    </div>
-                    <div className="text-center mb-4">
-                      <p className="text-sm text-muted-foreground mb-2">Your audio has been converted to {outputFormat.toUpperCase()}</p>
-                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, `.${outputFormat}`)}</p>
-                    </div>
-                    <a
-                      href={audioData}
-                      download={`converted.${outputFormat}`}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
-                    >
-                      <Download className="h-5 w-5" />
-                      Download {outputFormat.toUpperCase()} File
-                    </a>
-                  </div>
-                </div>
+              <div ref={downloadSectionRef}>
+                <EnhancedDownload
+                  data={audioData}
+                  fileName={fileName.replace(/\.[^/.]+$/, `.${outputFormat}`)}
+                  fileType="audio"
+                  title={`Audio Converted to ${outputFormat.toUpperCase()}`}
+                  description={`Your audio file has been successfully converted to ${outputFormat.toUpperCase()} format`}
+                  fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
+                />
               </div>
             )}
           </div>

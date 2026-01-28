@@ -1,8 +1,10 @@
 import { useState, useRef } from "react";
-import { Download, Upload, Image as ImageIcon, X, RefreshCw, ArrowRight } from "lucide-react";
+import { Upload, Image as ImageIcon, X, RefreshCw, ArrowRight } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
-type OutputFormat = "image/png" | "image/jpeg" | "image/webp" | "image/gif" | "image/bmp";
+type OutputFormat = "image/png" | "image/jpeg-jpg" | "image/jpeg-jpeg" | "image/webp" | "image/gif" | "image/bmp";
 
 const ImageConverterTool = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -27,8 +29,8 @@ const ImageConverterTool = () => {
 
   const outputFormats: { value: OutputFormat; label: string; ext: string; description: string }[] = [
     { value: "image/png", label: "PNG", ext: "png", description: "Lossless, supports transparency" },
-    { value: "image/jpeg", label: "JPG", ext: "jpg", description: "Smaller size, no transparency" },
-    { value: "image/jpeg", label: "JPEG", ext: "jpeg", description: "Smaller size, no transparency" },
+    { value: "image/jpeg-jpg", label: "JPG", ext: "jpg", description: "Smaller size, no transparency" },
+    { value: "image/jpeg-jpeg", label: "JPEG", ext: "jpeg", description: "Smaller size, no transparency" },
     { value: "image/webp", label: "WebP", ext: "webp", description: "Modern format, best compression" },
     { value: "image/gif", label: "GIF", ext: "gif", description: "Supports animation, 256 colors" },
     { value: "image/bmp", label: "BMP", ext: "bmp", description: "Uncompressed bitmap" },
@@ -74,7 +76,7 @@ const ImageConverterTool = () => {
       }
 
       // Fill white background for formats that don't support transparency
-      if (outputFormat === "image/jpeg" || outputFormat === "image/bmp") {
+      if (outputFormat === "image/jpeg-jpg" || outputFormat === "image/jpeg-jpeg" || outputFormat === "image/bmp") {
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
@@ -91,6 +93,9 @@ const ImageConverterTool = () => {
       } else if (outputFormat === "image/bmp") {
         // BMP - use maximum quality
         url = canvas.toDataURL("image/png", 1);
+      } else if (outputFormat === "image/jpeg-jpg" || outputFormat === "image/jpeg-jpeg") {
+        // Both JPG and JPEG use the same canvas conversion
+        url = canvas.toDataURL("image/jpeg", 0.95);
       } else {
         url = canvas.toDataURL(outputFormat, 0.95);
       }
@@ -237,7 +242,7 @@ const ImageConverterTool = () => {
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
                 {outputFormats.map((format) => (
                   <button
-                    key={format.value}
+                    key={`${format.value}-${format.label}`}
                     onClick={() => { setOutputFormat(format.value); setConvertedUrl(null); }}
                     className={`rounded-xl p-4 text-left transition-all ${
                       outputFormat === format.value
@@ -267,24 +272,18 @@ const ImageConverterTool = () => {
                 {isConverting ? "Converting..." : "Convert"}
               </button>
               {convertedUrl && (
-                <a
-                  href={convertedUrl}
-                  download={`${getFileName()}.${getExtension()}`}
-                  className="btn-secondary flex items-center gap-2"
-                >
-                  <Download className="h-5 w-5" />
-                  Download {getExtension().toUpperCase()}
-                </a>
+                <div className="flex justify-center mt-6">
+                  <EnhancedDownload
+                    data={convertedUrl}
+                    fileName={`${getFileName()}.${getExtension()}`}
+                    fileType="image"
+                    title="Image Converted Successfully"
+                    description={`Your image has been converted to ${getExtension().toUpperCase()} format`}
+                    fileSize={image ? `${(image.size / 1024).toFixed(1)} KB` : 'Unknown size'}
+                  />
+                </div>
               )}
             </div>
-
-            {convertedUrl && (
-              <div className="rounded-lg bg-emerald-500/10 p-4 text-center">
-                <p className="font-medium text-emerald-600 dark:text-emerald-400">
-                  ✓ Conversion complete! Click download to save your {getExtension().toUpperCase()} file.
-                </p>
-              </div>
-            )}
           </div>
         )}
       </div>

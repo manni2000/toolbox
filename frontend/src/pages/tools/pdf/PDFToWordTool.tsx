@@ -3,6 +3,8 @@ import { Upload, FileText, Download, X, FileType, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PDFToWordTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -171,20 +173,15 @@ const PDFToWordTool = () => {
             </button>
 
             {docxData && (
-              <div className="flex gap-4">
-                <a
-                  href={docxData}
-                  download="converted.docx"
-                  className="btn-secondary flex items-center gap-2"
-                >
-                  <Download className="h-5 w-5" />
-                  Download Word Document
-                </a>
-                <button onClick={reset} className="btn-secondary flex items-center gap-2">
-                  <X className="h-5 w-5" />
-                  Convert Another
-                </button>
-              </div>
+              <EnhancedDownload
+                data={docxData}
+                fileName={file.name.replace(/\.[^/.]+$/, ".docx")}
+                fileType="word"
+                title="PDF Converted to Word"
+                description="Your PDF has been successfully converted to an editable Word document"
+                fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
+                pageCount={pageCount}
+              />
             )}
           </div>
         )}

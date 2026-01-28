@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { FileText, Upload, Download, X, Loader2 } from "lucide-react";
+import { FileText, Upload, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const HTMLToPDFTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -133,29 +135,15 @@ const HTMLToPDFTool = () => {
             </button>
 
             {resultData && (
-              <div ref={downloadSectionRef} className="space-y-4">
-                <h3 className="text-lg font-medium text-center">Converted PDF</h3>
-                <div className="rounded-xl border border-border bg-card overflow-hidden">
-                  <div className="p-6">
-                    <div className="mb-4 flex justify-center">
-                      <div className="w-32 h-32 bg-muted/30 rounded-lg flex items-center justify-center">
-                        <FileText className="h-16 w-16 text-muted-foreground" />
-                      </div>
-                    </div>
-                    <div className="text-center mb-4">
-                      <p className="text-sm text-muted-foreground mb-2">Your HTML has been converted to PDF</p>
-                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, ".pdf")}</p>
-                    </div>
-                    <a
-                      href={resultData}
-                      download={fileName.replace(/\.[^/.]+$/, ".pdf")}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
-                    >
-                      <Download className="h-5 w-5" />
-                      Download PDF
-                    </a>
-                  </div>
-                </div>
+              <div ref={downloadSectionRef}>
+                <EnhancedDownload
+                  data={resultData}
+                  fileName={fileName.replace(/\.[^/.]+$/, ".pdf")}
+                  fileType="pdf"
+                  title="HTML Converted to PDF"
+                  description="Your HTML file has been successfully converted to PDF format"
+                  fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
+                />
               </div>
             )}
           </div>

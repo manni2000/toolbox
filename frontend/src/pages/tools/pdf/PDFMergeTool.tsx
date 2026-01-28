@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
-import { Upload, Merge, Download, X, FileText, GripVertical } from "lucide-react";
+import { Upload, Merge, X, FileText, GripVertical } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PDFMergeTool = () => {
   const [files, setFiles] = useState<{ file: File; name: string }[]>([]);
@@ -144,16 +145,6 @@ const PDFMergeTool = () => {
             <Merge className="h-5 w-5" />
             {isProcessing ? "Merging..." : "Merge PDFs"}
           </button>
-          {mergedUrl && (
-            <a
-              href={mergedUrl}
-              download="merged.pdf"
-              className="btn-secondary flex items-center gap-2"
-            >
-              <Download className="h-5 w-5" />
-              Download
-            </a>
-          )}
         </div>
 
         {files.length === 1 && (
@@ -163,9 +154,16 @@ const PDFMergeTool = () => {
         )}
 
         {mergedUrl && (
-          <p className="text-center text-sm text-muted-foreground">
-            ✓ PDFs merged successfully! Click download to save.
-          </p>
+          <div className="flex justify-center mt-6">
+            <EnhancedDownload
+              data={mergedUrl}
+              fileName="merged.pdf"
+              fileType="pdf"
+              title="PDFs Merged Successfully"
+              description={`${files.length} PDF files have been merged into one document`}
+              fileSize={`${(files.reduce((acc, f) => acc + f.file.size, 0) / 1024 / 1024).toFixed(2)} MB`}
+            />
+          </div>
         )}
       </div>
     </ToolLayout>

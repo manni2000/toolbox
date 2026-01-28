@@ -16,13 +16,23 @@ const Header = () => {
       <div className="container">
         <div className="flex h-16 items-center justify-between lg:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-lg shadow-primary/25">
-              <Wrench className="h-5 w-5 text-primary-foreground" />
+          <Link to="/" className="flex items-center">
+            <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden">
+              <img 
+                src="/dailytools247.png" 
+                alt="dailytools247 logo" 
+                className="h-28 w-28 object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  target.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+              <Wrench className="h-16 w-16 text-primary hidden" />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col -ml-6">
               <span className="text-xl font-bold tracking-tight">
-                Tool<span className="text-primary">Box</span>
+                Daily<span className="text-primary">tools247</span>
               </span>
               <span className="hidden text-[10px] uppercase tracking-widest text-muted-foreground lg:block">
                 Free Online Tools

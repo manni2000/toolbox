@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { Gauge, Upload, Download, X, Loader2, Video } from "lucide-react";
+import { Gauge, Upload, X, Loader2, Video } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const VideoSpeedTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -189,18 +191,15 @@ const VideoSpeedTool = () => {
                         <Video className="h-16 w-16 text-muted-foreground" />
                       </div>
                     </div>
-                    <div className="text-center mb-4">
-                      <p className="text-sm text-muted-foreground mb-2">Your video has been speed-adjusted</p>
-                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, `_speed_${speedFactor}x.mp4`)}</p>
-                    </div>
-                    <a
-                      href={videoData}
-                      download={fileName.replace(/\.[^/.]+$/, `_speed_${speedFactor}x.mp4`)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
-                    >
-                      <Download className="h-5 w-5" />
-                      Download Speed-Changed Video
-                    </a>
+                    
+                    <EnhancedDownload
+                      data={videoData}
+                      fileName={fileName.replace(/\.[^/.]+$/, `_speed_${speedFactor}x.mp4`)}
+                      fileType="zip"
+                      title="Video Speed Changed Successfully"
+                      description={`Video speed adjusted to ${speedFactor}x original speed`}
+                      fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
+                    />
                   </div>
                 </div>
               </div>

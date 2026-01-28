@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { ImageIcon, Upload, Download, X, Loader2 } from "lucide-react";
+import { ImageIcon, Upload, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 interface ImageResult {
   page: number;
@@ -139,33 +141,20 @@ const PDFToImageTool = () => {
             </button>
 
             {resultImages.length > 0 && (
-              <div ref={downloadSectionRef} className="space-y-4">
-                <h3 className="text-lg font-medium text-center">Converted Images</h3>
-                <div className={resultImages.length === 1 ? "flex justify-center" : "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"}>
-                  {resultImages.map((img, index) => (
-                    <div key={index} className="rounded-lg border border-border bg-card overflow-hidden flex flex-col">
-                      <div className="p-4 flex-1 flex flex-col">
-                        <h4 className="text-sm font-medium mb-2 text-center">Page {img.page}</h4>
-                        <div className="aspect-[3/4] bg-muted/30 mb-4 rounded-md overflow-hidden flex items-center justify-center p-2 w-72 h-96 mx-auto" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <img 
-                            src={img.image} 
-                            alt={`Page ${img.page}`}
-                            className="block"
-                            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', margin: 'auto' }}
-                          />
-                        </div>
-                        <a
-                          href={img.image}
-                          download={img.filename}
-                          className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 mt-auto"
-                        >
-                          <Download className="h-4 w-4" />
-                          Download Image
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div ref={downloadSectionRef} className="flex justify-center">
+                <EnhancedDownload
+                  data={resultImages[0].image}
+                  fileName={resultImages[0].filename}
+                  fileType="image"
+                  title="PDF Converted to Images"
+                  description={`Successfully converted ${resultImages.length} pages to images`}
+                  fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
+                  multipleFiles={resultImages.map(img => ({
+                    url: img.image,
+                    name: img.filename,
+                    page: img.page
+                  }))}
+                />
               </div>
             )}
           </div>

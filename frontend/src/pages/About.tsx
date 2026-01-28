@@ -61,7 +61,7 @@ const About = () => {
                 <Wrench className="h-10 w-10 text-primary-foreground" />
               </div>
               <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
-                About <span className="gradient-text">ToolBox</span>
+                About <span className="gradient-text">Dailytools247</span>
               </h1>
               <p className="mt-6 text-lg text-muted-foreground md:text-xl">
                 We're on a mission to provide free, powerful, and privacy-focused online tools 
@@ -106,7 +106,7 @@ const About = () => {
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
                   In a world where simple online tools often come with hidden costs, intrusive ads, 
-                  or questionable data practices, ToolBox stands different. We believe that essential 
+                  or questionable data practices, Dailytools247 stands different. We believe that essential 
                   utilities should be accessible to everyone – students, professionals, creators, 
                   and everyday users alike.
                 </p>
@@ -170,7 +170,7 @@ const About = () => {
                 </div>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    ToolBox started from a simple frustration: why are basic online tools so complicated? 
+                    Dailytools247 started from a simple frustration: why are basic online tools so complicated? 
                     Why do you need to sign up just to convert an image or generate a password?
                   </p>
                   <p>
@@ -179,7 +179,7 @@ const About = () => {
                     a comprehensive platform serving thousands of users daily.
                   </p>
                   <p>
-                    Today, ToolBox offers over 50 free tools across categories like image processing, 
+                    Today, Dailytools247 offers over 50 free tools across categories like image processing, 
                     text manipulation, security, development, and more. And we're just getting started.
                   </p>
                 </div>
@@ -197,9 +197,9 @@ const About = () => {
               className="mx-auto max-w-2xl text-center"
             >
               <Heart className="mx-auto h-12 w-12 text-primary mb-6" />
-              <h2 className="text-2xl font-bold md:text-3xl">Start Using ToolBox Today</h2>
+              <h2 className="text-2xl font-bold md:text-3xl">Start Using Dailytools247 Today</h2>
               <p className="mt-4 text-muted-foreground">
-                Join thousands of users who trust ToolBox for their daily utility needs. 
+                Join thousands of users who trust Dailytools247 for their daily utility needs. 
                 No signup required – just pick a tool and get started.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">

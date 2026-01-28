@@ -46,7 +46,7 @@ const TrustSection = () => {
             viewport={{ once: true }}
             className="text-4xl font-bold tracking-tight md:text-5xl"
           >
-            Why Choose ToolBox?
+            Why Choose Dailytools247?
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}

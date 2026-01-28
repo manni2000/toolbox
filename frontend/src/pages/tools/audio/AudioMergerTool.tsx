@@ -1,9 +1,11 @@
 import { useState, useRef } from "react";
-import { Music, Upload, Trash2, ArrowUp, ArrowDown, Download, Plus, Loader2 } from "lucide-react";
+import { Music, Upload, Trash2, ArrowUp, ArrowDown, Plus, Loader2, Download } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 interface AudioItem {
   id: string;
@@ -16,6 +18,7 @@ const AudioMergerTool = () => {
   const [audioFiles, setAudioFiles] = useState<AudioItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [mergedUrl, setMergedUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -142,12 +145,8 @@ const AudioMergerTool = () => {
       const blob = new Blob([wav], { type: "audio/wav" });
       const url = URL.createObjectURL(blob);
 
-      // Download
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "merged_audio.wav";
-      a.click();
-      URL.revokeObjectURL(url);
+      // Store the merged URL for download
+      setMergedUrl(url);
 
       toast({
         title: "Success!",
@@ -324,28 +323,48 @@ const AudioMergerTool = () => {
 
         {/* Actions */}
         {audioFiles.length > 0 && (
-          <div className="flex gap-3">
-            <Button
-              onClick={mergeAudio}
-              disabled={isProcessing || audioFiles.length < 2}
-              className="flex-1"
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  Merging...
-                </>
-              ) : (
-                <>
-                  <Download className="h-4 w-4 mr-2" />
-                  Merge & Download
-                </>
-              )}
-            </Button>
-            <Button variant="outline" onClick={reset}>
-              Clear All
-            </Button>
-          </div>
+          <>
+            <div className="flex gap-3">
+              <Button
+                onClick={mergeAudio}
+                disabled={isProcessing || audioFiles.length < 2}
+                className="flex-1"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    Merging...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Merge & Download
+                  </>
+                )}
+              </Button>
+
+              <Button variant="outline" onClick={reset}>
+                Clear All
+              </Button>
+            </div>
+
+            {mergedUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={mergedUrl}
+                  fileName="merged_audio.wav"
+                  fileType="audio"
+                  title="Audio Files Merged Successfully"
+                  description={`${audioFiles.length} audio files have been merged into one track`}
+                  fileSize={`${(
+                    audioFiles.reduce((acc, item) => acc + item.file.size, 0) /
+                    1024 /
+                    1024
+                  ).toFixed(2)} MB`}
+                />
+              </div>
+            )}
+          </>
         )}
 
         {/* Info */}

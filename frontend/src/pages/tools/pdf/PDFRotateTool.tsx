@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { Upload, RotateCw, Download, FileText, X } from "lucide-react";
+import { Upload, RotateCw, FileText, X } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument, degrees } from "pdf-lib";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PDFRotateTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -168,23 +170,26 @@ const PDFRotateTool = () => {
             <div className="flex gap-4">
               <button
                 onClick={applyRotations}
-                disabled={!hasRotations || isProcessing}
+                disabled={isProcessing || Object.keys(rotations).length === 0}
                 className="btn-primary flex-1"
               >
                 <RotateCw className="h-5 w-5" />
                 {isProcessing ? "Processing..." : "Apply Rotations"}
               </button>
-              {resultUrl && (
-                <a
-                  href={resultUrl}
-                  download="rotated.pdf"
-                  className="btn-secondary flex items-center gap-2"
-                >
-                  <Download className="h-5 w-5" />
-                  Download
-                </a>
-              )}
             </div>
+
+            {resultUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={resultUrl}
+                  fileName="rotated.pdf"
+                  fileType="pdf"
+                  title="PDF Rotated Successfully"
+                  description={`Your PDF has been rotated according to your specifications`}
+                  fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

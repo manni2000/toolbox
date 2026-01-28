@@ -1,14 +1,17 @@
 import { useState, useCallback } from "react";
-import { Download, Upload, Archive, X, File } from "lucide-react";
+import { Upload, Archive, X, File } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const CreateZipTool = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [zipName, setZipName] = useState("archive");
   const [isCreating, setIsCreating] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [zipUrl, setZipUrl] = useState<string | null>(null);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -41,7 +44,8 @@ const CreateZipTool = () => {
       }
 
       const blob = await zip.generateAsync({ type: "blob" });
-      saveAs(blob, `${zipName || "archive"}.zip`);
+      const url = URL.createObjectURL(blob);
+      setZipUrl(url);
     } catch (error) {
       console.error("Error creating ZIP:", error);
     } finally {
@@ -153,6 +157,22 @@ const CreateZipTool = () => {
                 </>
               )}
             </button>
+
+            {zipUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={zipUrl}
+                  fileName={`${zipName || "archive"}.zip`}
+                  fileType="zip"
+                  title="ZIP Archive Created Successfully"
+                  description={`${files.length} file(s) compressed into ZIP archive`}
+                  fileSize={files.reduce((acc, file) => acc + file.size, 0) > 0 
+                    ? formatSize(files.reduce((acc, file) => acc + file.size, 0))
+                    : 'Unknown size'
+                  }
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -1,11 +1,13 @@
 import { useState, useRef } from "react";
-import { Mic, Upload, Download, Languages, FileText, Loader2 } from "lucide-react";
+import { Mic, Upload, Languages, FileText, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const SpeechToTextTool = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -13,6 +15,8 @@ const SpeechToTextTool = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [language, setLanguage] = useState("en-US");
   const [isDragging, setIsDragging] = useState(false);
+  const [txtUrl, setTxtUrl] = useState<string | null>(null);
+  const [srtUrl, setSrtUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -110,11 +114,7 @@ const SpeechToTextTool = () => {
     if (!transcription) return;
     const blob = new Blob([transcription], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "transcription.txt";
-    a.click();
-    URL.revokeObjectURL(url);
+    setTxtUrl(url);
   };
 
   const exportAsSRT = () => {
@@ -132,11 +132,7 @@ const SpeechToTextTool = () => {
     
     const blob = new Blob([srtContent], { type: "text/srt" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "transcription.srt";
-    a.click();
-    URL.revokeObjectURL(url);
+    setSrtUrl(url);
   };
 
   const formatSRTTime = (seconds: number) => {
@@ -248,12 +244,12 @@ const SpeechToTextTool = () => {
               <h3 className="text-lg font-semibold">Transcription Result</h3>
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" onClick={exportAsTXT}>
-                  <Download className="h-4 w-4 mr-1" />
-                  TXT
+                  <FileText className="h-4 w-4 mr-1" />
+                  Export TXT
                 </Button>
                 <Button size="sm" variant="outline" onClick={exportAsSRT}>
-                  <Download className="h-4 w-4 mr-1" />
-                  SRT
+                  <FileText className="h-4 w-4 mr-1" />
+                  Export SRT
                 </Button>
               </div>
             </div>
@@ -263,6 +259,33 @@ const SpeechToTextTool = () => {
               rows={10}
               className="font-mono"
             />
+
+            {/* Download Sections */}
+            {txtUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={txtUrl}
+                  fileName="transcription.txt"
+                  fileType="word"
+                  title="Transcription Exported as TXT"
+                  description={`Plain text transcription in ${language} language`}
+                  fileSize={`${transcription.length} characters`}
+                />
+              </div>
+            )}
+
+            {srtUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={srtUrl}
+                  fileName="transcription.srt"
+                  fileType="word"
+                  title="Transcription Exported as SRT"
+                  description={`Subtitle file with timestamps for video editing`}
+                  fileSize={`${transcription.length} characters`}
+                />
+              </div>
+            )}
           </div>
         )}
 

@@ -391,7 +391,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-10 flex flex-col items-center justify-center gap-4 border-t border-border pt-8">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} ToolBox. All rights reserved.
+            © {new Date().getFullYear()} Dailytools247. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground">

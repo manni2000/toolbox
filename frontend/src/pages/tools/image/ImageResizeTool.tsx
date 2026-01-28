@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
-import { Download, Upload, Image as ImageIcon, X, Maximize2 } from "lucide-react";
+import { Upload, Image as ImageIcon, X, Maximize2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const ImageResizeTool = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -222,22 +224,20 @@ const ImageResizeTool = () => {
                 <Maximize2 className="h-5 w-5" />
                 Resize Image
               </button>
-              {resizedUrl && (
-                <a
-                  href={resizedUrl}
-                  download={`resized-${width}x${height}.png`}
-                  className="btn-secondary flex items-center gap-2"
-                >
-                  <Download className="h-5 w-5" />
-                  Download
-                </a>
-              )}
             </div>
 
             {resizedUrl && (
-              <p className="text-center text-sm text-muted-foreground">
-                ✓ Resized to {width} × {height}px. Click download to save.
-              </p>
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={resizedUrl}
+                  fileName={`resized-${width}x${height}.png`}
+                  fileType="image"
+                  title="Image Resized Successfully"
+                  description={`Original: ${originalSize?.width}×${originalSize?.height}px → Resized: ${width}×${height}px`}
+                  fileSize={image ? `${(image.size / 1024).toFixed(1)} KB` : 'Unknown size'}
+                  dimensions={{ width, height }}
+                />
+              </div>
             )}
           </div>
         )}

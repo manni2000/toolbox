@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import { Scissors, Upload, Play, Pause, Download, RotateCcw } from "lucide-react";
+import { Scissors, Upload, Play, Pause, RotateCcw } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const AudioTrimmerTool = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -16,6 +18,7 @@ const AudioTrimmerTool = () => {
   const [endTime, setEndTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [trimmedUrl, setTrimmedUrl] = useState<string | null>(null);
   
   const audioRef = useRef<HTMLAudioElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -136,11 +139,7 @@ const AudioTrimmerTool = () => {
 
     const blob = new Blob([JSON.stringify(trimInfo, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${audioFile.name.replace(/\.[^.]+$/, "")}_trim_info.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    setTrimmedUrl(url);
   };
 
   const reset = () => {
@@ -330,9 +329,22 @@ const AudioTrimmerTool = () => {
 
             {/* Download */}
             <Button onClick={downloadTrimmed} className="w-full">
-              <Download className="h-4 w-4 mr-2" />
-              Download Trimmed Audio
+              <Scissors className="h-4 w-4 mr-2" />
+              Trim Audio
             </Button>
+
+            {trimmedUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={trimmedUrl}
+                  fileName={`${audioFile.name.replace(/\.[^.]+$/, "")}_trim_info.json`}
+                  fileType="zip"
+                  title="Audio Trim Info Ready"
+                  description={`Trim markers for ${formatTime(startTime)} to ${formatTime(endTime)}`}
+                  fileSize={audioFile ? `${(audioFile.size / 1024).toFixed(1)} KB` : 'Unknown size'}
+                />
+              </div>
+            )}
 
             {/* Info */}
             <Card className="p-4 bg-muted/50">

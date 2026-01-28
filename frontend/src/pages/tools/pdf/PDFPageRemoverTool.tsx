@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { Upload, Trash2, Download, FileText, X } from "lucide-react";
+import { Upload, Trash2, FileText, X } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PDFPageRemoverTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -139,23 +141,26 @@ const PDFPageRemoverTool = () => {
             <div className="flex gap-4">
               <button
                 onClick={removePages}
-                disabled={pagesToRemove.length === 0 || isProcessing || pagesToRemove.length === pageCount}
+                disabled={isProcessing || pagesToRemove.length === 0 || pagesToRemove.length === pageCount}
                 className="btn-primary flex-1"
               >
                 <Trash2 className="h-5 w-5" />
                 {isProcessing ? "Processing..." : "Remove Pages"}
               </button>
-              {resultUrl && (
-                <a
-                  href={resultUrl}
-                  download="modified.pdf"
-                  className="btn-secondary flex items-center gap-2"
-                >
-                  <Download className="h-5 w-5" />
-                  Download
-                </a>
-              )}
             </div>
+
+            {resultUrl && (
+              <div className="flex justify-center mt-6">
+                <EnhancedDownload
+                  data={resultUrl}
+                  fileName="modified.pdf"
+                  fileType="pdf"
+                  title="Pages Removed Successfully"
+                  description={`${pagesToRemove.length} page(s) have been removed from your PDF`}
+                  fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
+                />
+              </div>
+            )}
 
             {pagesToRemove.length === pageCount && (
               <p className="text-center text-sm text-destructive">

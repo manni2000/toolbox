@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { Music, Upload, Download, X, Loader2 } from "lucide-react";
+import { Music, Upload, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const VideoToAudioTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -175,11 +177,6 @@ const VideoToAudioTool = () => {
                         <Music className="h-16 w-16 text-muted-foreground" />
                       </div>
                     </div>
-                    <div className="text-center mb-4">
-                      <p className="text-sm text-muted-foreground mb-2">Audio has been extracted from your video</p>
-                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, `.${audioFormat}`)}</p>
-                    </div>
-                    
                     {/* Audio Preview Player */}
                     <div className="mb-6">
                       <div className="bg-muted/20 rounded-lg p-4">
@@ -197,14 +194,14 @@ const VideoToAudioTool = () => {
                       </div>
                     </div>
                     
-                    <a
-                      href={audioData}
-                      download={fileName.replace(/\.[^/.]+$/, `.${audioFormat}`)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
-                    >
-                      <Download className="h-5 w-5" />
-                      Download {audioFormat.toUpperCase()} File
-                    </a>
+                    <EnhancedDownload
+                      data={audioData}
+                      fileName={fileName.replace(/\.[^/.]+$/, `.${audioFormat}`)}
+                      fileType="audio"
+                      title="Audio Extracted Successfully"
+                      description={`Video converted to ${audioFormat.toUpperCase()} format with audio preview`}
+                      fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
+                    />
                   </div>
                 </div>
               </div>

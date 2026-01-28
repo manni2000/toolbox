@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Download, Link2, AlertCircle, Youtube, Instagram, Facebook, Film, Loader2 } from "lucide-react";
+import { Link2, AlertCircle, Youtube, Instagram, Facebook, Film, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 type Platform = "youtube" | "instagram" | "facebook" | "unknown";
 
@@ -10,6 +12,8 @@ const VideoDownloaderTool = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [videoInfo, setVideoInfo] = useState<any>(null);
+  const [downloadedUrl, setDownloadedUrl] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>("");
 
   const detectPlatform = (inputUrl: string): Platform => {
     const lower = inputUrl.toLowerCase();
@@ -49,14 +53,10 @@ const VideoDownloaderTool = () => {
       if (data.success) {
         setVideoInfo(data.info);
         
-        // If video data is returned, trigger download
+        // If video data is returned, store for download
         if (data.video) {
-          const link = document.createElement('a');
-          link.href = data.video;
-          link.download = data.filename;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          setDownloadedUrl(data.video);
+          setFileName(data.filename || 'video.mp4');
         } else if (data.info?.download_blocked) {
           // Show message for blocked downloads
           setError(`Download blocked: ${data.info.block_reason}. ${data.message || ''}`);
@@ -320,11 +320,24 @@ const VideoDownloaderTool = () => {
             </>
           ) : (
             <>
-              <Download className="h-5 w-5" />
+              <Film className="h-5 w-5" />
               Download Video
             </>
           )}
         </button>
+
+        {downloadedUrl && (
+          <div className="flex justify-center mt-6">
+            <EnhancedDownload
+              data={downloadedUrl}
+              fileName={fileName}
+              fileType="zip"
+              title="Video Downloaded Successfully"
+              description={`Video from ${currentPlatform.name} ready for download`}
+              fileSize="Unknown size"
+            />
+          </div>
+        )}
       </div>
     </ToolLayout>
   );

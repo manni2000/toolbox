@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
-import { Upload, Unlock, Download, FileText, X, Key } from "lucide-react";
+import { Upload, Unlock, FileText, X, Key } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PDFUnlockTool = () => {
   const [file, setFile] = useState<File | null>(null);

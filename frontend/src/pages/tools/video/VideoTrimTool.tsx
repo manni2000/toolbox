@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { Scissors, Upload, Download, X, Loader2, Video } from "lucide-react";
+import { Scissors, Upload, X, Loader2, Video } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const VideoTrimTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -190,18 +192,15 @@ const VideoTrimTool = () => {
                         <Video className="h-16 w-16 text-muted-foreground" />
                       </div>
                     </div>
-                    <div className="text-center mb-4">
-                      <p className="text-sm text-muted-foreground mb-2">Your video has been trimmed</p>
-                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, "_trimmed.mp4")}</p>
-                    </div>
-                    <a
-                      href={videoData}
-                      download={fileName.replace(/\.[^/.]+$/, "_trimmed.mp4")}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
-                    >
-                      <Download className="h-5 w-5" />
-                      Download Trimmed Video
-                    </a>
+                    
+                    <EnhancedDownload
+                      data={videoData}
+                      fileName={fileName.replace(/\.[^/.]+$/, "_trimmed.mp4")}
+                      fileType="zip"
+                      title="Video Trimmed Successfully"
+                      description={`Video trimmed from ${startTime}s to ${endTime}s`}
+                      fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
+                    />
                   </div>
                 </div>
               </div>

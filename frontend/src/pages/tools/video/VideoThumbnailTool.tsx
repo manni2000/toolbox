@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
-import { Camera, Upload, Download, X, Loader2, Video } from "lucide-react";
+import { Camera, Upload, X, Loader2, Video } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const VideoThumbnailTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -178,18 +180,15 @@ const VideoThumbnailTool = () => {
                         )}
                       </div>
                     </div>
-                    <div className="text-center mb-4">
-                      <p className="text-sm text-muted-foreground mb-2">Thumbnail extracted from your video</p>
-                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, "_thumbnail.png")}</p>
-                    </div>
-                    <a
-                      href={thumbnailData}
-                      download={fileName.replace(/\.[^/.]+$/, "_thumbnail.png")}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full"
-                    >
-                      <Download className="h-5 w-5" />
-                      Download Thumbnail
-                    </a>
+                    
+                    <EnhancedDownload
+                      data={thumbnailData}
+                      fileName={fileName.replace(/\.[^/.]+$/, "_thumbnail.png")}
+                      fileType="image"
+                      title="Thumbnail Generated Successfully"
+                      description={`Video thumbnail captured at ${thumbnailTime}s from ${fileName}`}
+                      fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
+                    />
                   </div>
                 </div>
               </div>

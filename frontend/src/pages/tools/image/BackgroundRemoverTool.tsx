@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import { Upload, Eraser, Image as ImageIcon, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const BackgroundRemoverTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -174,44 +176,15 @@ const BackgroundRemoverTool = () => {
             </button>
             
             {processedImage && (
-              <div ref={downloadSectionRef} className="space-y-4">
-                <h3 className="text-lg font-medium text-center">Background Removed</h3>
-                <div className="rounded-xl border border-border bg-card overflow-hidden">
-                  <div className="p-6">
-                    <div className="mb-4 flex justify-center">
-                      <div className="w-32 h-32 bg-muted/30 rounded-lg overflow-hidden flex items-center justify-center">
-                        {processedImage && (
-                          <img 
-                            src={processedImage} 
-                            alt="Processed image" 
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                      </div>
-                    </div>
-                    <div className="text-center mb-4">
-                      <p className="text-sm text-muted-foreground mb-2">Background has been removed from your image</p>
-                      <p className="font-medium">{fileName.replace(/\.[^/.]+$/, "_no_bg.png")}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <a
-                        href={processedImage}
-                        download={`no_bg_${fileName}`}
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 flex-1"
-                      >
-                        <ImageIcon className="h-5 w-5" />
-                        Download Image
-                      </a>
-                      <button 
-                        onClick={reset} 
-                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                      >
-                        <X className="h-5 w-5" />
-                        Start Over
-                      </button>
-                    </div>
-                  </div>
-                </div>
+              <div ref={downloadSectionRef}>
+                <EnhancedDownload
+                  data={processedImage}
+                  fileName={fileName.replace(/\.[^/.]+$/, "_no_bg.png")}
+                  fileType="image"
+                  title="Background Removed Successfully"
+                  description="The background has been automatically removed from your image"
+                  fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
+                />
               </div>
             )}
           </div>
