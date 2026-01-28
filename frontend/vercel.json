@@ -3,7 +3,12 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/next"
+      "use": "@vercel/static-build",
+      "config": {
+        "installCommand": "npm install --no-audit --no-fund --legacy-peer-deps",
+        "buildCommand": "npm run build",
+        "outputDirectory": "dist"
+      }
     }
   ],
   "routes": [
@@ -14,7 +19,7 @@
   ],
   "headers": [
     {
-      "source": "/_next/static/(.*)",
+      "source": "/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -96,11 +101,7 @@
       "permanent": true
     }
   ],
-  "build": {
-    "env": {
-      "NEXT_TELEMETRY_DISABLED": "1"
-    }
-  },
+  "build": {},
   "env": {
     "NODE_ENV": "production"
   },
