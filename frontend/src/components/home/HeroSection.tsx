@@ -121,7 +121,7 @@ const HeroSection = () => {
             transition={{ delay: 0.3 }}
             className="mx-auto mt-8 max-w-2xl text-lg text-primary-foreground/70 md:text-xl lg:text-2xl"
           >
-            95+ powerful tools for images, pdfs, videos, education, and more. 
+            100+ powerful tools for images, pdfs, videos, education, and more. 
             <span className="font-medium text-primary-foreground"> Fast, private, and browser-based.</span>
           </motion.p>
 
@@ -232,7 +232,7 @@ const HeroSection = () => {
             transition={{ delay: 0.6 }}
             className="mt-20 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8"
           >
-            <StatCard icon={Zap} value="95+" label="Free Tools" delay={0.7} />
+            <StatCard icon={Zap} value="100+" label="Free Tools" delay={0.7} />
             <StatCard icon={Shield} value="100%" label="Privacy Safe" delay={0.8} />
             <StatCard icon={Sparkles} value="Zero" label="Ads or Pop-ups" delay={0.9} />
             <StatCard icon={TrendingUp} value="10K+" label="Daily Users" delay={1.0} />

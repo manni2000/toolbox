@@ -84,8 +84,8 @@ const AgeCalculatorTool = () => {
     <ToolLayout
       title="Age Calculator"
       description="Calculate your exact age from your birthdate"
-      category="Education Tools"
-      categoryPath="/category/education"
+      category="Date & Time Tools"
+      categoryPath="/category/date-time"
     >
       <div className="mx-auto max-w-2xl space-y-8">
         {/* Input Section */}

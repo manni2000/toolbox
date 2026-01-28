@@ -67,7 +67,6 @@ import LineSorterTool from "./pages/tools/text/LineSorterTool";
 import DuplicateRemoverTool from "./pages/tools/text/DuplicateRemoverTool";
 import TextSummarizerTool from "./pages/tools/text/TextSummarizerTool";
 import TextDiffTool from "./pages/tools/text/TextDiffTool";
-import MemeGeneratorTool from "./pages/tools/text/MemeGeneratorTool";
 
 // Security Tools
 import PasswordGeneratorTool from "./pages/tools/security/PasswordGeneratorTool";
@@ -75,12 +74,21 @@ import PasswordStrengthTool from "./pages/tools/security/PasswordStrengthTool";
 import HashGeneratorTool from "./pages/tools/security/HashGeneratorTool";
 import Base64Tool from "./pages/tools/security/Base64Tool";
 import UUIDGeneratorTool from "./pages/tools/security/UUIDGeneratorTool";
+import PasswordStrengthExplainerTool from "./pages/tools/security/PasswordStrengthExplainerTool";
+import DataBreachEmailCheckerTool from "./pages/tools/security/DataBreachEmailCheckerTool";
+import FileHashComparisonTool from "./pages/tools/security/FileHashComparisonTool";
+import EXIFLocationRemoverTool from "./pages/tools/security/EXIFLocationRemoverTool";
+import TextRedactionTool from "./pages/tools/security/TextRedactionTool";
+import QRPhishingScannerTool from "./pages/tools/security/QRPhishingScannerTool";
+import SecureNotesTool from "./pages/tools/security/SecureNotesTool";
+import URLReputationCheckerTool from "./pages/tools/security/URLReputationCheckerTool";
 
 // Date & Time Tools
-import AgeCalculatorTool from "./pages/tools/date-time/AgeCalculatorTool";
 import DateDifferenceTool from "./pages/tools/date-time/DateDifferenceTool";
 import WorkingDaysTool from "./pages/tools/date-time/WorkingDaysTool";
 import CountdownTimerTool from "./pages/tools/date-time/CountdownTimerTool";
+import WorldTimeTool from "./pages/tools/date-time/WorldTimeTool";
+import AgeCalculatorTool from "./pages/tools/date-time/AgeCalculatorTool";
 
 // Developer Tools
 import JSONFormatterTool from "./pages/tools/dev/JSONFormatterTool";
@@ -89,13 +97,22 @@ import URLEncoderTool from "./pages/tools/dev/URLEncoderTool";
 import ColorConverterTool from "./pages/tools/dev/ColorConverterTool";
 import LoremGeneratorTool from "./pages/tools/dev/LoremGeneratorTool";
 import JWTDecoderTool from "./pages/tools/dev/JWTDecoderTool";
-import URLShortenerTool from "./pages/tools/dev/URLShortenerTool";
-import SitemapGeneratorTool from "./pages/tools/dev/SitemapGeneratorTool";
-import RobotsTxtTool from "./pages/tools/dev/RobotsTxtTool";
 import CronGeneratorTool from "./pages/tools/dev/CronGeneratorTool";
 import HTTPHeaderTool from "./pages/tools/dev/HTTPHeaderTool";
 import WebsiteScreenshotTool from "./pages/tools/dev/WebsiteScreenshotTool";
 import TokenCalculatorTool from "./pages/tools/dev/TokenCalculatorTool";
+import ColorPalettesTool from "./pages/tools/dev/ColorPalettesTool";
+
+// New Developer Tools
+import APIResponseFormatterTool from "./pages/tools/dev/APIResponseFormatterTool";
+import JsonToTypeScriptTool from "./pages/tools/dev/JsonToTypeScriptTool";
+import SQLQueryBeautifierTool from "./pages/tools/dev/SQLQueryBeautifierTool";
+import JWTExpiryTool from "./pages/tools/dev/JWTExpiryTool";
+import EnvironmentVariableTool from "./pages/tools/dev/EnvironmentVariableTool";
+import PostmanCollectionTool from "./pages/tools/dev/PostmanCollectionTool";
+import DockerfileGeneratorTool from "./pages/tools/dev/DockerfileGeneratorTool";
+import CurlToAxiosTool from "./pages/tools/dev/CurlToAxiosTool";
+import HTTPStatusCodeTool from "./pages/tools/dev/HTTPStatusCodeTool";
 
 // Internet Tools
 import IPLookupTool from "./pages/tools/internet/IPLookupTool";
@@ -112,12 +129,37 @@ import CompoundInterestTool from "./pages/tools/education/CompoundInterestTool";
 import SimpleInterestTool from "./pages/tools/education/SimpleInterestTool";
 import CGPAToPercentageTool from "./pages/tools/education/CGPAToPercentageTool";
 import LCMHCFTool from "./pages/tools/education/LCMHCFTool";
+import StudyTimetableTool from "./pages/tools/education/StudyTimetableTool";
+import MCQGeneratorTool from "./pages/tools/education/MCQGeneratorTool";
 
 // Finance Tools
 import EMICalculatorTool from "./pages/tools/finance/EMICalculatorTool";
 import GSTCalculatorTool from "./pages/tools/finance/GSTCalculatorTool";
 import SalaryCalculatorTool from "./pages/tools/finance/SalaryCalculatorTool";
 import CurrencyConverterTool from "./pages/tools/finance/CurrencyConverterTool";
+import StartupBurnRateCalculatorTool from "./pages/tools/finance/StartupBurnRateCalculatorTool";
+import SaaSPricingCalculatorTool from "./pages/tools/finance/SaaSPricingCalculatorTool";
+import EMIComparisonTool from "./pages/tools/finance/EMIComparisonTool";
+import TaxSlabAnalyzerTool from "./pages/tools/finance/TaxSlabAnalyzerTool";
+import InvoiceGeneratorTool from "./pages/tools/finance/InvoiceGeneratorTool";
+import ProfitMarginCalculatorTool from "./pages/tools/finance/ProfitMarginCalculatorTool";
+import FreelancerRateCalculatorTool from "./pages/tools/finance/FreelancerRateCalculatorTool";
+import SalaryBreakupGeneratorTool from "./pages/tools/finance/SalaryBreakupGeneratorTool";
+import BudgetPlannerTool from "./pages/tools/finance/BudgetPlannerTool";
+import StockCAGRCalculatorTool from "./pages/tools/finance/StockCAGRCalculatorTool";
+
+// SEO Tools
+import MetaTitleDescriptionTool from "./pages/tools/seo/MetaTitleDescriptionTool";
+import KeywordDensityTool from "./pages/tools/seo/KeywordDensityTool";
+import RobotsTxtTool from "./pages/tools/seo/RobotsTxtTool";
+import SitemapValidatorTool from "./pages/tools/seo/SitemapValidatorTool";
+import PageSpeedChecklistTool from "./pages/tools/seo/PageSpeedChecklistTool";
+import OGImagePreviewTool from "./pages/tools/seo/OGImagePreviewTool";
+import BrokenImageFinderTool from "./pages/tools/seo/BrokenImageFinderTool";
+import UTMLinkBuilderTool from "./pages/tools/seo/UTMLinkBuilderTool";
+import DomainAgeTool from "./pages/tools/seo/DomainAgeTool";
+import TechStackDetectorTool from "./pages/tools/seo/TechStackDetectorTool";
+import PageSEOTool from "./pages/tools/seo/PageSEOTool";
 
 // ZIP Tools
 import CreateZipTool from "./pages/tools/zip/CreateZipTool";
@@ -131,6 +173,7 @@ import BioGeneratorTool from "./pages/tools/social/BioGeneratorTool";
 import CaptionFormatterTool from "./pages/tools/social/CaptionFormatterTool";
 import LineBreakGeneratorTool from "./pages/tools/social/LineBreakGeneratorTool";
 import LinkInBioTool from "./pages/tools/social/LinkInBioTool";
+import MemeGeneratorTool from "./pages/tools/social/MemeGeneratorTool";
 
 const queryClient = new QueryClient();
 
@@ -157,6 +200,7 @@ const App = () => (
           <Route path="/image-resize" element={<ImageResizeTool />} />
           <Route path="/image-crop" element={<ImageCropTool />} />
           <Route path="/background-remover" element={<BackgroundRemoverTool />} />
+          <Route path="/whatsapp-status-generator" element={<WhatsAppStatusTool />} />
           <Route path="/image-base64" element={<ImageBase64Tool />} />
           <Route path="/image-dpi-checker" element={<ImageDPITool />} />
           <Route path="/exif-viewer" element={<EXIFViewerTool />} />
@@ -203,7 +247,6 @@ const App = () => (
           <Route path="/duplicate-remover" element={<DuplicateRemoverTool />} />
           <Route path="/text-summarizer" element={<TextSummarizerTool />} />
           <Route path="/text-diff" element={<TextDiffTool />} />
-          <Route path="/meme-generator" element={<MemeGeneratorTool />} />
           
           {/* Security Tools */}
           <Route path="/password-generator" element={<PasswordGeneratorTool />} />
@@ -211,12 +254,21 @@ const App = () => (
           <Route path="/hash-generator" element={<HashGeneratorTool />} />
           <Route path="/base64-encoder" element={<Base64Tool />} />
           <Route path="/uuid-generator" element={<UUIDGeneratorTool />} />
+          <Route path="/password-strength-explainer" element={<PasswordStrengthExplainerTool />} />
+          <Route path="/data-breach-email-checker" element={<DataBreachEmailCheckerTool />} />
+          <Route path="/file-hash-comparison" element={<FileHashComparisonTool />} />
+          <Route path="/exif-location-remover" element={<EXIFLocationRemoverTool />} />
+          <Route path="/text-redaction" element={<TextRedactionTool />} />
+          <Route path="/qr-phishing-scanner" element={<QRPhishingScannerTool />} />
+          <Route path="/secure-notes" element={<SecureNotesTool />} />
+          <Route path="/url-reputation-checker" element={<URLReputationCheckerTool />} />
           
           {/* Date & Time Tools */}
           <Route path="/age-calculator" element={<AgeCalculatorTool />} />
           <Route path="/date-difference" element={<DateDifferenceTool />} />
           <Route path="/working-days-calculator" element={<WorkingDaysTool />} />
           <Route path="/countdown-timer" element={<CountdownTimerTool />} />
+          <Route path="/world-time" element={<WorldTimeTool />} />
           
           {/* Developer Tools */}
           <Route path="/json-formatter" element={<JSONFormatterTool />} />
@@ -225,13 +277,20 @@ const App = () => (
           <Route path="/color-converter" element={<ColorConverterTool />} />
           <Route path="/lorem-ipsum-generator" element={<LoremGeneratorTool />} />
           <Route path="/jwt-decoder" element={<JWTDecoderTool />} />
-          <Route path="/url-shortener" element={<URLShortenerTool />} />
-          <Route path="/sitemap-generator" element={<SitemapGeneratorTool />} />
-          <Route path="/robots-txt-checker" element={<RobotsTxtTool />} />
           <Route path="/cron-generator" element={<CronGeneratorTool />} />
           <Route path="/http-header-checker" element={<HTTPHeaderTool />} />
           <Route path="/website-screenshot" element={<WebsiteScreenshotTool />} />
           <Route path="/token-calculator" element={<TokenCalculatorTool />} />
+          <Route path="/color-palettes" element={<ColorPalettesTool />} />
+          <Route path="/api-response-formatter" element={<APIResponseFormatterTool />} />
+          <Route path="/json-to-typescript-interface" element={<JsonToTypeScriptTool />} />
+          <Route path="/sql-query-beautifier" element={<SQLQueryBeautifierTool />} />
+          <Route path="/jwt-token-expiry-calculator" element={<JWTExpiryTool />} />
+          <Route path="/environment-variable-generator" element={<EnvironmentVariableTool />} />
+          <Route path="/postman-collection-generator" element={<PostmanCollectionTool />} />
+          <Route path="/dockerfile-generator" element={<DockerfileGeneratorTool />} />
+          <Route path="/curl-to-axios-converter" element={<CurlToAxiosTool />} />
+          <Route path="/http-status-code-explainer" element={<HTTPStatusCodeTool />} />
           
           {/* Internet Tools */}
           <Route path="/ip-lookup" element={<IPLookupTool />} />
@@ -248,12 +307,37 @@ const App = () => (
           <Route path="/simple-interest-calculator" element={<SimpleInterestTool />} />
           <Route path="/cgpa-to-percentage" element={<CGPAToPercentageTool />} />
           <Route path="/lcm-hcf-calculator" element={<LCMHCFTool />} />
+          <Route path="/study-timetable-generator" element={<StudyTimetableTool />} />
+          <Route path="/mcq-generator" element={<MCQGeneratorTool />} />
           
           {/* Finance Tools */}
           <Route path="/emi-calculator" element={<EMICalculatorTool />} />
           <Route path="/gst-calculator" element={<GSTCalculatorTool />} />
           <Route path="/salary-calculator" element={<SalaryCalculatorTool />} />
           <Route path="/currency-converter" element={<CurrencyConverterTool />} />
+          <Route path="/startup-burn-rate-calculator" element={<StartupBurnRateCalculatorTool />} />
+          <Route path="/saas-pricing-calculator" element={<SaaSPricingCalculatorTool />} />
+          <Route path="/emi-comparison" element={<EMIComparisonTool />} />
+          <Route path="/tax-slab-analyzer" element={<TaxSlabAnalyzerTool />} />
+          <Route path="/invoice-generator" element={<InvoiceGeneratorTool />} />
+          <Route path="/profit-margin-calculator" element={<ProfitMarginCalculatorTool />} />
+          <Route path="/freelancer-rate-calculator" element={<FreelancerRateCalculatorTool />} />
+          <Route path="/salary-breakup-generator" element={<SalaryBreakupGeneratorTool />} />
+          <Route path="/budget-planner" element={<BudgetPlannerTool />} />
+          <Route path="/stock-cagr-calculator" element={<StockCAGRCalculatorTool />} />
+          
+          {/* SEO Tools */}
+          <Route path="/meta-title-description-generator" element={<MetaTitleDescriptionTool />} />
+          <Route path="/keyword-density-checker" element={<KeywordDensityTool />} />
+          <Route path="/robots-txt-generator" element={<RobotsTxtTool />} />
+          <Route path="/sitemap-validator" element={<SitemapValidatorTool />} />
+          <Route path="/page-speed-checklist-generator" element={<PageSpeedChecklistTool />} />
+          <Route path="/og-image-preview-tool" element={<OGImagePreviewTool />} />
+          <Route path="/broken-image-finder" element={<BrokenImageFinderTool />} />
+          <Route path="/utm-link-builder" element={<UTMLinkBuilderTool />} />
+          <Route path="/domain-age-checker" element={<DomainAgeTool />} />
+          <Route path="/tech-stack-detector" element={<TechStackDetectorTool />} />
+          <Route path="/page-seo-analyzer" element={<PageSEOTool />} />
           
           {/* ZIP Tools */}
           <Route path="/create-zip" element={<CreateZipTool />} />
@@ -267,7 +351,7 @@ const App = () => (
           <Route path="/caption-formatter" element={<CaptionFormatterTool />} />
           <Route path="/line-break-generator" element={<LineBreakGeneratorTool />} />
           <Route path="/link-in-bio" element={<LinkInBioTool />} />
-          <Route path="/whatsapp-status-generator" element={<WhatsAppStatusTool />} />
+          <Route path="/meme-generator" element={<MemeGeneratorTool />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>

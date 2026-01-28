@@ -4,6 +4,7 @@ import HeroSection from "@/components/home/HeroSection";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import PopularTools from "@/components/home/PopularTools";
 import TrustSection from "@/components/home/TrustSection";
+import HowItWorks from "@/components/home/HowItWorks";
 import ContactSection from "@/components/home/ContactSection";
 
 const Index = () => {
@@ -14,6 +15,7 @@ const Index = () => {
         <HeroSection />
         <PopularTools />
         <CategoryGrid />
+        <HowItWorks />
         <TrustSection />
         <ContactSection />
       </main>

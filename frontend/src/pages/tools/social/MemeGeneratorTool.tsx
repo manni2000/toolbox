@@ -1,0 +1,436 @@
+import { useState, useRef } from "react";
+import { Smile, Download, Type, Image as ImageIcon, Upload, X, Palette, AlignLeft, AlignCenter, AlignRight, Sparkles, RotateCw, RefreshCw } from "lucide-react";
+import ToolLayout from "@/components/layout/ToolLayout";
+
+const MemeGeneratorTool = () => {
+  const [topText, setTopText] = useState("");
+  const [bottomText, setBottomText] = useState("");
+  const [image, setImage] = useState<string | null>(null);
+  const [memeUrl, setMemeUrl] = useState<string | null>(null);
+  const [fontSize, setFontSize] = useState(48);
+  const [textColor, setTextColor] = useState("#ffffff");
+  const [strokeColor, setStrokeColor] = useState("#000000");
+  const [strokeWidth, setStrokeWidth] = useState(3);
+  const [textAlign, setTextAlign] = useState<"left" | "center" | "right">("center");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const fontOptions = [
+    { name: "Impact", value: "Impact, Arial Black, sans-serif" },
+    { name: "Arial Black", value: "Arial Black, sans-serif" },
+    { name: "Comic Sans", value: "Comic Sans MS, cursive" },
+    { name: "Helvetica", value: "Helvetica, Arial, sans-serif" },
+  ];
+
+  const presetColors = [
+    "#ffffff", "#000000", "#ff0000", "#00ff00", "#0000ff", "#ffff00",
+    "#ff00ff", "#00ffff", "#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4"
+  ];
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => setImage(ev.target?.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const generateMeme = async () => {
+    setIsGenerating(true);
+    
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    canvas.width = 600;
+    canvas.height = 600;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    if (image) {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0, 600, 600);
+        drawText(ctx);
+        setMemeUrl(canvas.toDataURL("image/png", 0.95));
+        setIsGenerating(false);
+      };
+      img.onerror = () => {
+        // Fallback if image fails to load
+        createPlaceholder(ctx);
+        drawText(ctx);
+        setMemeUrl(canvas.toDataURL("image/png", 0.95));
+        setIsGenerating(false);
+      };
+      img.src = image;
+    } else {
+      createPlaceholder(ctx);
+      drawText(ctx);
+      setMemeUrl(canvas.toDataURL("image/png", 0.95));
+      setIsGenerating(false);
+    }
+  };
+
+  const createPlaceholder = (ctx: CanvasRenderingContext2D) => {
+    // Create gradient background
+    const gradient = ctx.createLinearGradient(0, 0, 600, 600);
+    gradient.addColorStop(0, "#667eea");
+    gradient.addColorStop(1, "#764ba2");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 600, 600);
+
+    // Add placeholder text
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "24px Arial, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Upload an image or select a template", 300, 280);
+    ctx.fillText("to create your meme", 300, 320);
+  };
+
+  const drawText = (ctx: CanvasRenderingContext2D) => {
+    ctx.fillStyle = textColor;
+    ctx.strokeStyle = strokeColor;
+    ctx.lineWidth = strokeWidth;
+    ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
+
+    // Set text alignment
+    let textX: number;
+    if (textAlign === "left") {
+      ctx.textAlign = "left";
+      textX = 30;
+    } else if (textAlign === "right") {
+      ctx.textAlign = "right";
+      textX = 570;
+    } else {
+      ctx.textAlign = "center";
+      textX = 300;
+    }
+
+    // Top text
+    if (topText) {
+      const lines = wrapText(ctx, topText.toUpperCase(), textAlign === "center" ? 560 : 540);
+      lines.forEach((line, i) => {
+        const y = 60 + i * fontSize;
+        ctx.strokeText(line, textX, y);
+        ctx.fillText(line, textX, y);
+      });
+    }
+
+    // Bottom text
+    if (bottomText) {
+      const lines = wrapText(ctx, bottomText.toUpperCase(), textAlign === "center" ? 560 : 540);
+      lines.reverse().forEach((line, i) => {
+        const y = 580 - i * fontSize;
+        ctx.strokeText(line, textX, y);
+        ctx.fillText(line, textX, y);
+      });
+    }
+  };
+
+  const wrapText = (ctx: CanvasRenderingContext2D, text: string, maxWidth: number) => {
+    const words = text.split(" ");
+    const lines: string[] = [];
+    let currentLine = "";
+
+    words.forEach((word) => {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      if (ctx.measureText(testLine).width > maxWidth) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    });
+    if (currentLine) lines.push(currentLine);
+    return lines;
+  };
+
+  const reset = () => {
+    setTopText("");
+    setBottomText("");
+    setImage(null);
+    setMemeUrl(null);
+  };
+
+  return (
+    <ToolLayout
+      title="Meme Generator"
+      description="Create professional memes with templates, custom text, and advanced styling options"
+      category="Social Media"
+      categoryPath="/category/social"
+    >
+      <canvas ref={canvasRef} className="hidden" />
+
+      <div className="space-y-8">
+        {/* Header Info */}
+        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
+              <Smile className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-foreground">Professional Meme Creator</h3>
+              <p className="text-sm text-muted-foreground">
+                Create custom memes with advanced text styling and image upload
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Editor */}
+        <div className="grid gap-8 lg:grid-cols-2">
+          {/* Controls Panel */}
+          <div className="space-y-6">
+            {/* Text Inputs */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <h3 className="mb-4 flex items-center gap-2 font-semibold">
+                <Type className="h-5 w-5" />
+                Text Content
+              </h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="mb-2 block text-sm font-medium">Top Text</label>
+                  <textarea
+                    value={topText}
+                    onChange={(e) => setTopText(e.target.value)}
+                    placeholder="Enter top text..."
+                    className="input-field h-16 w-full resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium">Bottom Text</label>
+                  <textarea
+                    value={bottomText}
+                    onChange={(e) => setBottomText(e.target.value)}
+                    placeholder="Enter bottom text..."
+                    className="input-field h-16 w-full resize-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Styling Options */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <h3 className="mb-4 flex items-center gap-2 font-semibold">
+                <Palette className="h-5 w-5" />
+                Styling Options
+              </h3>
+              
+              <div className="space-y-4">
+                {/* Text Alignment */}
+                <div>
+                  <label className="mb-2 block text-sm font-medium">Text Alignment</label>
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() => setTextAlign("left")}
+                      className={`flex-1 rounded-lg border p-2 transition-colors ${
+                        textAlign === "left"
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-primary/50"
+                      }`}
+                    >
+                      <AlignLeft className="h-4 w-4 mx-auto" />
+                    </button>
+                    <button
+                      onClick={() => setTextAlign("center")}
+                      className={`flex-1 rounded-lg border p-2 transition-colors ${
+                        textAlign === "center"
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-primary/50"
+                      }`}
+                    >
+                      <AlignCenter className="h-4 w-4 mx-auto" />
+                    </button>
+                    <button
+                      onClick={() => setTextAlign("right")}
+                      className={`flex-1 rounded-lg border p-2 transition-colors ${
+                        textAlign === "right"
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-primary/50"
+                      }`}
+                    >
+                      <AlignRight className="h-4 w-4 mx-auto" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Font Size */}
+                <div>
+                  <label className="mb-2 block text-sm font-medium">Font Size: {fontSize}px</label>
+                  <input
+                    type="range"
+                    min={24}
+                    max={72}
+                    value={fontSize}
+                    onChange={(e) => setFontSize(parseInt(e.target.value))}
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Text Color */}
+                <div>
+                  <label className="mb-2 block text-sm font-medium">Text Color</label>
+                  <div className="flex gap-2">
+                    <div className="flex gap-1">
+                      {presetColors.map((color) => (
+                        <button
+                          key={color}
+                          onClick={() => setTextColor(color)}
+                          className={`h-8 w-8 rounded-lg border-2 transition-all ${
+                            textColor === color ? "border-primary" : "border-border"
+                          }`}
+                          style={{ backgroundColor: color }}
+                        />
+                      ))}
+                    </div>
+                    <input
+                      type="color"
+                      value={textColor}
+                      onChange={(e) => setTextColor(e.target.value)}
+                      className="h-8 w-12 cursor-pointer rounded-lg border-0"
+                    />
+                  </div>
+                </div>
+
+                {/* Stroke Color */}
+                <div>
+                  <label className="mb-2 block text-sm font-medium">Stroke Color</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={strokeColor}
+                      onChange={(e) => setStrokeColor(e.target.value)}
+                      className="h-8 w-12 cursor-pointer rounded-lg border-0"
+                    />
+                    <input
+                      type="text"
+                      value={strokeColor}
+                      onChange={(e) => setStrokeColor(e.target.value)}
+                      className="input-field flex-1"
+                    />
+                  </div>
+                </div>
+
+                {/* Stroke Width */}
+                <div>
+                  <label className="mb-2 block text-sm font-medium">Stroke Width: {strokeWidth}px</label>
+                  <input
+                    type="range"
+                    min={0}
+                    max={10}
+                    value={strokeWidth}
+                    onChange={(e) => setStrokeWidth(parseInt(e.target.value))}
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Custom Image Upload */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <h3 className="mb-4 flex items-center gap-2 font-semibold">
+                <Upload className="h-5 w-5" />
+                Custom Image
+              </h3>
+              <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border p-6 transition-colors hover:border-primary/50">
+                <ImageIcon className="h-6 w-6 text-muted-foreground" />
+                <span className="text-muted-foreground">
+                  {image ? "Change image" : "Click to upload custom image"}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+              {image && (
+                <div className="mt-4">
+                  <img src={image} alt="Custom" className="h-20 w-20 rounded-lg object-cover mx-auto" />
+                  <p className="mt-2 text-center text-xs text-muted-foreground">
+                    Custom image loaded
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Preview Panel */}
+          <div className="space-y-4">
+            <h3 className="flex items-center gap-2 text-lg font-semibold">
+              <Type className="h-5 w-5" />
+              Preview
+            </h3>
+            
+            <div className="rounded-xl border border-border bg-card p-4">
+              {memeUrl ? (
+                <div className="space-y-4">
+                  <img src={memeUrl} alt="Generated meme" className="w-full rounded-lg shadow-lg" />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={generateMeme}
+                      disabled={isGenerating}
+                      className="btn-primary flex-1 disabled:opacity-50"
+                    >
+                      <RefreshCw className={`h-5 w-5 ${isGenerating ? 'animate-spin' : ''}`} />
+                      {isGenerating ? "Regenerating..." : "Regenerate"}
+                    </button>
+                    <a
+                      href={memeUrl}
+                      download="meme.png"
+                      className="btn-secondary flex items-center justify-center gap-2"
+                    >
+                      <Download className="h-5 w-5" />
+                      Download
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex aspect-square items-center justify-center rounded-lg bg-muted/50">
+                  <div className="text-center">
+                    <Smile className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground">
+                      Add text and upload your own image<br />to create your meme
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Quick Actions */}
+            <div className="flex gap-2">
+              <button
+                onClick={generateMeme}
+                disabled={isGenerating}
+                className="btn-primary flex-1 disabled:opacity-50"
+              >
+                <Sparkles className={`h-5 w-5 ${isGenerating ? 'animate-pulse' : ''}`} />
+                {isGenerating ? "Generating..." : "Generate Meme"}
+              </button>
+              <button onClick={reset} className="btn-secondary">
+                <RotateCw className="h-5 w-5" />
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Tips */}
+        <div className="rounded-xl border border-border bg-muted/30 p-4">
+          <h4 className="font-semibold mb-2">💡 Pro Tips:</h4>
+          <ul className="text-sm text-muted-foreground space-y-1">
+            <li>• Use popular templates for instant recognition</li>
+            <li>• Keep text short and impactful for best results</li>
+            <li>• Adjust stroke width for better readability</li>
+            <li>• Try different text alignments for creative layouts</li>
+          </ul>
+        </div>
+      </div>
+    </ToolLayout>
+  );
+};
+
+export default MemeGeneratorTool;

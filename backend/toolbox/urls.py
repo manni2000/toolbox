@@ -30,6 +30,8 @@ def api_root(request):
             '/api/video/',
             '/api/audio/',
             '/api/zip/',
+            '/api/finance/',
+            '/api/security/',
         ]
     })
 
@@ -41,6 +43,8 @@ urlpatterns = [
     path('api/video/', include('video.urls')),
     path('api/audio/', include('audio.urls')),
     path('api/zip/', include('zip.urls')),
+    path('api/finance/', include('finance.urls')),
+    path('api/security/', include('security.urls')),
 ]
 
 # Serve media files during development

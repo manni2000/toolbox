@@ -1,41 +1,111 @@
-import { useState } from "react";
-import { ArrowRightLeft, RefreshCw } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRightLeft, RefreshCw, TrendingUp, AlertCircle } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+interface ExchangeRate {
+  rate: number;
+  name: string;
+  symbol: string;
+}
+
+interface ApiResponse {
+  rates: Record<string, number>;
+  base: string;
+  date: string;
+}
 
 const CurrencyConverterTool = () => {
   const [amount, setAmount] = useState("1");
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("INR");
+  const [exchangeRates, setExchangeRates] = useState<Record<string, ExchangeRate>>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
-  // Static exchange rates (base: USD)
-  const exchangeRates: Record<string, { rate: number; name: string; symbol: string }> = {
-    USD: { rate: 1, name: "US Dollar", symbol: "$" },
-    EUR: { rate: 0.92, name: "Euro", symbol: "€" },
-    GBP: { rate: 0.79, name: "British Pound", symbol: "£" },
-    INR: { rate: 83.12, name: "Indian Rupee", symbol: "₹" },
-    JPY: { rate: 149.50, name: "Japanese Yen", symbol: "¥" },
-    AUD: { rate: 1.53, name: "Australian Dollar", symbol: "A$" },
-    CAD: { rate: 1.36, name: "Canadian Dollar", symbol: "C$" },
-    CHF: { rate: 0.88, name: "Swiss Franc", symbol: "Fr" },
-    CNY: { rate: 7.24, name: "Chinese Yuan", symbol: "¥" },
-    AED: { rate: 3.67, name: "UAE Dirham", symbol: "د.إ" },
-    SGD: { rate: 1.34, name: "Singapore Dollar", symbol: "S$" },
-    HKD: { rate: 7.82, name: "Hong Kong Dollar", symbol: "HK$" },
-    NZD: { rate: 1.64, name: "New Zealand Dollar", symbol: "NZ$" },
-    KRW: { rate: 1320.50, name: "South Korean Won", symbol: "₩" },
-    MXN: { rate: 17.15, name: "Mexican Peso", symbol: "$" },
-    BRL: { rate: 4.97, name: "Brazilian Real", symbol: "R$" },
-    ZAR: { rate: 18.65, name: "South African Rand", symbol: "R" },
-    RUB: { rate: 89.50, name: "Russian Ruble", symbol: "₽" },
-    THB: { rate: 35.20, name: "Thai Baht", symbol: "฿" },
-    MYR: { rate: 4.72, name: "Malaysian Ringgit", symbol: "RM" },
+  // Currency information
+  const currencyInfo: Record<string, { name: string; symbol: string }> = {
+    USD: { name: "US Dollar", symbol: "$" },
+    EUR: { name: "Euro", symbol: "€" },
+    GBP: { name: "British Pound", symbol: "£" },
+    INR: { name: "Indian Rupee", symbol: "₹" },
+    JPY: { name: "Japanese Yen", symbol: "¥" },
+    AUD: { name: "Australian Dollar", symbol: "A$" },
+    CAD: { name: "Canadian Dollar", symbol: "C$" },
+    CHF: { name: "Swiss Franc", symbol: "Fr" },
+    CNY: { name: "Chinese Yuan", symbol: "¥" },
+    AED: { name: "UAE Dirham", symbol: "د.إ" },
+    SGD: { name: "Singapore Dollar", symbol: "S$" },
+    HKD: { name: "Hong Kong Dollar", symbol: "HK$" },
+    NZD: { name: "New Zealand Dollar", symbol: "NZ$" },
+    KRW: { name: "South Korean Won", symbol: "₩" },
+    MXN: { name: "Mexican Peso", symbol: "$" },
+    BRL: { name: "Brazilian Real", symbol: "R$" },
+    ZAR: { name: "South African Rand", symbol: "R" },
+    RUB: { name: "Russian Ruble", symbol: "₽" },
+    THB: { name: "Thai Baht", symbol: "฿" },
+    MYR: { name: "Malaysian Ringgit", symbol: "RM" },
   };
 
-  const currencies = Object.keys(exchangeRates);
+  // Fetch real-time exchange rates
+  const fetchExchangeRates = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      // Using exchangerate-api.com (free tier, no API key required)
+      const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch exchange rates');
+      }
+      
+      const data: ApiResponse = await response.json();
+      
+      // Process the rates and combine with currency info
+      const processedRates: Record<string, ExchangeRate> = {};
+      Object.keys(currencyInfo).forEach(currency => {
+        if (currency === 'USD') {
+          processedRates[currency] = {
+            rate: 1,
+            name: currencyInfo[currency].name,
+            symbol: currencyInfo[currency].symbol
+          };
+        } else if (data.rates[currency]) {
+          processedRates[currency] = {
+            rate: data.rates[currency],
+            name: currencyInfo[currency].name,
+            symbol: currencyInfo[currency].symbol
+          };
+        }
+      });
+      
+      setExchangeRates(processedRates);
+      setLastUpdated(new Date().toLocaleString());
+    } catch (err) {
+      setError('Unable to fetch live exchange rates. Please try again later.');
+      console.error('Error fetching exchange rates:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch rates on component mount
+  useEffect(() => {
+    fetchExchangeRates();
+    
+    // Refresh rates every 10 minutes
+    const interval = setInterval(fetchExchangeRates, 10 * 60 * 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  const currencies = Object.keys(currencyInfo);
 
   const convert = (value: number, from: string, to: string): number => {
-    const fromRate = exchangeRates[from]?.rate || 1;
-    const toRate = exchangeRates[to]?.rate || 1;
+    if (!exchangeRates[from] || !exchangeRates[to]) return 0;
+    const fromRate = exchangeRates[from].rate;
+    const toRate = exchangeRates[to].rate;
     const usdValue = value / fromRate;
     return usdValue * toRate;
   };
@@ -52,139 +122,185 @@ const CurrencyConverterTool = () => {
   return (
     <ToolLayout
       title="Currency Converter"
-      description="Convert between currencies with static exchange rates"
+      description="Convert between currencies with real-time exchange rates"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
       <div className="mx-auto max-w-2xl space-y-6">
-        {/* Converter */}
-        <div className="rounded-xl border border-border bg-card p-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
-            {/* From */}
-            <div className="flex-1">
-              <label className="mb-2 block text-sm font-medium">Amount</label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="1"
-                  className="input-tool flex-1"
-                />
-                <select
-                  value={fromCurrency}
-                  onChange={(e) => setFromCurrency(e.target.value)}
-                  className="input-tool w-24"
-                >
-                  {currencies.map((code) => (
-                    <option key={code} value={code}>
-                      {code}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        {/* Status Bar */}
+        <div className="rounded-xl border border-border bg-card p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium">Live Exchange Rates</span>
+              {lastUpdated && (
+                <span className="text-xs text-muted-foreground">
+                  Updated: {lastUpdated}
+                </span>
+              )}
             </div>
-
-            {/* Swap Button */}
             <button
-              onClick={swapCurrencies}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-secondary transition-colors hover:bg-secondary/80 sm:mb-0"
+              onClick={fetchExchangeRates}
+              disabled={isLoading}
+              className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-1.5 text-sm hover:bg-secondary/80 disabled:opacity-50"
             >
-              <ArrowRightLeft className="h-4 w-4" />
+              <RefreshCw className={`h-3 w-3 ${isLoading ? 'animate-spin' : ''}`} />
+              Refresh
             </button>
+          </div>
+        </div>
 
-            {/* To */}
-            <div className="flex-1">
-              <label className="mb-2 block text-sm font-medium">Converted To</label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={convertedAmount.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                  readOnly
-                  className="input-tool flex-1 bg-muted"
-                />
-                <select
-                  value={toCurrency}
-                  onChange={(e) => setToCurrency(e.target.value)}
-                  className="input-tool w-24"
-                >
-                  {currencies.map((code) => (
-                    <option key={code} value={code}>
-                      {code}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        {/* Error State */}
+        {error && (
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4">
+            <div className="flex items-center gap-2 text-red-600">
+              <AlertCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">{error}</span>
             </div>
           </div>
+        )}
 
-          {/* Exchange Rate */}
-          <div className="mt-4 rounded-lg bg-muted/50 p-3 text-center">
-            <p className="text-sm text-muted-foreground">
-              1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}
-            </p>
+        {/* Loading State */}
+        {isLoading && Object.keys(exchangeRates).length === 0 && (
+          <div className="rounded-xl border border-border bg-card p-8 text-center">
+            <RefreshCw className="mx-auto h-8 w-8 animate-spin text-primary" />
+            <p className="mt-2 text-muted-foreground">Loading exchange rates...</p>
           </div>
-        </div>
+        )}
 
-        {/* Currency Details */}
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-lg border border-border bg-card p-4">
-            <p className="text-sm text-muted-foreground">From</p>
-            <p className="mt-1 text-2xl font-bold">
-              {exchangeRates[fromCurrency]?.symbol}{inputAmount.toLocaleString()}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {exchangeRates[fromCurrency]?.name}
-            </p>
-          </div>
-          <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
-            <p className="text-sm text-muted-foreground">To</p>
-            <p className="mt-1 text-2xl font-bold text-primary">
-              {exchangeRates[toCurrency]?.symbol}{convertedAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {exchangeRates[toCurrency]?.name}
-            </p>
-          </div>
-        </div>
+        {/* Converter */}
+        {!isLoading && Object.keys(exchangeRates).length > 0 && (
+          <div className="rounded-xl border border-border bg-card p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+              {/* From */}
+              <div className="flex-1">
+                <label className="mb-2 block text-sm font-medium">Amount</label>
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="1"
+                    className="input-tool flex-1"
+                  />
+                  <select
+                    value={fromCurrency}
+                    onChange={(e) => setFromCurrency(e.target.value)}
+                    className="input-tool w-24"
+                  >
+                    {currencies.map((code) => (
+                      <option key={code} value={code}>
+                        {code}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
 
-        {/* Quick Conversions */}
-        <div>
-          <h3 className="mb-3 text-lg font-semibold">Quick Conversions from {fromCurrency}</h3>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-            {currencies
-              .filter((c) => c !== fromCurrency)
-              .slice(0, 8)
-              .map((code) => (
-                <button
-                  key={code}
-                  onClick={() => setToCurrency(code)}
-                  className={`rounded-lg border p-3 text-left transition-all hover:border-primary/50 ${
-                    toCurrency === code ? "border-primary bg-primary/5" : "border-border bg-card"
-                  }`}
-                >
-                  <p className="text-xs text-muted-foreground">{code}</p>
-                  <p className="font-semibold">
-                    {exchangeRates[code]?.symbol}
-                    {convert(inputAmount, fromCurrency, code).toLocaleString("en-US", {
+              {/* Swap Button */}
+              <button
+                onClick={swapCurrencies}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-secondary transition-colors hover:bg-secondary/80 sm:mb-0"
+              >
+                <ArrowRightLeft className="h-4 w-4" />
+              </button>
+
+              {/* To */}
+              <div className="flex-1">
+                <label className="mb-2 block text-sm font-medium">Converted To</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={convertedAmount.toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
-                  </p>
-                </button>
-              ))}
-          </div>
-        </div>
+                    readOnly
+                    className="input-tool flex-1 bg-muted"
+                  />
+                  <select
+                    value={toCurrency}
+                    onChange={(e) => setToCurrency(e.target.value)}
+                    className="input-tool w-24"
+                  >
+                    {currencies.map((code) => (
+                      <option key={code} value={code}>
+                        {code}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
 
-        {/* Disclaimer */}
+            {/* Exchange Rate */}
+            <div className="mt-4 rounded-lg bg-muted/50 p-3 text-center">
+              <p className="text-sm text-muted-foreground">
+                1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Currency Details */}
+        {!isLoading && Object.keys(exchangeRates).length > 0 && (
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-lg border border-border bg-card p-4">
+              <p className="text-sm text-muted-foreground">From</p>
+              <p className="mt-1 text-2xl font-bold">
+                {exchangeRates[fromCurrency]?.symbol}{inputAmount.toLocaleString()}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {exchangeRates[fromCurrency]?.name}
+              </p>
+            </div>
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+              <p className="text-sm text-muted-foreground">To</p>
+              <p className="mt-1 text-2xl font-bold text-primary">
+                {exchangeRates[toCurrency]?.symbol}{convertedAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {exchangeRates[toCurrency]?.name}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Quick Conversions */}
+        {!isLoading && Object.keys(exchangeRates).length > 0 && (
+          <div>
+            <h3 className="mb-3 text-lg font-semibold">Quick Conversions from {fromCurrency}</h3>
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              {currencies
+                .filter((c) => c !== fromCurrency)
+                .slice(0, 8)
+                .map((code) => (
+                  <button
+                    key={code}
+                    onClick={() => setToCurrency(code)}
+                    className={`rounded-lg border p-3 text-left transition-all hover:border-primary/50 ${
+                      toCurrency === code ? "border-primary bg-primary/5" : "border-border bg-card"
+                    }`}
+                  >
+                    <p className="text-xs text-muted-foreground">{code}</p>
+                    <p className="font-semibold">
+                      {exchangeRates[code]?.symbol}
+                      {convert(inputAmount, fromCurrency, code).toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </p>
+                  </button>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {/* Info */}
         <div className="rounded-lg border border-border bg-muted/30 p-4">
           <p className="text-sm text-muted-foreground">
-            <strong>⚠️ Note:</strong> These are static exchange rates for reference only. 
-            Actual rates may vary. For accurate conversions, please check with your bank or 
-            a live currency service.
+            <strong>💡 Info:</strong> Exchange rates are updated every 10 minutes from 
+            live market data. Rates may vary slightly between different financial institutions.
           </p>
         </div>
       </div>

@@ -10,7 +10,7 @@ const Footer = () => {
     { name: "PDF to Word", path: "/pdf-to-word" },
     { name: "Background Remover", path: "/background-remover" },
     { name: "Video Downloader", path: "/video-downloader" },
-    { name: "Password Generator", path: "/password-generator" },
+    { name: "Invoice Generator", path: "/invoice-generator" },
   ];
 
   const pdfTools = [
@@ -18,15 +18,29 @@ const Footer = () => {
     { name: "PDF Split", path: "/pdf-split" },
     { name: "PDF to JPG", path: "/pdf-to-jpg" },
     { name: "PDF to Word", path: "/pdf-to-word" },
+    { name: "PDF to PowerPoint", path: "/pdf-to-powerpoint" },
+    { name: "PDF to Excel", path: "/pdf-to-excel" },
     { name: "Word to PDF", path: "/word-to-pdf" },
+    { name: "PowerPoint to PDF", path: "/powerpoint-to-pdf" },
     { name: "HTML to PDF", path: "/html-to-pdf" },
+    { name: "PDF Password Protector", path: "/pdf-password" },
+    { name: "PDF Unlocker", path: "/pdf-unlock" },
+    { name: "PDF Page Remover", path: "/pdf-page-remover" },
+    { name: "PDF Rotate Pages", path: "/pdf-rotate" },
   ];
 
-  const dateTimeTools = [
-    { name: "Date Difference Calculator", path: "/date-difference" },
-    { name: "Age Calculator", path: "/age-calculator" },
-    { name: "Working Days Calculator", path: "/working-days-calculator" },
-    { name: "Countdown Timer", path: "/countdown-timer" },
+  const seoTools = [
+    { name: "Meta Title & Description Generator", path: "/meta-title-description-generator" },
+    { name: "Keyword Density Checker", path: "/keyword-density-checker" },
+    { name: "Robots.txt Generator", path: "/robots-txt-generator" },
+    { name: "Sitemap Validator", path: "/sitemap-validator" },
+    { name: "Page Speed Checklist Generator", path: "/page-speed-checklist-generator" },
+    { name: "OG Image Preview Tool", path: "/og-image-preview-tool" },
+    { name: "Broken Image Finder", path: "/broken-image-finder" },
+    { name: "UTM Link Builder", path: "/utm-link-builder" },
+    { name: "Domain Age Checker", path: "/domain-age-checker" },
+    { name: "Website Tech Stack Detector", path: "/tech-stack-detector" },
+    { name: "Page SEO Analyzer", path: "/page-seo-analyzer" },
   ];
 
   const zipTools = [
@@ -50,6 +64,14 @@ const Footer = () => {
     { name: "Hash Generator", path: "/hash-generator" },
     { name: "Base64 Encoder", path: "/base64-encoder" },
     { name: "UUID Generator", path: "/uuid-generator" },
+    { name: "Password Strength Explainer", path: "/password-strength-explainer" },
+    { name: "Data Breach Email Checker", path: "/data-breach-email-checker" },
+    { name: "File Hash Comparison", path: "/file-hash-comparison" },
+    { name: "EXIF Location Remover", path: "/exif-location-remover" },
+    { name: "Text Redaction", path: "/text-redaction" },
+    { name: "QR Phishing Scanner", path: "/qr-phishing-scanner" },
+    { name: "Secure Notes", path: "/secure-notes" },
+    { name: "URL Reputation Checker", path: "/url-reputation-checker" },
   ];
 
   const internetTools = [
@@ -70,7 +92,7 @@ const Footer = () => {
     { name: "Background Remover", path: "/background-remover" },
     { name: "Image to PDF", path: "/image-to-pdf" },
     { name: "Image to Word", path: "/image-to-word" },
-    { name: "Image Base64", path: "/image-base64" },
+    { name: "Image DPI Checker", path: "/image-dpi-checker" },
     { name: "Favicon Generator", path: "/favicon-generator" },
     { name: "EXIF Viewer", path: "/exif-viewer" },
   ];
@@ -80,6 +102,16 @@ const Footer = () => {
     { name: "GST Calculator", path: "/gst-calculator" },
     { name: "Salary Calculator", path: "/salary-calculator" },
     { name: "Currency Converter", path: "/currency-converter" },
+    { name: "Startup Burn Rate Calculator", path: "/startup-burn-rate-calculator" },
+    { name: "SaaS Pricing Calculator", path: "/saas-pricing-calculator" },
+    { name: "EMI Comparison", path: "/emi-comparison" },
+    { name: "Tax Slab Analyzer", path: "/tax-slab-analyzer" },
+    { name: "Invoice Generator", path: "/invoice-generator" },
+    { name: "Profit Margin Calculator", path: "/profit-margin-calculator" },
+    { name: "Freelancer Rate Calculator", path: "/freelancer-rate-calculator" },
+    { name: "Salary Breakup Generator", path: "/salary-breakup-generator" },
+    { name: "Budget Planner", path: "/budget-planner" },
+    { name: "Stock CAGR Calculator", path: "/stock-cagr-calculator" },
   ];
 
   const devTools = [
@@ -87,12 +119,9 @@ const Footer = () => {
     { name: "Regex Tester", path: "/regex-tester" },
     { name: "JWT Decoder", path: "/jwt-decoder" },
     { name: "URL Encoder", path: "/url-encoder" },
-    { name: "Base64 Encoder", path: "/base64-encoder" },
-    { name: "UUID Generator", path: "/uuid-generator" },
-    { name: "Color Converter", path: "/color-converter" },
+    { name: "Color Palettes Generator", path: "/color-palettes" },
     { name: "Lorem Ipsum Generator", path: "/lorem-ipsum-generator" },
     { name: "Cron Generator", path: "/cron-generator" },
-    { name: "Sitemap Generator", path: "/sitemap-generator" },
     { name: "HTTP Header Checker", path: "/http-header-checker" },
     { name: "Website Screenshot", path: "/website-screenshot" },
     { name: "Token Calculator", path: "/token-calculator" },
@@ -104,9 +133,10 @@ const Footer = () => {
     { name: "LCM HCF Calculator", path: "/lcm-hcf-calculator" },
     { name: "Percentage Calculator", path: "/percentage-calculator" },
     { name: "Unit Converter", path: "/unit-converter" },
-    { name: "Age Calculator", path: "/age-calculator" },
     { name: "Compound Interest", path: "/compound-interest-calculator" },
     { name: "Simple Interest", path: "/simple-interest-calculator" },
+    { name: "Study Timetable Generator", path: "/study-timetable-generator" },
+    { name: "World Time", path: "/world-time" },
   ];
 
   const socialMediaTools = [
@@ -116,11 +146,6 @@ const Footer = () => {
     { name: "Line Break Generator", path: "/line-break-generator" },
     { name: "Link-in-Bio", path: "/link-in-bio" },
     { name: "WhatsApp Status Generator", path: "/whatsapp-status-generator" },
-    { name: "Video Downloader", path: "/video-downloader" },
-    { name: "Video to Audio", path: "/video-to-audio" },
-    { name: "Video Thumbnail", path: "/video-thumbnail" },
-    { name: "QR Code Generator", path: "/qr-code-generator" },
-    { name: "Meme Generator", path: "/meme-generator" },
   ];
 
   const textTools = [
@@ -132,7 +157,6 @@ const Footer = () => {
     { name: "Line Sorter", path: "/line-sorter" },
     { name: "Duplicate Remover", path: "/duplicate-remover" },
     { name: "Text Summarizer", path: "/text-summarizer" },
-    { name: "Meme Generator", path: "/meme-generator" },
   ];
 
   const categories = toolCategories.slice(0, 8).map(cat => ({
@@ -156,7 +180,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="max-w-md text-sm text-muted-foreground">
-              95+ free online tools for images, PDFs, videos, text, and more. 
+              100+ free online tools for images, PDFs, videos, text, and more. 
               No signup required. 100% browser-based.
             </p>
           </div>
@@ -207,6 +231,34 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* Security Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Security Tools</h4>
+            <ul className="space-y-2">
+              {securityTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Finance Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Finance Tools</h4>
+            <ul className="space-y-2">
+              {financeTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Developer Tools */}
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">Developer Tools</h4>
@@ -235,53 +287,11 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Social Media Tools */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Social Media Tools</h4>
-            <ul className="space-y-2">
-              {socialMediaTools.map(tool => (
-                <li key={tool.path}>
-                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
-                    {tool.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Text Tools */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Text Tools</h4>
-            <ul className="space-y-2">
-              {textTools.map(tool => (
-                <li key={tool.path}>
-                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
-                    {tool.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           {/* Audio Tools */}
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">Audio Tools</h4>
             <ul className="space-y-2">
               {audioTools.map(tool => (
-                <li key={tool.path}>
-                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
-                    {tool.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Security Tools */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Security Tools</h4>
-            <ul className="space-y-2">
-              {securityTools.map(tool => (
                 <li key={tool.path}>
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
                     {tool.name}
@@ -305,11 +315,11 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Date & Time Tools */}
+          {/* SEO Tools */}
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Date & Time Tools</h4>
+            <h4 className="text-sm font-semibold">SEO Tools</h4>
             <ul className="space-y-2">
-              {dateTimeTools.map(tool => (
+              {seoTools.map(tool => (
                 <li key={tool.path}>
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
                     {tool.name}
@@ -333,11 +343,25 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Finance Tools */}
+          {/* Social Media Tools */}
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Finance Tools</h4>
+            <h4 className="text-sm font-semibold">Social Media Tools</h4>
             <ul className="space-y-2">
-              {financeTools.map(tool => (
+              {socialMediaTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Text Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Text Tools</h4>
+            <ul className="space-y-2">
+              {textTools.map(tool => (
                 <li key={tool.path}>
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
                     {tool.name}

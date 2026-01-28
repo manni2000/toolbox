@@ -12,7 +12,7 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/50 bg-background/95 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border/50 bg-background">
       <div className="container">
         <div className="flex h-16 items-center justify-between lg:h-20">
           {/* Logo */}
@@ -100,10 +100,10 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card lg:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card lg:hidden hover:bg-blue-900 hover:border-blue-800 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMenuOpen ? <X className="h-5 w-5 text-blue-600" /> : <Menu className="h-5 w-5 text-blue-600" />}
           </button>
         </div>
       </div>
@@ -115,29 +115,70 @@ const Header = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden border-t border-border bg-background lg:hidden"
+            className="lg:hidden"
           >
-            <nav className="container flex flex-col gap-1 py-4">
-              <MobileNavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</MobileNavLink>
-              <MobileNavLink to="/categories" onClick={() => setIsMenuOpen(false)}>All Tools</MobileNavLink>
-              <div className="my-2 border-t border-border" />
-              <p className="px-4 py-2 text-xs font-semibold uppercase text-muted-foreground">Categories</p>
-              {toolCategories.map((category) => {
-                const Icon = category.icon;
-                return (
-                  <Link
-                    key={category.id}
-                    to={`/category/${category.id}`}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                  >
-                    <Icon className="h-4 w-4" />
-                    <span>{category.name}</span>
-                    <span className="ml-auto text-xs text-muted-foreground">{category.tools.length}</span>
-                  </Link>
-                );
-              })}
-            </nav>
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 bg-black/20" 
+              onClick={() => setIsMenuOpen(false)}
+            />
+            
+            {/* Mobile Menu Content */}
+            <div className="fixed left-0 right-0 top-16 z-50 h-[calc(100vh-4rem)] overflow-hidden bg-background shadow-2xl">
+              <nav className="flex h-full flex-col">
+                {/* Fixed Header Section */}
+                <div className="flex-shrink-0 border-b border-border bg-background">
+                  <div className="container flex flex-col gap-1 py-4">
+                    <MobileNavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</MobileNavLink>
+                    <MobileNavLink to="/categories" onClick={() => setIsMenuOpen(false)}>All Tools</MobileNavLink>
+                  </div>
+                </div>
+                
+                {/* Scrollable Categories Section */}
+                <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
+                  <div className="container py-4">
+                    <div className="mb-4 px-4">
+                      <p className="text-xs font-semibold uppercase text-muted-foreground">Categories</p>
+                    </div>
+                    <div className="space-y-1">
+                      {toolCategories.map((category) => {
+                        const Icon = category.icon;
+                        return (
+                          <Link
+                            key={category.id}
+                            to={`/category/${category.id}`}
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground active:bg-accent/50"
+                          >
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                              <Icon className="h-4 w-4 text-primary" />
+                            </div>
+                            <div className="flex-1">
+                              <span className="block text-sm font-medium">{category.name}</span>
+                              <span className="text-xs text-muted-foreground">{category.tools.length} tools</span>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Fixed Bottom Section */}
+                <div className="flex-shrink-0 border-t border-border bg-background">
+                  <div className="container py-4">
+                    <Link
+                      to="/categories"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 active:bg-primary/95"
+                    >
+                      Explore All Tools
+                      <ChevronDown className="h-4 w-4 -rotate-90" />
+                    </Link>
+                  </div>
+                </div>
+              </nav>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -28,6 +28,7 @@ const ImageConverterTool = () => {
   const outputFormats: { value: OutputFormat; label: string; ext: string; description: string }[] = [
     { value: "image/png", label: "PNG", ext: "png", description: "Lossless, supports transparency" },
     { value: "image/jpeg", label: "JPG", ext: "jpg", description: "Smaller size, no transparency" },
+    { value: "image/jpeg", label: "JPEG", ext: "jpeg", description: "Smaller size, no transparency" },
     { value: "image/webp", label: "WebP", ext: "webp", description: "Modern format, best compression" },
     { value: "image/gif", label: "GIF", ext: "gif", description: "Supports animation, 256 colors" },
     { value: "image/bmp", label: "BMP", ext: "bmp", description: "Uncompressed bitmap" },
@@ -233,7 +234,7 @@ const ImageConverterTool = () => {
             {/* Format Selection */}
             <div>
               <label className="mb-3 block text-sm font-medium">Select Output Format</label>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
                 {outputFormats.map((format) => (
                   <button
                     key={format.value}
