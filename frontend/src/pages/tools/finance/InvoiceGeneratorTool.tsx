@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, FileText, Download, Plus, Trash2, CheckCircle, Calculator, DollarSign } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
 
 interface InvoiceItem {
   description: string;
@@ -79,7 +80,7 @@ export default function InvoiceGeneratorTool() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/finance/invoice-generator/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/finance/invoice-generator/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

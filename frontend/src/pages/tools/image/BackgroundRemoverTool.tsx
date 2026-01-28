@@ -51,7 +51,7 @@ const BackgroundRemoverTool = () => {
     formData.append('image', fileRef.current);
 
     try {
-      const response = await fetch('http://localhost:8000/api/image/remove-background/', {
+      const response = await fetch(`${API_URLS.BACKGROUND_REMOVER}`, {
         method: 'POST',
         body: formData,
       });

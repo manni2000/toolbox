@@ -97,7 +97,7 @@ const VideoResolutionTool = () => {
     try {
       setProcessingStage("Sending request to server...");
       
-      const response = await fetch('/api/video/resolution/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/video/resolution/`, {
         method: 'POST',
         body: formData,
         signal: controller.signal,

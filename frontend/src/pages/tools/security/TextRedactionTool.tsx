@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, FileText, Shield, Eye, EyeOff } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
 
 interface RedactionItem {
   type: string;
@@ -31,7 +32,7 @@ export default function TextRedactionTool() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/security/text-redaction/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/security/text-redaction/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

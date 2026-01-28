@@ -42,7 +42,7 @@ const PowerPointToPDFTool = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8000/api/pdf/powerpoint-to-pdf/', {
+      const response = await fetch(`${API_URLS.POWERPOINT_TO_PDF}`, {
         method: 'POST',
         body: formData,
       });

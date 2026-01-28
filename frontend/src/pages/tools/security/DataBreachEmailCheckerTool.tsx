@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, Mail, AlertTriangle, Shield, CheckCircle, Calendar } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
 
 interface BreachData {
   name: string;
@@ -26,7 +27,7 @@ export default function DataBreachEmailCheckerTool() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/security/data-breach-check/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/security/data-breach-check/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

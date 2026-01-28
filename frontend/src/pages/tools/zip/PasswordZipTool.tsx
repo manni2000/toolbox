@@ -85,7 +85,7 @@ const PasswordZipTool = () => {
     formData.append('compression_level', '6');
 
     try {
-      const response = await fetch('http://localhost:8000/api/zip/create-password/', {
+      const response = await fetch(`${API_URLS.PASSWORD_ZIP}`, {
         method: 'POST',
         body: formData,
       });

@@ -52,7 +52,7 @@ const VideoSpeedTool = () => {
     formData.append('speed_factor', speedFactor.toString());
 
     try {
-      const response = await fetch('/api/video/speed/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/video/speed/`, {
         method: 'POST',
         body: formData,
       });

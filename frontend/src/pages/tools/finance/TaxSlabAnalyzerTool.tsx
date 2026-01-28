@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, Calculator, DollarSign, FileText, TrendingUp, AlertCircle } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
 
 interface TaxSlab {
   range: string;
@@ -33,7 +34,7 @@ export default function TaxSlabAnalyzerTool() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/finance/tax-slab-analyzer/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/finance/tax-slab-analyzer/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

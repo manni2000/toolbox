@@ -136,10 +136,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://localhost:8080",
     "http://127.0.0.1:8080",
+    "https://dailytools247.vercel.app",
+    "https://toolbox-backend-0j1b.onrender.com",
 ]
 
 # Allow all origins for Vercel deployment
-CORS_ALLOW_ALL_ORIGINS = DEBUG
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 

@@ -42,7 +42,7 @@ const HTMLToPDFTool = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8000/api/pdf/html-to-pdf/', {
+      const response = await fetch(`${API_URLS.HTML_TO_PDF}`, {
         method: 'POST',
         body: formData,
       });

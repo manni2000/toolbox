@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, Lock, Unlock, Eye, EyeOff, Shield, Key, FileText } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
 
 interface EncryptionResult {
   encrypted_note: string;
@@ -28,7 +29,7 @@ export default function SecureNotesTool() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/security/secure-notes/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/security/secure-notes/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ export default function SecureNotesTool() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/security/secure-notes/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/security/secure-notes/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

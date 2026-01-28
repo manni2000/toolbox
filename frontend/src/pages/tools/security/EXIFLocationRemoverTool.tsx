@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, Upload, Image, CheckCircle, AlertTriangle, Download } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
 
 interface ExifResult {
   success: boolean;
@@ -35,7 +36,7 @@ export default function EXIFLocationRemoverTool() {
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      const response = await fetch('/api/security/exif-location-remover/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/security/exif-location-remover/`, {
         method: 'POST',
         body: formData,
       });

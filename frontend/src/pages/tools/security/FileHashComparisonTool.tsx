@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, Upload, FileText, CheckCircle, XCircle, AlertTriangle, Hash } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
 
 interface FileHash {
   sha256: string;
@@ -30,7 +31,7 @@ export default function FileHashComparisonTool() {
       formData.append('file1', file1);
       formData.append('file2', file2);
 
-      const response = await fetch('/api/security/file-hash-comparison/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/security/file-hash-comparison/`, {
         method: 'POST',
         body: formData,
       });

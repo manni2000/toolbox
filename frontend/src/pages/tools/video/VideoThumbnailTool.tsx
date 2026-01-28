@@ -52,7 +52,7 @@ const VideoThumbnailTool = () => {
     formData.append('timestamp', thumbnailTime.toString());
 
     try {
-      const response = await fetch('/api/video/thumbnail/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/video/thumbnail/`, {
         method: 'POST',
         body: formData,
       });

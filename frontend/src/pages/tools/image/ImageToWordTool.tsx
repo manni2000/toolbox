@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import { FileText, Upload, Download, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const ImageToWordTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -40,7 +42,7 @@ const ImageToWordTool = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8000/api/image/to-word/', {
+      const response = await fetch(`${API_URLS.IMAGE_TO_WORD}`, {
         method: 'POST',
         body: formData,
       });

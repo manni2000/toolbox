@@ -48,7 +48,7 @@ const PDFToImageTool = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8000/api/pdf/to-images/', {
+      const response = await fetch(`${API_URLS.PDF_TO_IMAGE}`, {
         method: 'POST',
         body: formData,
       });

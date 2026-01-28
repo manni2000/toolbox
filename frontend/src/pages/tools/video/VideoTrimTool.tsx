@@ -63,7 +63,7 @@ const VideoTrimTool = () => {
     formData.append('end_time', endTime.toString());
 
     try {
-      const response = await fetch('/api/video/trim/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/video/trim/`, {
         method: 'POST',
         body: formData,
       });

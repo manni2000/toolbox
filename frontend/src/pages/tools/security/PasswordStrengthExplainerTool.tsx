@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, Shield, CheckCircle, XCircle, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
 
 interface PasswordAnalysis {
   strength: string;
@@ -22,7 +23,7 @@ export default function PasswordStrengthExplainerTool() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/security/password-strength-explainer/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/security/password-strength-explainer/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

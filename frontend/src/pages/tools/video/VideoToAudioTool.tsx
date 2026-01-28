@@ -52,7 +52,7 @@ const VideoToAudioTool = () => {
     formData.append('format', audioFormat);
 
     try {
-      const response = await fetch('/api/video/to-audio/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/video/to-audio/`, {
         method: 'POST',
         body: formData,
       });

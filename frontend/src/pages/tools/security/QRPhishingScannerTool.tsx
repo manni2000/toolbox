@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, QrCode, AlertTriangle, Shield, CheckCircle, XCircle } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api";
 
 interface QRAnalysis {
   qr_data: string;
@@ -22,7 +23,7 @@ export default function QRPhishingScannerTool() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/security/qr-phishing-scanner/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/security/qr-phishing-scanner/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
