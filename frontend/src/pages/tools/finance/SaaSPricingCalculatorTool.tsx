@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { Copy, Check, Calculator, DollarSign, Users, Zap, AlertCircle } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
 

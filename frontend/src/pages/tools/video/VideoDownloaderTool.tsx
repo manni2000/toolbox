@@ -37,7 +37,7 @@ const VideoDownloaderTool = () => {
     setError("");
 
     try {
-      const response = await fetch('/api/video/download/', {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/video/download/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

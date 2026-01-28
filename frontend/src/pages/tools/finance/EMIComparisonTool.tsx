@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, Calculator, DollarSign, TrendingUp, CheckCircle, AlertCircle } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
 
