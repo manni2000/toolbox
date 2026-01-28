@@ -1,13 +1,13 @@
-# ToolBox - All-in-One Daily Utility Tools Platform
+# Dailytools247 - 100+ Free Online Tools Platform
 
-A comprehensive web application providing **90+ free online tools** for image processing, PDF editing, video conversion, text utilities, finance calculators, and more. Built with Django backend and React frontend with TypeScript.
+A comprehensive web application providing **100+ free online tools** for image processing, PDF editing, video conversion, text utilities, finance calculators, and more. Built with Django backend and React frontend with TypeScript.
 
 ## 🎯 Overview
 
-ToolBox is a modern, feature-rich platform that offers a wide variety of utility tools organized into 13 categories. Whether you need to compress images, merge PDFs, convert videos, generate passwords, or calculate EMIs - we've got you covered with professional-grade tools that work entirely in your browser.
+Dailytools247 is a modern, feature-rich platform that offers a wide variety of utility tools organized into 13 categories. Whether you need to compress images, merge PDFs, convert videos, generate passwords, or calculate EMIs - we've got you covered with professional-grade tools that work entirely in your browser.
 
 ### ✨ Key Features
-- **90+ Tools** across 13 categories
+- **100+ Tools** across 13 categories
 - **Modern UI** with React, TypeScript, and Tailwind CSS
 - **SEO-Friendly URLs** for better discoverability
 - **Responsive Design** works on all devices
@@ -17,7 +17,7 @@ ToolBox is a modern, feature-rich platform that offers a wide variety of utility
 
 ## 📊 Tool Statistics
 
-- **Total Tools**: 90+
+- **Total Tools**: 100+
 - **Categories**: 13
 - **Image Tools**: 14
 - **PDF Tools**: 13
@@ -220,8 +220,8 @@ The frontend is built with modern React patterns and best practices:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/your-username/toolbox.git
-cd toolbox
+git clone https://github.com/your-username/dailytools247.git
+cd dailytools247
 ```
 
 2. **Create virtual environment**
@@ -326,9 +326,9 @@ npm run build
 ## 📁 Project Structure
 
 ```
-toolbox/
+dailytools247/
 ├── backend/
-│   ├── toolbox/                 # Django project settings
+│   ├── dailytools247/                 # Django project settings
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   └── wsgi.py
@@ -484,12 +484,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-For support, please email support@toolbox.com or create an issue on GitHub.
+For support, please email info@dailytools247.com or create an issue on GitHub.
 
 ## 🌟 Highlights
 
-### What Makes ToolBox Special?
-- **Comprehensive**: 90+ tools covering every daily need
+### What Makes Dailytools247 Special?
+- **Comprehensive**: 100+ tools covering every daily need
 - **Modern Tech Stack**: React 18, TypeScript, Vite, Django
 - **Professional UI**: Beautiful, intuitive interface
 - **SEO Optimized**: Clean URLs and meta tags for discoverability
@@ -509,3 +509,43 @@ For support, please email support@toolbox.com or create an issue on GitHub.
 ---
 
 **Built with ❤️ for developers and power users**
+
+---
+
+## 🌐 Live Demo
+
+Visit our live site: [https://dailytools247.com](https://dailytools247.com)
+
+## 🚀 Deployment Configuration
+
+### Vercel Configuration
+The project includes a `vercel.json` configuration optimized for Vercel deployment:
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
+
+### SEO Optimization
+- **Sitemap**: Automatically generated at `/sitemap.xml`
+- **Robots.txt**: Configured for optimal search engine crawling
+- **Meta Tags**: Properly configured Open Graph and Twitter Card meta tags
+- **Canonical URLs**: Set to `https://dailytools247.com`
+- **Structured Data**: JSON-LD schema for better search engine understanding
+
+### Environment Variables
+Create `.env.local` for local development:
+```bash
+VITE_API_URL=http://localhost:8000
+```
+
+For production on Vercel:
+```bash
+VITE_API_URL=https://your-backend-url.com
+```
