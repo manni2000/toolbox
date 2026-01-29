@@ -51,7 +51,10 @@ const Footer = () => {
 
   const videoTools = [
     { name: "Video to Audio", path: "/video-to-audio" },
-    { name: "Video Resolution", path: "/video-resolution" },
+    { name: "Video Trim", path: "/video-trim" },
+    { name: "Video Speed Controller", path: "/video-speed" },
+    { name: "Video Thumbnail Generator", path: "/video-thumbnail" },
+    { name: "Video Resolution Converter", path: "/video-resolution" },
   ];
 
   const audioTools = [
