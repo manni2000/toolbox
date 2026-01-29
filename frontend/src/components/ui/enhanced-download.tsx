@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Download, Copy, Share2, Eye, FileText, ImageIcon, Music2, Check } from "lucide-react";
+import { Download, Copy, Share2, Eye, FileText, ImageIcon, Music2, Film, Check } from "lucide-react";
 import { Button } from "./button";
 import { Card, CardContent } from "./card";
 import { Badge } from "./badge";
@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 interface EnhancedDownloadProps {
   data: string;
   fileName: string;
-  fileType: 'pdf' | 'image' | 'word' | 'excel' | 'powerpoint' | 'zip' | 'audio';
+  fileType: 'pdf' | 'image' | 'word' | 'excel' | 'powerpoint' | 'zip' | 'audio' | 'video';
   title?: string;
   description?: string;
   fileSize?: string;
@@ -36,6 +36,7 @@ export const EnhancedDownload = ({
       case 'pdf': return <FileText className="h-5 w-5" />;
       case 'image': return <ImageIcon className="h-5 w-5" />;
       case 'audio': return <Music2 className="h-5 w-5" />;
+      case 'video': return <Film className="h-5 w-5" />;
       default: return <FileText className="h-5 w-5" />;
     }
   };
@@ -49,6 +50,7 @@ export const EnhancedDownload = ({
       case 'powerpoint': return 'bg-orange-100 text-orange-800 border-orange-200';
       case 'zip': return 'bg-purple-100 text-purple-800 border-purple-200';
       case 'audio': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'video': return 'bg-purple-100 text-purple-800 border-purple-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };

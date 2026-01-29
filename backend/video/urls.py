@@ -4,6 +4,7 @@ from . import views
 app_name = 'video'
 
 urlpatterns = [
+    path('test/', views.test_download, name='test_download'),
     path('to-audio/', views.video_to_audio, name='video_to_audio'),
     path('trim/', views.trim_video, name='trim_video'),
     path('speed/', views.change_video_speed, name='change_video_speed'),

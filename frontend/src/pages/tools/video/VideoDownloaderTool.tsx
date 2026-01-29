@@ -331,10 +331,10 @@ const VideoDownloaderTool = () => {
             <EnhancedDownload
               data={downloadedUrl}
               fileName={fileName}
-              fileType="zip"
+              fileType={fileName.endsWith('.mp4') ? 'video' : fileName.endsWith('.mp3') ? 'audio' : 'video'}
               title="Video Downloaded Successfully"
               description={`Video from ${currentPlatform.name} ready for download`}
-              fileSize="Unknown size"
+              fileSize={videoInfo?.file_size ? `${(videoInfo.file_size / (1024 * 1024)).toFixed(2)} MB` : 'Unknown size'}
             />
           </div>
         )}

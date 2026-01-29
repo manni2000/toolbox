@@ -25,6 +25,19 @@ except ImportError:
 
 
 @csrf_exempt
+def test_download(request):
+    """Simple test view to debug routing"""
+    return JsonResponse({
+        'success': True,
+        'message': 'Test endpoint working',
+        'method': request.method,
+        'content_type': request.content_type,
+        'post_data': dict(request.POST),
+        'body': request.body.decode('utf-8', errors='ignore')[:200]
+    })
+
+
+@csrf_exempt
 @require_http_methods(["POST"])
 def video_to_audio(request):
     """Extract audio from video file"""
