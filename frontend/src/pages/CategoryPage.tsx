@@ -38,30 +38,30 @@ const CategoryPage = () => {
         </div>
 
         {/* Category Header */}
-        <section className="border-b border-border bg-gradient-to-b from-muted/50 to-background py-12">
+        <section className="border-b border-border bg-gradient-to-b from-muted/50 to-background py-8 sm:py-12">
           <div className="container">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex items-start gap-6"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
             >
               <div
-                className="flex h-16 w-16 items-center justify-center rounded-2xl"
+                className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl flex-shrink-0"
                 style={{ backgroundColor: `hsl(${category.color} / 0.15)` }}
               >
                 <Icon
-                  className="h-8 w-8"
+                  className="h-7 w-7 sm:h-8 sm:w-8"
                   style={{ color: `hsl(${category.color})` }}
                 />
               </div>
-              <div>
-                <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+              <div className="text-center sm:text-left">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">
                   {category.name}
                 </h1>
-                <p className="mt-2 text-lg text-muted-foreground">
+                <p className="mt-2 text-base sm:text-lg text-muted-foreground">
                   {category.description}
                 </p>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="mt-1 sm:mt-2 text-sm text-muted-foreground">
                   {category.tools.length} tools available
                 </p>
               </div>
@@ -70,9 +70,9 @@ const CategoryPage = () => {
         </section>
 
         {/* Tools Grid */}
-        <section className="py-12">
+        <section className="py-8 sm:py-12">
           <div className="container">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:gap-6 grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
               {category.tools.map((tool, index) => (
                 <motion.div
                   key={tool.id}
@@ -82,14 +82,16 @@ const CategoryPage = () => {
                 >
                   <Link
                     to={tool.path}
-                    className="tool-card group flex flex-col"
+                    className="tool-card group flex flex-col p-4 sm:p-6 min-h-[120px] justify-between"
                   >
-                    <h3 className="text-lg font-semibold text-card-foreground group-hover:text-primary">
-                      {tool.name}
-                    </h3>
-                    <p className="mt-2 flex-1 text-sm text-muted-foreground">
-                      {tool.description}
-                    </p>
+                    <div className="flex-1">
+                      <h3 className="text-base sm:text-lg font-semibold text-card-foreground group-hover:text-primary line-clamp-2">
+                        {tool.name}
+                      </h3>
+                      <p className="mt-2 flex-1 text-xs sm:text-sm text-muted-foreground line-clamp-3">
+                        {tool.description}
+                      </p>
+                    </div>
                     <div className="mt-4 flex items-center gap-2 text-sm font-medium text-primary">
                       Use tool
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

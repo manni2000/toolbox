@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const AudioSpeedTool = () => {
@@ -150,7 +150,7 @@ const AudioSpeedTool = () => {
         {/* Upload Area */}
         {!audioFile && (
           <div
-            className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""}`}
+            className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""} p-6 sm:p-8`}
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
             onDrop={handleDrop}
@@ -163,31 +163,32 @@ const AudioSpeedTool = () => {
               className="hidden"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
             />
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop audio file here or click to upload</p>
-            <p className="text-sm text-muted-foreground">Supports MP3, WAV, M4A, OGG</p>
+            <Upload className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop audio file here or click to upload</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">Supports MP3, WAV, M4A, OGG</p>
           </div>
         )}
 
         {audioFile && (
           <>
             {/* File Info */}
-            <Card className="p-4">
-              <div className="flex items-center justify-between">
+            <Card className="p-3 sm:p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="rounded-full bg-primary/10 p-2">
-                    <Volume2 className="h-5 w-5 text-primary" />
+                  <div className="rounded-full bg-primary/10 p-1.5 sm:p-2 flex-shrink-0">
+                    <Volume2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                   </div>
-                  <div>
-                    <p className="font-medium">{audioFile.name}</p>
-                    <p className="text-sm text-muted-foreground">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-sm sm:text-base truncate">{audioFile.name}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       Duration: {formatTime(duration)} → {formatTime(duration / speed)} at {speed}x
                     </p>
                   </div>
                 </div>
-                <Button variant="outline" size="sm" onClick={reset}>
-                  <RotateCcw className="h-4 w-4 mr-1" />
-                  Reset
+                <Button variant="outline" size="sm" onClick={reset} className="self-end sm:self-auto">
+                  <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="hidden sm:inline">Reset</span>
+                  <span className="sm:hidden">Rst</span>
                 </Button>
               </div>
             </Card>
@@ -202,13 +203,13 @@ const AudioSpeedTool = () => {
             />
 
             {/* Speed Control */}
-            <Card className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <Gauge className="h-5 w-5" />
+            <Card className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+                <h3 className="font-semibold flex items-center gap-2 text-sm sm:text-base">
+                  <Gauge className="h-4 w-4 sm:h-5 sm:w-5" />
                   Playback Speed
                 </h3>
-                <span className="text-2xl font-bold text-primary">{speed}x</span>
+                <span className="text-xl sm:text-2xl font-bold text-primary">{speed}x</span>
               </div>
 
               {/* Slider */}
@@ -229,6 +230,7 @@ const AudioSpeedTool = () => {
                     variant={speed === preset ? "default" : "outline"}
                     size="sm"
                     onClick={() => setSpeed(preset)}
+                    className="text-xs sm:text-sm"
                   >
                     {preset}x
                   </Button>
@@ -237,17 +239,19 @@ const AudioSpeedTool = () => {
             </Card>
 
             {/* Pitch Preservation Toggle */}
-            <Card className="p-4">
-              <div className="flex items-center justify-between">
+            <Card className="p-3 sm:p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <p className="font-medium">Preserve Pitch</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="font-medium text-sm sm:text-base">Preserve Pitch</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Keep the original pitch when changing speed
                   </p>
                 </div>
                 <Button
                   variant={preservePitch ? "default" : "outline"}
                   onClick={() => setPreservePitch(!preservePitch)}
+                  size="sm"
+                  className="text-xs sm:text-sm"
                 >
                   {preservePitch ? "On" : "Off"}
                 </Button>
@@ -278,25 +282,27 @@ const AudioSpeedTool = () => {
 
             {/* Playback Controls */}
             <div className="flex gap-3">
-              <Button onClick={togglePlay} className="flex-1">
+              <Button onClick={togglePlay} className="flex-1 text-sm sm:text-base py-3 sm:py-4">
                 {isPlaying ? (
                   <>
-                    <Pause className="h-4 w-4 mr-2" />
+                    <Pause className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                     Pause
                   </>
                 ) : (
                   <>
-                    <Play className="h-4 w-4 mr-2" />
-                    Preview at {speed}x
+                    <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                    <span className="hidden sm:inline">Preview at {speed}x</span>
+                    <span className="sm:hidden">Preview</span>
                   </>
                 )}
               </Button>
             </div>
 
             {/* Download */}
-            <Button onClick={downloadProcessed} variant="secondary" className="w-full">
-              <Gauge className="h-4 w-4 mr-2" />
-              Process Audio Speed
+            <Button onClick={downloadProcessed} variant="secondary" className="w-full text-sm sm:text-base py-3 sm:py-4">
+              <Gauge className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+              <span className="hidden sm:inline">Process Audio Speed</span>
+              <span className="sm:hidden">Process</span>
             </Button>
 
             {processedUrl && (

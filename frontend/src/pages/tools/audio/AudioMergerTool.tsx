@@ -4,7 +4,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 interface AudioItem {
@@ -234,7 +234,7 @@ const AudioMergerTool = () => {
       <div className="space-y-6">
         {/* Upload Area */}
         <div
-          className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""}`}
+          className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""} p-6 sm:p-8`}
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
@@ -248,9 +248,9 @@ const AudioMergerTool = () => {
             className="hidden"
             onChange={(e) => handleFiles(e.target.files)}
           />
-          <Upload className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">Drop audio files here or click to upload</p>
-          <p className="text-sm text-muted-foreground">
+          <Upload className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
+          <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop audio files here or click to upload</p>
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Supports MP3, WAV, M4A, OGG • Select multiple files
           </p>
         </div>
@@ -258,62 +258,63 @@ const AudioMergerTool = () => {
         {/* File List */}
         {audioFiles.length > 0 && (
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <h3 className="font-semibold text-sm sm:text-base">
                 Audio Files ({audioFiles.length}) • Total: {formatDuration(totalDuration)}
               </h3>
               <Button variant="outline" size="sm" onClick={() => inputRef.current?.click()}>
-                <Plus className="h-4 w-4 mr-1" />
-                Add More
+                <Plus className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                <span className="hidden sm:inline">Add More</span>
+                <span className="sm:hidden">Add</span>
               </Button>
             </div>
 
             {audioFiles.map((item, index) => (
-              <Card key={item.id} className="p-4">
-                <div className="flex items-center gap-4">
-                  <div className="flex flex-col gap-1">
+              <Card key={item.id} className="p-3 sm:p-4">
+                <div className="flex items-center gap-2 sm:gap-4">
+                  <div className="flex flex-col gap-1 flex-shrink-0">
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6"
+                      className="h-6 w-6 sm:h-8 sm:w-8"
                       onClick={() => moveFile(index, "up")}
                       disabled={index === 0}
                     >
-                      <ArrowUp className="h-4 w-4" />
+                      <ArrowUp className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6"
+                      className="h-6 w-6 sm:h-8 sm:w-8"
                       onClick={() => moveFile(index, "down")}
                       disabled={index === audioFiles.length - 1}
                     >
-                      <ArrowDown className="h-4 w-4" />
+                      <ArrowDown className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                   </div>
 
-                  <div className="rounded-full bg-primary/10 p-2">
-                    <Music className="h-5 w-5 text-primary" />
+                  <div className="rounded-full bg-primary/10 p-1.5 sm:p-2 flex-shrink-0">
+                    <Music className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate">{item.name}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-medium text-xs sm:text-sm truncate">{item.name}</p>
+                    <p className="text-xs text-muted-foreground">
                       Duration: {formatDuration(item.duration)}
                     </p>
                   </div>
 
-                  <span className="text-sm text-muted-foreground font-mono">
+                  <span className="text-xs text-muted-foreground font-mono flex-shrink-0">
                     #{index + 1}
                   </span>
 
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0"
                     onClick={() => removeFile(item.id)}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
                 </div>
               </Card>
@@ -324,27 +325,29 @@ const AudioMergerTool = () => {
         {/* Actions */}
         {audioFiles.length > 0 && (
           <>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 onClick={mergeAudio}
                 disabled={isProcessing || audioFiles.length < 2}
-                className="flex-1"
+                className="flex-1 text-sm sm:text-base py-3 sm:py-4"
               >
                 {isProcessing ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin mr-2" />
                     Merging...
                   </>
                 ) : (
                   <>
-                    <Download className="h-4 w-4 mr-2" />
-                    Merge & Download
+                    <Download className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                    <span className="hidden sm:inline">Merge & Download</span>
+                    <span className="sm:hidden">Merge</span>
                   </>
                 )}
               </Button>
 
-              <Button variant="outline" onClick={reset}>
-                Clear All
+              <Button variant="outline" onClick={reset} className="text-sm sm:text-base py-3 sm:py-4">
+                <span className="hidden sm:inline">Clear All</span>
+                <span className="sm:hidden">Clear</span>
               </Button>
             </div>
 

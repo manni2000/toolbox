@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const AudioTrimmerTool = () => {
@@ -169,7 +169,7 @@ const AudioTrimmerTool = () => {
         {/* Upload Area */}
         {!audioFile && (
           <div
-            className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""}`}
+            className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""} p-6 sm:p-8`}
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
             onDrop={handleDrop}
@@ -182,26 +182,27 @@ const AudioTrimmerTool = () => {
               className="hidden"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
             />
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop audio file here or click to upload</p>
-            <p className="text-sm text-muted-foreground">Supports MP3, WAV, M4A, OGG</p>
+            <Upload className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop audio file here or click to upload</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">Supports MP3, WAV, M4A, OGG</p>
           </div>
         )}
 
         {audioFile && (
           <>
             {/* File Info */}
-            <Card className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">{audioFile.name}</p>
-                  <p className="text-sm text-muted-foreground">
+            <Card className="p-3 sm:p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-sm sm:text-base truncate">{audioFile.name}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Duration: {formatTime(duration)} | Selection: {formatTime(endTime - startTime)}
                   </p>
                 </div>
-                <Button variant="outline" size="sm" onClick={reset}>
-                  <RotateCcw className="h-4 w-4 mr-1" />
-                  Reset
+                <Button variant="outline" size="sm" onClick={reset} className="self-end sm:self-auto">
+                  <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="hidden sm:inline">Reset</span>
+                  <span className="sm:hidden">Rst</span>
                 </Button>
               </div>
             </Card>
@@ -216,8 +217,8 @@ const AudioTrimmerTool = () => {
             />
 
             {/* Waveform / Timeline */}
-            <Card className="p-4">
-              <div className="relative h-20 bg-muted rounded-lg overflow-hidden">
+            <Card className="p-3 sm:p-4">
+              <div className="relative h-16 sm:h-20 bg-muted rounded-lg overflow-hidden">
                 {/* Selection highlight */}
                 <div
                   className="absolute top-0 bottom-0 bg-primary/20 border-x-2 border-primary"
@@ -234,11 +235,11 @@ const AudioTrimmerTool = () => {
                 />
 
                 {/* Fake waveform visualization */}
-                <div className="absolute inset-0 flex items-center justify-center gap-px px-2">
-                  {Array.from({ length: 100 }).map((_, i) => (
+                <div className="absolute inset-0 flex items-center justify-center gap-px px-1 sm:px-2">
+                  {Array.from({ length: 50 }).map((_, i) => (
                     <div
                       key={i}
-                      className="bg-primary/40 rounded-full w-1"
+                      className="bg-primary/40 rounded-full w-0.5 sm:w-1"
                       style={{
                         height: `${20 + Math.sin(i * 0.3) * 15 + Math.random() * 30}%`,
                       }}
@@ -248,7 +249,7 @@ const AudioTrimmerTool = () => {
               </div>
 
               {/* Time labels */}
-              <div className="flex justify-between mt-2 text-sm text-muted-foreground">
+              <div className="flex justify-between mt-2 text-xs sm:text-sm text-muted-foreground">
                 <span>{formatTime(0)}</span>
                 <span>{formatTime(currentTime)}</span>
                 <span>{formatTime(duration)}</span>
@@ -257,16 +258,16 @@ const AudioTrimmerTool = () => {
 
             {/* Trim Controls */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <Card className="p-4">
-                <label className="text-sm font-medium mb-2 block">Start Time</label>
-                <div className="flex gap-2">
+              <Card className="p-3 sm:p-4">
+                <label className="text-xs sm:text-sm font-medium mb-2 block">Start Time</label>
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Input
                     value={formatTime(startTime)}
                     onChange={(e) => {
                       const time = parseTime(e.target.value);
                       if (time >= 0 && time < endTime) setStartTime(time);
                     }}
-                    className="font-mono"
+                    className="font-mono text-sm"
                   />
                   <Slider
                     value={[startTime]}
@@ -281,16 +282,16 @@ const AudioTrimmerTool = () => {
                 </div>
               </Card>
 
-              <Card className="p-4">
-                <label className="text-sm font-medium mb-2 block">End Time</label>
-                <div className="flex gap-2">
+              <Card className="p-3 sm:p-4">
+                <label className="text-xs sm:text-sm font-medium mb-2 block">End Time</label>
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Input
                     value={formatTime(endTime)}
                     onChange={(e) => {
                       const time = parseTime(e.target.value);
                       if (time > startTime && time <= duration) setEndTime(time);
                     }}
-                    className="font-mono"
+                    className="font-mono text-sm"
                   />
                   <Slider
                     value={[endTime]}
@@ -307,29 +308,31 @@ const AudioTrimmerTool = () => {
             </div>
 
             {/* Playback Controls */}
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={togglePlay} className="flex-1">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button variant="outline" onClick={togglePlay} className="flex-1 text-sm sm:text-base py-3 sm:py-4">
                 {isPlaying ? (
                   <>
-                    <Pause className="h-4 w-4 mr-2" />
+                    <Pause className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                     Pause
                   </>
                 ) : (
                   <>
-                    <Play className="h-4 w-4 mr-2" />
-                    Play Full
+                    <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                    <span className="hidden sm:inline">Play Full</span>
+                    <span className="sm:hidden">Play</span>
                   </>
                 )}
               </Button>
-              <Button variant="secondary" onClick={previewSelection} className="flex-1">
-                <Scissors className="h-4 w-4 mr-2" />
-                Preview Selection
+              <Button variant="secondary" onClick={previewSelection} className="flex-1 text-sm sm:text-base py-3 sm:py-4">
+                <Scissors className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                <span className="hidden sm:inline">Preview Selection</span>
+                <span className="sm:hidden">Preview</span>
               </Button>
             </div>
 
             {/* Download */}
-            <Button onClick={downloadTrimmed} className="w-full">
-              <Scissors className="h-4 w-4 mr-2" />
+            <Button onClick={downloadTrimmed} className="w-full text-sm sm:text-base py-3 sm:py-4">
+              <Scissors className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               Trim Audio
             </Button>
 

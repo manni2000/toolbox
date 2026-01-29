@@ -65,37 +65,37 @@ const DateDifferenceTool = () => {
       category="Date & Time"
       categoryPath="/category/date-time"
     >
-      <div className="mx-auto max-w-2xl space-y-8">
+      <div className="mx-auto max-w-2xl space-y-6 sm:space-y-8">
         {/* Inputs */}
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm font-medium">Start Date</label>
+            <label className="mb-2 block text-xs sm:text-sm font-medium">Start Date</label>
             <div className="relative">
-              <Calendar className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+              <Calendar className="absolute left-3 sm:left-4 top-1/2 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="input-tool pl-12"
+                className="input-tool pl-10 sm:pl-12 text-sm"
               />
             </div>
           </div>
           <div>
-            <label className="mb-2 block text-sm font-medium">End Date</label>
+            <label className="mb-2 block text-xs sm:text-sm font-medium">End Date</label>
             <div className="relative">
-              <Calendar className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+              <Calendar className="absolute left-3 sm:left-4 top-1/2 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="input-tool pl-12"
+                className="input-tool pl-10 sm:pl-12 text-sm"
               />
             </div>
           </div>
         </div>
 
-        <button onClick={calculate} className="btn-primary w-full">
-          <Clock className="h-5 w-5" />
+        <button onClick={calculate} className="btn-primary w-full text-sm sm:text-base py-3 sm:py-4">
+          <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
           Calculate Difference
         </button>
 
@@ -103,19 +103,19 @@ const DateDifferenceTool = () => {
         {result && (
           <div className="space-y-6">
             {/* Main Result */}
-            <div className="rounded-xl border border-border bg-card p-6 text-center">
-              <p className="text-sm text-muted-foreground">Time between dates</p>
-              <div className="mt-4 flex items-center justify-center gap-4 flex-wrap">
+            <div className="rounded-xl border border-border bg-card p-4 sm:p-6 text-center">
+              <p className="text-xs sm:text-sm text-muted-foreground">Time between dates</p>
+              <div className="mt-3 sm:mt-4 flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
                 <TimeUnit value={result.years} label="Years" />
-                <span className="text-3xl font-light text-muted-foreground hidden sm:block">:</span>
+                <span className="text-2xl sm:text-3xl font-light text-muted-foreground hidden sm:block">:</span>
                 <TimeUnit value={result.months} label="Months" />
-                <span className="text-3xl font-light text-muted-foreground hidden sm:block">:</span>
+                <span className="text-2xl sm:text-3xl font-light text-muted-foreground hidden sm:block">:</span>
                 <TimeUnit value={result.days} label="Days" />
               </div>
             </div>
 
             {/* Detailed Stats */}
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
               <StatCard label="Total Days" value={result.totalDays.toLocaleString()} />
               <StatCard label="Total Weeks" value={result.totalWeeks.toLocaleString()} />
               <StatCard label="Total Hours" value={result.totalHours.toLocaleString()} />
@@ -129,16 +129,16 @@ const DateDifferenceTool = () => {
 };
 
 const TimeUnit = ({ value, label }: { value: number; label: string }) => (
-  <div className="text-center">
-    <p className="text-4xl font-bold text-primary">{value}</p>
-    <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+  <div className="text-center min-w-[60px]">
+    <p className="text-2xl sm:text-4xl font-bold text-primary">{value}</p>
+    <p className="mt-1 text-xs sm:text-sm text-muted-foreground">{label}</p>
   </div>
 );
 
 const StatCard = ({ label, value }: { label: string; value: string }) => (
-  <div className="rounded-lg border border-border bg-card p-4">
-    <p className="text-sm text-muted-foreground">{label}</p>
-    <p className="mt-1 text-2xl font-semibold">{value}</p>
+  <div className="rounded-lg border border-border bg-card p-3 sm:p-4">
+    <p className="text-xs sm:text-sm text-muted-foreground">{label}</p>
+    <p className="mt-1 text-lg sm:text-2xl font-semibold truncate">{value}</p>
   </div>
 );
 

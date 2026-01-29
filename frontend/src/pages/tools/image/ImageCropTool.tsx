@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Upload, Crop, X, RotateCcw } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const ImageCropTool = () => {
@@ -111,11 +111,11 @@ const ImageCropTool = () => {
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
+            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""} p-6 sm:p-8`}
           >
-            <Crop className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your image here</p>
-            <p className="text-sm text-muted-foreground">Supports PNG, JPG, WebP</p>
+            <Crop className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop your image here</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">Supports PNG, JPG, WebP</p>
             <input
               ref={inputRef}
               type="file"
@@ -128,12 +128,12 @@ const ImageCropTool = () => {
 
         {image && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <span className="font-medium">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <span className="font-medium text-sm sm:text-base">
                 Original: {originalSize.width} × {originalSize.height}px
               </span>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
-                <X className="h-5 w-5" />
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted self-start sm:self-auto">
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
 
@@ -143,62 +143,63 @@ const ImageCropTool = () => {
                 <button
                   key={preset.label}
                   onClick={() => applyPreset(preset.ratio)}
-                  className="rounded-lg bg-secondary px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/80"
+                  className="rounded-lg bg-secondary px-3 py-2 text-xs sm:px-4 sm:py-2 sm:text-sm font-medium transition-colors hover:bg-secondary/80"
                 >
                   {preset.label}
                 </button>
               ))}
               <button
                 onClick={() => setCropArea({ x: 0, y: 0, width: originalSize.width, height: originalSize.height })}
-                className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/80"
+                className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2 text-xs sm:px-4 sm:py-2 sm:text-sm font-medium transition-colors hover:bg-secondary/80"
               >
-                <RotateCcw className="h-4 w-4" />
-                Reset
+                <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Reset</span>
+                <span className="sm:hidden">Rst</span>
               </button>
             </div>
 
             {/* Crop Controls */}
-            <div className="grid gap-4 sm:grid-cols-4">
+            <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-4">
               <div>
-                <label className="mb-1 block text-sm font-medium">X Position</label>
+                <label className="mb-1 block text-xs sm:text-sm font-medium">X Position</label>
                 <input
                   type="number"
                   value={cropArea.x}
                   onChange={(e) => setCropArea({ ...cropArea, x: parseInt(e.target.value) || 0 })}
-                  className="input-field w-full"
+                  className="input-field w-full text-sm"
                   min={0}
                   max={originalSize.width - cropArea.width}
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">Y Position</label>
+                <label className="mb-1 block text-xs sm:text-sm font-medium">Y Position</label>
                 <input
                   type="number"
                   value={cropArea.y}
                   onChange={(e) => setCropArea({ ...cropArea, y: parseInt(e.target.value) || 0 })}
-                  className="input-field w-full"
+                  className="input-field w-full text-sm"
                   min={0}
                   max={originalSize.height - cropArea.height}
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">Width</label>
+                <label className="mb-1 block text-xs sm:text-sm font-medium">Width</label>
                 <input
                   type="number"
                   value={cropArea.width}
                   onChange={(e) => setCropArea({ ...cropArea, width: parseInt(e.target.value) || 100 })}
-                  className="input-field w-full"
+                  className="input-field w-full text-sm"
                   min={1}
                   max={originalSize.width - cropArea.x}
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">Height</label>
+                <label className="mb-1 block text-xs sm:text-sm font-medium">Height</label>
                 <input
                   type="number"
                   value={cropArea.height}
                   onChange={(e) => setCropArea({ ...cropArea, height: parseInt(e.target.value) || 100 })}
-                  className="input-field w-full"
+                  className="input-field w-full text-sm"
                   min={1}
                   max={originalSize.height - cropArea.y}
                 />
@@ -211,9 +212,9 @@ const ImageCropTool = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4">
-              <button onClick={crop} className="btn-primary flex-1">
-                <Crop className="h-5 w-5" />
+            <div className="flex gap-3 sm:gap-4">
+              <button onClick={crop} className="btn-primary flex-1 text-sm sm:text-base py-3 sm:py-4">
+                <Crop className="h-4 w-4 sm:h-5 sm:w-5" />
                 Crop Image
               </button>
             </div>

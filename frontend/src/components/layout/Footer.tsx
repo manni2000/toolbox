@@ -9,7 +9,7 @@ const Footer = () => {
     { name: "Image to PDF", path: "/image-to-pdf" },
     { name: "PDF to Word", path: "/pdf-to-word" },
     { name: "Background Remover", path: "/background-remover" },
-    { name: "Video Downloader", path: "/video-downloader" },
+    { name: "YouTube Video Downloader", path: "/youtube-video-downloader" },
     { name: "Invoice Generator", path: "/invoice-generator" },
   ];
 
@@ -50,6 +50,17 @@ const Footer = () => {
     { name: "Compression Level ZIP", path: "/compression-zip" },
   ];
 
+  const videoTools = [
+    { name: "YouTube Video Downloader", path: "/youtube-video-downloader" },
+    { name: "Instagram Reels Downloader", path: "/instagram-reels-downloader" },
+    { name: "Facebook Video Downloader", path: "/facebook-video-downloader" },
+    { name: "Video to Audio", path: "/video-to-audio" },
+    { name: "Video Trim", path: "/video-trim" },
+    { name: "Video Speed", path: "/video-speed" },
+    { name: "Video Thumbnail", path: "/video-thumbnail" },
+    { name: "Video Resolution", path: "/video-resolution" },
+  ];
+
   const audioTools = [
     { name: "Audio Converter", path: "/audio-converter" },
     { name: "Speech to Text", path: "/speech-to-text" },
@@ -85,8 +96,11 @@ const Footer = () => {
   const imageTools = [
     { name: "QR Code Generator", path: "/qr-code-generator" },
     { name: "QR Code Scanner", path: "/qr-code-scanner" },
+    { name: "PNG to JPG Converter", path: "/png-to-jpg-converter" },
+    { name: "JPG to PNG Converter", path: "/jpg-to-png-converter" },
+    { name: "WebP to PNG Converter", path: "/webp-to-png-converter" },
+    { name: "PNG to WebP Converter", path: "/png-to-webp-converter" },
     { name: "Image Compressor", path: "/image-compressor" },
-    { name: "Image Converter", path: "/image-converter" },
     { name: "Image Resize", path: "/image-resize" },
     { name: "Image Crop", path: "/image-crop" },
     { name: "Background Remover", path: "/background-remover" },
@@ -125,6 +139,15 @@ const Footer = () => {
     { name: "HTTP Header Checker", path: "/http-header-checker" },
     { name: "Website Screenshot", path: "/website-screenshot" },
     { name: "Token Calculator", path: "/token-calculator" },
+    { name: "API Response Formatter", path: "/api-response-formatter" },
+    { name: "JSON to TypeScript", path: "/json-to-typescript-interface" },
+    { name: "SQL Query Beautifier", path: "/sql-query-beautifier" },
+    { name: "JWT Token Expiry Calculator", path: "/jwt-token-expiry-calculator" },
+    { name: "Environment Variable Generator", path: "/environment-variable-generator" },
+    { name: "Postman Collection Generator", path: "/postman-collection-generator" },
+    { name: "Dockerfile Generator", path: "/dockerfile-generator" },
+    { name: "Curl to Axios Converter", path: "/curl-to-axios-converter" },
+    { name: "HTTP Status Code Explainer", path: "/http-status-code-explainer" },
   ];
 
   const educationTools = [
@@ -136,7 +159,12 @@ const Footer = () => {
     { name: "Compound Interest", path: "/compound-interest-calculator" },
     { name: "Simple Interest", path: "/simple-interest-calculator" },
     { name: "Study Timetable Generator", path: "/study-timetable-generator" },
+    { name: "MCQ Generator", path: "/mcq-generator" },
     { name: "World Time", path: "/world-time" },
+    { name: "Age Calculator", path: "/age-calculator" },
+    { name: "Date Difference", path: "/date-difference" },
+    { name: "Working Days Calculator", path: "/working-days-calculator" },
+    { name: "Countdown Timer", path: "/countdown-timer" },
   ];
 
   const socialMediaTools = [
@@ -146,6 +174,7 @@ const Footer = () => {
     { name: "Line Break Generator", path: "/line-break-generator" },
     { name: "Link-in-Bio", path: "/link-in-bio" },
     { name: "WhatsApp Status Generator", path: "/whatsapp-status-generator" },
+    { name: "Meme Generator", path: "/meme-generator" },
   ];
 
   const textTools = [
@@ -278,6 +307,20 @@ const Footer = () => {
             <h4 className="text-sm font-semibold">Education Tools</h4>
             <ul className="space-y-2">
               {educationTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Video Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Video Tools</h4>
+            <ul className="space-y-2">
+              {videoTools.map(tool => (
                 <li key={tool.path}>
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
                     {tool.name}

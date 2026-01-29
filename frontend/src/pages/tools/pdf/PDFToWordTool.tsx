@@ -3,13 +3,14 @@ import { Upload, FileText, Download, X, FileType, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
 import { useToast } from "@/hooks/use-toast";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PDFToWordTool = () => {
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [docxData, setDocxData] = useState<string | null>(null);
+  const [conversionResult, setConversionResult] = useState<any>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -51,6 +52,7 @@ const PDFToWordTool = () => {
     setFile(null);
     setPageCount(0);
     setDocxData(null);
+    setConversionResult(null);
   };
 
   const convertToWord = async () => {
@@ -69,11 +71,20 @@ const PDFToWordTool = () => {
       const result = await response.json();
 
       if (result.success) {
-        setDocxData(result.docx);
+        setDocxData(result.file || result.docx);
+        setConversionResult(result);
         toast({
           title: "Success!",
           description: "PDF converted to Word document successfully",
         });
+        
+        // Auto-scroll to download section after a short delay
+        setTimeout(() => {
+          const downloadSection = document.getElementById('download-section');
+          if (downloadSection) {
+            downloadSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 500);
       } else {
         throw new Error(result.error || 'Failed to convert PDF to Word');
       }
@@ -173,15 +184,17 @@ const PDFToWordTool = () => {
             </button>
 
             {docxData && (
-              <EnhancedDownload
-                data={docxData}
-                fileName={file.name.replace(/\.[^/.]+$/, ".docx")}
-                fileType="word"
-                title="PDF Converted to Word"
-                description="Your PDF has been successfully converted to an editable Word document"
-                fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
-                pageCount={pageCount}
-              />
+              <div id="download-section" className="flex justify-center">
+                <EnhancedDownload
+                  data={docxData}
+                  fileName={conversionResult?.filename || file.name.replace(/\.[^/.]+$/, ".docx")}
+                  fileType="word"
+                  title="PDF Converted to Word"
+                  description="Your PDF has been successfully converted to an editable Word document"
+                  fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
+                  pageCount={pageCount}
+                />
+              </div>
             )}
           </div>
         )}

@@ -3,7 +3,7 @@ import { FolderOpen, Upload, File, Archive } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import ToolLayout from "@/components/layout/ToolLayout";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 interface ExtractedFile {

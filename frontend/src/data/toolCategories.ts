@@ -44,7 +44,10 @@ export const toolCategories: ToolCategory[] = [
     tools: [
       { id: "qr-generator", name: "QR Code Generator", description: "Generate QR codes from URLs or text", path: "/qr-code-generator", isAvailable: true },
       { id: "qr-scanner", name: "QR Code Scanner", description: "Scan and decode QR codes from images", path: "/qr-code-scanner", isAvailable: true },
-      { id: "image-converter", name: "Image Format Converter", description: "Convert between JPG, PNG, WEBP formats", path: "/image-converter", isAvailable: true },
+      { id: "png-to-jpg-converter", name: "PNG to JPG Converter", description: "Convert PNG images to JPG format with quality control", path: "/png-to-jpg-converter", isAvailable: true },
+      { id: "jpg-to-png-converter", name: "JPG to PNG Converter", description: "Convert JPG images to PNG with transparency support", path: "/jpg-to-png-converter", isAvailable: true },
+      { id: "webp-to-png-converter", name: "WebP to PNG Converter", description: "Convert WebP images to PNG for better compatibility", path: "/webp-to-png-converter", isAvailable: true },
+      { id: "png-to-webp-converter", name: "PNG to WebP Converter", description: "Convert PNG images to WebP for web optimization", path: "/png-to-webp-converter", isAvailable: true },
       { id: "image-compressor", name: "Image Compressor", description: "Compress images while maintaining quality", path: "/image-compressor", isAvailable: true },
       { id: "image-resize", name: "Image Resize Tool", description: "Resize images to any dimension", path: "/image-resize", isAvailable: true },
       { id: "image-crop", name: "Image Crop Tool", description: "Crop images with custom dimensions", path: "/image-crop", isAvailable: true },
@@ -86,7 +89,9 @@ export const toolCategories: ToolCategory[] = [
     icon: Video,
     color: "350 80% 55%",
     tools: [
-      { id: "video-downloader", name: "Video Downloader", description: "Download from YouTube, Instagram, Facebook", path: "/video-downloader", isAvailable: true },
+      { id: "youtube-video-downloader", name: "YouTube Video Downloader", description: "Download YouTube videos and Shorts in HD quality", path: "/youtube-video-downloader", isAvailable: true },
+      { id: "instagram-reels-downloader", name: "Instagram Reels Downloader", description: "Download Instagram Reels, Stories, and posts", path: "/instagram-reels-downloader", isAvailable: true },
+      { id: "facebook-video-downloader", name: "Facebook Video Downloader", description: "Download Facebook videos and Reels", path: "/facebook-video-downloader", isAvailable: true },
       { id: "video-to-audio", name: "Video to Audio", description: "Extract audio from video files", path: "/video-to-audio", isAvailable: true },
       { id: "video-trim", name: "Video Trim", description: "Cut and trim video clips", path: "/video-trim", isAvailable: true },
       { id: "video-speed", name: "Video Speed Controller", description: "Change video playback speed", path: "/video-speed", isAvailable: true },

@@ -70,7 +70,7 @@ const CategoriesPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="mt-6 sm:mt-8 flex justify-center gap-1.5 sm:gap-2 hidden md:flex"
+                className="mt-6 sm:mt-8 flex justify-center gap-1.5 sm:gap-2"
               >
                 <button
                   onClick={() => setViewMode("grid")}
@@ -155,7 +155,7 @@ const CategoriesPage = () => {
                     {/* Tools Grid/List */}
                     <div className={
                       viewMode === "grid"
-                        ? "grid gap-2.5 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                        ? "grid gap-2.5 sm:gap-3 grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4"
                         : "space-y-2"
                     }>
                       {category.tools.map((tool) => (
@@ -164,19 +164,19 @@ const CategoriesPage = () => {
                           to={tool.path}
                           className={
                             viewMode === "grid"
-                              ? "group flex items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98]"
-                              : "group flex items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98]"
+                              ? "group flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98] min-h-[80px]"
+                              : "group flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98] min-h-[80px]"
                           }
                         >
-                          <div className="flex-1 min-w-0 pr-2">
+                          <div className="flex-1 min-w-0 pr-2 mb-2 sm:mb-0">
                             <span className="block font-medium text-xs sm:text-sm text-foreground group-hover:text-primary truncate">
                               {tool.name}
                             </span>
-                            <span className="block text-xs text-muted-foreground truncate mt-0.5">
+                            <span className="block text-xs text-muted-foreground truncate mt-0.5 line-clamp-2">
                               {tool.description}
                             </span>
                           </div>
-                          <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary transition-colors mt-auto sm:mt-0" />
                         </Link>
                       ))}
                     </div>
@@ -202,7 +202,7 @@ const CategoriesPage = () => {
               </p>
             </motion.div>
 
-            <div className="grid gap-6 sm:gap-8 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:gap-6 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

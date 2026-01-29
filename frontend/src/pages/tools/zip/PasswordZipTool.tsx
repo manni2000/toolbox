@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Lock, Upload, X, Loader2, FileText } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PasswordZipTool = () => {
@@ -129,11 +129,11 @@ const PasswordZipTool = () => {
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
           onClick={() => inputRef.current?.click()}
-          className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
+          className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""} p-6 sm:p-8`}
         >
-          <Upload className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">Drop files here</p>
-          <p className="text-sm text-muted-foreground">Select multiple files to create password-protected ZIP</p>
+          <Upload className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
+          <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop files here</p>
+          <p className="text-xs sm:text-sm text-muted-foreground">Select multiple files to create password-protected ZIP</p>
           <input
             ref={inputRef}
             type="file"
@@ -145,24 +145,24 @@ const PasswordZipTool = () => {
 
         {/* File List */}
         {files.length > 0 && (
-          <div className="rounded-xl border border-border bg-card p-6">
-            <h3 className="mb-4 font-semibold">Files to ZIP ({files.length})</h3>
+          <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+            <h3 className="mb-3 sm:mb-4 font-semibold text-sm sm:text-base">Files to ZIP ({files.length})</h3>
             <div className="space-y-2">
               {files.map((file, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-3 rounded-lg bg-muted/50 p-3"
+                  className="flex items-center gap-2 sm:gap-3 rounded-lg bg-muted/50 p-2 sm:p-3"
                 >
-                  <FileText className="h-5 w-5 text-primary" />
-                  <span className="flex-1 truncate text-sm">{file.name}</span>
-                  <span className="text-xs text-muted-foreground">
+                  <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+                  <span className="flex-1 truncate text-xs sm:text-sm">{file.name}</span>
+                  <span className="text-xs text-muted-foreground flex-shrink-0">
                     {(file.size / 1024).toFixed(1)} KB
                   </span>
                   <button
                     onClick={() => removeFile(index)}
-                    className="rounded-lg p-1 text-destructive hover:bg-destructive/10"
+                    className="rounded-lg p-1 text-destructive hover:bg-destructive/10 flex-shrink-0"
                   >
-                    <X className="h-5 w-5" />
+                    <X className="h-4 w-4 sm:h-5 sm:w-5" />
                   </button>
                 </div>
               ))}
@@ -173,34 +173,34 @@ const PasswordZipTool = () => {
         {/* Password Fields */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm font-medium">Password</label>
+            <label className="mb-2 block text-xs sm:text-sm font-medium">Password</label>
             <input
               type="password"
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input-tool"
+              className="input-tool text-sm sm:text-base"
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-medium">Confirm Password</label>
+            <label className="mb-2 block text-xs sm:text-sm font-medium">Confirm Password</label>
             <input
               type="password"
               placeholder="Confirm password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="input-tool"
+              className="input-tool text-sm sm:text-base"
             />
           </div>
         </div>
 
         {/* Encryption Method */}
         <div>
-          <label className="mb-2 block text-sm font-medium">Encryption Method</label>
+          <label className="mb-2 block text-xs sm:text-sm font-medium">Encryption Method</label>
           <select
             value={encryptionMethod}
             onChange={(e) => setEncryptionMethod(e.target.value)}
-            className="input-tool"
+            className="input-tool text-sm sm:text-base"
           >
             <option value="aes256">AES-256 (Strongest)</option>
             <option value="aes128">AES-128</option>
@@ -212,16 +212,16 @@ const PasswordZipTool = () => {
         <button
           onClick={createPasswordZip}
           disabled={isProcessing || files.length === 0}
-          className="btn-primary w-full"
+          className="btn-primary w-full text-sm sm:text-base py-3 sm:py-4"
         >
           {isProcessing ? (
             <>
-              <Loader2 className="h-5 w-5 animate-spin" />
+              <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
               Creating Protected ZIP...
             </>
           ) : (
             <>
-              <Lock className="h-5 w-5" />
+              <Lock className="h-4 w-4 sm:h-5 sm:w-5" />
               Create Protected ZIP
             </>
           )}

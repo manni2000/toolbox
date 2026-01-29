@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Copy, Check, Mail, AlertTriangle, Shield, CheckCircle, Calendar } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 
 interface BreachData {
   name: string;

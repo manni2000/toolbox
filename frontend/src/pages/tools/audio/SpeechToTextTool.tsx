@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const SpeechToTextTool = () => {
@@ -157,18 +157,18 @@ const SpeechToTextTool = () => {
     >
       <div className="space-y-6">
         {/* Language Selection */}
-        <Card className="p-4">
-          <div className="flex items-center gap-4">
-            <Languages className="h-5 w-5 text-primary" />
-            <div className="flex-1">
-              <label className="text-sm font-medium mb-1 block">Select Language</label>
+        <Card className="p-3 sm:p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <Languages className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <label className="text-xs sm:text-sm font-medium mb-1 block">Select Language</label>
               <Select value={language} onValueChange={setLanguage}>
-                <SelectTrigger>
+                <SelectTrigger className="text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {languages.map((lang) => (
-                    <SelectItem key={lang.code} value={lang.code}>
+                    <SelectItem key={lang.code} value={lang.code} className="text-sm">
                       {lang.name}
                     </SelectItem>
                   ))}
@@ -180,7 +180,7 @@ const SpeechToTextTool = () => {
 
         {/* Upload Area */}
         <div
-          className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""}`}
+          className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""} p-6 sm:p-8`}
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
@@ -193,11 +193,11 @@ const SpeechToTextTool = () => {
             className="hidden"
             onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
           />
-          <Mic className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">
+          <Mic className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
+          <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">
             {audioFile ? audioFile.name : "Drop audio file here or click to upload"}
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Supports MP3, WAV, M4A, OGG, FLAC
           </p>
         </div>
@@ -205,33 +205,35 @@ const SpeechToTextTool = () => {
         {audioFile && (
           <>
             {/* Audio Preview */}
-            <Card className="p-4">
-              <audio controls className="w-full">
+            <Card className="p-3 sm:p-4">
+              <audio controls className="w-full h-8 sm:h-10">
                 <source src={URL.createObjectURL(audioFile)} />
               </audio>
             </Card>
 
             {/* Action Buttons */}
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 onClick={transcribe}
                 disabled={isProcessing}
-                className="flex-1"
+                className="flex-1 text-sm sm:text-base py-3 sm:py-4"
               >
                 {isProcessing ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin mr-2" />
                     Transcribing...
                   </>
                 ) : (
                   <>
-                    <FileText className="h-4 w-4" />
-                    Transcribe Audio
+                    <FileText className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                    <span className="hidden sm:inline">Transcribe Audio</span>
+                    <span className="sm:hidden">Transcribe</span>
                   </>
                 )}
               </Button>
-              <Button variant="outline" onClick={reset}>
-                Reset
+              <Button variant="outline" onClick={reset} className="text-sm sm:text-base py-3 sm:py-4">
+                <span className="hidden sm:inline">Reset</span>
+                <span className="sm:hidden">Rst</span>
               </Button>
             </div>
           </>
@@ -240,24 +242,26 @@ const SpeechToTextTool = () => {
         {/* Transcription Result */}
         {transcription && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Transcription Result</h3>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <h3 className="text-base sm:text-lg font-semibold">Transcription Result</h3>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline" onClick={exportAsTXT}>
-                  <FileText className="h-4 w-4 mr-1" />
-                  Export TXT
+                <Button size="sm" variant="outline" onClick={exportAsTXT} className="text-xs sm:text-sm">
+                  <FileText className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="hidden sm:inline">Export TXT</span>
+                  <span className="sm:hidden">TXT</span>
                 </Button>
-                <Button size="sm" variant="outline" onClick={exportAsSRT}>
-                  <FileText className="h-4 w-4 mr-1" />
-                  Export SRT
+                <Button size="sm" variant="outline" onClick={exportAsSRT} className="text-xs sm:text-sm">
+                  <FileText className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="hidden sm:inline">Export SRT</span>
+                  <span className="sm:hidden">SRT</span>
                 </Button>
               </div>
             </div>
             <Textarea
               value={transcription}
               onChange={(e) => setTranscription(e.target.value)}
-              rows={10}
-              className="font-mono"
+              rows={8}
+              className="font-mono text-sm"
             />
 
             {/* Download Sections */}

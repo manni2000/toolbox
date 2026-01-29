@@ -96,6 +96,26 @@
 
   <!-- Image Tools -->
   <url>
+    <loc>https://dailyTools247.com/png-to-jpg-converter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/jpg-to-png-converter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/webp-to-png-converter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/png-to-webp-converter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://dailyTools247.com/qr-code-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -230,6 +250,21 @@
 
   <!-- Video Tools -->
   <url>
+    <loc>https://dailyTools247.com/youtube-video-downloader</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/instagram-reels-downloader</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/facebook-video-downloader</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://dailyTools247.com/video-downloader</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -258,6 +293,18 @@
     <loc>https://dailyTools247.com/video-resolution</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+
+  <!-- Social Tools -->
+  <url>
+    <loc>https://dailyTools247.com/meme-generator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/audio-converter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- Audio Tools -->
@@ -429,6 +476,51 @@
   </url>
 
   <!-- Developer Tools -->
+  <url>
+    <loc>https://dailyTools247.com/api-response-formatter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/json-to-typescript-interface</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/sql-query-beautifier</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/jwt-token-expiry-calculator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/environment-variable-generator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/postman-collection-generator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/dockerfile-generator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/curl-to-axios-converter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dailyTools247.com/http-status-code-explainer</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://dailyTools247.com/json-formatter</loc>
     <changefreq>weekly</changefreq>

@@ -15,8 +15,11 @@ import TermsOfService from "./pages/TermsOfService";
 // Image Tools
 import QRGeneratorTool from "./pages/tools/image/QRGeneratorTool";
 import QRScannerTool from "./pages/tools/image/QRScannerTool";
+import PNGToJPGConverter from "./pages/tools/image/PNGToJPGConverter";
+import JPGToPNGConverter from "./pages/tools/image/JPGToPNGConverter";
+import WebPToPNGConverter from "./pages/tools/image/WebPToPNGConverter";
+import PNGToWebPConverter from "./pages/tools/image/PNGToWebPConverter";
 import ImageCompressorTool from "./pages/tools/image/ImageCompressorTool";
-import ImageConverterTool from "./pages/tools/image/ImageConverterTool";
 import ImageResizeTool from "./pages/tools/image/ImageResizeTool";
 import ImageCropTool from "./pages/tools/image/ImageCropTool";
 import BackgroundRemoverTool from "./pages/tools/image/BackgroundRemoverTool";
@@ -44,7 +47,9 @@ import PowerPointToPDFTool from "./pages/tools/pdf/PowerPointToPDFTool";
 import HTMLToPDFTool from "./pages/tools/pdf/HTMLToPDFTool";
 
 // Video Tools
-import VideoDownloaderTool from "./pages/tools/video/VideoDownloaderTool";
+import InstagramReelsDownloader from "./pages/tools/video/InstagramReelsDownloader";
+import YouTubeVideoDownloader from "./pages/tools/video/YouTubeVideoDownloader";
+import FacebookVideoDownloader from "./pages/tools/video/FacebookVideoDownloader";
 import VideoToAudioTool from "./pages/tools/video/VideoToAudioTool";
 import VideoTrimTool from "./pages/tools/video/VideoTrimTool";
 import VideoSpeedTool from "./pages/tools/video/VideoSpeedTool";
@@ -195,8 +200,11 @@ const App = () => (
           {/* Image Tools - SEO friendly routes */}
           <Route path="/qr-code-generator" element={<QRGeneratorTool />} />
           <Route path="/qr-code-scanner" element={<QRScannerTool />} />
+          <Route path="/png-to-jpg-converter" element={<PNGToJPGConverter />} />
+          <Route path="/jpg-to-png-converter" element={<JPGToPNGConverter />} />
+          <Route path="/webp-to-png-converter" element={<WebPToPNGConverter />} />
+          <Route path="/png-to-webp-converter" element={<PNGToWebPConverter />} />
           <Route path="/image-compressor" element={<ImageCompressorTool />} />
-          <Route path="/image-converter" element={<ImageConverterTool />} />
           <Route path="/image-resize" element={<ImageResizeTool />} />
           <Route path="/image-crop" element={<ImageCropTool />} />
           <Route path="/background-remover" element={<BackgroundRemoverTool />} />
@@ -224,7 +232,9 @@ const App = () => (
           <Route path="/html-to-pdf" element={<HTMLToPDFTool />} />
           
           {/* Video Tools */}
-          <Route path="/video-downloader" element={<VideoDownloaderTool />} />
+          <Route path="/instagram-reels-downloader" element={<InstagramReelsDownloader />} />
+          <Route path="/youtube-video-downloader" element={<YouTubeVideoDownloader />} />
+          <Route path="/facebook-video-downloader" element={<FacebookVideoDownloader />} />
           <Route path="/video-to-audio" element={<VideoToAudioTool />} />
           <Route path="/video-trim" element={<VideoTrimTool />} />
           <Route path="/video-speed" element={<VideoSpeedTool />} />

@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Upload, RotateCw, FileText, X } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument, degrees } from "pdf-lib";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const PDFRotateTool = () => {

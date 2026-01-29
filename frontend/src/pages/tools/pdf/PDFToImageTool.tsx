@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { ImageIcon, Upload, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 interface ImageResult {

@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Music2, Upload, X, Loader2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const AudioConverterTool = () => {
@@ -97,11 +97,11 @@ const AudioConverterTool = () => {
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
+            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""} p-6 sm:p-8`}
           >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop audio file here</p>
-            <p className="text-sm text-muted-foreground">MP3, WAV, AAC, OGG, FLAC supported</p>
+            <Upload className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop audio file here</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">MP3, WAV, AAC, OGG, FLAC supported</p>
             <input
               ref={inputRef}
               type="file"
@@ -114,27 +114,27 @@ const AudioConverterTool = () => {
 
         {file && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border border-border bg-card p-4">
               <div className="flex items-center gap-3">
-                <Music2 className="h-6 w-6 text-primary" />
-                <div>
-                  <p className="font-medium">{fileName}</p>
-                  <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                <Music2 className="h-5 w-5 sm:h-6 sm:w-6 text-primary flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-sm sm:text-base truncate">{fileName}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
-                <X className="h-5 w-5" />
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted self-end sm:self-auto">
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
 
             {/* Format Selection */}
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-medium">Output Format</label>
+                <label className="mb-2 block text-xs sm:text-sm font-medium">Output Format</label>
                 <select
                   value={outputFormat}
                   onChange={(e) => setOutputFormat(e.target.value)}
-                  className="input-tool"
+                  className="input-tool text-sm sm:text-base"
                 >
                   <option value="mp3">MP3</option>
                   <option value="wav">WAV</option>
@@ -149,16 +149,16 @@ const AudioConverterTool = () => {
             <button
               onClick={convertAudio}
               disabled={isProcessing}
-              className="btn-primary w-full"
+              className="btn-primary w-full text-sm sm:text-base py-3 sm:py-4"
             >
               {isProcessing ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
                   Converting Audio...
                 </>
               ) : (
                 <>
-                  <Music2 className="h-5 w-5" />
+                  <Music2 className="h-4 w-4 sm:h-5 sm:w-5" />
                   Convert Audio
                 </>
               )}
@@ -181,18 +181,18 @@ const AudioConverterTool = () => {
         )}
 
         {/* Format Info */}
-        <div className="grid gap-4 sm:grid-cols-5">
+        <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
           {["MP3", "WAV", "AAC", "OGG", "FLAC"].map((format) => (
             <div
               key={format}
-              className={`rounded-lg border p-4 text-center transition-colors ${
+              className={`rounded-lg border p-3 sm:p-4 text-center transition-colors ${
                 outputFormat === format.toLowerCase()
                   ? 'border-primary bg-primary/10'
                   : 'border-border bg-card'
               }`}
             >
-              <Music2 className="mx-auto h-8 w-8 text-muted-foreground" />
-              <p className="mt-2 font-medium">{format}</p>
+              <Music2 className="mx-auto h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
+              <p className="mt-1 sm:mt-2 font-medium text-xs sm:text-sm">{format}</p>
             </div>
           ))}
         </div>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Copy, Check, QrCode, AlertTriangle, Shield, CheckCircle, XCircle } from 'lucide-react';
 import ToolLayout from "@/components/layout/ToolLayout";
-import { API_URLS } from "@/lib/api";
+import { API_URLS } from "@/lib/api-complete";
 
 interface QRAnalysis {
   qr_data: string;

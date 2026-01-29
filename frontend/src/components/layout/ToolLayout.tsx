@@ -38,20 +38,20 @@ const ToolLayout = ({ title, description, category, categoryPath, children }: To
 
         {/* Tool Header */}
         <section className="border-b border-border bg-gradient-to-b from-muted/50 to-background">
-          <div className="container py-8">
+          <div className="container py-6 sm:py-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{title}</h1>
-              <p className="mt-2 text-lg text-muted-foreground">{description}</p>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">{title}</h1>
+              <p className="mt-2 text-base sm:text-lg text-muted-foreground">{description}</p>
             </motion.div>
           </div>
         </section>
 
         {/* Tool Content */}
-        <section className="py-8">
+        <section className="py-6 sm:py-8">
           <div className="container">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
