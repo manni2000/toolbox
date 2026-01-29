@@ -1,5 +1,8 @@
 // API Configuration - Updated for Node.js Server Integration
-const API_BASE_URL = 'http://localhost:5000';
+const isProduction = process.env.NODE_ENV === 'production';
+const API_BASE_URL = isProduction 
+  ? 'https://toolbox-backend-jet.vercel.app'
+  : 'http://localhost:5000';
 
 export const API_URLS = {
   BASE_URL: API_BASE_URL,
