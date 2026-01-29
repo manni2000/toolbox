@@ -177,17 +177,6 @@ const Footer = () => {
     { name: "Meme Generator", path: "/meme-generator" },
   ];
 
-  const textTools = [
-    { name: "Word Counter", path: "/word-counter" },
-    { name: "Case Converter", path: "/case-converter" },
-    { name: "Text Diff", path: "/text-diff" },
-    { name: "Markdown to HTML", path: "/markdown-to-html" },
-    { name: "Remove Spaces", path: "/remove-spaces" },
-    { name: "Line Sorter", path: "/line-sorter" },
-    { name: "Duplicate Remover", path: "/duplicate-remover" },
-    { name: "Text Summarizer", path: "/text-summarizer" },
-  ];
-
   const categories = toolCategories.slice(0, 8).map(cat => ({
     name: cat.name,
     path: `/category/${cat.id}`
@@ -400,19 +389,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Text Tools */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Text Tools</h4>
-            <ul className="space-y-2">
-              {textTools.map(tool => (
-                <li key={tool.path}>
-                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
-                    {tool.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         {/* Categories Row */}
