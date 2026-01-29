@@ -34,7 +34,7 @@ const Header = () => {
               <span className="text-xl font-bold tracking-tight">
                 Daily<span className="text-primary">tools247</span>
               </span>
-              <span className="hidden text-[10px] uppercase tracking-widest text-muted-foreground lg:block">
+              <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
                 Free Online Tools
               </span>
             </div>
@@ -110,10 +110,10 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card lg:hidden hover:bg-blue-900 hover:border-blue-800 transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card lg:hidden hover:bg-accent transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-5 w-5 text-blue-600" /> : <Menu className="h-5 w-5 text-blue-600" />}
+            {isMenuOpen ? <X className="h-5 w-5 text-foreground" /> : <Menu className="h-5 w-5 text-foreground" />}
           </button>
         </div>
       </div>

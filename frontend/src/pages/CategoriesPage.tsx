@@ -7,7 +7,7 @@ import Footer from "@/components/layout/Footer";
 import { toolCategories, getAllTools } from "@/data/toolCategories";
 
 const CategoriesPage = () => {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const totalTools = getAllTools().length;
 
   const popularTools = getAllTools().slice(0, 6);
@@ -65,12 +65,12 @@ const CategoriesPage = () => {
                 Browse {totalTools}+ tools across {toolCategories.length} categories
               </motion.p>
 
-              {/* View Mode Toggle */}
+              {/* View Mode Toggle - Hidden on Mobile */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="mt-6 sm:mt-8 flex justify-center gap-1.5 sm:gap-2"
+                className="mt-6 sm:mt-8 justify-center gap-1.5 sm:gap-2 hidden sm:flex"
               >
                 <button
                   onClick={() => setViewMode("grid")}
@@ -152,21 +152,13 @@ const CategoriesPage = () => {
                       </div>
                     </div>
 
-                    {/* Tools Grid/List */}
-                    <div className={
-                      viewMode === "grid"
-                        ? "grid gap-2.5 sm:gap-3 grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4"
-                        : "space-y-2"
-                    }>
+                    {/* Tools Grid/List - Always List on Mobile */}
+                    <div className="space-y-2 sm:space-y-2.5">
                       {category.tools.map((tool) => (
                         <Link
                           key={tool.id}
                           to={tool.path}
-                          className={
-                            viewMode === "grid"
-                              ? "group flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98] min-h-[80px]"
-                              : "group flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98] min-h-[80px]"
-                          }
+                          className="group flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98] min-h-[80px]"
                         >
                           <div className="flex-1 min-w-0 pr-2 mb-2 sm:mb-0">
                             <span className="block font-medium text-xs sm:text-sm text-foreground group-hover:text-primary truncate">

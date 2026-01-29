@@ -1,8 +1,33 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Search, Sparkles, Zap, Shield, ArrowRight, TrendingUp } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllTools } from "@/data/toolCategories";
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 10
+    }
+  }
+};
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -65,17 +90,14 @@ const HeroSection = () => {
 
   const quickTools = [
     { name: "Background Remover", path: "/background-remover" },
-    { name: "Download Insta Reels", path: "/video-downloader" },
-    { name: "PNG to JPG", path: "/image-converter" },
+    { name: "Download Insta Reels", path: "/instagram-reels-downloader" },
+    { name: "PNG to JPG", path: "/png-to-jpg-converter" },
   ];
 
   return (
     <section className="hero-section relative overflow-hidden">
       {/* Enhanced Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -left-1/4 -top-1/4 h-[600px] w-[600px] rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute -bottom-1/4 -right-1/4 h-[600px] w-[600px] rounded-full bg-primary/8 blur-3xl" />
-        <div className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/3 blur-3xl" />
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
       </div>
@@ -89,16 +111,18 @@ const HeroSection = () => {
         >
           {/* Badge */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 }}
+            variants={itemVariants}
             className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-primary/20 bg-primary/10 px-5 py-2.5 text-sm font-medium text-primary-foreground backdrop-blur-sm"
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-            </span>
-            100% Free • No Sign-up Required • Works Offline
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              100% Free • No Sign-up Required • Works Offline
+            </motion.span>
           </motion.div>
 
           {/* Main Title */}
