@@ -26,8 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-chang
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ["https://dailytools247.vercel.app","https://dailytools247.vercel.app","http://localhost:5173","http://127.0.0.1:5173","http://localhost:8080","http://127.0.0.1:8080" ]
 
 # Application definition
 
@@ -132,12 +131,12 @@ REST_FRAMEWORK = {
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
+    "https://toolbox-backend-0j1b.onrender.com",
+    "https://dailytools247.vercel.app",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://localhost:8080",
     "http://127.0.0.1:8080",
-    "https://dailytools247.vercel.app",
-    "https://toolbox-backend-0j1b.onrender.com",
 ]
 
 # Allow all origins for Vercel deployment
