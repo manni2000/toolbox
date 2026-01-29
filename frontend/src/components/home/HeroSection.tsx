@@ -90,7 +90,7 @@ const HeroSection = () => {
 
   const quickTools = [
     { name: "Background Remover", path: "/background-remover" },
-    { name: "Download Insta Reels", path: "/instagram-reels-downloader" },
+    { name: "PDF to WORD", path: "/pdf-to-word" },
     { name: "PNG to JPG", path: "/png-to-jpg-converter" },
   ];
 

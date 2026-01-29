@@ -47,9 +47,6 @@ import PowerPointToPDFTool from "./pages/tools/pdf/PowerPointToPDFTool";
 import HTMLToPDFTool from "./pages/tools/pdf/HTMLToPDFTool";
 
 // Video Tools
-import InstagramReelsDownloader from "./pages/tools/video/InstagramReelsDownloader";
-import YouTubeVideoDownloader from "./pages/tools/video/YouTubeVideoDownloader";
-import FacebookVideoDownloader from "./pages/tools/video/FacebookVideoDownloader";
 import VideoToAudioTool from "./pages/tools/video/VideoToAudioTool";
 import VideoTrimTool from "./pages/tools/video/VideoTrimTool";
 import VideoSpeedTool from "./pages/tools/video/VideoSpeedTool";
@@ -232,9 +229,6 @@ const App = () => (
           <Route path="/html-to-pdf" element={<HTMLToPDFTool />} />
           
           {/* Video Tools */}
-          <Route path="/instagram-reels-downloader" element={<InstagramReelsDownloader />} />
-          <Route path="/youtube-video-downloader" element={<YouTubeVideoDownloader />} />
-          <Route path="/facebook-video-downloader" element={<FacebookVideoDownloader />} />
           <Route path="/video-to-audio" element={<VideoToAudioTool />} />
           <Route path="/video-trim" element={<VideoTrimTool />} />
           <Route path="/video-speed" element={<VideoSpeedTool />} />

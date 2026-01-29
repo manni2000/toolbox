@@ -188,6 +188,57 @@ const About = () => {
           </div>
         </section>
 
+        {/* Founders Section */}
+        <section className="border-y border-border bg-muted/30 py-16">
+          <div className="container">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl font-bold">Our Founders</h2>
+              <p className="mt-4 text-muted-foreground">
+                The visionaries behind Dailytools247
+              </p>
+            </motion.div>
+            <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="rounded-xl border border-border bg-card p-8 text-center"
+              >
+                <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+                  <Users className="h-10 w-10 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Aniket Kr Mandal</h3>
+                <p className="text-primary font-medium mb-3">Founder</p>
+                <p className="text-sm text-muted-foreground">
+                  Passionate entrepreneur with a vision to make powerful online tools accessible to everyone. 
+                  Focused on creating user-friendly solutions that prioritize privacy and efficiency.
+                </p>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="rounded-xl border border-border bg-card p-8 text-center"
+              >
+                <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+                  <Users className="h-10 w-10 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Manish Kumar</h3>
+                <p className="text-primary font-medium mb-3">Co-Founder</p>
+                <p className="text-sm text-muted-foreground">
+                  Tech enthusiast dedicated to building innovative digital solutions. 
+                  Committed to delivering high-quality tools that simplify everyday tasks for users worldwide.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="border-t border-border bg-gradient-to-b from-muted/50 to-background py-16">
           <div className="container">

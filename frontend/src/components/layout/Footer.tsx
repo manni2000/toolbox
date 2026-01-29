@@ -9,7 +9,6 @@ const Footer = () => {
     { name: "Image to PDF", path: "/image-to-pdf" },
     { name: "PDF to Word", path: "/pdf-to-word" },
     { name: "Background Remover", path: "/background-remover" },
-    { name: "YouTube Video Downloader", path: "/youtube-video-downloader" },
     { name: "Invoice Generator", path: "/invoice-generator" },
   ];
 
@@ -51,13 +50,7 @@ const Footer = () => {
   ];
 
   const videoTools = [
-    { name: "YouTube Video Downloader", path: "/youtube-video-downloader" },
-    { name: "Instagram Reels Downloader", path: "/instagram-reels-downloader" },
-    { name: "Facebook Video Downloader", path: "/facebook-video-downloader" },
     { name: "Video to Audio", path: "/video-to-audio" },
-    { name: "Video Trim", path: "/video-trim" },
-    { name: "Video Speed", path: "/video-speed" },
-    { name: "Video Thumbnail", path: "/video-thumbnail" },
     { name: "Video Resolution", path: "/video-resolution" },
   ];
 
@@ -188,15 +181,30 @@ const Footer = () => {
         {/* Top Section - Brand + Popular Tools */}
         <div className="grid gap-8 sm:grid-cols-2 mb-10">
           {/* Brand */}
-          <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                <Wrench className="h-5 w-5 text-primary-foreground" />
-              </div>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2.5">
+            <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden">
+              <img 
+                src="/dailytools247.png" 
+                alt="dailytools247 logo" 
+                className="h-28 w-28 object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  target.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+              <Wrench className="h-16 w-16 text-primary hidden" />
+            </div>
+            <div className="flex flex-col -ml-6">
               <span className="text-xl font-bold tracking-tight">
-                Tool<span className="gradient-text">Box</span>
+                Daily<span className="text-primary">tools247</span>
               </span>
-            </Link>
+              <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                Free Online Tools
+              </span>
+            </div>
+            </div>
             <p className="max-w-md text-sm text-muted-foreground">
               100+ free online tools for images, PDFs, videos, text, and more. 
               No signup required. 100% browser-based.
