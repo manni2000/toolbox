@@ -2,760 +2,760 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Main Pages -->
   <url>
-    <loc>https://dailyTools247.com/</loc>
+    <loc>https://dailytools247.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/categories</loc>
+    <loc>https://dailytools247.com/categories</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/about</loc>
+    <loc>https://dailytools247.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/privacy</loc>
+    <loc>https://dailytools247.com/privacy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/terms</loc>
+    <loc>https://dailytools247.com/terms</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <!-- Category Pages -->
   <url>
-    <loc>https://dailyTools247.com/category/image</loc>
+    <loc>https://dailytools247.com/category/image</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/pdf</loc>
+    <loc>https://dailytools247.com/category/pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/video</loc>
+    <loc>https://dailytools247.com/category/video</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/audio</loc>
+    <loc>https://dailytools247.com/category/audio</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/text</loc>
+    <loc>https://dailytools247.com/category/text</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/security</loc>
+    <loc>https://dailytools247.com/category/security</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/date-time</loc>
+    <loc>https://dailytools247.com/category/date-time</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/dev</loc>
+    <loc>https://dailytools247.com/category/dev</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/internet</loc>
+    <loc>https://dailytools247.com/category/internet</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/education</loc>
+    <loc>https://dailytools247.com/category/education</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/finance</loc>
+    <loc>https://dailytools247.com/category/finance</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/zip</loc>
+    <loc>https://dailytools247.com/category/zip</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/category/social</loc>
+    <loc>https://dailytools247.com/category/social</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Image Tools -->
   <url>
-    <loc>https://dailyTools247.com/png-to-jpg-converter</loc>
+    <loc>https://dailytools247.com/png-to-jpg-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/jpg-to-png-converter</loc>
+    <loc>https://dailytools247.com/jpg-to-png-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/webp-to-png-converter</loc>
+    <loc>https://dailytools247.com/webp-to-png-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/png-to-webp-converter</loc>
+    <loc>https://dailytools247.com/png-to-webp-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/qr-code-generator</loc>
+    <loc>https://dailytools247.com/qr-code-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/qr-code-scanner</loc>
+    <loc>https://dailytools247.com/qr-code-scanner</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/image-converter</loc>
+    <loc>https://dailytools247.com/image-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/image-compressor</loc>
+    <loc>https://dailytools247.com/image-compressor</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/image-resize</loc>
+    <loc>https://dailytools247.com/image-resize</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/image-crop</loc>
+    <loc>https://dailytools247.com/image-crop</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/background-remover</loc>
+    <loc>https://dailytools247.com/background-remover</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/image-to-pdf</loc>
+    <loc>https://dailytools247.com/image-to-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/image-to-word</loc>
+    <loc>https://dailytools247.com/image-to-word</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/image-base64</loc>
+    <loc>https://dailytools247.com/image-base64</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/image-dpi-checker</loc>
+    <loc>https://dailytools247.com/image-dpi-checker</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/exif-viewer</loc>
+    <loc>https://dailytools247.com/exif-viewer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/favicon-generator</loc>
+    <loc>https://dailytools247.com/favicon-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- PDF Tools -->
   <url>
-    <loc>https://dailyTools247.com/pdf-merge</loc>
+    <loc>https://dailytools247.com/pdf-merge</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/pdf-split</loc>
+    <loc>https://dailytools247.com/pdf-split</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/pdf-to-jpg</loc>
+    <loc>https://dailytools247.com/pdf-to-jpg</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/pdf-to-word</loc>
+    <loc>https://dailytools247.com/pdf-to-word</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/pdf-to-powerpoint</loc>
+    <loc>https://dailytools247.com/pdf-to-powerpoint</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/pdf-to-excel</loc>
+    <loc>https://dailytools247.com/pdf-to-excel</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/word-to-pdf</loc>
+    <loc>https://dailytools247.com/word-to-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/powerpoint-to-pdf</loc>
+    <loc>https://dailytools247.com/powerpoint-to-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/html-to-pdf</loc>
+    <loc>https://dailytools247.com/html-to-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/pdf-password</loc>
+    <loc>https://dailytools247.com/pdf-password</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/pdf-unlock</loc>
+    <loc>https://dailytools247.com/pdf-unlock</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/pdf-page-remover</loc>
+    <loc>https://dailytools247.com/pdf-page-remover</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/pdf-rotate</loc>
+    <loc>https://dailytools247.com/pdf-rotate</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Video Tools -->
   <url>
-    <loc>https://dailyTools247.com/youtube-video-downloader</loc>
+    <loc>https://dailytools247.com/youtube-video-downloader</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/instagram-reels-downloader</loc>
+    <loc>https://dailytools247.com/instagram-reels-downloader</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/facebook-video-downloader</loc>
+    <loc>https://dailytools247.com/facebook-video-downloader</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/video-downloader</loc>
+    <loc>https://dailytools247.com/video-downloader</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/video-to-audio</loc>
+    <loc>https://dailytools247.com/video-to-audio</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/video-trim</loc>
+    <loc>https://dailytools247.com/video-trim</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/video-speed</loc>
+    <loc>https://dailytools247.com/video-speed</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/video-thumbnail</loc>
+    <loc>https://dailytools247.com/video-thumbnail</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/video-resolution</loc>
+    <loc>https://dailytools247.com/video-resolution</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Social Tools -->
   <url>
-    <loc>https://dailyTools247.com/meme-generator</loc>
+    <loc>https://dailytools247.com/meme-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/audio-converter</loc>
+    <loc>https://dailytools247.com/audio-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Audio Tools -->
   <url>
-    <loc>https://dailyTools247.com/audio-converter</loc>
+    <loc>https://dailytools247.com/audio-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/speech-to-text</loc>
+    <loc>https://dailytools247.com/speech-to-text</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/audio-trimmer</loc>
+    <loc>https://dailytools247.com/audio-trimmer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/audio-merger</loc>
+    <loc>https://dailytools247.com/audio-merger</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/audio-speed</loc>
+    <loc>https://dailytools247.com/audio-speed</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Text Tools -->
   <url>
-    <loc>https://dailyTools247.com/word-counter</loc>
+    <loc>https://dailytools247.com/word-counter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/case-converter</loc>
+    <loc>https://dailytools247.com/case-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/remove-spaces</loc>
+    <loc>https://dailytools247.com/remove-spaces</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/line-sorter</loc>
+    <loc>https://dailytools247.com/line-sorter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/duplicate-remover</loc>
+    <loc>https://dailytools247.com/duplicate-remover</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/markdown-to-html</loc>
+    <loc>https://dailytools247.com/markdown-to-html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/text-summarizer</loc>
+    <loc>https://dailytools247.com/text-summarizer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/text-diff</loc>
+    <loc>https://dailytools247.com/text-diff</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/meme-generator</loc>
+    <loc>https://dailytools247.com/meme-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/color-converter</loc>
+    <loc>https://dailytools247.com/color-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Security Tools -->
   <url>
-    <loc>https://dailyTools247.com/password-generator</loc>
+    <loc>https://dailytools247.com/password-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/password-strength</loc>
+    <loc>https://dailytools247.com/password-strength</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/hash-generator</loc>
+    <loc>https://dailytools247.com/hash-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/base64-encoder</loc>
+    <loc>https://dailytools247.com/base64-encoder</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/uuid-generator</loc>
+    <loc>https://dailytools247.com/uuid-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/password-strength-explainer</loc>
+    <loc>https://dailytools247.com/password-strength-explainer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/data-breach-email-checker</loc>
+    <loc>https://dailytools247.com/data-breach-email-checker</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/file-hash-comparison</loc>
+    <loc>https://dailytools247.com/file-hash-comparison</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/exif-location-remover</loc>
+    <loc>https://dailytools247.com/exif-location-remover</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/text-redaction</loc>
+    <loc>https://dailytools247.com/text-redaction</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/qr-phishing-scanner</loc>
+    <loc>https://dailytools247.com/qr-phishing-scanner</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/secure-notes</loc>
+    <loc>https://dailytools247.com/secure-notes</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/url-reputation-checker</loc>
+    <loc>https://dailytools247.com/url-reputation-checker</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Date & Time Tools -->
   <url>
-    <loc>https://dailyTools247.com/age-calculator</loc>
+    <loc>https://dailytools247.com/age-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/date-difference</loc>
+    <loc>https://dailytools247.com/date-difference</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/working-days-calculator</loc>
+    <loc>https://dailytools247.com/working-days-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/countdown-timer</loc>
+    <loc>https://dailytools247.com/countdown-timer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Developer Tools -->
   <url>
-    <loc>https://dailyTools247.com/api-response-formatter</loc>
+    <loc>https://dailytools247.com/api-response-formatter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/json-to-typescript-interface</loc>
+    <loc>https://dailytools247.com/json-to-typescript-interface</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/sql-query-beautifier</loc>
+    <loc>https://dailytools247.com/sql-query-beautifier</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/jwt-token-expiry-calculator</loc>
+    <loc>https://dailytools247.com/jwt-token-expiry-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/environment-variable-generator</loc>
+    <loc>https://dailytools247.com/environment-variable-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/postman-collection-generator</loc>
+    <loc>https://dailytools247.com/postman-collection-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/dockerfile-generator</loc>
+    <loc>https://dailytools247.com/dockerfile-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/curl-to-axios-converter</loc>
+    <loc>https://dailytools247.com/curl-to-axios-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/http-status-code-explainer</loc>
+    <loc>https://dailytools247.com/http-status-code-explainer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/json-formatter</loc>
+    <loc>https://dailytools247.com/json-formatter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/regex-tester</loc>
+    <loc>https://dailytools247.com/regex-tester</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/url-encoder</loc>
+    <loc>https://dailytools247.com/url-encoder</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/lorem-ipsum-generator</loc>
+    <loc>https://dailytools247.com/lorem-ipsum-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/jwt-decoder</loc>
+    <loc>https://dailytools247.com/jwt-decoder</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/cron-generator</loc>
+    <loc>https://dailytools247.com/cron-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/http-header-checker</loc>
+    <loc>https://dailytools247.com/http-header-checker</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/website-screenshot</loc>
+    <loc>https://dailytools247.com/website-screenshot</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/token-calculator</loc>
+    <loc>https://dailytools247.com/token-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/color-palettes</loc>
+    <loc>https://dailytools247.com/color-palettes</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/api-response-formatter</loc>
+    <loc>https://dailytools247.com/api-response-formatter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/json-to-typescript-interface</loc>
+    <loc>https://dailytools247.com/json-to-typescript-interface</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/sql-query-beautifier</loc>
+    <loc>https://dailytools247.com/sql-query-beautifier</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/jwt-token-expiry-calculator</loc>
+    <loc>https://dailytools247.com/jwt-token-expiry-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/environment-variable-generator</loc>
+    <loc>https://dailytools247.com/environment-variable-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/postman-collection-generator</loc>
+    <loc>https://dailytools247.com/postman-collection-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/dockerfile-generator</loc>
+    <loc>https://dailytools247.com/dockerfile-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/curl-to-axios-converter</loc>
+    <loc>https://dailytools247.com/curl-to-axios-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/http-status-code-explainer</loc>
+    <loc>https://dailytools247.com/http-status-code-explainer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/world-time</loc>
+    <loc>https://dailytools247.com/world-time</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/jwt-token-expiry-calculator</loc>
+    <loc>https://dailytools247.com/jwt-token-expiry-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/environment-variable-generator</loc>
+    <loc>https://dailytools247.com/environment-variable-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/postman-collection-generator</loc>
+    <loc>https://dailytools247.com/postman-collection-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/dockerfile-generator</loc>
+    <loc>https://dailytools247.com/dockerfile-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/curl-to-axios-converter</loc>
+    <loc>https://dailytools247.com/curl-to-axios-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/http-status-code-explainer</loc>
+    <loc>https://dailytools247.com/http-status-code-explainer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/url-shortener</loc>
+    <loc>https://dailytools247.com/url-shortener</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/lorem-ipsum-generator</loc>
+    <loc>https://dailytools247.com/lorem-ipsum-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/sitemap-generator</loc>
+    <loc>https://dailytools247.com/sitemap-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/robots-txt-checker</loc>
+    <loc>https://dailytools247.com/robots-txt-checker</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/cron-generator</loc>
+    <loc>https://dailytools247.com/cron-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/http-header-checker</loc>
+    <loc>https://dailytools247.com/http-header-checker</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/website-screenshot</loc>
+    <loc>https://dailytools247.com/website-screenshot</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Internet Tools -->
   <url>
-    <loc>https://dailyTools247.com/ip-lookup</loc>
+    <loc>https://dailytools247.com/ip-lookup</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/user-agent-parser</loc>
+    <loc>https://dailytools247.com/user-agent-parser</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/dns-lookup</loc>
+    <loc>https://dailytools247.com/dns-lookup</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/ssl-checker</loc>
+    <loc>https://dailytools247.com/ssl-checker</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/website-ping</loc>
+    <loc>https://dailytools247.com/website-ping</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Education Tools -->
   <url>
-    <loc>https://dailyTools247.com/scientific-calculator</loc>
+    <loc>https://dailytools247.com/scientific-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/percentage-calculator</loc>
+    <loc>https://dailytools247.com/percentage-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/unit-converter</loc>
+    <loc>https://dailytools247.com/unit-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Finance Tools -->
   <url>
-    <loc>https://dailyTools247.com/emi-calculator</loc>
+    <loc>https://dailytools247.com/emi-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/gst-calculator</loc>
+    <loc>https://dailytools247.com/gst-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- ZIP Tools -->
   <url>
-    <loc>https://dailyTools247.com/create-zip</loc>
+    <loc>https://dailytools247.com/create-zip</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/extract-zip</loc>
+    <loc>https://dailytools247.com/extract-zip</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dailyTools247.com/password-zip</loc>
+    <loc>https://dailytools247.com/password-zip</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -767,43 +767,43 @@
 
   <!-- Social Media Tools -->
   <url>
-    <loc>https://dailyTools247.com/hashtag-generator</loc>
+    <loc>https://dailytools247.com/hashtag-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <lastmod>2025-01-28</lastmod>
   </url>
   <url>
-    <loc>https://dailyTools247.com/whatsapp-status-generator</loc>
+    <loc>https://dailytools247.com/whatsapp-status-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <lastmod>2025-01-28</lastmod>
   </url>
   <url>
-    <loc>https://dailyTools247.com/bio-generator</loc>
+    <loc>https://dailytools247.com/bio-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <lastmod>2025-01-28</lastmod>
   </url>
   <url>
-    <loc>https://dailyTools247.com/caption-formatter</loc>
+    <loc>https://dailytools247.com/caption-formatter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <lastmod>2025-01-28</lastmod>
   </url>
   <url>
-    <loc>https://dailyTools247.com/line-break-generator</loc>
+    <loc>https://dailytools247.com/line-break-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <lastmod>2025-01-28</lastmod>
   </url>
   <url>
-    <loc>https://dailyTools247.com/link-in-bio</loc>
+    <loc>https://dailytools247.com/link-in-bio</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <lastmod>2025-01-28</lastmod>
   </url>
   <url>
-    <loc>https://dailyTools247.com/meme-generator</loc>
+    <loc>https://dailytools247.com/meme-generator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <lastmod>2025-01-28</lastmod>

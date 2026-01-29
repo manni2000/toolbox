@@ -190,7 +190,7 @@ const Footer = () => {
               <img 
                 src="/dailytools247.png" 
                 alt="dailytools247 logo" 
-                className="h-28 w-28 object-contain"
+                className="h-32 w-32 object-contain"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -206,12 +206,12 @@ const Footer = () => {
               <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
                 Free Online Tools
               </span>
+              <p className="max-w-md text-sm text-muted-foreground mt-2">
+                100+ free online tools for images, PDFs, videos, text, and more. 
+                No signup required. 100% browser-based.
+              </p>
             </div>
             </div>
-            <p className="max-w-md text-sm text-muted-foreground">
-              100+ free online tools for images, PDFs, videos, text, and more. 
-              No signup required. 100% browser-based.
-            </p>
           </div>
 
           {/* Popular Tools */}
@@ -421,7 +421,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-10 flex flex-col items-center justify-center gap-4 border-t border-border pt-8">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Dailytools247. All rights reserved.
+            © {new Date().getFullYear()} dailytools247. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground">

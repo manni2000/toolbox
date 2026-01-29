@@ -1,10 +1,10 @@
-# Dailytools247 - 100+ Free Online Tools Platform
+# dailytools247 - 100+ Free Online Tools Platform
 
 A comprehensive web application providing **100+ free online tools** for image processing, PDF editing, video conversion, text utilities, finance calculators, and more. Built with Django backend and React frontend with TypeScript.
 
 ## 🎯 Overview
 
-Dailytools247 is a modern, feature-rich platform that offers a wide variety of utility tools organized into 13 categories. Whether you need to compress images, merge PDFs, convert videos, generate passwords, or calculate EMIs - we've got you covered with professional-grade tools that work entirely in your browser.
+dailytools247 is a modern, feature-rich platform that offers a wide variety of utility tools organized into 13 categories. Whether you need to compress images, merge PDFs, convert videos, generate passwords, or calculate EMIs - we've got you covered with professional-grade tools that work entirely in your browser.
 
 ### ✨ Key Features
 - **100+ Tools** across 13 categories
@@ -488,7 +488,7 @@ For support, please email info@dailytools247.com or create an issue on GitHub.
 
 ## 🌟 Highlights
 
-### What Makes Dailytools247 Special?
+### What Makes dailytools247 Special?
 - **Comprehensive**: 100+ tools covering every daily need
 - **Modern Tech Stack**: React 18, TypeScript, Vite, Django
 - **Professional UI**: Beautiful, intuitive interface

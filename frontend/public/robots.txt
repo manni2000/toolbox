@@ -1,11 +1,11 @@
-# Dailytools247 Robots.txt
-# https://dailyTools247.com
+# dailytools247 Robots.txt
+# https://dailytools247.com
 
 User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://dailyTools247.com/sitemap.xml
+Sitemap: https://dailytools247.com/sitemap.xml
 
 # Crawl-delay for polite crawling
 Crawl-delay: 1
