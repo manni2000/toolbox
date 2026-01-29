@@ -11,6 +11,9 @@ export default defineConfig(({ mode }) => ({
     hmr: {
       overlay: false,
     },
+    fs: {
+      strict: false,
+    },
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8000',
@@ -24,5 +27,11 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    target: 'esnext',
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
   },
 }));
