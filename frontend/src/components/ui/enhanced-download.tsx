@@ -127,6 +127,7 @@ export const EnhancedDownload = ({
                       {file.name?.split('.').pop()?.toUpperCase() || 'FILE'}
                     </span>
                   </div>
+                  <p className="text-sm font-medium truncate text-foreground">{file.name || 'Unknown File'}</p>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <span>{fileType.toUpperCase()}</span>
                     {fileSize && <span>•</span>}
