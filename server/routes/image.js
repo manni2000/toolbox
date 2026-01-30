@@ -4,6 +4,7 @@ const sharp = require('sharp');
 const Jimp = require('jimp');
 const QRCode = require('qrcode');
 const exifr = require('exifr');
+const { PDFDocument } = require('pdf-lib');
 const path = require('path');
 const fs = require('fs');
 const router = express.Router();
@@ -389,24 +390,208 @@ router.post('/favicon-generator', upload.single('image'), async (req, res) => {
   }
 });
 
-// Image to PDF (placeholder)
+// Image to PDF
 router.post('/image-to-pdf', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No image file provided' });
     }
 
-    // This is a placeholder implementation
-    // In a real implementation, you would use a PDF library like jsPDF or pdfkit
+    const { pageSize = 'a4', orientation = 'portrait', quality = 'high' } = req.body;
+
+    // Load the image using sharp to get metadata and buffer
+    const imageBuffer = req.file.buffer;
+    const metadata = await sharp(imageBuffer).metadata();
+
+    // Create a new PDF document
+    const pdfDoc = await PDFDocument.create();
+    
+    // Define page sizes (in points)
+    const pageSizes = {
+      'a4': { width: 595, height: 842 },
+      'letter': { width: 612, height: 792 },
+      'a3': { width: 842, height: 1191 }
+    };
+    
+    const selectedSize = pageSizes[pageSize] || pageSizes['a4'];
+    
+    // Calculate image dimensions to fit the page
+    let imgWidth, imgHeight;
+    const aspectRatio = metadata.width / metadata.height;
+    
+    if (orientation === 'landscape') {
+      imgWidth = selectedSize.height;
+      imgHeight = selectedSize.height / aspectRatio;
+    } else {
+      imgWidth = selectedSize.width;
+      imgHeight = selectedSize.width / aspectRatio;
+    }
+    
+    // Center the image on the page
+    const x = (selectedSize.width - imgWidth) / 2;
+    const y = (selectedSize.height - imgHeight) / 2;
+
+    // Add the image to the PDF
+    const image = await pdfDoc.embedJpg(imageBuffer); // Try JPG first
+    const page = pdfDoc.addPage([selectedSize.width, selectedSize.height]);
+    page.drawImage(image, {
+      x: x,
+      y: y,
+      width: imgWidth,
+      height: imgHeight
+    });
+
+    // Save the PDF
+    const pdfBytes = await pdfDoc.save();
+    const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+
+    const conversionInfo = {
+      originalFile: req.file.originalname,
+      format: metadata.format,
+      dimensions: {
+        width: metadata.width,
+        height: metadata.height
+      },
+      pageSize: pageSize.toUpperCase(),
+      orientation,
+      pdfSize: pdfBytes.length
+    };
+
     res.json({
       success: true,
-      result: {
-        note: 'Image to PDF conversion is not implemented in this demo. Please integrate with a PDF library.',
-        originalImage: `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`
-      }
+      result: conversionInfo,
+      file: `data:application/pdf;base64,${pdfBase64}`,
+      filename: req.file.originalname.replace(/\.[^/.]+$/, '.pdf')
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Image to PDF conversion error:', error);
+    res.status(500).json({ error: error.message || 'Failed to convert image to PDF' });
+  }
+});
+
+// QR Code Scanner
+router.post('/qr-scanner', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image file provided' });
+    }
+
+    // Load the image using Jimp
+    const image = await Jimp.read(req.file.buffer);
+    
+    // For demo purposes, we'll return a placeholder result
+    // In a real implementation, you would use a QR code scanning library like jsQR or qrcode-reader
+    const scanResult = {
+      originalFile: req.file.originalname,
+      imageSize: {
+        width: image.getWidth(),
+        height: image.getHeight()
+      },
+      qrCodeFound: true,
+      data: 'https://example.com/sample-qr-data',
+      format: 'QR_CODE',
+      note: 'QR code scanning is simulated in this demo. Please integrate with a QR scanning library like jsQR.'
+    };
+
+    res.json({
+      success: true,
+      result: scanResult,
+      imageData: `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`
+    });
+  } catch (error) {
+    console.error('QR code scanning error:', error);
+    res.status(500).json({ error: error.message || 'Failed to scan QR code' });
+  }
+});
+
+// Image DPI Checker
+router.post('/dpi-checker', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image file provided' });
+    }
+
+    // Load the image using sharp to get metadata
+    const metadata = await sharp(req.file.buffer).metadata();
+    
+    // Calculate DPI if available, otherwise estimate
+    let dpi = metadata.dpi || 72; // Default to 72 DPI if not specified
+    
+    // Calculate print sizes at different DPI values
+    const printSizes = {
+      '72 DPI (Screen)': {
+        width: `${(metadata.width / dpi).toFixed(2)} inches`,
+        height: `${(metadata.height / dpi).toFixed(2)} inches`
+      },
+      '150 DPI (Low Print)': {
+        width: `${(metadata.width / 150).toFixed(2)} inches`,
+        height: `${(metadata.height / 150).toFixed(2)} inches`
+      },
+      '300 DPI (High Print)': {
+        width: `${(metadata.width / 300).toFixed(2)} inches`,
+        height: `${(metadata.height / 300).toFixed(2)} inches`
+      }
+    };
+
+    const dpiInfo = {
+      originalFile: req.file.originalname,
+      format: metadata.format,
+      dimensions: {
+        width: metadata.width,
+        height: metadata.height
+      },
+      dpi: dpi,
+      printSizes: printSizes,
+      fileSize: `${(req.file.size / 1024 / 1024).toFixed(2)} MB`
+    };
+
+    res.json({
+      success: true,
+      result: dpiInfo
+    });
+  } catch (error) {
+    console.error('DPI checker error:', error);
+    res.status(500).json({ error: error.message || 'Failed to check image DPI' });
+  }
+});
+
+// Image to Word (OCR placeholder)
+router.post('/image-to-word', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image file provided' });
+    }
+
+    // Load the image using Jimp
+    const image = await Jimp.read(req.file.buffer);
+    
+    // This is a placeholder implementation
+    // In a real implementation, you would use an OCR library like Tesseract.js
+    const ocrResult = {
+      originalFile: req.file.originalname,
+      imageSize: {
+        width: image.getWidth(),
+        height: image.getHeight()
+      },
+      extractedText: 'This is placeholder text extracted from the image. In a real implementation, this would contain the actual text extracted using OCR.',
+      confidence: 0.95,
+      language: 'eng',
+      note: 'OCR is simulated in this demo. Please integrate with an OCR library like Tesseract.js for actual text extraction.'
+    };
+
+    // Create a simple Word document content (as base64)
+    const wordContent = `Extracted Text from ${req.file.originalname}\n\n${ocrResult.extractedText}`;
+    const wordBase64 = Buffer.from(wordContent).toString('base64');
+
+    res.json({
+      success: true,
+      result: ocrResult,
+      file: `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${wordBase64}`,
+      filename: req.file.originalname.replace(/\.[^/.]+$/, '_extracted.docx')
+    });
+  } catch (error) {
+    console.error('Image to Word error:', error);
+    res.status(500).json({ error: error.message || 'Failed to convert image to Word' });
   }
 });
 

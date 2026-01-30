@@ -32,23 +32,38 @@ router.post('/merge', upload.array('pdfs', 10), async (req, res) => {
       return res.status(400).json({ error: 'At least 2 PDF files are required' });
     }
 
-    // This is a placeholder implementation
-    // In a real implementation, you would use a library like pdf-lib or hummusjs
+    // Create a new PDF document
+    const mergedPdf = await PDFDocument.create();
+    
+    // Process each uploaded PDF
+    for (const file of req.files) {
+      const pdfDoc = await PDFDocument.load(file.buffer);
+      const pages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+      pages.forEach(page => mergedPdf.addPage(page));
+    }
+
+    // Save the merged PDF
+    const mergedPdfBytes = await mergedPdf.save();
+    const mergedPdfBase64 = Buffer.from(mergedPdfBytes).toString('base64');
+    
     const mergedPDFInfo = {
       files: req.files.map(file => ({
         name: file.originalname,
         size: file.size
       })),
-      totalPages: req.files.length * 10, // Placeholder
-      note: 'PDF merging is not implemented in this demo. Please integrate with a PDF library like pdf-lib.'
+      totalPages: mergedPdf.getPageCount(),
+      mergedSize: mergedPdfBytes.length
     };
 
     res.json({
       success: true,
-      result: mergedPDFInfo
+      result: mergedPDFInfo,
+      file: `data:application/pdf;base64,${mergedPdfBase64}`,
+      filename: 'merged_document.pdf'
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('PDF merge error:', error);
+    res.status(500).json({ error: error.message || 'Failed to merge PDFs' });
   }
 });
 
@@ -59,27 +74,77 @@ router.post('/split', upload.single('pdf'), async (req, res) => {
       return res.status(400).json({ error: 'No PDF file provided' });
     }
 
-    const { splitType, pageRanges } = req.body;
+    const { splitType = 'single' } = req.body;
 
-    // This is a placeholder implementation
+    // Load the original PDF
+    const originalPdf = await PDFDocument.load(req.file.buffer);
+    const totalPages = originalPdf.getPageCount();
+    
+    const splitFiles = [];
+
+    if (splitType === 'single') {
+      // Split each page into separate PDF
+      for (let i = 0; i < totalPages; i++) {
+        const newPdf = await PDFDocument.create();
+        const [page] = await newPdf.copyPages(originalPdf, [i]);
+        newPdf.addPage(page);
+        
+        const pdfBytes = await newPdf.save();
+        const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+        
+        splitFiles.push({
+          name: `page_${i + 1}.pdf`,
+          pages: `${i + 1}`,
+          file: `data:application/pdf;base64,${pdfBase64}`
+        });
+      }
+    } else {
+      // Split by ranges (simplified - split in half for demo)
+      const midPoint = Math.ceil(totalPages / 2);
+      
+      // First part
+      const part1 = await PDFDocument.create();
+      const part1Pages = await part1.copyPages(originalPdf, Array.from({length: midPoint}, (_, i) => i));
+      part1Pages.forEach(page => part1.addPage(page));
+      const part1Bytes = await part1.save();
+      const part1Base64 = Buffer.from(part1Bytes).toString('base64');
+      
+      // Second part
+      const part2 = await PDFDocument.create();
+      const part2Pages = await part2.copyPages(originalPdf, Array.from({length: totalPages - midPoint}, (_, i) => i + midPoint));
+      part2Pages.forEach(page => part2.addPage(page));
+      const part2Bytes = await part2.save();
+      const part2Base64 = Buffer.from(part2Bytes).toString('base64');
+      
+      splitFiles.push(
+        {
+          name: 'part_1.pdf',
+          pages: `1-${midPoint}`,
+          file: `data:application/pdf;base64,${part1Base64}`
+        },
+        {
+          name: 'part_2.pdf',
+          pages: `${midPoint + 1}-${totalPages}`,
+          file: `data:application/pdf;base64,${part2Base64}`
+        }
+      );
+    }
+
     const splitInfo = {
       originalFile: req.file.originalname,
-      splitType: splitType || 'single',
-      pageRanges: pageRanges || '1-5,6-10',
-      totalPages: 10, // Placeholder
-      splitFiles: [
-        { name: 'part1.pdf', pages: '1-5' },
-        { name: 'part2.pdf', pages: '6-10' }
-      ],
-      note: 'PDF splitting is not implemented in this demo. Please integrate with a PDF library.'
+      splitType,
+      totalPages,
+      splitFiles: splitFiles.map(f => ({ name: f.name, pages: f.pages }))
     };
 
     res.json({
       success: true,
-      result: splitInfo
+      result: splitInfo,
+      files: splitFiles
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('PDF split error:', error);
+    res.status(500).json({ error: error.message || 'Failed to split PDF' });
   }
 });
 
@@ -239,21 +304,53 @@ router.post('/remove-pages', upload.single('pdf'), async (req, res) => {
       return res.status(400).json({ error: 'Pages to remove are required' });
     }
 
-    // This is a placeholder implementation
+    // Parse pages to remove (support comma-separated values and ranges)
+    const pagesArray = pagesToRemove.split(',').map(p => {
+      const trimmed = p.trim();
+      if (trimmed.includes('-')) {
+        // Handle ranges like "1-3"
+        const [start, end] = trimmed.split('-').map(n => parseInt(n.trim()));
+        return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+      }
+      return parseInt(trimmed);
+    }).flat();
+
+    // Load the original PDF
+    const originalPdf = await PDFDocument.load(req.file.buffer);
+    const totalPages = originalPdf.getPageCount();
+    
+    // Create new PDF with remaining pages
+    const newPdf = await PDFDocument.create();
+    
+    // Add all pages except the ones to remove
+    for (let i = 0; i < totalPages; i++) {
+      if (!pagesArray.includes(i + 1)) { // Pages are 1-indexed in UI
+        const [page] = await newPdf.copyPages(originalPdf, [i]);
+        newPdf.addPage(page);
+      }
+    }
+
+    // Save the modified PDF
+    const pdfBytes = await newPdf.save();
+    const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+    
     const removeInfo = {
       originalFile: req.file.originalname,
       pagesToRemove,
-      totalPages: 10, // Placeholder
-      remainingPages: 8, // Placeholder
-      note: 'PDF page removal is not implemented in this demo. Please integrate with a PDF library.'
+      totalPages,
+      removedPages: pagesArray.length,
+      remainingPages: totalPages - pagesArray.length
     };
 
     res.json({
       success: true,
-      result: removeInfo
+      result: removeInfo,
+      file: `data:application/pdf;base64,${pdfBase64}`,
+      filename: req.file.originalname.replace('.pdf', '_removed_pages.pdf')
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('PDF page removal error:', error);
+    res.status(500).json({ error: error.message || 'Failed to remove pages' });
   }
 });
 
@@ -271,22 +368,61 @@ router.post('/rotate', upload.single('pdf'), async (req, res) => {
       return res.status(400).json({ error: 'Rotation angle must be 90, 180, or 270 degrees' });
     }
 
-    // This is a placeholder implementation
+    // Load the original PDF
+    const originalPdf = await PDFDocument.load(req.file.buffer);
+    const totalPages = originalPdf.getPageCount();
+    
+    // Create new PDF with rotated pages
+    const newPdf = await PDFDocument.create();
+    
+    // Determine which pages to rotate
+    let pagesToRotate = [];
+    if (pages === 'all') {
+      pagesToRotate = Array.from({ length: totalPages }, (_, i) => i);
+    } else {
+      // Parse specific pages (comma-separated)
+      pagesToRotate = pages.split(',').map(p => parseInt(p.trim()) - 1).filter(n => n >= 0 && n < totalPages);
+    }
+    
+    // Copy all pages, rotating the specified ones
+    for (let i = 0; i < totalPages; i++) {
+      const [page] = await newPdf.copyPages(originalPdf, [i]);
+      
+      if (pagesToRotate.includes(i)) {
+        page.setRotation(degreesToRadians(parseInt(angle)));
+      }
+      
+      newPdf.addPage(page);
+    }
+
+    // Save the rotated PDF
+    const pdfBytes = await newPdf.save();
+    const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+    
     const rotateInfo = {
       originalFile: req.file.originalname,
       angle: parseInt(angle),
       pages,
-      note: 'PDF rotation is not implemented in this demo. Please integrate with a PDF library.'
+      totalPages,
+      rotatedPages: pagesToRotate.length
     };
 
     res.json({
       success: true,
-      result: rotateInfo
+      result: rotateInfo,
+      file: `data:application/pdf;base64,${pdfBase64}`,
+      filename: req.file.originalname.replace('.pdf', `_rotated_${angle}.pdf`)
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('PDF rotation error:', error);
+    res.status(500).json({ error: error.message || 'Failed to rotate PDF' });
   }
 });
+
+// Helper function to convert degrees to radians
+function degreesToRadians(degrees) {
+  return degrees * (Math.PI / 180);
+}
 
 // PDF to Word
 router.post('/to-word', upload.single('pdf'), async (req, res) => {

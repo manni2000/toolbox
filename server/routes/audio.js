@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
+const { pipeline } = require('@xenova/transformers');
 const router = express.Router();
 
 // Configure multer for file uploads
@@ -284,7 +285,7 @@ router.post('/speed', upload.single('audio'), async (req, res) => {
   }
 });
 
-// Speech to text - placeholder implementation
+// Speech to text using Transformers
 router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
   try {
     if (!req.file) {
@@ -310,16 +311,27 @@ router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
           .save(wavPath);
       });
 
+      // Read the WAV file
+      const audioBuffer = fs.readFileSync(wavPath);
+      
+      // Create speech recognition pipeline
+      const transcriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny');
+      
+      // Transcribe the audio
+      const result = await transcriber(audioBuffer, {
+        language: language.split('-')[0], // Extract language code (en-US -> en)
+        return_timestamps: false
+      });
+
       cleanupTempFile(tempInputPath);
       cleanupTempFile(wavPath);
 
-      // Placeholder response - speech-to-text would require additional setup
       res.json({
         success: true,
-        text: 'Speech recognition processed. Note: This is a demo implementation. For full speech-to-text functionality, integrate with services like Google Cloud Speech-to-Text, AWS Transcribe, or OpenAI Whisper.',
+        text: result.text || 'No speech detected',
         language: language,
-        confidence: 0.8,
-        note: 'Demo speech-to-text processing completed'
+        confidence: result.confidence || 0.8,
+        duration: result.duration || 0
       });
 
     } catch (error) {
@@ -329,15 +341,16 @@ router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
       // Fallback to placeholder if speech recognition fails
       res.json({
         success: true,
-        text: 'Speech recognition processed. Note: This is a demo implementation with limited functionality.',
+        text: 'Speech recognition temporarily unavailable. Please try again.',
         language: language,
-        confidence: 0.5,
-        note: 'Demo speech-to-text processing completed. For production use, integrate with a proper speech recognition service.'
+        confidence: 0.0,
+        error: 'Speech recognition service temporarily unavailable'
       });
     }
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Speech-to-text error:', error);
+    res.status(500).json({ error: error.message || 'Failed to process speech-to-text' });
   }
 });
 

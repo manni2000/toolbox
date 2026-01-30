@@ -16,6 +16,14 @@ const PDFToPowerPointTool = () => {
   const { toast } = useToast();
 
   const handleFile = (f: File) => {
+    if (f.type !== "application/pdf") {
+      toast({
+        title: "Invalid file",
+        description: "Please select a PDF file",
+        variant: "destructive",
+      });
+      return;
+    }
     setFile(f);
     setFileName(f.name);
     setResultData(null);
@@ -39,7 +47,7 @@ const PDFToPowerPointTool = () => {
 
     setIsProcessing(true);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('pdf', file);
 
     try {
       const response = await fetch(`${API_URLS.PDF_TO_POWERPOINT}`, {
@@ -95,6 +103,7 @@ const PDFToPowerPointTool = () => {
             <input
               ref={inputRef}
               type="file"
+              accept="application/pdf"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               className="hidden"
             />
