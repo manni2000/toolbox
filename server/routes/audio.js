@@ -3,7 +3,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
-const { pipeline } = require('@xenova/transformers');
 const router = express.Router();
 
 // Configure multer for file uploads
@@ -285,7 +284,7 @@ router.post('/speed', upload.single('audio'), async (req, res) => {
   }
 });
 
-// Speech to text using Transformers
+// Speech to text - Serverless placeholder
 router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
   try {
     if (!req.file) {
@@ -311,27 +310,17 @@ router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
           .save(wavPath);
       });
 
-      // Read the WAV file
-      const audioBuffer = fs.readFileSync(wavPath);
-      
-      // Create speech recognition pipeline
-      const transcriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny');
-      
-      // Transcribe the audio
-      const result = await transcriber(audioBuffer, {
-        language: language.split('-')[0], // Extract language code (en-US -> en)
-        return_timestamps: false
-      });
-
       cleanupTempFile(tempInputPath);
       cleanupTempFile(wavPath);
 
+      // Placeholder response for serverless environment
       res.json({
         success: true,
-        text: result.text || 'No speech detected',
+        text: 'Speech recognition processed. Note: This is a serverless placeholder implementation. For full speech-to-text functionality, a dedicated server with proper ML models is required.',
         language: language,
-        confidence: result.confidence || 0.8,
-        duration: result.duration || 0
+        confidence: 0.8,
+        duration: 0,
+        note: 'Serverless environment - placeholder implementation'
       });
 
     } catch (error) {
@@ -341,10 +330,11 @@ router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
       // Fallback to placeholder if speech recognition fails
       res.json({
         success: true,
-        text: 'Speech recognition temporarily unavailable. Please try again.',
+        text: 'Speech recognition temporarily unavailable. Please try again later.',
         language: language,
         confidence: 0.0,
-        error: 'Speech recognition service temporarily unavailable'
+        duration: 0,
+        note: 'Serverless environment - service temporarily unavailable'
       });
     }
 
