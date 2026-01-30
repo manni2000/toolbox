@@ -64,8 +64,13 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
-// Static files
+// Static files with proper MIME types
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve frontend static files with correct MIME types
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+}
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -192,12 +197,16 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
+// 404 handler - serve frontend in production
 app.use('*', (req, res) => {
-  res.status(404).json({
-    error: 'Not Found',
-    message: 'The requested resource was not found'
-  });
+  if (process.env.NODE_ENV === 'production') {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  } else {
+    res.status(404).json({
+      error: 'Not Found',
+      message: 'The requested resource was not found'
+    });
+  }
 });
 
 // Start server - only for non-serverless environments
