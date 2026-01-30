@@ -10,8 +10,17 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT;
 
+// Catch all unhandled errors
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // Middleware
-app.use(helmet());
+// app.use(helmet()); // Temporarily disabled for serverless debugging
 app.use(compression());
 app.use(morgan('dev'));
 
@@ -66,6 +75,21 @@ app.get('/health', (req, res) => {
     uptime: process.uptime(),
     memory: process.memoryUsage(),
     environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Daily Tools Backend API',
+    status: 'running',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      api: '/api/',
+      docs: 'API endpoints available at /api/{category}'
+    },
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -176,10 +200,12 @@ app.use('*', (req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// Start server - only for non-serverless environments
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
 
 module.exports = app;
