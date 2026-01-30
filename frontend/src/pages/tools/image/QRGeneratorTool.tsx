@@ -4,7 +4,7 @@ import QRCode from "qrcode";
 import ToolLayout from "@/components/layout/ToolLayout";
 
 const QRGeneratorTool = () => {
-  const [text, setText] = useState("https://example.com");
+  const [text, setText] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [size, setSize] = useState(300);
   const [fgColor, setFgColor] = useState("#000000");
