@@ -148,7 +148,7 @@ router.post('/split', upload.single('pdf'), async (req, res) => {
   }
 });
 
-// PDF to Image
+// PDF to Image - Serverless Friendly Implementation
 router.post('/to-image', upload.single('pdf'), async (req, res) => {
   try {
     if (!req.file) {
@@ -157,41 +157,51 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
 
     const { format = 'png', quality = 'medium', pages = 'all' } = req.body;
 
-    // For now, create a simple implementation that returns the PDF as images
-    // In a real implementation, you would use pdf-poppler or pdf2pic
-    const pdfBase64 = req.file.buffer.toString('base64');
-    
-    // Get actual page count from PDF
+    // Validate file size for serverless environment
+    const fileSizeMB = req.file.size / (1024 * 1024);
+    if (fileSizeMB > 25) { // Serverless functions have memory limits
+      return res.status(400).json({ 
+        error: 'File too large for serverless processing',
+        suggestion: 'Please use a PDF file smaller than 25MB'
+      });
+    }
+
+    // Get page count safely
     let totalPages = 1;
     try {
-      const pdfDoc = await PDFDocument.load(req.file.buffer);
+      const pdfDoc = await PDFDocument.load(req.file.buffer, { 
+        ignoreEncryption: true,
+        updateMetadataAppearances: false 
+      });
       totalPages = pdfDoc.getPageCount();
       
-      // Limit to reasonable number of pages for demo purposes
-      if (totalPages > 10) {
-        totalPages = 10;
+      // Limit pages for serverless environment
+      if (totalPages > 5) {
+        totalPages = 5;
       }
     } catch (error) {
-      console.error('Error reading PDF page count:', error);
-      totalPages = 1; // Default to 1 if we can't read the PDF
+      console.error('Error reading PDF:', error);
+      totalPages = 1;
     }
     
-    // Create placeholder images (in production, use actual PDF conversion)
+    // Create simple placeholder response for serverless
     const images = [];
-    
-    // Get base filename without extension
     const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
     
     for (let i = 1; i <= totalPages; i++) {
-      // If single page, use base filename, otherwise add page number
       const outputFilename = totalPages === 1 
         ? `${baseFilename}.${format}`
         : `${baseFilename}_page_${i}.${format}`;
       
+      // Create a simple 1x1 pixel placeholder image
+      const pixelData = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
+      
       images.push({
         page: i,
         name: outputFilename,
-        image: `data:image/${format};base64,${pdfBase64}` // Placeholder - using PDF data
+        image: `data:image/png;base64,${pixelData}`,
+        size: pixelData.length,
+        note: 'Serverless placeholder - actual conversion requires dedicated server'
       });
     }
 
@@ -203,13 +213,20 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
         quality,
         pages,
         totalPages,
-        note: totalPages >= 10 ? 'Large PDFs are limited to 10 pages in this demo.' : null
+        fileSize: `${fileSizeMB.toFixed(2)} MB`,
+        note: 'Serverless environment: Limited to 5 pages with placeholder images. Full conversion available on dedicated server.',
+        serverless: true
       },
       images: images
     });
+
   } catch (error) {
-    console.error('PDF to image conversion error:', error);
-    res.status(500).json({ error: error.message || 'Failed to convert PDF to images' });
+    console.error('PDF to image error:', error);
+    res.status(500).json({ 
+      error: 'Serverless processing failed',
+      message: error.message,
+      suggestion: 'Try with a smaller PDF file or use the dedicated server version'
+    });
   }
 });
 

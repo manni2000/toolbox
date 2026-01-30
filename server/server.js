@@ -58,6 +58,17 @@ app.use('/api', (req, res, next) => {
 // Static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 // API Routes
 app.use('/api/audio', require('./routes/audio'));
 app.use('/api/date-time', require('./routes/date-time'));
@@ -126,10 +137,34 @@ app.get('/api', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Server Error:', err);
+  
+  // Handle different error types
+  if (err.code === 'ENOTFOUND') {
+    return res.status(503).json({
+      error: 'Service Unavailable',
+      message: 'External service not available'
+    });
+  }
+  
+  if (err.code === 'EMFILE' || err.code === 'ENFILE') {
+    return res.status(503).json({
+      error: 'Too many open files',
+      message: 'Server temporarily overloaded'
+    });
+  }
+  
+  if (err.message && err.message.includes('memory')) {
+    return res.status(507).json({
+      error: 'Insufficient Storage',
+      message: 'Server memory limit exceeded'
+    });
+  }
+
   res.status(500).json({
-    error: 'Something went wrong!',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong',
+    timestamp: new Date().toISOString()
   });
 });
 
