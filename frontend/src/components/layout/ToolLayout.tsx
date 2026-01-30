@@ -21,17 +21,17 @@ const ToolLayout = ({ title, description, category, categoryPath, children }: To
         {/* Breadcrumb */}
         <div className="border-b border-border bg-muted/30">
           <div className="container py-4">
-            <nav className="flex items-center gap-2 text-sm">
-              <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+            <nav className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm overflow-x-auto">
+              <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground whitespace-nowrap">
                 <Home className="h-4 w-4" />
                 <span>Home</span>
               </Link>
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
-              <Link to={categoryPath} className="text-muted-foreground hover:text-foreground">
+              <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+              <Link to={categoryPath} className="text-muted-foreground hover:text-foreground whitespace-nowrap">
                 {category}
               </Link>
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
-              <span className="text-foreground">{title}</span>
+              <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+              <span className="text-foreground whitespace-nowrap">{title}</span>
             </nav>
           </div>
         </div>
