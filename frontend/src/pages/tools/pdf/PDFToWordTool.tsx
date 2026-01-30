@@ -130,37 +130,41 @@ const PDFToWordTool = () => {
 
         {file && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
-              <div className="flex items-center gap-3">
-                <FileText className="h-6 w-6 text-primary" />
-                <div>
-                  <p className="font-medium">{file.name}</p>
-                  <p className="text-sm text-muted-foreground">{pageCount} pages • {(file.size / 1024 / 1024).toFixed(2)} MB</p>
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-primary flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-sm sm:text-base truncate">{file.name}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{pageCount} pages • {(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
-                <X className="h-5 w-5" />
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted flex-shrink-0">
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
 
-            <div className="rounded-xl border border-border bg-muted/30 p-6">
-              <h3 className="mb-3 font-semibold">Conversion Features</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+            <div className="rounded-xl border border-border bg-muted/30 p-4 sm:p-6">
+              <h3 className="mb-3 font-semibold text-sm sm:text-base">Conversion Features</h3>
+              <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Maintains original formatting and layout
+                  <span className="hidden sm:inline">Maintains original formatting and layout</span>
+                  <span className="sm:hidden">Maintains formatting</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Preserves images, tables, and charts
+                  <span className="hidden sm:inline">Preserves images, tables, and charts</span>
+                  <span className="sm:hidden">Preserves images & tables</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Extracts text for easy editing
+                  <span className="hidden sm:inline">Extracts text for easy editing</span>
+                  <span className="sm:hidden">Extracts text for editing</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  Compatible with Microsoft Word & Google Docs
+                  <span className="hidden sm:inline">Compatible with Microsoft Word & Google Docs</span>
+                  <span className="sm:hidden">Compatible with Word & Docs</span>
                 </li>
               </ul>
             </div>
@@ -168,17 +172,19 @@ const PDFToWordTool = () => {
             <button
               onClick={convertToWord}
               disabled={isProcessing}
-              className="btn-primary w-full"
+              className="btn-primary w-full text-sm sm:text-base py-3 sm:py-3.5"
             >
               {isProcessing ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Converting to Word...
+                  <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
+                  <span className="hidden sm:inline">Converting to Word...</span>
+                  <span className="sm:hidden">Converting...</span>
                 </>
               ) : (
                 <>
-                  <Download className="h-5 w-5" />
-                  Convert to Word (.docx)
+                  <Download className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span className="hidden sm:inline">Convert to Word (.docx)</span>
+                  <span className="sm:hidden">Convert to Word</span>
                 </>
               )}
             </button>

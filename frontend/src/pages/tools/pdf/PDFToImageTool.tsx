@@ -8,7 +8,7 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 interface ImageResult {
   page: number;
   image: string;
-  filename: string;
+  name: string;
 }
 
 const PDFToImageTool = () => {
@@ -22,6 +22,14 @@ const PDFToImageTool = () => {
   const { toast } = useToast();
 
   const handleFile = (f: File) => {
+    if (f.type !== "application/pdf") {
+      toast({
+        title: "Invalid file",
+        description: "Please select a PDF file",
+        variant: "destructive",
+      });
+      return;
+    }
     setFile(f);
     setFileName(f.name);
     setResultImages([]);
@@ -45,7 +53,7 @@ const PDFToImageTool = () => {
 
     setIsProcessing(true);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('pdf', file);
 
     try {
       const response = await fetch(`${API_URLS.PDF_TO_IMAGE}`, {
@@ -101,6 +109,7 @@ const PDFToImageTool = () => {
             <input
               ref={inputRef}
               type="file"
+              accept="application/pdf"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               className="hidden"
             />
@@ -144,14 +153,14 @@ const PDFToImageTool = () => {
               <div ref={downloadSectionRef} className="flex justify-center">
                 <EnhancedDownload
                   data={resultImages[0].image}
-                  fileName={resultImages[0].filename}
+                  fileName={resultImages[0].name}
                   fileType="image"
                   title="PDF Converted to Images"
                   description={`Successfully converted ${resultImages.length} pages to images`}
                   fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
                   multipleFiles={resultImages.map(img => ({
                     url: img.image,
-                    name: img.filename,
+                    name: img.name,
                     page: img.page
                   }))}
                 />

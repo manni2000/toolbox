@@ -114,72 +114,61 @@ export const EnhancedDownload = ({
       </div>
 
       {multipleFiles && multipleFiles.length > 0 ? (
-        <div className={`grid gap-4 ${multipleFiles.length === 1 ? 'grid-cols-1 justify-center' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center'} max-w-6xl mx-auto w-full`}>
+        <div className={`grid gap-4 ${multipleFiles.length === 1 ? 'grid-cols-1 justify-center' : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 justify-items-center'} max-w-7xl mx-auto w-full`}>
           {multipleFiles.map((file, index) => (
-            <Card key={index} className={`overflow-hidden ${multipleFiles.length === 1 ? 'max-w-md mx-auto w-full' : ''}`}>
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  <div className="aspect-[3/4] bg-muted/30 rounded-md overflow-hidden">
-                    {fileType === 'image' ? (
-                      <img
-                        src={file.url}
-                        alt={file.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        {getFileIcon()}
-                      </div>
-                    )}
+            <Card key={index} className={`overflow-hidden hover:shadow-lg transition-shadow duration-300 ${multipleFiles.length === 1 ? 'max-w-md mx-auto w-full' : ''}`}>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Badge className={getFileColor()} variant="outline">
+                      {file.page && `Page ${file.page}`}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground font-medium">
+                      {file.name?.split('.').pop()?.toUpperCase() || 'FILE'}
+                    </span>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Badge className={getFileColor()} variant="outline">
-                        {file.page && `Page ${file.page}`}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">
-                        {file.name.split('.').pop()?.toUpperCase()}
-                      </span>
-                    </div>
-                    <p className="text-sm font-medium truncate">{file.name}</p>
-                    <Button
-                      onClick={() => downloadFile(file.url, file.name)}
-                      className="w-full"
-                      size="sm"
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span>{fileType.toUpperCase()}</span>
+                    {fileSize && <span>•</span>}
+                    {fileSize && <span>{fileSize}</span>}
                   </div>
+                  <Button
+                    onClick={() => downloadFile(file.url, file.name || 'download')}
+                    className="w-full"
+                    size="sm"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
       ) : (
-        <Card className="max-w-md mx-auto overflow-hidden">
+        <Card className="max-w-md mx-auto overflow-hidden hover:shadow-lg transition-shadow duration-300">
           <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              {/* File Icon */}
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${getFileColor()}`}>
-                {getFileIcon()}
-              </div>
-              
-              {/* File Info */}
-              <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-sm truncate">{fileName}</h4>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span>{fileType.toUpperCase()}</span>
-                  {fileSize && <span>•</span>}
-                  {fileSize && <span>{fileSize}</span>}
-                  {pageCount && <span>•</span>}
-                  {pageCount && <span>{pageCount} pages</span>}
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                {/* File Icon */}
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${getFileColor()} flex-shrink-0`}>
+                  {getFileIcon()}
+                </div>
+                
+                {/* File Info */}
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-medium text-sm truncate text-foreground">{fileName}</h4>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span>{fileType.toUpperCase()}</span>
+                    {fileSize && <span>•</span>}
+                    {fileSize && <span>{fileSize}</span>}
+                    {pageCount && <span>•</span>}
+                    {pageCount && <span>{pageCount} pages</span>}
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="mt-4">
+              
+              {/* Action Button */}
               <Button
                 onClick={() => downloadFile(data, fileName)}
                 className="w-full"

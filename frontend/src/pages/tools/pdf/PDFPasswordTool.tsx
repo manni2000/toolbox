@@ -11,7 +11,12 @@ const PDFPasswordTool = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [protectedFile, setProtectedFile] = useState<string | null>(null);
+  const [conversionResult, setConversionResult] = useState<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const handleFile = async (f: File) => {
     if (f.type !== "application/pdf") return;
@@ -28,6 +33,51 @@ const PDFPasswordTool = () => {
     setFile(null);
     setPassword("");
     setConfirmPassword("");
+    setProtectedFile(null);
+    setConversionResult(null);
+  };
+
+  const protectPDF = async () => {
+    if (!file || !isValid) return;
+
+    setIsProcessing(true);
+    const formData = new FormData();
+    formData.append('pdf', file);
+    formData.append('password', password);
+    formData.append('action', 'protect');
+
+    try {
+      const response = await fetch(`${API_URLS.PDF_PASSWORD}`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setProtectedFile(result.file);
+        setConversionResult(result);
+        toast({
+          title: "Success!",
+          description: "PDF has been password protected successfully.",
+        });
+        
+        // Scroll to download section after successful protection
+        setTimeout(() => {
+          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        throw new Error(result.error || 'Failed to protect PDF');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to protect PDF",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const passwordsMatch = password === confirmPassword;
@@ -41,20 +91,6 @@ const PDFPasswordTool = () => {
       categoryPath="/category/pdf"
     >
       <div className="space-y-6">
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5">
-          <div className="flex gap-4">
-            <Lock className="h-5 w-5 shrink-0 text-amber-500" />
-            <div>
-              <h4 className="font-semibold text-amber-600 dark:text-amber-400">
-                Backend Required
-              </h4>
-              <p className="mt-1 text-sm text-muted-foreground">
-                PDF encryption requires server-side processing. Enable Lovable Cloud to protect your PDFs.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {!file && (
           <div
             onDrop={handleDrop}
@@ -78,18 +114,18 @@ const PDFPasswordTool = () => {
 
         {file && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
-              <div className="flex items-center gap-3">
-                <FileText className="h-6 w-6 text-primary" />
-                <p className="font-medium">{file.name}</p>
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-primary flex-shrink-0" />
+                <p className="font-medium text-sm sm:text-base truncate">{file.name}</p>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
-                <X className="h-5 w-5" />
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted flex-shrink-0">
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
 
-            <div className="rounded-xl border border-border bg-card p-6">
-              <h3 className="mb-4 font-semibold">Set Password</h3>
+            <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+              <h3 className="mb-4 font-semibold text-sm sm:text-base">Set Password</h3>
               
               <div className="space-y-4">
                 <div>
@@ -129,16 +165,35 @@ const PDFPasswordTool = () => {
             </div>
 
             <button
-              disabled
-              className="btn-primary w-full cursor-not-allowed opacity-50"
+              onClick={protectPDF}
+              disabled={!isValid || isProcessing}
+              className="btn-primary w-full"
             >
-              <Lock className="h-5 w-5" />
-              Protect PDF
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Protecting PDF...
+                </>
+              ) : (
+                <>
+                  <Lock className="h-5 w-5" />
+                  Protect PDF
+                </>
+              )}
             </button>
 
-            <p className="text-center text-sm text-muted-foreground">
-              Enable backend integration for PDF encryption
-            </p>
+            {protectedFile && (
+              <div ref={downloadSectionRef}>
+                <EnhancedDownload
+                  data={protectedFile}
+                  fileName={conversionResult?.filename || file.name.replace('.pdf', '_protected.pdf')}
+                  fileType="pdf"
+                  title="PDF Protected Successfully"
+                  description="Your PDF has been secured with password protection"
+                  fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

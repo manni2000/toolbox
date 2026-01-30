@@ -240,24 +240,55 @@ router.post('/crop', upload.single('image'), async (req, res) => {
   }
 });
 
-// Background Remover (placeholder - would need AI service)
+// Background Remover (basic implementation)
 router.post('/background-remover', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No image file provided' });
     }
 
-    // This is a placeholder implementation
-    // In a real implementation, you would use a service like remove.bg or similar
+    // Load the image using Jimp
+    const image = await Jimp.read(req.file.buffer);
+    
+    // Get image dimensions
+    const width = image.getWidth();
+    const height = image.getHeight();
+    
+    // Simple background removal: make corners/edges transparent
+    // This is a basic implementation - in production, use a proper AI service
+    image.scan(0, 0, width, height, (x, y, idx) => {
+      const red = image.bitmap.data[idx];
+      const green = image.bitmap.data[idx + 1];
+      const blue = image.bitmap.data[idx + 2];
+      
+      // Simple edge detection - if pixel is on the border, make it transparent
+      const isEdge = x < 10 || x > width - 10 || y < 10 || y > height - 10;
+      
+      // Also make white/light backgrounds transparent
+      const isLightBackground = (red > 200 && green > 200 && blue > 200);
+      
+      if (isEdge || isLightBackground) {
+        // Set alpha channel to 0 (transparent)
+        image.bitmap.data[idx + 3] = 0;
+      }
+    });
+    
+    // Convert to PNG with transparency
+    const processedBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
+    const processedBase64 = processedBuffer.toString('base64');
+    
     res.json({
       success: true,
+      image: `data:image/png;base64,${processedBase64}`,
       result: {
-        note: 'Background removal is not implemented in this demo. Please integrate with a background removal service like remove.bg or similar.',
-        originalImage: `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`
+        note: 'Basic background removal applied. For best results, use images with clear subjects and plain backgrounds.',
+        originalSize: req.file.size,
+        processedSize: processedBuffer.length
       }
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Background removal error:', error);
+    res.status(500).json({ error: error.message || 'Failed to remove background' });
   }
 });
 
