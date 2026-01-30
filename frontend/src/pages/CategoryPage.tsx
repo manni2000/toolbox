@@ -43,7 +43,7 @@ const CategoryPage = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
+              className="flex items-center gap-4 sm:gap-6"
             >
               <div
                 className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl flex-shrink-0"
@@ -54,7 +54,7 @@ const CategoryPage = () => {
                   style={{ color: `hsl(${category.color})` }}
                 />
               </div>
-              <div className="text-center sm:text-left">
+              <div className="text-left">
                 <h1 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">
                   {category.name}
                 </h1>

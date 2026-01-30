@@ -13,9 +13,9 @@ const CategoriesPage = () => {
   const popularTools = getAllTools().slice(0, 6);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* Enhanced Header Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-primary/3">
           {/* Background Elements */}

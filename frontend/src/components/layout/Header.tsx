@@ -14,7 +14,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-border/50 bg-background">
       <div className="container">
-        <div className="flex h-16 items-center justify-between lg:h-20">
+        <div className="flex h-20 items-center justify-between sm:h-20 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden">

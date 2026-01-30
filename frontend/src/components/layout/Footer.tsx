@@ -184,22 +184,22 @@ const Footer = () => {
         {/* Top Section - Brand + Popular Tools */}
         <div className="grid gap-8 sm:grid-cols-2 mb-10">
           {/* Brand */}
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-2.5">
-            <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden">
+          <div className="flex flex-col sm:items-start gap-4">
+            <div className="flex flex-col sm:items-start -mt-2">
+            <div className="relative flex h-40 w-40 sm:h-48 sm:w-48 overflow-hidden ml-[-30px]">
               <img 
                 src="/dailytools247.png" 
                 alt="dailytools247 logo" 
-                className="h-32 w-32 object-contain"
+                className="h-40 w-40 sm:h-48 sm:w-48 object-contain"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
                   target.nextElementSibling?.classList.remove('hidden');
                 }}
               />
-              <Wrench className="h-16 w-16 text-primary hidden" />
+              <Wrench className="h-20 w-20 sm:h-24 sm:w-24 text-primary hidden" />
             </div>
-            <div className="flex flex-col -ml-6">
+            <div className="flex flex-col sm:items-start sm:text-left -mt-8">
               <span className="text-xl font-bold tracking-tight">
                 Daily<span className="text-primary">tools247</span>
               </span>
