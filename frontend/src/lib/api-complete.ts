@@ -4,6 +4,7 @@ const API_BASE_URL = isProduction
   ? 'https://toolbox-backend-jet.vercel.app'
   : 'http://localhost:5000';
 
+// For deployment on dailytools247.vercel.app, ensure backend allows this origin
 export const API_URLS = {
   BASE_URL: API_BASE_URL,
   

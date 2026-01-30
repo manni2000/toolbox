@@ -14,17 +14,28 @@ const PORT = process.env.PORT;
 app.use(helmet());
 app.use(compression());
 app.use(morgan('dev'));
+
+// Dynamic CORS configuration
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+  ? [
+      'https://toolbox-backend-jet.vercel.app',
+      'https://dailytools247.vercel.app',
+    ]
+  : [
+      'http://localhost:8080', 
+      'http://localhost:3000', 
+      'http://localhost:5000',
+      'https://toolbox-backend-jet.vercel.app',
+      'https://dailytools247.vercel.app'
+    ];
+
 app.use(cors({
-  origin: [
-    'http://localhost:8080', 
-    'http://localhost:3000', 
-    'http://localhost:5000',
-    'https://toolbox-backend-jet.vercel.app',
-    'https://dailytools247.vercel.app'
-  ],
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 
 // Rate limiting
@@ -37,6 +48,12 @@ app.use('/api/', limiter);
 // Body parsing middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Set proper MIME types for API responses
+app.use('/api', (req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  next();
+});
 
 // Static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
