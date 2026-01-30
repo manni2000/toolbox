@@ -99,7 +99,7 @@ const ImageResizeTool = () => {
 
   return (
     <ToolLayout
-      title="Image Resize Tool"
+      title="Image Resize"
       description="Resize images to any custom dimension or use preset sizes"
       category="Image Tools"
       categoryPath="/category/image"

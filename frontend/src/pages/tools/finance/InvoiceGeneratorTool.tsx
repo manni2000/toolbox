@@ -18,7 +18,7 @@ interface InvoiceData {
   client_address: string;
   date: string;
   due_date: string;
-  tax_rate: number;
+  tax_rate: string;
   currency: string;
   items: InvoiceItem[];
 }
@@ -32,8 +32,8 @@ export default function InvoiceGeneratorTool() {
     client_address: '',
     date: new Date().toISOString().split('T')[0],
     due_date: '',
-    tax_rate: 0,
-    currency: 'USD',
+    tax_rate: '',
+    currency: 'INR',
     items: []
   });
   const [loading, setLoading] = useState(false);
@@ -89,18 +89,39 @@ export default function InvoiceGeneratorTool() {
       });
 
       if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `invoice_${invoiceData.invoice_number}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+        const html = await response.text();
+        
+        // Create a new window and write the HTML content
+        const newWindow = window.open('', '_blank');
+        if (newWindow) {
+          newWindow.document.write(html);
+          newWindow.document.close();
+          
+          // Show a message to the user
+          setTimeout(() => {
+            alert('Invoice opened in new window! Click "Print to PDF" button to save as PDF.');
+          }, 500);
+        } else {
+          // If popup is blocked, create a downloadable HTML file
+          const blob = new Blob([html], { type: 'text/html' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `invoice_${invoiceData.invoice_number}.html`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+          
+          alert('Invoice downloaded as HTML file. Open it and print to PDF.');
+        }
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error || 'Failed to generate invoice'}`);
       }
     } catch (error) {
       console.error('Error generating invoice:', error);
+      alert('Failed to generate invoice. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -111,7 +132,8 @@ export default function InvoiceGeneratorTool() {
   };
 
   const calculateTax = () => {
-    return (calculateSubtotal() * invoiceData.tax_rate) / 100;
+    const taxRate = parseFloat(invoiceData.tax_rate) || 0;
+    return (calculateSubtotal() * taxRate) / 100;
   };
 
   const calculateTotal = () => {
@@ -137,7 +159,7 @@ export default function InvoiceGeneratorTool() {
         `${index + 1}. ${item.description} - ${item.quantity} × ${formatCurrency(item.unit_price)}${item.discount > 0 ? ` (${item.discount}% discount)` : ''} = ${formatCurrency(item.quantity * item.unit_price * (1 - item.discount / 100))}`
       ).join('\n')}\n\n` +
       `Subtotal: ${formatCurrency(calculateSubtotal())}\n` +
-      `Tax (${invoiceData.tax_rate}%): ${formatCurrency(calculateTax())}\n` +
+      `Tax (${parseFloat(invoiceData.tax_rate) || 0}%): ${formatCurrency(calculateTax())}\n` +
       `Total: ${formatCurrency(calculateTotal())}`;
     
     await navigator.clipboard.writeText(text);
@@ -240,8 +262,8 @@ export default function InvoiceGeneratorTool() {
               <input
                 type="number"
                 value={invoiceData.tax_rate}
-                onChange={(e) => setInvoiceData(prev => ({ ...prev, tax_rate: parseFloat(e.target.value) || 0 }))}
-                placeholder="0"
+                onChange={(e) => setInvoiceData(prev => ({ ...prev, tax_rate: e.target.value }))}
+                placeholder=""
                 className="input-tool w-full"
               />
             </div>
@@ -252,11 +274,21 @@ export default function InvoiceGeneratorTool() {
                 onChange={(e) => setInvoiceData(prev => ({ ...prev, currency: e.target.value }))}
                 className="input-tool w-full"
               >
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="JPY">JPY</option>
-                <option value="AUD">AUD</option>
+                <option value="INR">INR (India)</option>
+                <option value="USD">USD (USA)</option>
+                <option value="AED">AED (Dubai/UAE)</option>
+                <option value="PKR">PKR (Pakistan)</option>
+                <option value="NPR">NPR (Nepal)</option>
+                <option value="LKR">LKR (Sri Lanka)</option>
+                <option value="BDT">BDT (Bangladesh)</option>
+                <option value="EUR">EUR (Euro)</option>
+                <option value="GBP">GBP (UK)</option>
+                <option value="JPY">JPY (Japan)</option>
+                <option value="CNY">CNY (China)</option>
+                <option value="AUD">AUD (Australia)</option>
+                <option value="CAD">CAD (Canada)</option>
+                <option value="SGD">SGD (Singapore)</option>
+                <option value="MYR">MYR (Malaysia)</option>
               </select>
             </div>
           </div>
@@ -355,9 +387,9 @@ export default function InvoiceGeneratorTool() {
                   <span className="font-medium">Subtotal:</span>
                   <span className="font-medium">{formatCurrency(calculateSubtotal())}</span>
                 </div>
-                {invoiceData.tax_rate > 0 && (
+                {parseFloat(invoiceData.tax_rate) > 0 && (
                   <div className="flex justify-between items-center">
-                    <span className="font-medium">Tax ({invoiceData.tax_rate}%):</span>
+                    <span className="font-medium">Tax ({parseFloat(invoiceData.tax_rate)}%):</span>
                     <span className="font-medium">{formatCurrency(calculateTax())}</span>
                   </div>
                 )}

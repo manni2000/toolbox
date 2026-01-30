@@ -320,6 +320,263 @@ router.post('/emi-comparison', (req, res) => {
   }
 });
 
+// Invoice Generator
+router.post('/invoice-generator/', (req, res) => {
+  try {
+    const {
+      invoice_number,
+      client_name,
+      client_email,
+      client_phone,
+      client_address,
+      date,
+      due_date,
+      tax_rate,
+      currency,
+      items
+    } = req.body;
+
+    if (!invoice_number || !client_name || !client_email || !items || items.length === 0) {
+      return res.status(400).json({ error: 'Invoice number, client name, email, and at least one item are required' });
+    }
+
+    // Calculate totals
+    const calculateSubtotal = (items) => {
+      return items.reduce((sum, item) => {
+        return sum + ((item.quantity * item.unit_price) * (1 - item.discount / 100));
+      }, 0);
+    };
+
+    const calculateTax = (subtotal, taxRate) => {
+      const rate = parseFloat(taxRate) || 0;
+      return (subtotal * rate) / 100;
+    };
+
+    const subtotal = calculateSubtotal(items);
+    const tax = calculateTax(subtotal, tax_rate);
+    const total = subtotal + tax;
+
+    // Format currency
+    const formatCurrency = (amount, currency = 'USD') => {
+      const symbols = {
+        'USD': '$',
+        'EUR': '€',
+        'GBP': '£',
+        'JPY': '¥',
+        'INR': '₹',
+        'AED': 'د.إ',
+        'PKR': '₨',
+        'NPR': '₨',
+        'LKR': 'රු',
+        'BDT': '৳',
+        'CNY': '¥',
+        'AUD': 'A$',
+        'CAD': 'C$',
+        'SGD': 'S$',
+        'MYR': 'RM'
+      };
+      
+      const symbol = symbols[currency] || '$';
+      return `${symbol}${amount.toFixed(2)}`;
+    };
+
+    // Generate HTML for invoice
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Invoice ${invoice_number}</title>
+      <style>
+        @media print {
+          body { margin: 0; }
+          .no-print { display: none !important; }
+        }
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+          color: #333;
+          line-height: 1.6;
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 30px;
+          border-bottom: 2px solid #333;
+          padding-bottom: 20px;
+        }
+        .header h1 {
+          margin: 0;
+          color: #2c3e50;
+          font-size: 28px;
+        }
+        .invoice-details {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 30px;
+          gap: 20px;
+        }
+        .client-info, .invoice-info {
+          flex: 1;
+          background: #f8f9fa;
+          padding: 15px;
+          border-radius: 5px;
+        }
+        .info-group {
+          margin-bottom: 15px;
+        }
+        .info-group strong {
+          display: block;
+          margin-bottom: 5px;
+          color: #2c3e50;
+          font-size: 14px;
+        }
+        .items-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 20px;
+          background: white;
+        }
+        .items-table th,
+        .items-table td {
+          border: 1px solid #ddd;
+          padding: 12px;
+          text-align: left;
+        }
+        .items-table th {
+          background-color: #f8f9fa;
+          font-weight: bold;
+          font-size: 14px;
+        }
+        .items-table .text-right {
+          text-align: right;
+        }
+        .totals {
+          text-align: right;
+          margin-top: 20px;
+          background: #f8f9fa;
+          padding: 15px;
+          border-radius: 5px;
+        }
+        .totals div {
+          margin-bottom: 10px;
+          font-size: 16px;
+        }
+        .totals .total {
+          font-size: 20px;
+          font-weight: bold;
+          color: #2c3e50;
+          border-top: 2px solid #333;
+          padding-top: 10px;
+        }
+        .footer {
+          margin-top: 50px;
+          padding-top: 20px;
+          border-top: 1px solid #ddd;
+          text-align: center;
+          color: #666;
+          font-size: 14px;
+        }
+        .print-btn {
+          background: #007bff;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+          margin-bottom: 20px;
+        }
+        .print-btn:hover {
+          background: #0056b3;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="no-print" style="text-align: center; margin-bottom: 20px;">
+        <button class="print-btn" onclick="window.print()">🖨️ Print to PDF</button>
+        <p style="color: #666; font-size: 14px;">Click the button above and select "Save as PDF" in the print dialog</p>
+      </div>
+
+      <div class="header">
+        <h1>INVOICE</h1>
+        <p style="font-size: 18px; margin: 5px 0;">Invoice #${invoice_number}</p>
+      </div>
+
+      <div class="invoice-details">
+        <div class="client-info">
+          <div class="info-group">
+            <strong>Bill To:</strong>
+            <div style="font-size: 16px; font-weight: bold;">${client_name}</div>
+            <div>${client_email}</div>
+            ${client_phone ? `<div>${client_phone}</div>` : ''}
+            ${client_address ? `<div>${client_address}</div>` : ''}
+          </div>
+        </div>
+        <div class="invoice-info">
+          <div class="info-group">
+            <strong>Invoice Details:</strong>
+            <div><strong>Date:</strong> ${date || 'N/A'}</div>
+            <div><strong>Due Date:</strong> ${due_date || 'N/A'}</div>
+            <div><strong>Currency:</strong> ${currency}</div>
+          </div>
+        </div>
+      </div>
+
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th style="width: 35%;">Description</th>
+            <th class="text-right" style="width: 10%;">Quantity</th>
+            <th class="text-right" style="width: 15%;">Unit Price</th>
+            <th class="text-right" style="width: 15%;">Gross Amount</th>
+            <th class="text-right" style="width: 10%;">Discount</th>
+            <th class="text-right" style="width: 15%;">Net Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${items.map(item => {
+            const grossAmount = item.quantity * item.unit_price;
+            const discountAmount = grossAmount * (item.discount / 100);
+            const netTotal = grossAmount - discountAmount;
+            return `
+              <tr>
+                <td>${item.description}</td>
+                <td class="text-right">${item.quantity}</td>
+                <td class="text-right">${formatCurrency(item.unit_price, currency)}</td>
+                <td class="text-right">${formatCurrency(grossAmount, currency)}</td>
+                <td class="text-right">${item.discount > 0 ? `${item.discount}%<br><small>-${formatCurrency(discountAmount, currency)}</small>` : '-'}</td>
+                <td class="text-right" style="font-weight: bold;">${formatCurrency(netTotal, currency)}</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+
+      <div class="totals">
+        <div><strong>Subtotal:</strong> ${formatCurrency(subtotal, currency)}</div>
+        ${parseFloat(tax_rate) > 0 ? `<div><strong>Tax (${tax_rate}%):</strong> ${formatCurrency(tax, currency)}</div>` : ''}
+        <div class="total"><strong>Total:</strong> ${formatCurrency(total, currency)}</div>
+      </div>
+
+      <div class="footer">
+        <p><strong>Thank you for your business!</strong></p>
+        <p>This is a computer-generated invoice.</p>
+      </div>
+    </body>
+    </html>
+    `;
+
+    // Set response headers for HTML
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(html);
+
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    res.status(500).json({ error: 'Failed to generate invoice' });
+  }
+});
+
 // Helper functions
 function formatCurrency(amount, currency = 'USD') {
   const symbols = {
