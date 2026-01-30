@@ -211,11 +211,11 @@ const About = () => {
                 <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
                   <Users className="h-10 w-10 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">Aniket Kr Mandal</h3>
+                <h3 className="text-xl font-bold mb-2">Manish Kumar</h3>
                 <p className="text-primary font-medium mb-3">Founder</p>
                 <p className="text-sm text-muted-foreground">
-                  Passionate entrepreneur with a vision to make powerful online tools accessible to everyone. 
-                  Focused on creating user-friendly solutions that prioritize privacy and efficiency.
+                  Tech enthusiast dedicated to building innovative digital solutions. 
+                  Committed to delivering high-quality tools that simplify everyday tasks for users worldwide.
                 </p>
               </motion.div>
               
@@ -228,11 +228,11 @@ const About = () => {
                 <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
                   <Users className="h-10 w-10 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">Manish Kumar</h3>
-                <p className="text-primary font-medium mb-3">Co-Founder</p>
+                <h3 className="text-xl font-bold mb-2">Aniket Kr Mandal</h3>
+                <p className="text-primary font-medium mb-3">Founder</p>
                 <p className="text-sm text-muted-foreground">
-                  Tech enthusiast dedicated to building innovative digital solutions. 
-                  Committed to delivering high-quality tools that simplify everyday tasks for users worldwide.
+                  Passionate entrepreneur with a vision to make powerful online tools accessible to everyone. 
+                  Focused on creating user-friendly solutions that prioritize privacy and efficiency.
                 </p>
               </motion.div>
             </div>
