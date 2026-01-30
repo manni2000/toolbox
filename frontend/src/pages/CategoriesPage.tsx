@@ -153,25 +153,55 @@ const CategoriesPage = () => {
                     </div>
 
                     {/* Tools Grid/List - Always List on Mobile */}
-                    <div className="space-y-2 sm:space-y-2.5">
-                      {category.tools.map((tool) => (
-                        <Link
-                          key={tool.id}
-                          to={tool.path}
-                          className="group flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98] min-h-[80px]"
-                        >
-                          <div className="flex-1 min-w-0 pr-2 mb-2 sm:mb-0">
-                            <span className="block font-medium text-xs sm:text-sm text-foreground group-hover:text-primary truncate">
-                              {tool.name}
-                            </span>
-                            <span className="block text-xs text-muted-foreground truncate mt-0.5 line-clamp-2">
-                              {tool.description}
-                            </span>
-                          </div>
-                          <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary transition-colors mt-auto sm:mt-0" />
-                        </Link>
-                      ))}
-                    </div>
+                    {viewMode === "grid" ? (
+                      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                        {category.tools.map((tool) => (
+                          <motion.div
+                            key={tool.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="tool-card group"
+                          >
+                            <Link
+                              to={tool.path}
+                              className="flex flex-col p-3 sm:p-4 min-h-[100px] justify-between h-full"
+                            >
+                              <div className="flex-1">
+                                <span className="block font-medium text-xs sm:text-sm text-card-foreground group-hover:text-primary line-clamp-2">
+                                  {tool.name}
+                                </span>
+                                <span className="block text-xs text-muted-foreground mt-1 line-clamp-3">
+                                  {tool.description}
+                                </span>
+                              </div>
+                              <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary transition-colors mt-2" />
+                            </Link>
+                          </motion.div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-2 sm:space-y-2.5">
+                        {category.tools.map((tool) => (
+                          <Link
+                            key={tool.id}
+                            to={tool.path}
+                            className="group flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98] min-h-[80px]"
+                          >
+                            <div className="flex-1 min-w-0 pr-2 mb-2 sm:mb-0">
+                              <span className="block font-medium text-xs sm:text-sm text-foreground group-hover:text-primary truncate">
+                                {tool.name}
+                              </span>
+                              <span className="block text-xs text-muted-foreground truncate mt-0.5 line-clamp-2">
+                                {tool.description}
+                              </span>
+                            </div>
+                            <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary transition-colors mt-auto sm:mt-0" />
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </motion.div>
                 );
               })}

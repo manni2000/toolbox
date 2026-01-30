@@ -122,9 +122,10 @@ const Header = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             className="lg:hidden"
           >
             {/* Backdrop */}
@@ -134,7 +135,13 @@ const Header = () => {
             />
             
             {/* Mobile Menu Content */}
-            <div className="fixed left-0 right-0 top-16 z-50 h-[calc(100vh-4rem)] overflow-hidden bg-background shadow-2xl">
+            <motion.div 
+              initial={{ y: "-100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed left-0 right-0 top-16 z-50 h-[calc(100vh-4rem)] overflow-hidden bg-background shadow-2xl"
+            >
               <nav className="flex h-full flex-col">
                 {/* Fixed Header Section */}
                 <div className="flex-shrink-0 border-b border-border bg-background">
@@ -188,7 +195,7 @@ const Header = () => {
                   </div>
                 </div>
               </nav>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

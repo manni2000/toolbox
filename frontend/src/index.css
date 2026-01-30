@@ -126,7 +126,39 @@
   .tool-card:hover {
     @apply border-primary/30;
     box-shadow: var(--shadow-card);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(0.95);
+  }
+
+  /* Make tool card text more responsive to zoom */
+  .tool-card .font-medium,
+  .tool-card-title {
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    line-height: 1.4;
+  }
+
+  .tool-card .text-muted-foreground,
+  .tool-card-description {
+    font-size: clamp(0.75rem, 1.25vw, 0.875rem);
+    line-height: 1.4;
+  }
+
+  /* For list view cards */
+  .group.hover\:border-primary\/50 {
+    transition: all 0.3s ease;
+  }
+
+  .group.hover\:border-primary\/50:hover {
+    transform: scale(0.98);
+  }
+
+  .group.hover\:border-primary\/50 .font-medium {
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    line-height: 1.4;
+  }
+
+  .group.hover\:border-primary\/50 .text-muted-foreground {
+    font-size: clamp(0.75rem, 1.25vw, 0.875rem);
+    line-height: 1.4;
   }
 
   .category-badge {

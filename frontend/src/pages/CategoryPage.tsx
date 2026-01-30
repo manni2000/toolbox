@@ -85,10 +85,10 @@ const CategoryPage = () => {
                     className="tool-card group flex flex-col p-4 sm:p-6 min-h-[120px] justify-between"
                   >
                     <div className="flex-1">
-                      <h3 className="text-base sm:text-lg font-semibold text-card-foreground group-hover:text-primary line-clamp-2">
+                      <h3 className="font-semibold text-card-foreground group-hover:text-primary line-clamp-2 tool-card-title">
                         {tool.name}
                       </h3>
-                      <p className="mt-2 flex-1 text-xs sm:text-sm text-muted-foreground line-clamp-3">
+                      <p className="mt-2 flex-1 text-muted-foreground line-clamp-3 tool-card-description">
                         {tool.description}
                       </p>
                     </div>
