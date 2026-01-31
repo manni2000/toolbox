@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { PDFDocument, StandardFonts } = require('pdf-lib');
+const { pdfToPng } = require('pdf-to-png-converter');
 const router = express.Router();
 
 // Configure multer for file uploads
@@ -148,7 +148,7 @@ router.post('/split', upload.single('pdf'), async (req, res) => {
   }
 });
 
-// PDF to Image - Serverless Friendly Implementation
+// PDF to Image - Real PDF Content using pdf-to-png-converter
 router.post('/to-image', upload.single('pdf'), async (req, res) => {
   try {
     if (!req.file) {
@@ -157,75 +157,131 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
 
     const { format = 'png', quality = 'medium', pages = 'all' } = req.body;
 
-    // Validate file size for serverless environment
+    // Validate file size
     const fileSizeMB = req.file.size / (1024 * 1024);
-    if (fileSizeMB > 25) { // Serverless functions have memory limits
+    if (fileSizeMB > 25) {
       return res.status(400).json({ 
-        error: 'File too large for serverless processing',
+        error: 'File too large for processing',
         suggestion: 'Please use a PDF file smaller than 25MB'
       });
     }
 
-    // Get page count safely
-    let totalPages = 1;
-    try {
-      const pdfDoc = await PDFDocument.load(req.file.buffer, { 
-        ignoreEncryption: true,
-        updateMetadataAppearances: false 
-      });
-      totalPages = pdfDoc.getPageCount();
-      
-      // Limit pages for serverless environment
-      if (totalPages > 5) {
-        totalPages = 5;
-      }
-    } catch (error) {
-      console.error('Error reading PDF:', error);
-      totalPages = 1;
-    }
-    
-    // Create simple placeholder response for serverless
-    const images = [];
-    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
-    
-    for (let i = 1; i <= totalPages; i++) {
-      const outputFilename = totalPages === 1 
-        ? `${baseFilename}.${format}`
-        : `${baseFilename}_page_${i}.${format}`;
-      
-      // Create a simple 1x1 pixel placeholder image
-      const pixelData = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
-      
-      images.push({
-        page: i,
-        name: outputFilename,
-        image: `data:image/png;base64,${pixelData}`,
-        size: pixelData.length,
-        note: 'Serverless placeholder - actual conversion requires dedicated server'
+    // Simple validation
+    const isValidPDF = req.file.mimetype === 'application/pdf' || 
+                       req.file.originalname.toLowerCase().endsWith('.pdf');
+
+    if (!isValidPDF) {
+      return res.status(400).json({ 
+        error: 'Invalid file type',
+        suggestion: 'Please upload a valid PDF file'
       });
     }
 
-    res.json({
-      success: true,
-      result: {
-        originalFile: req.file.originalname,
-        format,
-        quality,
-        pages,
-        totalPages,
-        fileSize: `${fileSizeMB.toFixed(2)} MB`,
-        note: 'Serverless environment: Limited to 5 pages with placeholder images. Full conversion available on dedicated server.',
-        serverless: true
-      },
-      images: images
-    });
+    // Create temp directory
+    const tempDir = path.join(__dirname, '../temp');
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    // Save PDF to temporary file
+    const tempPdfPath = path.join(tempDir, `temp_${Date.now()}.pdf`);
+    fs.writeFileSync(tempPdfPath, req.file.buffer);
+
+    try {
+      // Convert PDF to PNG images
+      const imagePaths = await pdfToPng(tempPdfPath, {
+        quality: quality === 'high' ? 100 : quality === 'low' ? 50 : 75,
+        width: 1200,
+        height: 1600
+      });
+
+      const images = [];
+      const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
+
+      // Process converted images
+      if (Array.isArray(imagePaths) && imagePaths.length > 0) {
+        for (let i = 0; i < imagePaths.length; i++) {
+          try {
+            const imageData = imagePaths[i];
+            
+            // The library provides the image content directly as a Buffer
+            if (imageData && imageData.content) {
+              const base64Data = imageData.content.toString('base64');
+              
+              const pageNum = imageData.pageNumber || (i + 1);
+              const outputFilename = imagePaths.length === 1 
+                ? `${baseFilename}.png`
+                : `${baseFilename}_page_${pageNum}.png`;
+
+              images.push({
+                page: pageNum,
+                name: outputFilename,
+                image: `data:image/png;base64,${base64Data}`,
+                size: imageData.content.length
+              });
+            } else {
+              console.error('No content found for image', i, imageData);
+            }
+          } catch (pageError) {
+            console.error(`Error processing image ${i}:`, pageError);
+          }
+        }
+      } else {
+        console.error('No valid image data returned from pdfToPng');
+      }
+
+      // Clean up temporary PDF file
+      try {
+        fs.unlinkSync(tempPdfPath);
+      } catch (cleanupError) {
+        console.error('Cleanup error:', cleanupError);
+      }
+
+      if (images.length === 0) {
+        return res.status(500).json({ 
+          error: 'Failed to convert any pages to images',
+          suggestion: 'Please check if the PDF is valid and not corrupted'
+        });
+      }
+
+      res.json({
+        success: true,
+        result: {
+          originalFile: req.file.originalname,
+          format: 'png',
+          quality,
+          pages: pages,
+          totalPages: images.length,
+          fileSize: `${fileSizeMB.toFixed(2)} MB`,
+          convertedPages: images.length,
+          note: 'PDF content successfully rendered to PNG images'
+        },
+        images: images
+      });
+
+    } catch (conversionError) {
+      console.error('PDF conversion error:', conversionError);
+      
+      // Clean up temporary file on error
+      try {
+        fs.unlinkSync(tempPdfPath);
+      } catch (cleanupError) {
+        console.error('Cleanup error:', cleanupError);
+      }
+
+      res.status(500).json({ 
+        error: 'PDF to image conversion failed',
+        message: conversionError.message,
+        suggestion: 'Please ensure the PDF is not password protected or corrupted'
+      });
+    }
 
   } catch (error) {
     console.error('PDF to image error:', error);
     res.status(500).json({ 
-      error: 'Serverless processing failed',
+      error: 'Processing failed',
       message: error.message,
-      suggestion: 'Try with a smaller PDF file or use the dedicated server version'
+      suggestion: 'Try with a different PDF file'
     });
   }
 });

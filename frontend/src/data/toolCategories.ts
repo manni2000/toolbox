@@ -69,7 +69,7 @@ export const toolCategories: ToolCategory[] = [
     tools: [
       { id: "pdf-merge", name: "PDF Merge", description: "Combine multiple PDFs into one", path: "/pdf-merge", isAvailable: true },
       { id: "pdf-split", name: "PDF Split", description: "Extract pages from PDF", path: "/pdf-split", isAvailable: true },
-      { id: "pdf-to-png", name: "PDF to Image (PNG)", description: "Convert PDF pages to images", path: "/pdf-to-jpg", isAvailable: true },
+      { id: "pdf-to-png", name: "PDF to Image", description: "Convert PDF pages to images", path: "/pdf-to-jpg", isAvailable: true },
       { id: "pdf-to-word", name: "PDF to Word", description: "Convert PDF to editable Word document", path: "/pdf-to-word", isAvailable: true },
       { id: "pdf-to-powerpoint", name: "PDF to PowerPoint", description: "Convert PDF to PowerPoint slides", path: "/pdf-to-powerpoint", isAvailable: true },
       { id: "pdf-to-excel", name: "PDF to Excel", description: "Extract tables from PDF to Excel", path: "/pdf-to-excel", isAvailable: true },

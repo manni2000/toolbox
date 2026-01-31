@@ -54,7 +54,7 @@ dailytools247 is a modern, feature-rich platform that offers a wide variety of u
 ### PDF Tools (13 Tools)
 - **PDF Merge** - Combine multiple PDFs into one
 - **PDF Split** - Extract pages from PDF
-- **PDF to Image(PNG)** - Convert PDF pages to images
+- **PDF to Image** - Convert PDF pages to images
 - **PDF to Word** - Convert PDF to editable Word document
 - **PDF to PowerPoint** - Convert PDF to PowerPoint slides
 - **PDF to Excel** - Extract tables from PDF to Excel

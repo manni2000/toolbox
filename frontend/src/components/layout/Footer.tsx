@@ -15,7 +15,7 @@ const Footer = () => {
   const pdfTools = [
     { name: "PDF Merge", path: "/pdf-merge" },
     { name: "PDF Split", path: "/pdf-split" },
-    { name: "PDF to Image(PNG)", path: "/pdf-to-png" },
+    { name: "PDF to Image", path: "/pdf-to-png" },
     { name: "PDF to Word", path: "/pdf-to-word" },
     { name: "PDF to PowerPoint", path: "/pdf-to-powerpoint" },
     { name: "PDF to Excel", path: "/pdf-to-excel" },
