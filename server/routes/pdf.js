@@ -177,19 +177,9 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
       });
     }
 
-    // Create temp directory
-    const tempDir = path.join(__dirname, '../temp');
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    // Save PDF to temporary file
-    const tempPdfPath = path.join(tempDir, `temp_${Date.now()}.pdf`);
-    fs.writeFileSync(tempPdfPath, req.file.buffer);
-
     try {
-      // Convert PDF to PNG images
-      const imagePaths = await pdfToPng(tempPdfPath, {
+      // Convert PDF to PNG images directly from buffer
+      const imagePaths = await pdfToPng(req.file.buffer, {
         quality: quality === 'high' ? 100 : quality === 'low' ? 50 : 75,
         width: 1200,
         height: 1600
@@ -230,13 +220,6 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
         console.error('No valid image data returned from pdfToPng');
       }
 
-      // Clean up temporary PDF file
-      try {
-        fs.unlinkSync(tempPdfPath);
-      } catch (cleanupError) {
-        console.error('Cleanup error:', cleanupError);
-      }
-
       if (images.length === 0) {
         return res.status(500).json({ 
           error: 'Failed to convert any pages to images',
@@ -261,14 +244,6 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
 
     } catch (conversionError) {
       console.error('PDF conversion error:', conversionError);
-      
-      // Clean up temporary file on error
-      try {
-        fs.unlinkSync(tempPdfPath);
-      } catch (cleanupError) {
-        console.error('Cleanup error:', cleanupError);
-      }
-
       res.status(500).json({ 
         error: 'PDF to image conversion failed',
         message: conversionError.message,
