@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Smile, Download, Type, Image as ImageIcon, Upload, X, Palette, AlignLeft, AlignCenter, AlignRight, Sparkles, RotateCw, RefreshCw } from "lucide-react";
+import { Smile, Download, Type, Image as ImageIcon, Upload, X, Palette, AlignLeft, AlignCenter, AlignRight, Sparkles, RotateCw, RefreshCw, Grid3X3 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 
 const MemeGeneratorTool = () => {
@@ -13,7 +13,119 @@ const MemeGeneratorTool = () => {
   const [strokeWidth, setStrokeWidth] = useState(3);
   const [textAlign, setTextAlign] = useState<"left" | "center" | "right">("center");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const memeTemplates = [
+    {
+      id: "distracted-boyfriend",
+      name: "Distracted Boyfriend",
+      url: "https://i.imgflip.com/1ur9b0.jpg",
+      topText: "Me",
+      bottomText: "My current project",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "drake-hotline-bling",
+      name: "Drake Hotline Bling",
+      url: "https://i.imgflip.com/30b1gx.jpg",
+      topText: "Not finishing projects",
+      bottomText: "Finishing projects",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "success-kid",
+      name: "Success Kid",
+      url: "https://i.imgflip.com/1bgw.jpg",
+      topText: "",
+      bottomText: "WHEN YOU FINISH A PROJECT",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "this-is-fine",
+      name: "This is Fine",
+      url: "https://i.imgflip.com/2/9h.jpg",
+      topText: "",
+      bottomText: "WHEN DEADLINES APPROACH",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "expanding-brain",
+      name: "Expanding Brain",
+      url: "https://i.imgflip.com/1jwhww.jpg",
+      topText: "Using basic tools",
+      bottomText: "Using advanced tools",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "one-does-not-simply",
+      name: "One Does Not Simply",
+      url: "https://i.imgflip.com/1bij.jpg",
+      topText: "ONE DOES NOT SIMPLY",
+      bottomText: "FINISH A PROJECT ON TIME",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "futurama-fry",
+      name: "Futurama Fry",
+      url: "https://i.imgflip.com/1bhw.jpg",
+      topText: "NOT SURE IF PROJECT",
+      bottomText: "WILL BE SUCCESSFUL OR NOT",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "hide-the-pain-harold",
+      name: "Hide the Pain Harold",
+      url: "https://i.imgflip.com/1ihzfe.jpg",
+      topText: "",
+      bottomText: "WHEN THE CODE WORKS",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "sponge-bob-rainbow",
+      name: "SpongeBob Rainbow",
+      url: "https://i.imgflip.com/2/2zmog8.jpg",
+      topText: "CODING WITHOUT BUGS",
+      bottomText: "CODING WITH BUGS",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "first-world-problems",
+      name: "First World Problems",
+      url: "https://i.imgflip.com/2/1bh8.jpg",
+      topText: "",
+      bottomText: "HAVING TO DEBUG CODE",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "ancient-aliens",
+      name: "Ancient Aliens",
+      url: "https://i.imgflip.com/2/26am.jpg",
+      topText: "ALIENS",
+      bottomText: "CREATED JAVASCRIPT",
+      topPos: 10,
+      bottomPos: 10
+    },
+    {
+      id: "bad-luck-brian",
+      name: "Bad Luck Brian",
+      url: "https://i.imgflip.com/1bip.jpg",
+      topText: "CHOOSING THE WRONG FRAMEWORK",
+      bottomText: "",
+      topPos: 10,
+      bottomPos: 10
+    }
+  ];
 
   const fontOptions = [
     { name: "Impact", value: "Impact, Arial Black, sans-serif" },
@@ -34,6 +146,13 @@ const MemeGeneratorTool = () => {
       reader.onload = (ev) => setImage(ev.target?.result as string);
       reader.readAsDataURL(file);
     }
+  };
+
+  const selectTemplate = (template: typeof memeTemplates[0]) => {
+    setImage(template.url);
+    setTopText(template.topText);
+    setBottomText(template.bottomText);
+    setShowTemplates(false);
   };
 
   const generateMeme = async () => {
@@ -163,40 +282,71 @@ const MemeGeneratorTool = () => {
       <canvas ref={canvasRef} className="hidden" />
 
       <div className="space-y-8">
-        {/* Header Info */}
-        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-              <Smile className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-foreground">Professional Meme Creator</h3>
-              <p className="text-sm text-muted-foreground">
-                Create custom memes with advanced text styling and image upload
-              </p>
-            </div>
+        {/* Meme Templates */}
+        <div className="rounded-xl border border-border bg-card p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="flex items-center gap-2 font-semibold">
+              <Grid3X3 className="h-5 w-5" />
+              Meme Templates
+            </h3>
+            <button
+              onClick={() => setShowTemplates(!showTemplates)}
+              className="btn-secondary text-sm"
+            >
+              {showTemplates ? 'Hide Templates' : 'Browse Templates'}
+            </button>
           </div>
+
+          {showTemplates && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {memeTemplates.map((template) => (
+                <div
+                  key={template.id}
+                  onClick={() => selectTemplate(template)}
+                  className="group cursor-pointer rounded-lg border border-border overflow-hidden hover:border-primary transition-colors"
+                >
+                  <div className="aspect-square relative">
+                    <img
+                      src={template.url}
+                      alt={template.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-center px-2">
+                        <div className="text-sm font-medium">{template.name}</div>
+                        <div className="text-xs">Click to use</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-2 bg-muted">
+                    <p className="text-xs font-medium truncate">{template.name}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Main Editor */}
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid gap-6 md:gap-8 lg:grid-cols-2">
           {/* Controls Panel */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6 order-2 lg:order-1">
             {/* Text Inputs */}
-            <div className="rounded-xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border bg-card p-4 md:p-6">
               <h3 className="mb-4 flex items-center gap-2 font-semibold">
                 <Type className="h-5 w-5" />
                 Text Content
               </h3>
               
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <div>
                   <label className="mb-2 block text-sm font-medium">Top Text</label>
                   <textarea
                     value={topText}
                     onChange={(e) => setTopText(e.target.value)}
                     placeholder="Enter top text..."
-                    className="input-field h-16 w-full resize-none"
+                    className="input-field h-14 md:h-16 w-full resize-none text-sm md:text-base"
                   />
                 </div>
 
@@ -206,14 +356,14 @@ const MemeGeneratorTool = () => {
                     value={bottomText}
                     onChange={(e) => setBottomText(e.target.value)}
                     placeholder="Enter bottom text..."
-                    className="input-field h-16 w-full resize-none"
+                    className="input-field h-14 md:h-16 w-full resize-none text-sm md:text-base"
                   />
                 </div>
               </div>
             </div>
 
             {/* Styling Options */}
-            <div className="rounded-xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border bg-card p-4 md:p-6">
               <h3 className="mb-4 flex items-center gap-2 font-semibold">
                 <Palette className="h-5 w-5" />
                 Styling Options
@@ -226,7 +376,7 @@ const MemeGeneratorTool = () => {
                   <div className="flex gap-1">
                     <button
                       onClick={() => setTextAlign("left")}
-                      className={`flex-1 rounded-lg border p-2 transition-colors ${
+                      className={`flex-1 rounded-lg border p-2 md:p-3 transition-colors ${
                         textAlign === "left"
                           ? "border-primary bg-primary/10 text-primary"
                           : "border-border hover:border-primary/50"
@@ -236,7 +386,7 @@ const MemeGeneratorTool = () => {
                     </button>
                     <button
                       onClick={() => setTextAlign("center")}
-                      className={`flex-1 rounded-lg border p-2 transition-colors ${
+                      className={`flex-1 rounded-lg border p-2 md:p-3 transition-colors ${
                         textAlign === "center"
                           ? "border-primary bg-primary/10 text-primary"
                           : "border-border hover:border-primary/50"
@@ -246,7 +396,7 @@ const MemeGeneratorTool = () => {
                     </button>
                     <button
                       onClick={() => setTextAlign("right")}
-                      className={`flex-1 rounded-lg border p-2 transition-colors ${
+                      className={`flex-1 rounded-lg border p-2 md:p-3 transition-colors ${
                         textAlign === "right"
                           ? "border-primary bg-primary/10 text-primary"
                           : "border-border hover:border-primary/50"
@@ -266,20 +416,20 @@ const MemeGeneratorTool = () => {
                     max={72}
                     value={fontSize}
                     onChange={(e) => setFontSize(parseInt(e.target.value))}
-                    className="w-full"
+                    className="w-full h-2"
                   />
                 </div>
 
                 {/* Text Color */}
                 <div>
                   <label className="mb-2 block text-sm font-medium">Text Color</label>
-                  <div className="flex gap-2">
-                    <div className="flex gap-1">
+                  <div className="flex gap-2 flex-wrap">
+                    <div className="flex gap-1 flex-wrap">
                       {presetColors.map((color) => (
                         <button
                           key={color}
                           onClick={() => setTextColor(color)}
-                          className={`h-8 w-8 rounded-lg border-2 transition-all ${
+                          className={`h-8 w-8 md:h-10 md:w-10 rounded-lg border-2 transition-all ${
                             textColor === color ? "border-primary" : "border-border"
                           }`}
                           style={{ backgroundColor: color }}
@@ -290,7 +440,7 @@ const MemeGeneratorTool = () => {
                       type="color"
                       value={textColor}
                       onChange={(e) => setTextColor(e.target.value)}
-                      className="h-8 w-12 cursor-pointer rounded-lg border-0"
+                      className="h-8 w-12 md:h-10 md:w-14 cursor-pointer rounded-lg border-0"
                     />
                   </div>
                 </div>
@@ -303,13 +453,14 @@ const MemeGeneratorTool = () => {
                       type="color"
                       value={strokeColor}
                       onChange={(e) => setStrokeColor(e.target.value)}
-                      className="h-8 w-12 cursor-pointer rounded-lg border-0"
+                      className="h-8 w-12 md:h-10 md:w-14 cursor-pointer rounded-lg border-0"
                     />
                     <input
                       type="text"
                       value={strokeColor}
                       onChange={(e) => setStrokeColor(e.target.value)}
-                      className="input-field flex-1"
+                      className="input-field flex-1 text-sm"
+                      placeholder="#000000"
                     />
                   </div>
                 </div>
@@ -323,21 +474,21 @@ const MemeGeneratorTool = () => {
                     max={10}
                     value={strokeWidth}
                     onChange={(e) => setStrokeWidth(parseInt(e.target.value))}
-                    className="w-full"
+                    className="w-full h-2"
                   />
                 </div>
               </div>
             </div>
 
             {/* Custom Image Upload */}
-            <div className="rounded-xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border bg-card p-4 md:p-6">
               <h3 className="mb-4 flex items-center gap-2 font-semibold">
                 <Upload className="h-5 w-5" />
                 Custom Image
               </h3>
-              <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border p-6 transition-colors hover:border-primary/50">
+              <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border p-4 md:p-6 transition-colors hover:border-primary/50">
                 <ImageIcon className="h-6 w-6 text-muted-foreground" />
-                <span className="text-muted-foreground">
+                <span className="text-muted-foreground text-sm md:text-base text-center">
                   {image ? "Change image" : "Click to upload custom image"}
                 </span>
                 <input
@@ -349,7 +500,7 @@ const MemeGeneratorTool = () => {
               </label>
               {image && (
                 <div className="mt-4">
-                  <img src={image} alt="Custom" className="h-20 w-20 rounded-lg object-cover mx-auto" />
+                  <img src={image} alt="Custom" className="h-16 w-16 md:h-20 md:w-20 rounded-lg object-cover mx-auto" />
                   <p className="mt-2 text-center text-xs text-muted-foreground">
                     Custom image loaded
                   </p>
@@ -359,7 +510,7 @@ const MemeGeneratorTool = () => {
           </div>
 
           {/* Preview Panel */}
-          <div className="space-y-4">
+          <div className="space-y-4 order-1 lg:order-2">
             <h3 className="flex items-center gap-2 text-lg font-semibold">
               <Type className="h-5 w-5" />
               Preview
@@ -369,21 +520,21 @@ const MemeGeneratorTool = () => {
               {memeUrl ? (
                 <div className="space-y-4">
                   <img src={memeUrl} alt="Generated meme" className="w-full rounded-lg shadow-lg" />
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <button
                       onClick={generateMeme}
                       disabled={isGenerating}
-                      className="btn-primary flex-1 disabled:opacity-50"
+                      className="btn-primary flex-1 disabled:opacity-50 py-2 md:py-3"
                     >
-                      <RefreshCw className={`h-5 w-5 ${isGenerating ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`h-4 w-4 md:h-5 md:w-5 ${isGenerating ? 'animate-spin' : ''}`} />
                       {isGenerating ? "Regenerating..." : "Regenerate"}
                     </button>
                     <a
                       href={memeUrl}
                       download="meme.png"
-                      className="btn-secondary flex items-center justify-center gap-2"
+                      className="btn-secondary flex items-center justify-center gap-2 py-2 md:py-3 text-sm md:text-base"
                     >
-                      <Download className="h-5 w-5" />
+                      <Download className="h-4 w-4 md:h-5 md:w-5" />
                       Download
                     </a>
                   </div>
@@ -391,9 +542,9 @@ const MemeGeneratorTool = () => {
               ) : (
                 <div className="flex aspect-square items-center justify-center rounded-lg bg-muted/50">
                   <div className="text-center">
-                    <Smile className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                    <p className="text-muted-foreground">
-                      Add text and upload your own image<br />to create your meme
+                    <Smile className="mx-auto h-10 w-10 md:h-12 md:w-12 text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground text-sm md:text-base px-2">
+                      Add text and upload your own image<br className="hidden sm:block" />to create your meme
                     </p>
                   </div>
                 </div>
@@ -401,17 +552,17 @@ const MemeGeneratorTool = () => {
             </div>
 
             {/* Quick Actions */}
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <button
                 onClick={generateMeme}
                 disabled={isGenerating}
-                className="btn-primary flex-1 disabled:opacity-50"
+                className="btn-primary flex-1 disabled:opacity-50 py-2 md:py-3"
               >
-                <Sparkles className={`h-5 w-5 ${isGenerating ? 'animate-pulse' : ''}`} />
+                <Sparkles className={`h-4 w-4 md:h-5 md:w-5 ${isGenerating ? 'animate-pulse' : ''}`} />
                 {isGenerating ? "Generating..." : "Generate Meme"}
               </button>
-              <button onClick={reset} className="btn-secondary">
-                <RotateCw className="h-5 w-5" />
+              <button onClick={reset} className="btn-secondary py-2 md:py-3">
+                <RotateCw className="h-4 w-4 md:h-5 md:w-5" />
                 Reset
               </button>
             </div>

@@ -4,6 +4,7 @@ const sharp = require('sharp');
 const Jimp = require('jimp');
 const QRCode = require('qrcode');
 const exifr = require('exifr');
+const pdfParse = require('pdf-parse');
 const { PDFDocument } = require('pdf-lib');
 const path = require('path');
 const fs = require('fs');

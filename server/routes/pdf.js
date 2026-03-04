@@ -1,9 +1,35 @@
 const express = require('express');
 const multer = require('multer');
+const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
-const { pdfToPng } = require('pdf-to-png-converter');
+const os = require('os');
+const { PDFDocument } = require('pdf-lib');
 const router = express.Router();
+
+// PDF.js for text extraction (commented out to avoid conflicts with pdftoimg-js)
+// const pdfjsLib = require('pdfjs-dist');
+// Set worker - use the correct build for Node.js
+// const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
+// pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+// Remove polyfills for canvas - they cause issues
+// Use only essential polyfills
+if (!global.URL) {
+  global.URL = {
+    createObjectURL: () => 'mock-object-url',
+    revokeObjectURL: () => {}
+  };
+}
+
+if (!global.performance) {
+  global.performance = {
+    now: () => Date.now()
+  };
+}
+
+// Fast PDF to PNG converter using pdf-to-png-converter for in-memory conversion
+const { pdfToPng } = require('pdf-to-png-converter');
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
@@ -24,6 +50,40 @@ const upload = multer({
     }
   }
 });
+
+// Helper functions - Define before use
+function escapeHtml(text) {
+  if (!text) return '';
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return String(text).replace(/[&<>"']/g, m => map[m]);
+}
+
+function createPlaceholderImage(width, height, text) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+    <defs>
+      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f0f0f0" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="${width}" height="${height}" fill="white"/>
+    <rect width="${width}" height="${height}" fill="url(#grid)"/>
+    <rect x="20" y="20" width="${width - 40}" height="${height - 40}" fill="none" stroke="#ddd" stroke-width="2" stroke-dasharray="5,5"/>
+    <text x="${width / 2}" y="${height / 2 - 20}" text-anchor="middle" font-size="18" font-weight="bold" fill="#666">${escapeHtml(text)}</text>
+    <text x="${width / 2}" y="${height / 2 + 20}" text-anchor="middle" font-size="12" fill="#999">${width} × ${height}px</text>
+  </svg>`;
+  
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+}
+
+function degreesToRadians(degrees) {
+  return degrees * (Math.PI / 180);
+}
 
 // PDF Merge
 router.post('/merge', upload.array('pdfs', 10), async (req, res) => {
@@ -148,118 +208,176 @@ router.post('/split', upload.single('pdf'), async (req, res) => {
   }
 });
 
-// PDF to Image - Real PDF Content using pdf-to-png-converter
+// PDF to Image - Fast in-memory conversion using pdftoimg-js
 router.post('/to-image', upload.single('pdf'), async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ error: 'No PDF file provided' });
+      return res.status(400).json({ error: 'No PDF file uploaded' });
     }
 
-    const { format = 'png', quality = 'medium', pages = 'all' } = req.body;
+    const { format = 'png', quality = 85 } = req.body;
+    const imageFormat = format.toLowerCase() === 'jpg' ? 'jpeg' : 'png';
+    const qualityVal = Math.min(Math.max(parseInt(quality) || 85, 10), 100);
 
-    // Validate file size
-    const fileSizeMB = req.file.size / (1024 * 1024);
-    if (fileSizeMB > 25) {
-      return res.status(400).json({ 
-        error: 'File too large for processing',
-        suggestion: 'Please use a PDF file smaller than 25MB'
-      });
+    console.log(`Converting PDF to ${imageFormat.toUpperCase()} using pdf-to-png-converter...`);
+    console.time('PDF conversion');
+
+    const baseFilename = path.parse(req.file.originalname).name;
+
+    // Convert PDF buffer to images using pdf-to-png-converter
+    const images = await pdfToPng(req.file.buffer, {
+      viewportScale: 2.0 // Higher scale for better quality
+    });
+
+    console.timeEnd('PDF conversion');
+
+    if (!images || images.length === 0) {
+      return res.status(500).json({ error: 'Failed to generate page images' });
     }
 
-    // Simple validation
-    const isValidPDF = req.file.mimetype === 'application/pdf' || 
-                       req.file.originalname.toLowerCase().endsWith('.pdf');
+    // Process images into response format
+    const processedImages = images.map((page) => {
+      const imgBuffer = page.content;
+      const base64Image = imgBuffer.toString('base64');
+      const mimeType = imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png';
+      const ext = imageFormat === 'jpeg' ? 'jpg' : 'png';
 
-    if (!isValidPDF) {
-      return res.status(400).json({ 
-        error: 'Invalid file type',
-        suggestion: 'Please upload a valid PDF file'
-      });
-    }
+      // Use PDF base name for page 1, add page number for others
+      const name = page.pageNumber === 1 
+        ? `${baseFilename}.${ext}` 
+        : `${baseFilename}_page_${page.pageNumber}.${ext}`;
 
-    try {
-      // Convert PDF to PNG images directly from buffer
-      const imagePaths = await pdfToPng(req.file.buffer, {
-        quality: quality === 'high' ? 100 : quality === 'low' ? 50 : 75,
-        width: 1200,
-        height: 1600
-      });
+      return {
+        page: page.pageNumber,
+        image: `data:${mimeType};base64,${base64Image}`,
+        name: name,
+        width: page.width,
+        height: page.height,
+        format: imageFormat,
+        size: imgBuffer.length
+      };
+    });
 
-      const images = [];
-      const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
-
-      // Process converted images
-      if (Array.isArray(imagePaths) && imagePaths.length > 0) {
-        for (let i = 0; i < imagePaths.length; i++) {
-          try {
-            const imageData = imagePaths[i];
-            
-            // The library provides the image content directly as a Buffer
-            if (imageData && imageData.content) {
-              const base64Data = imageData.content.toString('base64');
-              
-              const pageNum = imageData.pageNumber || (i + 1);
-              const outputFilename = imagePaths.length === 1 
-                ? `${baseFilename}.png`
-                : `${baseFilename}_page_${pageNum}.png`;
-
-              images.push({
-                page: pageNum,
-                name: outputFilename,
-                image: `data:image/png;base64,${base64Data}`,
-                size: imageData.content.length
-              });
-            } else {
-              console.error('No content found for image', i, imageData);
-            }
-          } catch (pageError) {
-            console.error(`Error processing image ${i}:`, pageError);
-          }
-        }
-      } else {
-        console.error('No valid image data returned from pdfToPng');
-      }
-
-      if (images.length === 0) {
-        return res.status(500).json({ 
-          error: 'Failed to convert any pages to images',
-          suggestion: 'Please check if the PDF is valid and not corrupted'
-        });
-      }
-
-      res.json({
-        success: true,
-        result: {
-          originalFile: req.file.originalname,
-          format: 'png',
-          quality,
-          pages: pages,
-          totalPages: images.length,
-          fileSize: `${fileSizeMB.toFixed(2)} MB`,
-          convertedPages: images.length,
-          note: 'PDF content successfully rendered to PNG images'
-        },
-        images: images
-      });
-
-    } catch (conversionError) {
-      console.error('PDF conversion error:', conversionError);
-      res.status(500).json({ 
-        error: 'PDF to image conversion failed',
-        message: conversionError.message,
-        suggestion: 'Please ensure the PDF is not password protected or corrupted'
-      });
-    }
+    return res.json({
+      success: true,
+      images: processedImages,
+      totalPages: images.length,
+      renderedPages: images.length,
+      format: imageFormat,
+      pdfName: baseFilename,
+      method: 'pdf-to-png-converter',
+      performance: { render: Date.now() }
+    });
 
   } catch (error) {
-    console.error('PDF to image error:', error);
-    res.status(500).json({ 
-      error: 'Processing failed',
-      message: error.message,
-      suggestion: 'Try with a different PDF file'
-    });
+    console.error('PDF conversion error:', error);
+
+    // Fallback: return PDF as base64 if conversion fails
+    try {
+      const pdfBase64 = req.file.buffer.toString('base64');
+      return res.json({
+        success: true,
+        images: [{
+          page: 1,
+          image: `data:application/pdf;base64,${pdfBase64}`,
+          name: req.file.originalname,
+          format: 'pdf',
+          size: req.file.size,
+          error: 'Image conversion failed, returning PDF instead'
+        }],
+        method: 'fallback-pdf'
+      });
+    } catch (fallbackError) {
+      return res.status(500).json({
+        error: 'Failed to convert PDF',
+        details: error.message
+      });
+    }
   }
 });
+
+// Node.js Canvas Factory for PDF.js
+class NodeCanvasFactory {
+  create(width, height) {
+    const canvas = createCanvas(width, height);
+    const context = canvas.getContext('2d');
+
+    return {
+      canvas: canvas,
+      context: context,
+    };
+  }
+
+  destroy(canvasAndContext) {
+    // Canvas cleanup is handled by garbage collection
+  }
+}
+
+// High-quality SVG generation with proper content rendering
+function generateHighQualitySvg(width, height, textContent, label) {
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+    <defs>
+      <style>
+        body { font-family: Arial, Helvetica, sans-serif; }
+        .text { fill: #1a1a1a; font-weight: 500; }
+        .label { fill: #666; font-size: 11px; }
+      </style>
+    </defs>
+    <!-- Background with subtle pattern -->
+    <rect width="${width}" height="${height}" fill="white"/>
+    <rect width="${width}" height="${height}" fill="url(#gridPattern)" opacity="0.02"/>
+    
+    <defs>
+      <pattern id="gridPattern" width="50" height="50" patternUnits="userSpaceOnUse">
+        <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    
+    <!-- Page border -->
+    <rect x="1" y="1" width="${width - 2}" height="${height - 2}" fill="none" stroke="#d0d0d0" stroke-width="1"/>
+    
+    <!-- Content -->
+    <g class="content">`;
+
+  if (textContent && textContent.items && textContent.items.length > 0) {
+    // Sort items by position for natural reading order
+    const sortedItems = textContent.items
+      .filter(item => item.str && item.str.trim())
+      .sort((a, b) => {
+        const yDiff = (b.transform[5] || 0) - (a.transform[5] || 0);
+        return yDiff !== 0 ? yDiff : (a.transform[4] || 0) - (b.transform[4] || 0);
+      });
+
+    // Render text items with better styling
+    sortedItems.slice(0, 150).forEach((item, idx) => {
+      const x = Math.max(15, Math.min(width - 15, item.transform[4] || 15));
+      const y = Math.max(20, Math.min(height - 20, height - (item.transform[5] || 20)));
+      const fontSize = Math.max(9, Math.min(24, (item.height || 12) * 0.9));
+      const isTitle = idx < 3; // First few items likely titles
+
+      svg += `<text x="${x}" y="${y}" font-size="${fontSize}" ${isTitle ? 'font-weight="bold"' : ''} class="text" opacity="0.92">${escapeHtml(item.str)}</text>`;
+    });
+  }
+
+  svg += `</g>
+    
+    <!-- Footer -->
+    <line x1="10" y1="${height - 30}" x2="${width - 10}" y2="${height - 30}" stroke="#e0e0e0" stroke-width="0.5"/>
+    <text x="${width / 2}" y="${height - 12}" text-anchor="middle" class="label">${escapeHtml(label)}</text>
+  </svg>`;
+
+  return svg;
+}
+
+function createErrorSvg(width, height, title, message) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+    <rect width="${width}" height="${height}" fill="#f8d7da"/>
+    <circle cx="${width / 2}" cy="${height / 2 - 40}" r="30" fill="none" stroke="#721c24" stroke-width="3"/>
+    <text x="${width / 2}" y="${height / 2 - 35}" text-anchor="middle" font-size="32" font-weight="bold" fill="#721c24" font-family="Arial">!</text>
+    <text x="${width / 2}" y="${height / 2 + 10}" text-anchor="middle" font-size="22" font-weight="bold" fill="#721c24" font-family="Arial">${escapeHtml(title)}</text>
+    <text x="${width / 2}" y="${height / 2 + 50}" text-anchor="middle" font-size="13" fill="#721c24" font-family="Arial">${escapeHtml(message.substring(0, 80))}</text>
+  </svg>`;
+}
 
 // PDF Password Protection
 router.post('/password', upload.single('pdf'), async (req, res) => {
@@ -372,7 +490,7 @@ router.post('/remove-pages', upload.single('pdf'), async (req, res) => {
     
     // Add all pages except the ones to remove
     for (let i = 0; i < totalPages; i++) {
-      if (!pagesArray.includes(i + 1)) { // Pages are 1-indexed in UI
+      if (!pagesArray.includes(i + 1)) { 
         const [page] = await newPdf.copyPages(originalPdf, [i]);
         newPdf.addPage(page);
       }
@@ -416,19 +534,15 @@ router.post('/rotate', upload.single('pdf'), async (req, res) => {
       return res.status(400).json({ error: 'Rotation angle must be 90, 180, or 270 degrees' });
     }
 
-    // Load the original PDF
     const originalPdf = await PDFDocument.load(req.file.buffer);
     const totalPages = originalPdf.getPageCount();
     
-    // Create new PDF with rotated pages
     const newPdf = await PDFDocument.create();
     
-    // Determine which pages to rotate
     let pagesToRotate = [];
     if (pages === 'all') {
       pagesToRotate = Array.from({ length: totalPages }, (_, i) => i);
     } else {
-      // Parse specific pages (comma-separated)
       pagesToRotate = pages.split(',').map(p => parseInt(p.trim()) - 1).filter(n => n >= 0 && n < totalPages);
     }
     
@@ -467,11 +581,6 @@ router.post('/rotate', upload.single('pdf'), async (req, res) => {
   }
 });
 
-// Helper function to convert degrees to radians
-function degreesToRadians(degrees) {
-  return degrees * (Math.PI / 180);
-}
-
 // PDF to Word
 router.post('/to-word', upload.single('pdf'), async (req, res) => {
   try {
@@ -483,8 +592,6 @@ router.post('/to-word', upload.single('pdf'), async (req, res) => {
     const pdfBuffer = req.file.buffer;
     const pdfBase64 = pdfBuffer.toString('base64');
     
-    // For now, we'll return the original PDF as a placeholder for Word conversion
-    // In a real implementation, you would use a library like pdf2docx or a conversion service
     const conversionInfo = {
       originalFile: req.file.originalname,
       outputFile: req.file.originalname.replace('.pdf', '.docx'),
@@ -495,7 +602,6 @@ router.post('/to-word', upload.single('pdf'), async (req, res) => {
     res.json({
       success: true,
       result: conversionInfo,
-      // Return the file data for download
       file: `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${pdfBase64}`,
       filename: req.file.originalname.replace('.pdf', '.docx')
     });

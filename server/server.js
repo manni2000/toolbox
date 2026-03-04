@@ -19,12 +19,9 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
-// Middleware
-// app.use(helmet()); // Temporarily disabled for serverless debugging
 app.use(compression());
 app.use(morgan('dev'));
 
-// Dynamic CORS configuration
 const allowedOrigins = process.env.NODE_ENV === 'production' 
   ? [
       'https://toolbox-backend-jet.vercel.app',

@@ -174,14 +174,14 @@ export default function InvoiceGeneratorTool() {
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-6xl space-y-8">
+      <div className="mx-auto max-w-6xl space-y-6 md:space-y-8 px-4 md:px-0">
         {/* Invoice Details Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <div className="rounded-xl border border-border bg-card p-4 md:p-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <FileText className="h-5 w-5" />
             Invoice Details
           </h3>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-4">
               <div className="space-y-2">
                 <label className="block text-sm font-medium mb-2">Invoice Number *</label>
@@ -247,7 +247,7 @@ export default function InvoiceGeneratorTool() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 md:mt-6">
             <div className="space-y-2">
               <label className="block text-sm font-medium mb-2">Client Address</label>
               <textarea
@@ -295,7 +295,7 @@ export default function InvoiceGeneratorTool() {
         </div>
 
         {/* Invoice Items Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <div className="rounded-xl border border-border bg-card p-4 md:p-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <Calculator className="h-5 w-5" />
             Invoice Items
@@ -304,20 +304,22 @@ export default function InvoiceGeneratorTool() {
           {/* Add New Item */}
           <div className="space-y-4 p-4 bg-muted rounded-lg mb-6">
             <h4 className="font-semibold">Add New Item</h4>
-            <div className="grid md:grid-cols-4 gap-3">
-              <input
-                type="text"
-                placeholder="Description"
-                value={newItem.description}
-                onChange={(e) => setNewItem(prev => ({ ...prev, description: e.target.value }))}
-                className="input-tool"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="sm:col-span-2 md:col-span-1">
+                <input
+                  type="text"
+                  placeholder="Description"
+                  value={newItem.description}
+                  onChange={(e) => setNewItem(prev => ({ ...prev, description: e.target.value }))}
+                  className="input-tool w-full"
+                />
+              </div>
               <input
                 type="number"
                 placeholder="Qty"
                 value={newItem.quantity}
                 onChange={(e) => setNewItem(prev => ({ ...prev, quantity: e.target.value }))}
-                className="input-tool"
+                className="input-tool w-full"
               />
               <input
                 type="number"
@@ -325,7 +327,7 @@ export default function InvoiceGeneratorTool() {
                 placeholder="Price"
                 value={newItem.unit_price || ''}
                 onChange={(e) => setNewItem(prev => ({ ...prev, unit_price: parseFloat(e.target.value) || 0 }))}
-                className="input-tool"
+                className="input-tool w-full"
               />
               <input
                 type="number"
@@ -333,7 +335,7 @@ export default function InvoiceGeneratorTool() {
                 placeholder="Discount %"
                 value={newItem.discount || ''}
                 onChange={(e) => setNewItem(prev => ({ ...prev, discount: parseFloat(e.target.value) || 0 }))}
-                className="input-tool"
+                className="input-tool w-full"
               />
             </div>
             <button 
@@ -355,9 +357,9 @@ export default function InvoiceGeneratorTool() {
             ) : (
               <div className="space-y-2">
                 {invoiceData.items.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-muted rounded-lg">
-                    <div className="flex-1">
-                      <p className="font-medium">{item.description}</p>
+                  <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-muted rounded-lg gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium truncate">{item.description}</p>
                       <p className="text-sm text-muted-foreground">
                         {item.quantity} × {formatCurrency(item.unit_price)} = {formatCurrency(item.quantity * item.unit_price)}
                       </p>
@@ -369,7 +371,7 @@ export default function InvoiceGeneratorTool() {
                     </div>
                     <button
                       onClick={() => removeItem(index)}
-                      className="btn-secondary p-2"
+                      className="btn-secondary p-2 self-start sm:self-center flex-shrink-0"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -403,18 +405,18 @@ export default function InvoiceGeneratorTool() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <button 
             onClick={generateInvoice} 
             disabled={loading || !invoiceData.invoice_number || !invoiceData.client_name || !invoiceData.client_email || invoiceData.items.length === 0}
-            className="btn-primary flex-1 flex items-center justify-center gap-2"
+            className="btn-primary flex-1 flex items-center justify-center gap-2 min-h-[48px]"
           >
             <Download className="h-4 w-4" />
-            {loading ? 'Generating...' : 'Generate PDF Invoice'}
+            {loading ? 'Opening...' : 'Preview PDF Invoice'}
           </button>
           <button
             onClick={handleCopy}
-            className="btn-secondary flex items-center gap-2"
+            className="btn-secondary flex items-center justify-center gap-2 min-h-[48px]"
             disabled={invoiceData.items.length === 0}
           >
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
@@ -423,9 +425,9 @@ export default function InvoiceGeneratorTool() {
         </div>
 
         {/* Information Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <div className="rounded-xl border border-border bg-card p-4 md:p-6">
           <h3 className="text-lg font-semibold mb-4">Invoice Best Practices</h3>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-2">
               <h4 className="font-semibold text-blue-600">💡 Professional Tips</h4>
               <ul className="text-sm space-y-1">

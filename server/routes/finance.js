@@ -392,76 +392,193 @@ router.post('/invoice-generator/', (req, res) => {
           body { margin: 0; }
           .no-print { display: none !important; }
         }
+        
+        /* Responsive breakpoints */
+        @media (max-width: 768px) {
+          body {
+            padding: 10px;
+            font-size: 14px;
+          }
+          
+          .header h1 {
+            font-size: 24px;
+          }
+          
+          .header p {
+            font-size: 16px;
+          }
+          
+          .invoice-details {
+            flex-direction: column;
+            gap: 15px;
+          }
+          
+          .client-info, .invoice-info {
+            flex: none;
+            width: 100%;
+          }
+          
+          .items-table {
+            font-size: 12px;
+            overflow-x: auto;
+            display: block;
+            white-space: nowrap;
+          }
+          
+          .items-table th,
+          .items-table td {
+            padding: 8px 6px;
+            min-width: 80px;
+          }
+          
+          .totals {
+            text-align: left;
+            padding: 12px;
+          }
+          
+          .totals div {
+            font-size: 14px;
+            margin-bottom: 8px;
+          }
+          
+          .totals .total {
+            font-size: 18px;
+          }
+          
+          .print-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          body {
+            padding: 5px;
+            font-size: 12px;
+          }
+          
+          .header h1 {
+            font-size: 20px;
+          }
+          
+          .header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+          }
+          
+          .info-group {
+            margin-bottom: 10px;
+          }
+          
+          .items-table th,
+          .items-table td {
+            padding: 6px 4px;
+            min-width: 70px;
+          }
+          
+          .totals {
+            padding: 10px;
+          }
+          
+          .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            font-size: 12px;
+          }
+        }
+        
         body {
           font-family: Arial, sans-serif;
           margin: 0;
           padding: 20px;
           color: #333;
           line-height: 1.6;
+          box-sizing: border-box;
         }
+        
         .header {
           text-align: center;
           margin-bottom: 30px;
           border-bottom: 2px solid #333;
           padding-bottom: 20px;
         }
+        
         .header h1 {
           margin: 0;
           color: #2c3e50;
           font-size: 28px;
         }
+        
         .invoice-details {
           display: flex;
           justify-content: space-between;
           margin-bottom: 30px;
           gap: 20px;
+          flex-wrap: wrap;
         }
+        
         .client-info, .invoice-info {
           flex: 1;
+          min-width: 250px;
           background: #f8f9fa;
           padding: 15px;
           border-radius: 5px;
         }
+        
         .info-group {
           margin-bottom: 15px;
         }
+        
         .info-group strong {
           display: block;
           margin-bottom: 5px;
           color: #2c3e50;
           font-size: 14px;
         }
+        
         .items-table {
           width: 100%;
           border-collapse: collapse;
           margin-bottom: 20px;
           background: white;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
+        
         .items-table th,
         .items-table td {
           border: 1px solid #ddd;
           padding: 12px;
           text-align: left;
         }
+        
         .items-table th {
           background-color: #f8f9fa;
           font-weight: bold;
           font-size: 14px;
+          position: sticky;
+          top: 0;
         }
+        
         .items-table .text-right {
           text-align: right;
         }
+        
         .totals {
           text-align: right;
           margin-top: 20px;
           background: #f8f9fa;
           padding: 15px;
           border-radius: 5px;
+          max-width: 300px;
+          margin-left: auto;
         }
+        
         .totals div {
           margin-bottom: 10px;
           font-size: 16px;
         }
+        
         .totals .total {
           font-size: 20px;
           font-weight: bold;
@@ -469,6 +586,7 @@ router.post('/invoice-generator/', (req, res) => {
           border-top: 2px solid #333;
           padding-top: 10px;
         }
+        
         .footer {
           margin-top: 50px;
           padding-top: 20px;
@@ -477,6 +595,7 @@ router.post('/invoice-generator/', (req, res) => {
           color: #666;
           font-size: 14px;
         }
+        
         .print-btn {
           background: #007bff;
           color: white;
@@ -486,9 +605,19 @@ router.post('/invoice-generator/', (req, res) => {
           cursor: pointer;
           font-size: 16px;
           margin-bottom: 20px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
         }
+        
         .print-btn:hover {
           background: #0056b3;
+        }
+        
+        /* Ensure table doesn't break layout */
+        .items-table-container {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
         }
       </style>
     </head>

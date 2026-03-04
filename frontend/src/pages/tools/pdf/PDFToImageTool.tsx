@@ -9,6 +9,29 @@ interface ImageResult {
   page: number;
   image: string;
   name: string;
+  width?: number;
+  height?: number;
+  format?: string;
+  size?: number;
+  error?: string;
+}
+
+interface ConversionResult {
+  success: boolean;
+  images: ImageResult[];
+  totalPages?: number;
+  renderedPages?: number;
+  format?: string;
+  pdfName?: string;
+  method?: string;
+  performance?: {
+    load?: number;
+    parse?: number;
+    render?: number;
+    encode?: number;
+    save?: number;
+  };
+  error?: string;
 }
 
 const PDFToImageTool = () => {
@@ -17,6 +40,7 @@ const PDFToImageTool = () => {
   const [resultImages, setResultImages] = useState<ImageResult[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [conversionStats, setConversionStats] = useState<ConversionResult | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const downloadSectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -46,6 +70,7 @@ const PDFToImageTool = () => {
     setFile(null);
     setFileName("");
     setResultImages([]);
+    setConversionStats(null);
   };
 
   const processFile = async () => {
@@ -61,14 +86,22 @@ const PDFToImageTool = () => {
         body: formData,
       });
 
-      const result = await response.json();
+      const result: ConversionResult = await response.json();
 
       if (result.success && result.images && result.images.length > 0) {
         setResultImages(result.images);
+        setConversionStats(result);
+
+        const methodText = result.method === 'pdftoimg-js' ? 'Fast PDF-to-Image conversion' : 'PDF conversion';
+        const performanceText = result.performance?.render
+          ? ` in ${result.performance.render}ms`
+          : '';
+
         toast({
           title: "Success!",
-          description: `Converted ${result.images.length} pages to images`,
+          description: `Converted ${result.renderedPages || result.images.length} pages using ${methodText}${performanceText}`,
         });
+
         // Scroll to download section after successful conversion
         setTimeout(() => {
           downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -101,69 +134,104 @@ const PDFToImageTool = () => {
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
+            className={`relative border-2 border-dashed rounded-xl p-8 md:p-12 text-center transition-all duration-300 cursor-pointer ${
+              isDragging
+                ? 'border-primary bg-primary/5 scale-[1.02]'
+                : 'border-border hover:border-primary/50 hover:bg-muted/50'
+            }`}
           >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop file here</p>
-            <p className="text-sm text-muted-foreground">Click to browse or drag and drop</p>
+            <div className="space-y-4">
+              <div className={`mx-auto w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center ${
+                isDragging ? 'bg-primary/20' : 'bg-muted'
+              }`}>
+                <Upload className={`w-8 h-8 md:w-10 md:h-10 ${
+                  isDragging ? 'text-primary' : 'text-muted-foreground'
+                }`} />
+              </div>
+
+              <div>
+                <p className="text-lg font-medium mb-1">
+                  Drop PDF here or click to browse
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Supports PDF files up to 50MB
+                </p>
+              </div>
+
+              <button className="mt-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
+                Choose File
+              </button>
+            </div>
+
             <input
               ref={inputRef}
               type="file"
               accept="application/pdf"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               className="hidden"
+              title="Select a PDF file"
+              aria-label="PDF file input"
             />
           </div>
         )}
 
         {file && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
-              <div className="flex items-center gap-3">
-                <ImageIcon className="h-6 w-6 text-primary" />
-                <div>
-                  <p className="font-medium">{fileName}</p>
-                  <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+            <div className="p-4 bg-muted/50 rounded-lg border">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                    <ImageIcon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm">{fileName}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {(file.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
                 </div>
+                <button onClick={reset} className="p-1 hover:bg-destructive/20 rounded">
+                  <X className="w-4 h-4 text-muted-foreground" />
+                </button>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
-                <X className="h-5 w-5" />
-              </button>
             </div>
 
             <button
               onClick={processFile}
               disabled={isProcessing}
-              className="btn-primary w-full"
+              className="w-full h-12 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
               {isProcessing ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin" />
                   Processing...
                 </>
               ) : (
                 <>
-                  <ImageIcon className="h-5 w-5" />
-                  Process File
+                  <ImageIcon className="w-5 h-5" />
+                  Convert to Images
                 </>
               )}
             </button>
 
-            {resultImages.length > 0 && (
-              <div ref={downloadSectionRef} className="flex justify-center">
-                <EnhancedDownload
-                  data={resultImages[0].image}
-                  fileName={resultImages[0].name}
-                  fileType="image"
-                  title="PDF Converted to Images"
-                  description={`Successfully converted ${resultImages.length} pages to images`}
-                  fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
-                  multipleFiles={resultImages.map(img => ({
-                    url: img.image,
-                    name: img.name,
-                    page: img.page
-                  }))}
-                />
+            {resultImages.length > 0 && conversionStats && (
+              <div className="space-y-4">
+                {/* Download Section */}
+                <div ref={downloadSectionRef} className="flex justify-center">
+                  <EnhancedDownload
+                    data={resultImages[0].image}
+                    fileName={resultImages[0].name}
+                    fileType="image"
+                    title="PDF Converted to Images"
+                    description={`Successfully converted ${resultImages.length} pages to ${conversionStats.format?.toUpperCase() || 'PNG'} images`}
+                    fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
+                    multipleFiles={resultImages.map(img => ({
+                      url: img.image,
+                      name: img.name,
+                      page: img.page
+                    }))}
+                  />
+                </div>
               </div>
             )}
           </div>

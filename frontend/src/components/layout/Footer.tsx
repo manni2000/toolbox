@@ -8,6 +8,7 @@ const Footer = () => {
     { name: "QR Code Generator", path: "/qr-code-generator" },
     { name: "Image to PDF", path: "/image-to-pdf" },
     { name: "PDF to Word", path: "/pdf-to-word" },
+    { name: "PDF to Image", path: "/pdf-to-png" },
     { name: "Background Remover", path: "/background-remover" },
     { name: "Invoice Generator", path: "/invoice-generator" },
   ];
@@ -230,7 +231,7 @@ const Footer = () => {
         </div>
 
         {/* Main Footer Grid */}
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border-t border-border pt-8">
+        <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 border-t border-border pt-6 md:pt-8">
 
           {/* PDF Tools */}
           <div className="space-y-4">
