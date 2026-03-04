@@ -231,8 +231,30 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     const imageFormat = format.toLowerCase() === 'jpg' ? 'jpeg' : 'png';
     const qualityVal = Math.min(Math.max(parseInt(quality) || 85, 10), 100);
 
-    console.log(`Converting PDF to ${imageFormat.toUpperCase()} using pdf-to-png-converter...`);
-    console.time('PDF conversion');
+    // Check if we're in production/serverless - pdf-to-png-converter doesn't work due to pdfjs-dist worker issues
+    if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+      console.log('PDF conversion disabled in production - using fallback');
+      
+      // Return PDF as base64 in production since image conversion has worker issues
+      const pdfBase64 = req.file.buffer.toString('base64');
+      return res.json({
+        success: true,
+        images: [{
+          page: 1,
+          image: `data:application/pdf;base64,${pdfBase64}`,
+          name: req.file.originalname,
+          format: 'pdf',
+          size: req.file.size,
+          error: 'PDF to image conversion not available in production environment'
+        }],
+        totalPages: 1,
+        renderedPages: 1,
+        format: 'pdf',
+        pdfName: path.parse(req.file.originalname).name,
+        method: 'production-fallback',
+        performance: { render: Date.now() }
+      });
+    }
 
     const baseFilename = path.parse(req.file.originalname).name;
 
@@ -240,8 +262,6 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     const images = await pdfToPng(req.file.buffer, {
       viewportScale: 2.0 // Higher scale for better quality
     });
-
-    console.timeEnd('PDF conversion');
 
     if (!images || images.length === 0) {
       return res.status(500).json({ error: 'Failed to generate page images' });
