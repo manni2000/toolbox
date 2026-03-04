@@ -10,7 +10,11 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT;
 
-// Catch all unhandled errors
+// Trust proxy only in production (for Vercel)
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', true);
+}
+
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
 });
