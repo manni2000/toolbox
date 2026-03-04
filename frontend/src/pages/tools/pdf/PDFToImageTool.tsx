@@ -99,7 +99,7 @@ const PDFToImageTool = () => {
 
         toast({
           title: "Success!",
-          description: `Converted ${result.renderedPages || result.images.length} pages using ${methodText}${performanceText}`,
+          description: `Converted ${result.renderedPages || result.images.length} pages using ${methodText}`,
         });
 
         // Scroll to download section after successful conversion
