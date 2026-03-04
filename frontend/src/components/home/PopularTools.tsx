@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Image, FileText, Video, GraduationCap, QrCode, Archive, Sparkles } from "lucide-react";
+import { ArrowRight, Image, FileText, Video, GraduationCap, QrCode, Archive, Sparkles, Search } from "lucide-react";
 
 const popularTools = [
   {
@@ -22,15 +22,6 @@ const popularTools = [
     bgGradient: "from-red-500/10 to-orange-500/10",
   },
   {
-    id: "video-tools",
-    name: "Video Tools",
-    description: "Download, trim, convert and edit videos",
-    path: "/category/video",
-    icon: Video,
-    gradient: "from-purple-500 to-violet-500",
-    bgGradient: "from-purple-500/10 to-violet-500/10",
-  },
-  {
     id: "education-tools",
     name: "Education Tools",
     description: "Calculators, converters and learning utilities",
@@ -47,6 +38,15 @@ const popularTools = [
     icon: QrCode,
     gradient: "from-emerald-500 to-teal-500",
     bgGradient: "from-emerald-500/10 to-teal-500/10",
+  },
+  {
+    id: "seo-tools",
+    name: "SEO Tools",
+    description: "Meta tags, robots.txt, sitemap, keyword analysis",
+    path: "/category/seo",
+    icon: Search,
+    gradient: "from-green-500 to-lime-500",
+    bgGradient: "from-green-500/10 to-lime-500/10",
   },
   {
     id: "zip-tools",
