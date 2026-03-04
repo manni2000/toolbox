@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Grid3x3, List, Star, TrendingUp, Zap, Sparkles } from "lucide-react";
+import { ArrowRight, Grid3x3, List, Star, TrendingUp, Zap } from "lucide-react";
 import { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -9,32 +9,6 @@ import { toolCategories, getAllTools } from "@/data/toolCategories";
 const CategoriesPage = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const totalTools = getAllTools().length;
-
-  // Define trending tools for each category
-  const getTrendingTools = (categoryId: string) => {
-    const trendingMap: Record<string, string[]> = {
-      "pdf": ["pdf-to-word", "pdf-to-png", "pdf-merger", "pdf-compressor"],
-      "image": ["png-to-jpg-converter", "qr-generator", "image-compressor", "background-remover"],
-      "video": ["video-to-audio", "video-trim", "video-speed", "video-thumbnail"],
-      "audio": ["audio-converter", "speech-to-text", "audio-trimmer", "audio-merger"],
-      "text": ["word-counter", "case-converter", "color-converter", "text-diff"],
-      "security": ["password-generator", "password-strength", "hash-generator", "base64-tool"],
-      "finance": ["invoice-generator", "gst-calculator", "emi-calculator", "currency-converter"],
-      "dev": ["json-formatter", "regex-tester", "jwt-decoder", "url-encoder"],
-      "education": ["scientific-calculator", "percentage-calc", "unit-converter", "compound-interest"],
-      "internet": ["ip-lookup", "dns-lookup", "ssl-checker", "website-ping"],
-      "seo": ["meta-title-description", "keyword-density", "robots-txt", "page-seo"],
-      "social": ["hashtag-generator", "bio-generator", "caption-formatter", "meme-generator"],
-      "zip": ["create-zip", "extract-zip", "password-zip", "compression-zip"],
-      "date-time": ["date-difference", "age-calculator", "working-days", "countdown"]
-    };
-    
-    return trendingMap[categoryId] || [];
-  };
-
-  const isTrending = (categoryId: string, toolId: string) => {
-    return getTrendingTools(categoryId).includes(toolId);
-  };
 
   const popularTools = getAllTools().slice(0, 6);
 
@@ -181,43 +155,21 @@ const CategoriesPage = () => {
                     {/* Tools Grid/List - Always List on Mobile */}
                     {viewMode === "grid" ? (
                       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                        {category.tools
-                          .sort((a, b) => {
-                            const aIsTrending = isTrending(category.id, a.id);
-                            const bIsTrending = isTrending(category.id, b.id);
-                            if (aIsTrending && !bIsTrending) return -1;
-                            if (!aIsTrending && bIsTrending) return 1;
-                            return 0;
-                          })
-                          .map((tool) => (
+                        {category.tools.map((tool) => (
                           <motion.div
                             key={tool.id}
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
-                            className="tool-card group relative"
+                            className="tool-card group"
                           >
-                            {/* Trending Indicator - Small icon */}
-                            {isTrending(category.id, tool.id) && (
-                              <div className="absolute top-3 right-3 z-10 flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 shadow-sm">
-                                <TrendingUp className="h-3 w-3 text-white" />
-                              </div>
-                            )}
                             <Link
                               to={tool.path}
-                              className={`flex flex-col p-3 sm:p-4 min-h-[100px] justify-between h-full border rounded-lg transition-all ${
-                                isTrending(category.id, tool.id)
-                                  ? "border-primary/30 bg-gradient-to-br from-primary/5 via-background to-primary/5 hover:border-primary/50 hover:shadow-md"
-                                  : "border-border hover:border-primary/30 hover:shadow-md"
-                              }`}
+                              className="flex flex-col p-3 sm:p-4 min-h-[100px] justify-between h-full"
                             >
                               <div className="flex-1">
-                                <span className={`block font-medium text-xs sm:text-sm line-clamp-2 ${
-                                  isTrending(category.id, tool.id)
-                                    ? "text-foreground group-hover:text-primary"
-                                    : "text-card-foreground group-hover:text-primary"
-                                }`}>
+                                <span className="block font-medium text-xs sm:text-sm text-card-foreground group-hover:text-primary line-clamp-2">
                                   {tool.name}
                                 </span>
                                 <span className="block text-xs text-muted-foreground mt-1 line-clamp-3">
@@ -231,38 +183,14 @@ const CategoriesPage = () => {
                       </div>
                     ) : (
                       <div className="space-y-2 sm:space-y-2.5">
-                        {category.tools
-                          .sort((a, b) => {
-                            const aIsTrending = isTrending(category.id, a.id);
-                            const bIsTrending = isTrending(category.id, b.id);
-                            if (aIsTrending && !bIsTrending) return -1;
-                            if (!aIsTrending && bIsTrending) return 1;
-                            return 0;
-                          })
-                          .map((tool) => (
+                        {category.tools.map((tool) => (
                           <Link
                             key={tool.id}
                             to={tool.path}
-                            className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-3 sm:p-4 transition-all hover:shadow-sm active:scale-[0.98] min-h-[80px] ${
-                              isTrending(category.id, tool.id)
-                                ? "border-primary/30 bg-gradient-to-r from-primary/5 via-background to-primary/5 hover:border-primary/50 hover:bg-muted/50"
-                                : "border-border bg-background hover:border-primary/50 hover:bg-muted/50"
-                            }`}
+                            className="group flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border border-border bg-background p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm active:scale-[0.98] min-h-[80px]"
                           >
-                            {/* Trending Indicator - Small icon */}
-                            {isTrending(category.id, tool.id) && (
-                              <div className="absolute top-3 right-3 z-10 flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 shadow-sm">
-                                <Sparkles className="h-3 w-3 text-white" />
-                              </div>
-                            )}
-                            <div className={`flex-1 min-w-0 pr-2 mb-2 sm:mb-0 ${
-                              isTrending(category.id, tool.id) ? "text-foreground" : ""
-                            }`}>
-                              <span className={`block font-medium text-xs sm:text-sm truncate ${
-                                isTrending(category.id, tool.id)
-                                  ? "text-foreground group-hover:text-primary"
-                                  : "text-foreground group-hover:text-primary"
-                              }`}>
+                            <div className="flex-1 min-w-0 pr-2 mb-2 sm:mb-0">
+                              <span className="block font-medium text-xs sm:text-sm text-foreground group-hover:text-primary truncate">
                                 {tool.name}
                               </span>
                               <span className="block text-xs text-muted-foreground truncate mt-0.5 line-clamp-2">
