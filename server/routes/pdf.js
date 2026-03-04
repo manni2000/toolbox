@@ -232,7 +232,19 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     const qualityVal = Math.min(Math.max(parseInt(quality) || 85, 10), 100);
 
     // Check if we're in production/serverless - pdf-to-png-converter doesn't work due to pdfjs-dist worker issues
-    if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+    const isProduction = process.env.NODE_ENV === 'production' || 
+                        process.env.VERCEL === '1' || 
+                        process.env.VERCEL_ENV === 'production' ||
+                        !process.env.NODE_ENV; // Default to production if not set
+    
+    console.log('Environment check:', { 
+      NODE_ENV: process.env.NODE_ENV, 
+      VERCEL: process.env.VERCEL,
+      VERCEL_ENV: process.env.VERCEL_ENV,
+      isProduction 
+    });
+    
+    if (isProduction) {
       console.log('PDF conversion disabled in production - using fallback');
       
       // Return PDF as base64 in production since image conversion has worker issues
