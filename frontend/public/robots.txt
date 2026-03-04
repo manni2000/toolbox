@@ -1,50 +1,188 @@
-# dailytools247 Robots.txt
+# Dailytools247 Robots.txt - Comprehensive SEO Setup
 # https://dailytools247.com
+# Allow all search engines to index all tools and content
 
 User-agent: *
 Allow: /
 
-# Sitemap
+# Explicitly allow all tool categories and pages
+Allow: /category/
+Allow: /categories
+
+# PDF Tools
+Allow: /pdf-merge
+Allow: /pdf-split
+Allow: /pdf-to-png
+Allow: /pdf-to-word
+Allow: /pdf-to-powerpoint
+Allow: /pdf-to-excel
+Allow: /word-to-pdf
+Allow: /powerpoint-to-pdf
+Allow: /html-to-pdf
+Allow: /pdf-password
+Allow: /pdf-unlock
+Allow: /pdf-remove-pages
+Allow: /pdf-rotate
+
+# Image Tools
+Allow: /qr-generator
+Allow: /qr-scanner
+Allow: /png-to-jpg-converter
+Allow: /jpg-to-png-converter
+Allow: /webp-to-png-converter
+Allow: /png-to-webp-converter
+Allow: /image-compressor
+Allow: /image-resize
+Allow: /image-crop
+Allow: /background-remover
+Allow: /image-to-pdf
+Allow: /image-to-word
+Allow: /base64-image
+Allow: /image-dpi-checker
+Allow: /exif-viewer
+Allow: /favicon-generator
+
+# Video Tools
+Allow: /video-to-audio
+Allow: /video-trim
+Allow: /video-speed
+Allow: /video-thumbnail
+Allow: /video-resolution
+
+# Audio Tools
+Allow: /audio-converter
+Allow: /speech-to-text
+Allow: /audio-trimmer
+Allow: /audio-merger
+
+# Text Tools
+Allow: /word-counter
+Allow: /case-converter
+Allow: /color-converter
+Allow: /remove-spaces
+Allow: /line-sorter
+Allow: /duplicate-remover
+Allow: /markdown-html
+Allow: /text-summarizer
+Allow: /text-diff
+
+# Security Tools
+Allow: /password-generator
+Allow: /password-strength
+Allow: /hash-generator
+Allow: /base64-tool
+Allow: /uuid-generator
+Allow: /password-strength-explainer
+Allow: /data-breach-checker
+Allow: /file-hash-comparison
+Allow: /exif-location-remover
+Allow: /text-redaction
+Allow: /qr-phishing-scanner
+Allow: /secure-notes
+Allow: /url-reputation
+
+# Date & Time Tools
+Allow: /date-difference
+Allow: /age-calculator
+Allow: /working-days
+Allow: /countdown
+Allow: /world-time
+
+# Developer Tools
+Allow: /json-formatter
+Allow: /regex-tester
+Allow: /jwt-decoder
+Allow: /url-encoder
+Allow: /lorem-generator
+Allow: /cron-generator
+Allow: /http-header
+Allow: /website-screenshot
+Allow: /token-calculator
+Allow: /color-palettes
+Allow: /api-response-formatter
+Allow: /json-typescript
+Allow: /sql-beautifier
+Allow: /jwt-expiry
+Allow: /env-generator
+Allow: /postman-collection
+Allow: /dockerfile-generator
+Allow: /curl-axios
+Allow: /http-status-codes
+
+# Internet Tools
+Allow: /ip-lookup
+Allow: /user-agent
+Allow: /dns-lookup
+Allow: /ssl-checker
+Allow: /website-ping
+
+# Education Tools
+Allow: /scientific-calculator
+Allow: /percentage-calc
+Allow: /unit-converter
+Allow: /compound-interest
+Allow: /simple-interest
+Allow: /cgpa-percentage
+Allow: /lcm-hcf
+Allow: /study-timetable
+Allow: /mcq-generator
+
+# Finance Tools
+Allow: /emi-calculator
+Allow: /gst-calculator
+Allow: /salary-calculator
+Allow: /currency-converter
+Allow: /startup-burn-rate-calculator
+Allow: /saas-pricing-calculator
+Allow: /emi-comparison
+Allow: /tax-slab-analyzer
+Allow: /invoice-generator
+Allow: /profit-margin-calculator
+Allow: /freelancer-rate-calculator
+Allow: /stock-cagr-calculator
+Allow: /budget-planner
+Allow: /salary-breakup-generator
+
+# ZIP Tools
+Allow: /create-zip
+Allow: /extract-zip
+Allow: /password-zip
+Allow: /compression-zip
+
+# Social Media Tools
+Allow: /hashtag-generator
+Allow: /bio-generator
+Allow: /caption-formatter
+Allow: /line-break-generator
+Allow: /link-in-bio
+Allow: /whatsapp-status-generator
+Allow: /meme-generator
+
+# SEO Tools
+Allow: /meta-title-description
+Allow: /keyword-density
+Allow: /robots-txt
+Allow: /sitemap-validator
+Allow: /page-speed-checklist-generator
+Allow: /og-image-preview
+Allow: /broken-image-finder
+Allow: /utm-link-builder
+Allow: /domain-age
+Allow: /tech-stack-detector
+Allow: /page-seo
+
+# Disallow sensitive and system directories
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /build/
+Disallow: /dist/
+
+# Sitemap location
 Sitemap: https://dailytools247.com/sitemap.xml
 
-# Crawl-delay for polite crawling
+# Crawl delay for polite crawling
 Crawl-delay: 1
-
-# Allow all major search engines
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Slurp
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
-User-agent: Baiduspider
-Allow: /
-
-User-agent: YandexBot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-# Block common bad bots
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /
-
-# Cache and build directories (if exposed)
-Disallow: /node_modules/
-Disallow: /.git/
