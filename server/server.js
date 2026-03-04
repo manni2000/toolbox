@@ -48,10 +48,25 @@ app.use(cors({
   optionsSuccessStatus: 204
 }));
 
-// Rate limiting
+// Rate limiting with proper IP handling for Vercel
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 200, // limit each IP to 100 requests per windowMs
+  keyGenerator: (req) => {
+    // In Vercel, the real client IP is the first IP in X-Forwarded-For
+    const forwardedFor = req.headers['x-forwarded-for'];
+    if (forwardedFor) {
+      // Take the first IP in the chain (the original client)
+      const clientIP = forwardedFor.split(',')[0].trim();
+      return clientIP;
+    }
+    // Fallback to req.ip if X-Forwarded-For is not present
+    return req.ip;
+  },
+  skip: (req) => {
+    // Skip rate limiting for health checks
+    return req.path === '/health';
+  }
 });
 app.use('/api/', limiter);
 

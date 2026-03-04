@@ -31,6 +31,18 @@ if (!global.performance) {
 // Fast PDF to PNG converter using pdf-to-png-converter for in-memory conversion
 const { pdfToPng } = require('pdf-to-png-converter');
 
+// Configure pdfjs-dist for serverless environments
+if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+  // Set the worker path for pdfjs-dist in serverless
+  try {
+    const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
+    // In serverless, we need to use a CDN or inline worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+  } catch (error) {
+    console.warn('Could not configure pdfjs-dist worker:', error.message);
+  }
+}
+
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ 

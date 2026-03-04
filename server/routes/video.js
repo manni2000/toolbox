@@ -3,14 +3,9 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
-const { YtDlp } = require('ytdlp-nodejs');
-const abDownloader = require('ab-downloader');
 const router = express.Router();
 
-// Initialize ytdlp
-const ytdlp = new YtDlp();
-
-// Set ffmpeg path for ytdlp
+// Set ffmpeg path for video processing
 process.env.FFMPEG_PATH = require('ffmpeg-static');
 
 // Configure multer for file uploads
@@ -76,7 +71,7 @@ router.get('/thumbnail-proxy', async (req, res) => {
     
     res.set({
       'Content-Type': contentType,
-      'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
+      'Cache-Control': 'public, max-age=3600', 
       'Access-Control-Allow-Origin': '*',
       'Cross-Origin-Resource-Policy': 'cross-origin',
       'Cross-Origin-Embedder-Policy': 'unsafe-none'
@@ -89,241 +84,33 @@ router.get('/thumbnail-proxy', async (req, res) => {
   }
 });
 
-// Multi-platform Video Downloader
-router.post('/download', async (req, res) => {
-  try {
-    const { url, quality = 'highest' } = req.body;
+// Multi-platform Video Downloader - Currently disabled due to binary dependencies
+// router.post('/download', async (req, res) => {
+//   try {
+//     const { url } = req.body;
     
-    if (!url) {
-      return res.status(400).json({ error: 'Video URL is required' });
-    }
+//     if (!url) {
+//       return res.status(400).json({ error: 'Video URL is required' });
+//     }
 
-    // Detect platform
-    let platform = 'unknown';
-    if (url.includes('youtube.com') || url.includes('youtu.be')) {
-      platform = 'youtube';
-    } else if (url.includes('instagram.com')) {
-      platform = 'instagram';
-    } else if (url.includes('facebook.com') || url.includes('fb.watch')) {
-      platform = 'facebook';
-    }
+//     // Video downloads are not supported due to binary requirements in serverless environments
+//     return res.status(503).json({ 
+//       error: 'Video download is not available',
+//       message: 'Video downloading requires system binaries that are not supported in serverless environments. Only video processing features are available.',
+//       download_blocked: true,
+//       block_reason: 'Serverless environment limitation'
+//     });
 
-    let downloadResult;
-
-    if (platform === 'youtube') {
-      // Use ytdl-core for YouTube
-      downloadResult = await downloadYouTubeVideo(url, quality);
-    } else if (platform === 'instagram' || platform === 'facebook') {
-      // Use ab-downloader for Instagram and Facebook
-      downloadResult = await downloadSocialMediaVideo(url, platform);
-    } else {
-      return res.status(400).json({ 
-        error: 'Unsupported platform. Currently supports YouTube, Instagram, and Facebook.',
-        download_blocked: true,
-        block_reason: 'Unsupported platform'
-      });
-    }
-
-    res.json({
-      success: true,
-      info: downloadResult.info,
-      video: downloadResult.video,
-      filename: downloadResult.filename,
-      format: downloadResult.format,
-      quality: downloadResult.quality,
-      size: downloadResult.size,
-      platform: platform
-    });
-
-  } catch (error) {
-    console.error('Video download error:', error);
+//   } catch (error) {
+//     console.error('Video download error:', error);
     
-    res.status(500).json({ 
-      error: 'Failed to process video: ' + error.message,
-      download_blocked: true,
-      block_reason: 'Processing error'
-    });
-  }
-});
-
-// YouTube download function using ytdlp-nodejs
-async function downloadYouTubeVideo(url, quality) {
-  try {
-    console.log('Downloading with ytdlp-nodejs...');
-    
-    // Get video info first
-    const info = await ytdlp.getInfoAsync(url);
-    
-    // Download video directly to buffer
-    try {
-      const result = await ytdlp
-        .download(url)
-        .format('best[ext=mp4]/best')
-        .on('error', (error) => {
-          console.error('ytdlp download error:', error);
-        })
-        .run();
-      
-      console.log('Download completed, processing buffer...');
-      
-      // Get the video buffer from ytdlp result
-      let videoBuffer;
-      if (result && result.buffer) {
-        videoBuffer = result.buffer;
-      } else if (result && result.filePaths && result.filePaths.length > 0) {
-        // Fallback: read file if buffer not available
-        const filePath = result.filePaths[0];
-        if (fs.existsSync(filePath)) {
-          videoBuffer = fs.readFileSync(filePath);
-          // Clean up the file immediately
-          fs.unlinkSync(filePath);
-        } else {
-          throw new Error('Video file not found after download');
-        }
-      } else {
-        throw new Error('No video data received from ytdlp');
-      }
-      
-      const videoBase64 = videoBuffer.toString('base64');
-      
-      return {
-        info: {
-          title: info.title || 'YouTube Video',
-          duration: Math.floor(info.duration) || 0,
-          uploader: info.uploader || info.channel || 'Unknown',
-          thumbnail: info.thumbnail || null,
-          view_count: info.view_count || info.views || null,
-          upload_date: info.upload_date || null,
-          description: info.description?.substring(0, 500) || '',
-          download_blocked: false,
-          file_size: videoBuffer.length
-        },
-        video: `data:video/mp4;base64,${videoBase64}`,
-        filename: `${(info.title || 'youtube_video').replace(/[^\w\s-]/g, '').trim()}.mp4`,
-        format: 'mp4',
-        quality: quality || 'unknown',
-        size: videoBuffer.length
-      };
-      
-    } catch (downloadError) {
-      console.error('Download failed:', downloadError);
-      throw new Error('Failed to download video: ' + downloadError.message);
-    }
-    
-  } catch (error) {
-    console.error('YouTube download error:', error);
-    
-    // Provide better error messages
-    if (error.message.includes('Video unavailable')) {
-      throw new Error('This video is unavailable or private');
-    } else if (error.message.includes('This video is private')) {
-      throw new Error('This video is private');
-    } else if (error.message.includes('429')) {
-      throw new Error('Too many requests - please wait a moment and try again');
-    } else {
-      throw new Error('Failed to download video: ' + error.message);
-    }
-  }
-}
-
-// Social media download function (Instagram, Facebook)
-async function downloadSocialMediaVideo(url, platform) {
-  try {
-    let result;
-    
-    if (platform === 'instagram') {
-      result = await abDownloader.igdl(url);
-      console.log('Instagram result:', JSON.stringify(result, null, 2));
-    } else if (platform === 'facebook') {
-      result = await abDownloader.fbdown(url);
-      console.log('Facebook result:', JSON.stringify(result, null, 2));
-    } else {
-      throw new Error('Unsupported platform: ' + platform);
-    }
-    
-    if (!result) {
-      throw new Error('No result returned from ' + platform);
-    }
-
-    // Check different possible response structures
-    let videoUrl = result.url || result.download_url || result.media_url || result.video_url;
-    let thumbnailUrl = result.thumbnail || result.preview || result.display_url || result.thumbnail_url || result.image || null;
-    
-    if (!videoUrl) {
-      // Handle Facebook specific response structure
-      if (platform === 'facebook') {
-        videoUrl = result.Normal_video || result.HD || result.hd || result.sd;
-        // Facebook might not provide thumbnails in all cases
-        thumbnailUrl = thumbnailUrl || result.thumbnail || result.preview || result.display_url || result.image || null;
-      }
-      
-      // If result is an array, take the first item
-      if (Array.isArray(result) && result.length > 0) {
-        videoUrl = result[0].url || result[0].download_url || result[0].media_url || result[0].video_url ||
-                  result[0].Normal_video || result[0].HD || result[0].hd || result[0].sd;
-        thumbnailUrl = thumbnailUrl || result[0].thumbnail || result[0].preview || result[0].display_url || 
-                     result[0].thumbnail_url || result[0].image || null;
-      }
-    }
-
-    if (!videoUrl) {
-      throw new Error('No video URL found in response from ' + platform);
-    }
-
-    console.log('Found video URL:', videoUrl);
-    console.log('Found thumbnail URL:', thumbnailUrl);
-    console.log('Returning video info with thumbnail:', thumbnailUrl);
-
-    // Download the video from the URL
-    const fetch = require('node-fetch');
-    const response = await fetch(videoUrl);
-    
-    if (!response.ok) {
-      throw new Error('Failed to download video file: ' + response.statusText);
-    }
-
-    const buffer = await response.buffer();
-    const videoBase64 = buffer.toString('base64');
-    
-    // Skip thumbnail generation for Facebook videos to avoid storing files
-    // Facebook API typically doesn't provide thumbnails anyway
-    let finalThumbnailUrl = thumbnailUrl;
-    
-    const filename = result.filename?.replace(/\.mp4$/, '')?.replace(/[^\w\s-]/g, '') || 
-                    result.title?.replace(/[^\w\s-]/g, '') || 
-                    result.caption?.replace(/[^\w\s-]/g, '') || 
-                    `${platform}_video`;
-    const safeFilename = `${filename}.mp4`;
-
-    const returnObject = {
-      info: {
-        title: result.filename?.replace(/\.mp4$/, '') || result.title || result.caption || `${platform} video`,
-        duration: result.duration || 0,
-        uploader: result.author || result.owner || result.username || platform,
-        thumbnail: finalThumbnailUrl,
-        view_count: result.view_count || result.views || null,
-        upload_date: result.upload_date || result.taken_at || null,
-        description: result.description || result.caption || '',
-        download_blocked: false,
-        file_size: buffer.length
-      },
-      video: `data:video/mp4;base64,${videoBase64}`,
-      filename: safeFilename,
-      format: 'mp4',
-      quality: 'standard',
-      size: buffer.length
-    };
-
-    console.log('Final response object thumbnail:', returnObject.info.thumbnail);
-    console.log('Full response keys:', Object.keys(returnObject.info));
-    
-    return returnObject;
-
-  } catch (error) {
-    console.error(`${platform} download error:`, error);
-    throw new Error(`Failed to download ${platform} video: ${error.message}`);
-  }
-}
+//     res.status(500).json({ 
+//       error: 'Failed to process video: ' + error.message,
+//       download_blocked: true,
+//       block_reason: 'Processing error'
+//     });
+//   }
+// });
 
 // Video to Audio
 router.post('/to-audio', upload.single('video'), async (req, res) => {
