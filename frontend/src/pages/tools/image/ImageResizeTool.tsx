@@ -1,8 +1,9 @@
 import { useState, useRef } from "react";
-import { Upload, Image as ImageIcon, X, Maximize2 } from "lucide-react";
+import { Upload, Image as ImageIcon, X, Maximize2, Settings, Download } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { useToast } from "@/hooks/use-toast";
 
 const ImageResizeTool = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -13,12 +14,32 @@ const ImageResizeTool = () => {
   const [maintainRatio, setMaintainRatio] = useState(true);
   const [resizedUrl, setResizedUrl] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const handleFile = (file: File) => {
-    if (!file.type.startsWith("image/")) return;
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Invalid File Type",
+        description: "Please select a valid image file (JPG, PNG, WebP, etc.)",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      toast({
+        title: "File Too Large",
+        description: "Please select an image smaller than 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setImage(file);
     setResizedUrl(null);
+    setLoading(true);
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -30,8 +51,29 @@ const ImageResizeTool = () => {
         setOriginalSize({ width: img.width, height: img.height });
         setWidth(img.width);
         setHeight(img.height);
+        setLoading(false);
+        toast({
+          title: "Image Loaded",
+          description: `Loaded ${img.width}x${img.height} image`,
+        });
+      };
+      img.onerror = () => {
+        setLoading(false);
+        toast({
+          title: "Load Failed",
+          description: "Failed to load the image. Please try a different file.",
+          variant: "destructive",
+        });
       };
       img.src = dataUrl;
+    };
+    reader.onerror = () => {
+      setLoading(false);
+      toast({
+        title: "Read Failed",
+        description: "Failed to read the file. Please try again.",
+        variant: "destructive",
+      });
     };
     reader.readAsDataURL(file);
   };

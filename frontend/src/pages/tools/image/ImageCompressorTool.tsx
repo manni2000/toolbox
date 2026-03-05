@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
-import { Upload, Image, X } from "lucide-react";
+import { Upload, Image, X, Zap, Settings, Download } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { useToast } from "@/hooks/use-toast";
 
 const ImageCompressorTool = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -12,6 +13,8 @@ const ImageCompressorTool = () => {
   const [originalSize, setOriginalSize] = useState(0);
   const [compressedSize, setCompressedSize] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -19,16 +22,47 @@ const ImageCompressorTool = () => {
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
       handleFile(file);
+    } else {
+      toast({
+        title: "Invalid File",
+        description: "Please drop a valid image file.",
+        variant: "destructive",
+      });
     }
   }, []);
 
   const handleFile = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Invalid File Type",
+        description: "Please select a valid image file (JPG, PNG, WebP, etc.)",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      toast({
+        title: "File Too Large",
+        description: "Please select an image smaller than 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setImage(file);
     setOriginalSize(file.size);
+    setCompressedUrl(null);
+    setCompressedSize(0);
+
     const reader = new FileReader();
     reader.onload = (e) => setPreview(e.target?.result as string);
     reader.readAsDataURL(file);
-    setCompressedUrl(null);
+
+    toast({
+      title: "Image Loaded",
+      description: `Loaded ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`,
+    });
   };
 
   const compressImage = () => {

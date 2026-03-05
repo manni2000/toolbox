@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
-import { Upload, ScanLine, Copy, Check, X, ExternalLink } from "lucide-react";
+import { Upload, ScanLine, Copy, Check, X, ExternalLink, QrCode } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { useToast } from "@/hooks/use-toast";
 
 const QRScannerTool = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -8,39 +9,72 @@ const QRScannerTool = () => {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { toast } = useToast();
 
   const handleFile = async (file: File) => {
-    if (!file.type.startsWith("image/")) return;
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Invalid File",
+        description: "Please select a valid image file.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setError(null);
     setResult(null);
+    setLoading(true);
 
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const dataUrl = e.target?.result as string;
-      setImage(dataUrl);
+    try {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const dataUrl = e.target?.result as string;
+        setImage(dataUrl);
 
-      // Use jsQR library for scanning
-      const img = new Image();
-      img.onload = () => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
+        // Use jsQR library for scanning
+        const img = new Image();
+        img.onload = () => {
+          const canvas = canvasRef.current;
+          if (!canvas) {
+            setLoading(false);
+            return;
+          }
 
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            setLoading(false);
+            return;
+          }
 
-        ctx.drawImage(img, 0, 0);
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-        // Simple pattern detection (for demo - real implementation needs jsQR)
-        setError("QR scanning requires the jsQR library. Install it to enable full scanning functionality.");
+          // Simple pattern detection (for demo - real implementation needs jsQR)
+          setError("QR scanning requires the jsQR library. Install it to enable full scanning functionality.");
+          toast({
+            title: "Library Required",
+            description: "QR scanning functionality needs additional setup. Please install the jsQR library.",
+            variant: "destructive",
+          });
+          setLoading(false);
+        };
+        img.src = dataUrl;
       };
-      img.src = dataUrl;
-    };
-    reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
+    } catch (error) {
+      setError("Failed to process the image file.");
+      toast({
+        title: "Processing Failed",
+        description: "Failed to process the selected image file.",
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
