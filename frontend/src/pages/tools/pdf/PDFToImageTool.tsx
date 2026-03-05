@@ -89,18 +89,32 @@ const PDFToImageTool = () => {
       const result: ConversionResult = await response.json();
 
       if (result.success && result.images && result.images.length > 0) {
-        setResultImages(result.images);
-        setConversionStats(result);
+        // Check if we got a PDF fallback (production environment)
+        const hasPdfFallback = result.images[0].format === 'pdf' || result.images[0].error;
+        
+        if (hasPdfFallback) {
+          // Show error message for production environment
+          toast({
+            title: "PDF to Image Not Available",
+            description: "PDF to image conversion is not available in production. You can download the original PDF file.",
+            variant: "destructive",
+          });
+          
+          // Still set the result so user can download the PDF
+          setResultImages(result.images);
+          setConversionStats(result);
+        } else {
+          // Normal image conversion result
+          setResultImages(result.images);
+          setConversionStats(result);
 
-        const methodText = result.method === 'pdftoimg-js' ? 'Fast PDF-to-Image conversion' : 'PDF conversion';
-        const performanceText = result.performance?.render
-          ? ` in ${result.performance.render}ms`
-          : '';
+          const methodText = result.method === 'pdftoimg-js' ? 'Fast PDF-to-Image conversion' : 'PDF conversion';
 
-        toast({
-          title: "Success!",
-          description: `Converted ${result.renderedPages || result.images.length} pages using ${methodText}`,
-        });
+          toast({
+            title: "Success!",
+            description: `Converted ${result.renderedPages || result.images.length} pages using ${methodText}`,
+          });
+        }
 
         // Scroll to download section after successful conversion
         setTimeout(() => {
@@ -221,11 +235,14 @@ const PDFToImageTool = () => {
                   <EnhancedDownload
                     data={resultImages[0].image}
                     fileName={resultImages[0].name}
-                    fileType="image"
-                    title="PDF Converted to Images"
-                    description={`Successfully converted ${resultImages.length} pages to ${conversionStats.format?.toUpperCase() || 'PNG'} images`}
+                    fileType={resultImages[0].format === 'pdf' ? 'pdf' : 'image'}
+                    title={resultImages[0].format === 'pdf' ? 'PDF Download' : 'PDF Converted to Images'}
+                    description={resultImages[0].format === 'pdf' 
+                      ? 'PDF to image conversion is not available in production. Download the original PDF file.'
+                      : `Successfully converted ${resultImages.length} pages to ${conversionStats.format?.toUpperCase() || 'PNG'} images`
+                    }
                     fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
-                    multipleFiles={resultImages.map(img => ({
+                    multipleFiles={resultImages[0].format === 'pdf' ? undefined : resultImages.map(img => ({
                       url: img.image,
                       name: img.name,
                       page: img.page
