@@ -4,7 +4,25 @@ const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const { PDFDocument } = require('pdf-lib');
+const { PDFDocument, StandardFonts } = require('pdf-lib');
+
+// Configure pdf-lib for serverless environments to avoid font loading issues
+if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+  // Suppress font loading warnings in serverless environments
+  console.log('Configuring pdf-lib for serverless environment...');
+  
+  // Set up error handling for font loading
+  const originalWarn = console.warn;
+  console.warn = function(...args) {
+    // Suppress pdf-lib font loading warnings
+    if (args[0] && typeof args[0] === 'string' && 
+        (args[0].includes('Unable to load font data') || 
+         args[0].includes('fetchStandardFontData'))) {
+      return; // Suppress the warning
+    }
+    originalWarn.apply(console, args);
+  };
+}
 const router = express.Router();
 
 // PDF.js for text extraction (commented out to avoid conflicts with pdftoimg-js)
@@ -30,11 +48,14 @@ if (!global.performance) {
 
 // Fast PDF to PNG converter using pdf-to-img for in-memory conversion (serverless-friendly)
 let pdfToImg;
-try {
-  pdfToImg = require('pdf-to-img');
-} catch (error) {
-  console.warn('pdf-to-img not available:', error.message);
-}
+(async () => {
+  try {
+    const pdfToImgModule = await import('pdf-to-img');
+    pdfToImg = pdfToImgModule;
+  } catch (error) {
+    console.warn('pdf-to-img not available:', error.message);
+  }
+})();
 
 // Alternative PDF to image converter using pdf2pic (requires system dependencies)
 let pdf2pic;
@@ -47,14 +68,16 @@ try {
 // Configure pdfjs-dist for serverless environments
 if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
   // Set the worker path for pdfjs-dist in serverless
-  try {
-    const pdfjsLib = require('pdfjs-dist');
-    // Use the standard worker for better compatibility
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-    console.log('pdfjs-dist configured with CDN worker:', pdfjsLib.GlobalWorkerOptions.workerSrc);
-  } catch (error) {
-    console.warn('Could not configure pdfjs-dist worker:', error.message);
-  }
+  (async () => {
+    try {
+      const pdfjsLib = await import('pdfjs-dist');
+      // Use the standard worker for better compatibility
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+      console.log('pdfjs-dist configured with CDN worker:', pdfjsLib.GlobalWorkerOptions.workerSrc);
+    } catch (error) {
+      console.warn('Could not configure pdfjs-dist worker:', error.message);
+    }
+  })();
 }
 
 // Alternative: Try to use a local worker if available
@@ -63,9 +86,15 @@ try {
   const fs = require('fs');
   const workerPath = path.join(__dirname, '../node_modules/pdfjs-dist/build/pdf.worker.js');
   if (fs.existsSync(workerPath)) {
-    const pdfjsLib = require('pdfjs-dist');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `file://${workerPath}`;
-    console.log('Using local pdfjs-dist worker');
+    (async () => {
+      try {
+        const pdfjsLib = await import('pdfjs-dist');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `file://${workerPath}`;
+        console.log('Using local pdfjs-dist worker');
+      } catch (error) {
+        console.warn('Could not set local worker:', error.message);
+      }
+    })();
   }
 } catch (error) {
   console.warn('Could not set local worker:', error.message);
