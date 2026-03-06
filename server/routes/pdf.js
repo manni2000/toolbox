@@ -28,8 +28,13 @@ if (!global.performance) {
   };
 }
 
-// Fast PDF to PNG converter using pdf-to-png-converter for in-memory conversion
-const { pdfToPng } = require('pdf-to-png-converter');
+// Fast PDF to PNG converter using pdf-to-img for in-memory conversion (serverless-friendly)
+let pdfToImg;
+try {
+  pdfToImg = require('pdf-to-img');
+} catch (error) {
+  console.warn('pdf-to-img not available:', error.message);
+}
 
 // Alternative PDF to image converter using pdf2pic (requires system dependencies)
 let pdf2pic;
@@ -43,12 +48,27 @@ try {
 if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
   // Set the worker path for pdfjs-dist in serverless
   try {
-    const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
-    // In serverless, we need to use a CDN or inline worker
+    const pdfjsLib = require('pdfjs-dist');
+    // Use the standard worker for better compatibility
     pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+    console.log('pdfjs-dist configured with CDN worker:', pdfjsLib.GlobalWorkerOptions.workerSrc);
   } catch (error) {
     console.warn('Could not configure pdfjs-dist worker:', error.message);
   }
+}
+
+// Alternative: Try to use a local worker if available
+try {
+  const path = require('path');
+  const fs = require('fs');
+  const workerPath = path.join(__dirname, '../node_modules/pdfjs-dist/build/pdf.worker.js');
+  if (fs.existsSync(workerPath)) {
+    const pdfjsLib = require('pdfjs-dist');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `file://${workerPath}`;
+    console.log('Using local pdfjs-dist worker');
+  }
+} catch (error) {
+  console.warn('Could not set local worker:', error.message);
 }
 
 // Configure multer for file uploads
@@ -325,80 +345,106 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     // Try PDF conversion even in production to get detailed error info
     let conversionAttempted = false;
     let conversionError = null;
+    let conversionResult = null;
 
     if (isProduction) {
       console.log('Attempting PDF conversion in production environment for debugging...');
       
-      let conversionSuccess = false;
-      let conversionError = null;
-      let lastMethod = '';
-      
-      // Try pdf-to-png-converter first
+      // Try pdf-to-img first (should be more serverless-friendly)
       try {
-        console.log('Trying pdf-to-png-converter...');
-        const testImages = await pdfToPng(req.file.buffer, {
-          viewportScale: 2.0
+        console.log('Trying pdf-to-img...');
+        if (!pdfToImg) {
+          throw new Error('pdf-to-img is not available');
+        }
+        
+        const images = await pdfToImg.pdf(req.file.buffer, {
+          width: 2000,           // max width
+          height: 2000,          // max height
+          scale: 2.0             // higher scale for better quality
         });
-        if (testImages && testImages.length > 0) {
-          console.log('PDF conversion succeeded with pdf-to-png-converter!');
-          conversionSuccess = true;
-          lastMethod = 'pdf-to-png-converter';
+        
+        if (images && typeof images[Symbol.asyncIterator] === 'function') {
+          console.log('PDF conversion succeeded with pdf-to-img!');
+          
+          // Process the async iterable images
+          const processedImagesArray = [];
+          let pageIndex = 0;
+          
+          for await (const image of images) {
+            const base64Image = image.toString('base64');
+            const mimeType = 'image/png';
+            
+            const name = pageIndex === 0 
+              ? `${baseFilename}.png` 
+              : `${baseFilename}_page_${pageIndex + 1}.png`;
+
+            processedImagesArray.push({
+              page: pageIndex + 1,
+              image: `data:${mimeType};base64,${base64Image}`,
+              name: name,
+              width: image.width || 2000,
+              height: image.height || 2000,
+              format: 'png',
+              size: image.length
+            });
+            
+            pageIndex++;
+          }
+          
+          conversionResult = processedImagesArray;
+          
+          conversionAttempted = true;
         } else {
-          throw new Error('pdfToPng returned empty result');
+          throw new Error('pdf-to-img returned empty result');
         }
       } catch (error) {
         conversionError = error;
-        console.error('pdf-to-png-converter failed:', {
+        console.error('pdf-to-img failed:', {
           message: error.message,
           stack: error.stack,
           name: error.name,
           code: error.code
         });
         
-        // Try pdf2pic as alternative
-        if (pdf2pic) {
-          try {
-            console.log('Trying pdf2pic as alternative...');
-            const baseFilename = path.parse(req.file.originalname).name;
-            const testImages = await convertPdfWithPdf2pic(req.file.buffer, baseFilename, imageFormat);
-            if (testImages && testImages.length > 0) {
-              console.log('PDF conversion succeeded with pdf2pic!');
-              conversionSuccess = true;
-              lastMethod = 'pdf2pic';
-            } else {
-              throw new Error('pdf2pic returned empty result');
-            }
-          } catch (pdf2picError) {
-            console.error('pdf2pic also failed:', {
-              message: pdf2picError.message,
-              stack: pdf2picError.stack,
-              name: pdf2picError.name,
-              code: pdf2picError.code
-            });
-            conversionError = pdf2picError;
-          }
-        } else {
-          console.log('pdf2pic not available, skipping alternative method');
-        }
+        // Continue with fallback
       }
-      
-      if (conversionSuccess) {
-        // Continue with normal processing since one of the methods worked
-        console.log(`PDF conversion succeeded in production using ${lastMethod}! Processing normally...`);
-      } else {
-        // Log additional environment details
-        console.log('Production environment details:', {
-          platform: process.platform,
-          arch: process.arch,
-          nodeVersion: process.version,
-          availableMemory: os.totalmem(),
-          freeMemory: os.freemem(),
-          tmpdir: os.tmpdir(),
-          cwd: process.cwd()
-        });
+    }
 
-        // Both methods failed, use fallback
-      }
+    if (isProduction && !conversionAttempted) {
+      console.log('PDF conversion disabled in production - using fallback due to known issues');
+      
+      // Return PDF as base64 in production since image conversion has worker issues
+      const pdfBase64 = req.file.buffer.toString('base64');
+      return res.json({
+        success: true,
+        images: [{
+          page: 1,
+          image: `data:application/pdf;base64,${pdfBase64}`,
+          name: req.file.originalname,
+          format: 'pdf',
+          size: req.file.size,
+          error: `PDF to image conversion not available in production environment. Error: ${conversionError?.message || 'pdf-to-img failed'}`
+        }],
+        totalPages: 1,
+        renderedPages: 1,
+        format: 'pdf',
+        pdfName: path.parse(req.file.originalname).name,
+        method: 'production-fallback',
+        debug: {
+          attempted: conversionAttempted,
+          error: conversionError ? {
+            message: conversionError.message,
+            code: conversionError.code,
+            name: conversionError.name
+          } : null,
+          environment: {
+            NODE_ENV: process.env.NODE_ENV,
+            VERCEL: process.env.VERCEL,
+            VERCEL_ENV: process.env.VERCEL_ENV
+          }
+        },
+        performance: { render: Date.now() }
+      });
     }
 
     if (isProduction && !conversionAttempted) {
@@ -440,33 +486,67 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
 
     const baseFilename = path.parse(req.file.originalname).name;
 
-    // Convert PDF buffer to images using pdf-to-png-converter
-    const images = await pdfToPng(req.file.buffer, {
-      viewportScale: 2.0 // Higher scale for better quality
-    });
+    // Check if we already have processed images from production conversion
+    let images;
+    if (conversionResult) {
+      images = conversionResult;
+    } else {
+      // Convert PDF buffer to images using pdf-to-img
+      const pdfImages = await pdfToImg.pdf(req.file.buffer, {
+        width: 2000,           // max width
+        height: 2000,          // max height
+        scale: 2.0             // higher scale for better quality
+      });
+      
+      // Convert async iterable to array
+      images = [];
+      let pageIndex = 0;
+      
+      for await (const image of pdfImages) {
+        const base64Image = image.toString('base64');
+        const mimeType = 'image/png';
+        
+        const name = pageIndex === 0 
+          ? `${baseFilename}.png` 
+          : `${baseFilename}_page_${pageIndex + 1}.png`;
+
+        images.push({
+          page: pageIndex + 1,
+          image: `data:${mimeType};base64,${base64Image}`,
+          name: name,
+          width: image.width || 2000,
+          height: image.height || 2000,
+          format: 'png',
+          size: image.length
+        });
+        
+        pageIndex++;
+      }
+    }
 
     if (!images || images.length === 0) {
       return res.status(500).json({ error: 'Failed to generate page images' });
     }
 
     // Process images into response format
-    const processedImages = images.map((page) => {
-      const imgBuffer = page.content;
+    const processedImages = images.map((page, index) => {
+      // Handle both pdf-to-img buffer format and our processed format
+      const imgBuffer = page.content || page;
       const base64Image = imgBuffer.toString('base64');
       const mimeType = imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png';
       const ext = imageFormat === 'jpeg' ? 'jpg' : 'png';
 
       // Use PDF base name for page 1, add page number for others
-      const name = page.pageNumber === 1 
-        ? `${baseFilename}.${ext}` 
-        : `${baseFilename}_page_${page.pageNumber}.${ext}`;
+      const name = index === 1 || page.pageNumber === 1
+        ? `${baseFilename}.${ext}`
+        : `${baseFilename}_page_${index + 1}.${ext}`;
 
       return {
-        page: page.pageNumber,
+        page: page.pageNumber || (index + 1),
         image: `data:${mimeType};base64,${base64Image}`,
         name: name,
-        width: page.width,
-        height: page.height,
+        width: page.width || 2000,
+        height: page.height || 2000,
         format: imageFormat,
         size: imgBuffer.length
       };
@@ -475,11 +555,11 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     return res.json({
       success: true,
       images: processedImages,
-      totalPages: images.length,
-      renderedPages: images.length,
+      totalPages: processedImages.length,
+      renderedPages: processedImages.length,
       format: imageFormat,
       pdfName: baseFilename,
-      method: 'pdf-to-png-converter',
+      method: 'pdf-to-img',
       performance: { render: Date.now() }
     });
 
