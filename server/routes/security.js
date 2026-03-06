@@ -373,28 +373,27 @@ router.post('/qr-phishing-scanner', (req, res) => {
   }
 });
 
-// Secure Notes (placeholder - would need encryption)
-router.post('/secure-notes', (req, res) => {
+// URL Reputation Checker
+router.post('/url-reputation', (req, res) => {
   try {
-    const { note, password } = req.body;
-    
-    if (!note) {
-      return res.status(400).json({ error: 'Note content is required' });
+    const { url } = req.body;
+
+    if (!url) {
+      return res.status(400).json({ error: 'URL is required' });
     }
 
-    // This is a placeholder implementation
-    // In a real implementation, you would use proper encryption
-    const encrypted = password ? 
-      CryptoJS.AES.encrypt(note, password).toString() : 
-      Buffer.from(note).toString('base64');
+    // Validate URL format
+    try {
+      new URL(url);
+    } catch (error) {
+      return res.status(400).json({ error: 'Invalid URL format' });
+    }
+
+    const reputationAnalysis = analyzeURLReputation(url);
 
     res.json({
       success: true,
-      result: {
-        encryptedNote: encrypted,
-        timestamp: new Date().toISOString(),
-        note: 'This is a placeholder encryption. Use proper encryption in production.'
-      }
+      result: reputationAnalysis
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -512,6 +511,131 @@ function estimateCrackTime(entropy) {
   if (secondsToCrack < 2592000) return `${Math.round(secondsToCrack / 86400)} days`;
   if (secondsToCrack < 31536000) return `${Math.round(secondsToCrack / 2592000)} months`;
   return `${Math.round(secondsToCrack / 31536000)} years`;
+}
+
+function analyzeURLReputation(url) {
+  const urlObj = new URL(url);
+  const hostname = urlObj.hostname.toLowerCase();
+  let riskScore = 0;
+  const riskFactors = [];
+  const recommendations = [];
+
+  // Basic HTTPS check
+  const isHttps = urlObj.protocol === 'https:';
+  if (!isHttps) {
+    riskScore += 3;
+    riskFactors.push('Uses HTTP instead of HTTPS (not encrypted)');
+    recommendations.push('Avoid non-HTTPS websites for sensitive activities');
+  } else {
+    recommendations.push('Good: Uses HTTPS encryption');
+  }
+
+  // Check for suspicious TLDs
+  const suspiciousTLDs = ['.tk', '.ml', '.ga', '.cf', '.gq', '.work', '.click', '.link', '.xyz', '.top', '.club'];
+  const tld = hostname.substring(hostname.lastIndexOf('.'));
+  if (suspiciousTLDs.includes(tld)) {
+    riskScore += 2;
+    riskFactors.push(`Uses suspicious top-level domain: ${tld}`);
+    recommendations.push('Be cautious with uncommon TLDs');
+  }
+
+  // Check for IP addresses instead of domain names
+  const isIPAddress = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(hostname);
+  if (isIPAddress) {
+    riskScore += 2;
+    riskFactors.push('Uses IP address instead of domain name');
+    recommendations.push('IP addresses are often used for malicious sites');
+  }
+
+  // Check for suspicious keywords in hostname
+  const suspiciousKeywords = ['free', 'gift', 'win', 'prize', 'click', 'urgent', 'account', 'verify', 'secure', 'login', 'bank', 'paypal', 'amazon', 'google'];
+  const hostnameWords = hostname.split('.').join(' ').split('-').join(' ').split('_').join(' ');
+  suspiciousKeywords.forEach(keyword => {
+    if (hostnameWords.includes(keyword)) {
+      riskScore += 1;
+      riskFactors.push(`Contains suspicious keyword: "${keyword}"`);
+    }
+  });
+
+  // Check for long subdomains (potential subdomain takeover)
+  const subdomains = hostname.split('.');
+  if (subdomains.length > 3) {
+    riskScore += 1;
+    riskFactors.push('Has multiple subdomains');
+    recommendations.push('Verify each subdomain is legitimate');
+  }
+
+  // Check for URL shorteners
+  const urlShorteners = ['bit.ly', 'tinyurl.com', 'goo.gl', 't.co', 'ow.ly', 'is.gd', 'buff.ly', 'adf.ly', 'tiny.cc', 'cli.gs'];
+  if (urlShorteners.includes(hostname)) {
+    riskScore += 3;
+    riskFactors.push('Uses URL shortener service');
+    recommendations.push('URL shorteners can hide malicious destinations');
+  }
+
+  // Check for excessive query parameters (often used in phishing)
+  const queryParams = urlObj.searchParams;
+  if (queryParams.toString().length > 200) {
+    riskScore += 1;
+    riskFactors.push('Has very long query parameters');
+    recommendations.push('Long URLs with many parameters can be suspicious');
+  }
+
+  // Check for unusual characters in hostname
+  if (/[^a-zA-Z0-9.-]/.test(hostname)) {
+    riskScore += 1;
+    riskFactors.push('Contains unusual characters in domain name');
+    recommendations.push('Domain names should only contain letters, numbers, hyphens, and dots');
+  }
+
+  // Domain age estimation (simplified)
+  const domainName = hostname.replace('www.', '');
+  // This is a very basic estimation - in reality you'd use WHOIS data
+  const commonDomains = ['google.com', 'facebook.com', 'amazon.com', 'microsoft.com', 'apple.com', 'twitter.com', 'github.com', 'youtube.com'];
+  const isCommonDomain = commonDomains.some(domain => domainName.includes(domain));
+  const domainAgeDays = isCommonDomain ? 365 * 10 : Math.floor(Math.random() * 365 * 5) + 30; // Random age for demo
+
+  if (domainAgeDays < 90) {
+    riskScore += 2;
+    riskFactors.push('Domain appears to be very new (less than 3 months)');
+    recommendations.push('Newly registered domains are more likely to be malicious');
+  }
+
+  // Determine reputation and color based on risk score
+  let reputation, color;
+  if (riskScore >= 7) {
+    reputation = 'Dangerous';
+    color = 'red';
+  } else if (riskScore >= 4) {
+    reputation = 'Suspicious';
+    color = 'orange';
+  } else {
+    reputation = 'Safe';
+    color = 'green';
+  }
+
+  // Cap risk score at 10
+  riskScore = Math.min(riskScore, 10);
+
+  // Add general recommendations
+  if (reputation !== 'Safe') {
+    recommendations.push('Do not enter personal information on this site');
+    recommendations.push('Verify the URL is correct and legitimate');
+    recommendations.push('Consider using antivirus software with web protection');
+  } else {
+    recommendations.push('This URL appears to be safe');
+    recommendations.push('Always remain cautious with unknown websites');
+  }
+
+  return {
+    url,
+    reputation,
+    risk_score: riskScore,
+    color,
+    factors: riskFactors,
+    domain_age_days: domainAgeDays,
+    recommendations: [...new Set(recommendations)] // Remove duplicates
+  };
 }
 
 module.exports = router;

@@ -31,6 +31,14 @@ if (!global.performance) {
 // Fast PDF to PNG converter using pdf-to-png-converter for in-memory conversion
 const { pdfToPng } = require('pdf-to-png-converter');
 
+// Alternative PDF to image converter using pdf2pic (requires system dependencies)
+let pdf2pic;
+try {
+  pdf2pic = require('pdf2pic');
+} catch (error) {
+  console.warn('pdf2pic not available:', error.message);
+}
+
 // Configure pdfjs-dist for serverless environments
 if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
   // Set the worker path for pdfjs-dist in serverless
@@ -95,6 +103,76 @@ function createPlaceholderImage(width, height, text) {
 
 function degreesToRadians(degrees) {
   return degrees * (Math.PI / 180);
+}
+
+// Helper function to convert PDF using pdf2pic (alternative method)
+async function convertPdfWithPdf2pic(pdfBuffer, baseFilename, format = 'png') {
+  if (!pdf2pic) {
+    throw new Error('pdf2pic is not available');
+  }
+
+  console.log('Attempting PDF conversion with pdf2pic...');
+
+  // Write PDF to temporary file (required by pdf2pic)
+  const tempDir = os.tmpdir();
+  const tempPdfPath = path.join(tempDir, `temp_${Date.now()}.pdf`);
+  const outputDir = path.join(tempDir, `pdf2pic_${Date.now()}`);
+
+  try {
+    // Write PDF buffer to temp file
+    fs.writeFileSync(tempPdfPath, pdfBuffer);
+
+    // Configure pdf2pic
+    const convert = pdf2pic.fromPath(tempPdfPath, {
+      density: 200,           // higher dpi for better quality
+      saveFilename: baseFilename,
+      savePath: outputDir,
+      format: format,
+      width: 2000,            // max width
+      height: 2000            // max height
+    });
+
+    // Convert all pages
+    const results = await convert.bulk(-1); // -1 means all pages
+
+    if (!results || results.length === 0) {
+      throw new Error('pdf2pic returned no results');
+    }
+
+    // Read generated images
+    const processedImages = [];
+    for (const result of results) {
+      if (result.path && fs.existsSync(result.path)) {
+        const imageBuffer = fs.readFileSync(result.path);
+        const base64Image = imageBuffer.toString('base64');
+        const mimeType = format === 'jpeg' ? 'image/jpeg' : 'image/png';
+
+        processedImages.push({
+          page: result.page,
+          image: `data:${mimeType};base64,${base64Image}`,
+          name: result.name || `${baseFilename}_page_${result.page}.${format}`,
+          width: result.width || 2000,
+          height: result.height || 2000,
+          format: format,
+          size: imageBuffer.length
+        });
+      }
+    }
+
+    return processedImages;
+  } finally {
+    // Cleanup temp files
+    try {
+      if (fs.existsSync(tempPdfPath)) fs.unlinkSync(tempPdfPath);
+      if (fs.existsSync(outputDir)) {
+        const files = fs.readdirSync(outputDir);
+        files.forEach(file => fs.unlinkSync(path.join(outputDir, file)));
+        fs.rmdirSync(outputDir);
+      }
+    } catch (cleanupError) {
+      console.warn('Failed to cleanup temp files:', cleanupError.message);
+    }
+  }
 }
 
 // PDF Merge
@@ -243,9 +321,88 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
       VERCEL_ENV: process.env.VERCEL_ENV,
       isProduction 
     });
-    
+
+    // Try PDF conversion even in production to get detailed error info
+    let conversionAttempted = false;
+    let conversionError = null;
+
     if (isProduction) {
-      console.log('PDF conversion disabled in production - using fallback');
+      console.log('Attempting PDF conversion in production environment for debugging...');
+      
+      let conversionSuccess = false;
+      let conversionError = null;
+      let lastMethod = '';
+      
+      // Try pdf-to-png-converter first
+      try {
+        console.log('Trying pdf-to-png-converter...');
+        const testImages = await pdfToPng(req.file.buffer, {
+          viewportScale: 2.0
+        });
+        if (testImages && testImages.length > 0) {
+          console.log('PDF conversion succeeded with pdf-to-png-converter!');
+          conversionSuccess = true;
+          lastMethod = 'pdf-to-png-converter';
+        } else {
+          throw new Error('pdfToPng returned empty result');
+        }
+      } catch (error) {
+        conversionError = error;
+        console.error('pdf-to-png-converter failed:', {
+          message: error.message,
+          stack: error.stack,
+          name: error.name,
+          code: error.code
+        });
+        
+        // Try pdf2pic as alternative
+        if (pdf2pic) {
+          try {
+            console.log('Trying pdf2pic as alternative...');
+            const baseFilename = path.parse(req.file.originalname).name;
+            const testImages = await convertPdfWithPdf2pic(req.file.buffer, baseFilename, imageFormat);
+            if (testImages && testImages.length > 0) {
+              console.log('PDF conversion succeeded with pdf2pic!');
+              conversionSuccess = true;
+              lastMethod = 'pdf2pic';
+            } else {
+              throw new Error('pdf2pic returned empty result');
+            }
+          } catch (pdf2picError) {
+            console.error('pdf2pic also failed:', {
+              message: pdf2picError.message,
+              stack: pdf2picError.stack,
+              name: pdf2picError.name,
+              code: pdf2picError.code
+            });
+            conversionError = pdf2picError;
+          }
+        } else {
+          console.log('pdf2pic not available, skipping alternative method');
+        }
+      }
+      
+      if (conversionSuccess) {
+        // Continue with normal processing since one of the methods worked
+        console.log(`PDF conversion succeeded in production using ${lastMethod}! Processing normally...`);
+      } else {
+        // Log additional environment details
+        console.log('Production environment details:', {
+          platform: process.platform,
+          arch: process.arch,
+          nodeVersion: process.version,
+          availableMemory: os.totalmem(),
+          freeMemory: os.freemem(),
+          tmpdir: os.tmpdir(),
+          cwd: process.cwd()
+        });
+
+        // Both methods failed, use fallback
+      }
+    }
+
+    if (isProduction && !conversionAttempted) {
+      console.log('PDF conversion disabled in production - using fallback due to known issues');
       
       // Return PDF as base64 in production since image conversion has worker issues
       const pdfBase64 = req.file.buffer.toString('base64');
@@ -257,13 +414,26 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
           name: req.file.originalname,
           format: 'pdf',
           size: req.file.size,
-          error: 'PDF to image conversion not available in production environment'
+          error: `PDF to image conversion not available in production environment. Error: ${conversionError?.message || 'pdfjs-dist worker issues'}`
         }],
         totalPages: 1,
         renderedPages: 1,
         format: 'pdf',
         pdfName: path.parse(req.file.originalname).name,
         method: 'production-fallback',
+        debug: {
+          attempted: conversionAttempted,
+          error: conversionError ? {
+            message: conversionError.message,
+            code: conversionError.code,
+            name: conversionError.name
+          } : null,
+          environment: {
+            NODE_ENV: process.env.NODE_ENV,
+            VERCEL: process.env.VERCEL,
+            VERCEL_ENV: process.env.VERCEL_ENV
+          }
+        },
         performance: { render: Date.now() }
       });
     }

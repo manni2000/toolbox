@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Copy, Check, Search, Download, Globe, Code, Database, Server, Palette } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { useToast } from "@/hooks/use-toast";
+import { API_URLS } from "@/lib/api-complete";
 
 interface TechStack {
   url: string;
@@ -20,65 +22,42 @@ const TechStackDetectorTool = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
 
+  const { toast } = useToast();
+
   const detectTechStack = async () => {
     if (!url.trim()) return;
 
     setIsScanning(true);
-    
-    // Mock implementation - in reality, you'd need a backend service to analyze the website
-    setTimeout(() => {
-      const mockStacks: { [key: string]: TechStack } = {
-        'github.com': {
-          url: 'github.com',
-          frontend: ['React', 'TypeScript', 'Tailwind CSS', 'Primer'],
-          backend: ['Ruby on Rails', 'Go', 'GraphQL'],
-          database: ['PostgreSQL', 'Redis', 'MySQL'],
-          server: ['GitHub Pages', 'Fastly', 'Cloudflare'],
-          cms: [],
-          analytics: ['Google Analytics', 'Amplitude'],
-          frameworks: ['Ruby on Rails', 'React'],
-          other: ['GitHub Actions', 'Docker', 'Kubernetes']
-        },
-        'facebook.com': {
-          url: 'facebook.com',
-          frontend: ['React', 'TypeScript', 'CSS-in-JS'],
-          backend: ['PHP', 'Hack', 'GraphQL'],
-          database: ['MySQL', 'Memcached', 'Cassandra'],
-          server: ['AWS', 'Nginx', 'Varnish'],
-          cms: [],
-          analytics: ['Facebook Analytics', 'Custom Analytics'],
-          frameworks: ['React', 'GraphQL'],
-          other: ['BigPipe', 'HHVM', 'Thrift']
-        },
-        'amazon.com': {
-          url: 'amazon.com',
-          frontend: ['JavaScript', 'CSS', 'AUI'],
-          backend: ['Java', 'Node.js', 'Python'],
-          database: ['DynamoDB', 'Oracle', 'MySQL'],
-          server: ['AWS', 'Amazon CloudFront', 'Nginx'],
-          cms: [],
-          analytics: ['Amazon Analytics', 'Custom'],
-          frameworks: ['Spring', 'Node.js'],
-          other: ['AWS Lambda', 'Amazon S3', 'Amazon EC2']
-        }
-      };
 
-      const domain = new URL(url).hostname.replace('www.', '');
-      const result = mockStacks[domain] || {
-        url: domain,
-        frontend: ['HTML5', 'CSS3', 'JavaScript'],
-        backend: ['Unknown'],
-        database: ['Unknown'],
-        server: ['Unknown'],
-        cms: [],
-        analytics: ['Google Analytics'],
-        frameworks: [],
-        other: []
-      };
+    try {
+      const response = await fetch(API_URLS.TECH_STACK_DETECTOR, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }),
+      });
 
-      setTechStack(result);
+      const data = await response.json();
+
+      if (data.success && data.result) {
+        setTechStack(data.result);
+        toast({
+          title: "Analysis Complete",
+          description: `Technology stack detected for ${data.result.url}`,
+        });
+      } else {
+        throw new Error(data.error || "Tech stack detection failed");
+      }
+    } catch (error) {
+      toast({
+        title: "Detection Failed",
+        description: error instanceof Error ? error.message : "Unable to analyze website",
+        variant: "destructive",
+      });
+    } finally {
       setIsScanning(false);
-    }, 2000);
+    }
   };
 
   const handleCopy = async (type: string, value: string) => {

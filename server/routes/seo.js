@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+const cheerio = require('cheerio');
 const router = express.Router();
 
 // Meta Title and Description Generator
@@ -378,30 +379,31 @@ router.post('/domain-age', async (req, res) => {
 router.post('/tech-stack-detector', async (req, res) => {
   try {
     const { url } = req.body;
-    
+
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
     }
 
-    // This is a placeholder implementation
-    // In a real implementation, you would analyze the website's headers, HTML, and responses
-    const techStack = {
-      url,
-      frontend: ['React', 'TypeScript', 'Tailwind CSS'],
-      backend: ['Node.js', 'Express'],
-      database: ['MongoDB'],
-      server: ['Nginx'],
-      analytics: ['Google Analytics'],
-      cdn: ['Cloudflare'],
-      other: ['JWT', 'REST API'],
-      note: 'This is a placeholder. Implement with real technology detection.'
-    };
+    // Fetch the website HTML
+    const response = await axios.get(url, {
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      }
+    });
+
+    const html = response.data;
+    const $ = cheerio.load(html);
+
+    // Analyze the HTML for technology signatures
+    const techStack = detectTechnologies($, html, url, response.headers);
 
     res.json({
       success: true,
       result: techStack
     });
   } catch (error) {
+    console.error('Tech stack detection error:', error.message);
     res.status(500).json({ error: error.message });
   }
 });
@@ -570,9 +572,616 @@ function generateSocialPreview(title, description, imageUrl, siteName) {
   };
 }
 
-function shortenUrl(url) {
-  // Simple URL shortening simulation
-  return `https://short.ly/${Math.random().toString(36).substring(2, 8)}`;
+function detectTechnologies($, html, url, headers) {
+  const techStack = {
+    url: url,
+    frontend: [],
+    backend: [],
+    database: [],
+    server: [],
+    cms: [],
+    analytics: [],
+    frameworks: [],
+    other: []
+  };
+
+  const lowerHtml = html.toLowerCase();
+
+  // Get all script sources and inline scripts
+  const scripts = [];
+  $('script').each((i, elem) => {
+    const src = $(elem).attr('src');
+    const content = $(elem).html();
+    if (src) scripts.push(src.toLowerCase());
+    if (content) scripts.push(content.toLowerCase());
+  });
+
+  // Get all link tags
+  const links = [];
+  $('link').each((i, elem) => {
+    const href = $(elem).attr('href');
+    if (href) links.push(href.toLowerCase());
+  });
+
+  // Get meta tags
+  const metaTags = {};
+  $('meta').each((i, elem) => {
+    const name = $(elem).attr('name') || $(elem).attr('property');
+    const content = $(elem).attr('content');
+    if (name && content) metaTags[name.toLowerCase()] = content.toLowerCase();
+  });
+
+  // Check script sources for frameworks
+  scripts.forEach(script => {
+    // React detection - more specific patterns
+    if (script.includes('react') || script.includes('react-dom') || script.includes('next.js') ||
+        script.includes('/static/') || script.includes('_react') || script.includes('data-reactroot') ||
+        script.includes('react-router') || script.includes('react-helmet') ||
+        (script.includes('jsx') && !script.includes('vue')) || script.includes('create-react-app')) {
+      techStack.frontend.push('React');
+      techStack.frameworks.push('React');
+    }
+
+    // Vue.js detection - more specific
+    if (script.includes('vue') || script.includes('vue.js') || script.includes('vue-router') ||
+        script.includes('/_nuxt/') || script.includes('nuxt') || $('[v-]').length > 0 ||
+        script.includes('vue-cli') || script.includes('vue-loader')) {
+      techStack.frontend.push('Vue.js');
+      techStack.frameworks.push('Vue.js');
+    }
+
+    // Angular detection - much more specific to avoid false positives
+    if ((script.includes('@angular/') && script.includes('angular.json')) ||
+        (script.includes('angular-cli') && script.includes('ng build')) ||
+        (script.includes('angular/core') && script.includes('angular/common')) ||
+        (script.includes('zone.js') && script.includes('angular')) ||
+        (script.includes('ng ') && script.includes('angular') && !script.includes('angularjs')) ||
+        (metaTags['generator']?.includes('angular') && !metaTags['generator']?.includes('angularjs'))) {
+      techStack.frontend.push('Angular');
+      techStack.frameworks.push('Angular');
+    }
+
+    // Next.js detection
+    if (script.includes('next.js') || script.includes('/_next/') || metaTags['generator']?.includes('next.js') ||
+        script.includes('next/head') || script.includes('next/router')) {
+      techStack.frameworks.push('Next.js');
+      techStack.frontend.push('React'); // Next.js is React-based
+      techStack.frameworks.push('React');
+    }
+
+    // Nuxt.js detection
+    if (script.includes('nuxt') || script.includes('/_nuxt/') || metaTags['generator']?.includes('nuxt')) {
+      techStack.frameworks.push('Nuxt.js');
+      techStack.frontend.push('Vue.js'); // Nuxt.js is Vue-based
+      techStack.frameworks.push('Vue.js');
+    }
+
+    // Gatsby detection
+    if (script.includes('gatsby') || metaTags['generator']?.includes('gatsby') || script.includes('gatsby-cli')) {
+      techStack.frameworks.push('Gatsby');
+      techStack.frontend.push('React'); // Gatsby is React-based
+      techStack.frameworks.push('React');
+    }
+
+    // Svelte detection
+    if (script.includes('svelte') || script.includes('.svelte') || metaTags['generator']?.includes('svelte')) {
+      techStack.frontend.push('Svelte');
+      techStack.frameworks.push('Svelte');
+    }
+
+    // jQuery detection
+    if (script.includes('jquery') || script.includes('jquery.js') || script.includes('jquery.min.js')) {
+      techStack.frontend.push('jQuery');
+    }
+
+    // TypeScript detection
+    if (script.includes('typescript') || script.includes('.ts') || metaTags['generator']?.includes('typescript') ||
+        script.includes('tsc ') || script.includes('tsconfig.json')) {
+      techStack.frontend.push('TypeScript');
+    }
+
+    // Node.js backend detection
+    if (script.includes('express') || script.includes('express.js') || script.includes('node_modules') ||
+        script.includes('package.json') || script.includes('npm') || script.includes('yarn')) {
+      techStack.backend.push('Node.js');
+    }
+
+    // Python backend detection
+    if (script.includes('django') || script.includes('flask') || script.includes('fastapi') ||
+        script.includes('python') || script.includes('.py') || script.includes('pip')) {
+      techStack.backend.push('Python');
+    }
+
+    // PHP backend detection
+    if (script.includes('php') || script.includes('.php') || script.includes('composer') ||
+        script.includes('laravel') || script.includes('symfony') || script.includes('codeigniter')) {
+      techStack.backend.push('PHP');
+    }
+
+    // Ruby backend detection
+    if (script.includes('ruby') || script.includes('rails') || script.includes('.rb') ||
+        script.includes('bundler') || script.includes('gemfile')) {
+      techStack.backend.push('Ruby');
+    }
+
+    // Java backend detection
+    if (script.includes('java') || script.includes('spring') || script.includes('maven') ||
+        script.includes('gradle') || script.includes('.jar')) {
+      techStack.backend.push('Java');
+    }
+
+    // Database detection
+    if (script.includes('mongodb') || script.includes('mongoose') || script.includes('mongo')) {
+      techStack.database.push('MongoDB');
+    }
+
+    if (script.includes('postgresql') || script.includes('postgres') || script.includes('pg')) {
+      techStack.database.push('PostgreSQL');
+    }
+
+    if (script.includes('mysql') || script.includes('mariadb')) {
+      techStack.database.push('MySQL');
+    }
+
+    if (script.includes('sqlite') || script.includes('.db')) {
+      techStack.database.push('SQLite');
+    }
+
+    if (script.includes('redis') || script.includes('redisson')) {
+      techStack.database.push('Redis');
+    }
+
+    if (script.includes('dynamodb') || script.includes('aws-sdk')) {
+      techStack.database.push('DynamoDB');
+    }
+
+    // Webpack detection
+    if (script.includes('webpack') || script.includes('/static/js/') || script.includes('bundle.js') ||
+        script.includes('webpack.config')) {
+      techStack.other.push('Webpack');
+    }
+
+    // Vite detection
+    if (script.includes('vite') || script.includes('@vite') || script.includes('vite.config')) {
+      techStack.other.push('Vite');
+    }
+
+    // Build tools and bundlers
+    if (script.includes('parcel') || script.includes('parcel-bundler')) {
+      techStack.other.push('Parcel');
+    }
+
+    if (script.includes('rollup') || script.includes('rollup.js')) {
+      techStack.other.push('Rollup');
+    }
+
+    if (script.includes('esbuild') || script.includes('@esbuild')) {
+      techStack.other.push('esbuild');
+    }
+
+    // JavaScript libraries
+    if (script.includes('lodash') || script.includes('lodash.js')) {
+      techStack.other.push('Lodash');
+    }
+
+    if (script.includes('moment') || script.includes('moment.js') || script.includes('dayjs')) {
+      techStack.other.push('Date Library');
+    }
+
+    if (script.includes('axios') || script.includes('axios.js') || script.includes('fetch')) {
+      techStack.other.push('HTTP Client');
+    }
+
+    // Visualization libraries
+    if (script.includes('chart.js') || script.includes('chartjs')) {
+      techStack.other.push('Chart.js');
+    }
+
+    if (script.includes('d3') || script.includes('d3.js')) {
+      techStack.other.push('D3.js');
+    }
+
+    if (script.includes('three') || script.includes('three.js')) {
+      techStack.other.push('Three.js');
+    }
+
+    // Animation libraries
+    if (script.includes('gsap') || script.includes('greensock')) {
+      techStack.other.push('GSAP');
+    }
+
+    if (script.includes('anime') || script.includes('anime.js')) {
+      techStack.other.push('Anime.js');
+    }
+
+    if (script.includes('framer-motion') || script.includes('framer')) {
+      techStack.other.push('Framer Motion');
+    }
+
+    // UI libraries
+    if (script.includes('swiper') || script.includes('swiper.js')) {
+      techStack.other.push('Swiper');
+    }
+
+    if (script.includes('aos') || script.includes('aos.js')) {
+      techStack.other.push('AOS');
+    }
+
+    if (script.includes('particles') || script.includes('particles.js')) {
+      techStack.other.push('Particles.js');
+    }
+
+    // Form libraries
+    if (script.includes('formik') || script.includes('react-hook-form')) {
+      techStack.other.push('Form Library');
+    }
+
+    // State management
+    if (script.includes('redux') || script.includes('zustand') || script.includes('recoil') ||
+        script.includes('mobx') || script.includes('pinia') || script.includes('vuex')) {
+      techStack.other.push('State Management');
+    }
+  });
+
+  // Check link tags for CSS frameworks and other resources
+  links.forEach(link => {
+    // Bootstrap detection
+    if (link.includes('bootstrap') || link.includes('bootstrap.css')) {
+      techStack.frontend.push('Bootstrap');
+    }
+
+    // Tailwind CSS detection
+    if (link.includes('tailwind') || link.includes('tailwindcss')) {
+      techStack.frontend.push('Tailwind CSS');
+    }
+
+    // Bulma detection
+    if (link.includes('bulma')) {
+      techStack.frontend.push('Bulma');
+    }
+
+    // Materialize detection
+    if (link.includes('materialize') || link.includes('materializecss')) {
+      techStack.frontend.push('Materialize CSS');
+    }
+
+    // Foundation detection
+    if (link.includes('foundation')) {
+      techStack.frontend.push('Foundation');
+    }
+
+    // Semantic UI detection
+    if (link.includes('semantic')) {
+      techStack.frontend.push('Semantic UI');
+    }
+
+    // Font Awesome detection
+    if (link.includes('font-awesome') || link.includes('fontawesome')) {
+      techStack.other.push('Font Awesome');
+    }
+
+    // Google Fonts detection
+    if (link.includes('fonts.googleapis.com')) {
+      techStack.other.push('Google Fonts');
+    }
+
+    // Adobe Fonts detection
+    if (link.includes('fonts.adobe.com') || link.includes('typekit')) {
+      techStack.other.push('Adobe Fonts');
+    }
+
+    // CDN detections
+    if (link.includes('stackpath') || link.includes('bootstrapcdn')) {
+      techStack.other.push('BootstrapCDN');
+    }
+
+    if (link.includes('jsdelivr')) {
+      techStack.other.push('jsDelivr');
+    }
+
+    if (link.includes('unpkg.com')) {
+      techStack.other.push('UNPKG');
+    }
+
+    if (link.includes('cdn.jsdelivr.net')) {
+      techStack.other.push('jsDelivr');
+    }
+  });
+
+  // Check for API endpoints and backend patterns in scripts
+  scripts.forEach(script => {
+    // Look for API calls that might indicate backend technologies
+    if (script.includes('/api/') || script.includes('graphql') || script.includes('apollo')) {
+      // Common API patterns that might indicate backend
+      if (script.includes('rest') || script.includes('restful')) {
+        techStack.backend.push('REST API');
+      }
+      if (script.includes('graphql')) {
+        techStack.backend.push('GraphQL');
+      }
+    }
+
+    // Firebase detection
+    if (script.includes('firebase') || script.includes('firestore') || script.includes('firebase/app')) {
+      techStack.backend.push('Firebase');
+      techStack.database.push('Firestore');
+    }
+
+    // Supabase detection
+    if (script.includes('supabase') || script.includes('@supabase/')) {
+      techStack.backend.push('Supabase');
+      techStack.database.push('PostgreSQL'); // Supabase uses PostgreSQL
+    }
+
+    // AWS Amplify detection
+    if (script.includes('aws-amplify') || script.includes('@aws-amplify/')) {
+      techStack.backend.push('AWS Amplify');
+    }
+
+    // Strapi detection
+    if (script.includes('strapi') || script.includes('strapi.io')) {
+      techStack.backend.push('Strapi');
+      techStack.cms.push('Strapi');
+    }
+
+    // Contentful detection
+    if (script.includes('contentful') || script.includes('@contentful/')) {
+      techStack.cms.push('Contentful');
+    }
+
+    // Sanity detection
+    if (script.includes('sanity') || script.includes('@sanity/')) {
+      techStack.cms.push('Sanity');
+    }
+  });
+
+  // Check HTML content for additional backend indicators
+  // API endpoints in HTML
+  const apiPatterns = lowerHtml.match(/https?:\/\/[^\s"']*\/api\//g);
+  if (apiPatterns && apiPatterns.length > 0) {
+    techStack.backend.push('API Backend');
+  }
+
+  // GraphQL endpoints
+  const graphqlPatterns = lowerHtml.match(/https?:\/\/[^\s"']*\/graphql/g);
+  if (graphqlPatterns && graphqlPatterns.length > 0) {
+    techStack.backend.push('GraphQL');
+  }
+
+  // WordPress REST API
+  if (lowerHtml.includes('wp-json') || lowerHtml.includes('/wp/v2/')) {
+    techStack.cms.push('WordPress');
+    techStack.backend.push('PHP');
+  }
+
+  // Common headless CMS patterns
+  if (lowerHtml.includes('prismic') || lowerHtml.includes('prismic.io')) {
+    techStack.cms.push('Prismic');
+  }
+
+  if (lowerHtml.includes('storyblok') || lowerHtml.includes('storyblok.com')) {
+    techStack.cms.push('Storyblok');
+  }
+
+  // Check for common SaaS backend services
+  if (lowerHtml.includes('vercel.app') || lowerHtml.includes('vercel.com')) {
+    techStack.backend.push('Vercel Functions');
+  }
+
+  if (lowerHtml.includes('netlify.com') || lowerHtml.includes('netlify.app')) {
+    techStack.backend.push('Netlify Functions');
+  }
+
+  // Database inference from common patterns
+  if (lowerHtml.includes('fauna') || lowerHtml.includes('fauna.com')) {
+    techStack.database.push('Fauna');
+  }
+
+  if (lowerHtml.includes('planetscale') || lowerHtml.includes('planetscale.com')) {
+    techStack.database.push('PlanetScale');
+  }
+
+  // Infer backend technologies from framework usage
+  if (techStack.frameworks.includes('Next.js')) {
+    techStack.backend.push('Node.js'); // Next.js can have API routes
+  }
+
+  if (techStack.frameworks.includes('Nuxt.js')) {
+    techStack.backend.push('Node.js'); // Nuxt.js can have server-side rendering
+  }
+
+  // If we have React or Vue but no explicit backend detected, infer Node.js
+  if ((techStack.frontend.includes('React') || techStack.frontend.includes('Vue.js')) &&
+      techStack.backend.length === 0) {
+    techStack.backend.push('Node.js'); // Common choice for React/Vue apps
+  }
+
+  // Drupal detection
+  if (lowerHtml.includes('drupal') || metaTags['generator']?.includes('drupal')) {
+    techStack.cms.push('Drupal');
+    techStack.backend.push('PHP');
+  }
+
+  // Joomla detection
+  if (lowerHtml.includes('joomla') || metaTags['generator']?.includes('joomla')) {
+    techStack.cms.push('Joomla');
+    techStack.backend.push('PHP');
+  }
+
+  // Squarespace detection
+  if (lowerHtml.includes('squarespace') || metaTags['generator']?.includes('squarespace')) {
+    techStack.cms.push('Squarespace');
+  }
+
+  // Shopify detection
+  if (lowerHtml.includes('shopify') || metaTags['generator']?.includes('shopify')) {
+    techStack.cms.push('Shopify');
+  }
+
+  // Wix detection
+  if (lowerHtml.includes('wix') || metaTags['generator']?.includes('wix')) {
+    techStack.cms.push('Wix');
+  }
+
+  // Webflow detection
+  if (lowerHtml.includes('webflow') || metaTags['generator']?.includes('webflow')) {
+    techStack.other.push('Webflow');
+  }
+
+  // Framer detection
+  if (lowerHtml.includes('framer') || metaTags['generator']?.includes('framer')) {
+    techStack.other.push('Framer');
+  }
+
+  // Analytics detection
+  if (lowerHtml.includes('google-analytics') || lowerHtml.includes('googletagmanager') ||
+      lowerHtml.includes('gtag') || lowerHtml.includes('ga(') || lowerHtml.includes('analytics.js')) {
+    techStack.analytics.push('Google Analytics');
+  }
+
+  if (lowerHtml.includes('facebook-pixel') || lowerHtml.includes('fbq') || lowerHtml.includes('fbevents.js')) {
+    techStack.analytics.push('Facebook Pixel');
+  }
+
+  if (lowerHtml.includes('hotjar')) {
+    techStack.analytics.push('Hotjar');
+  }
+
+  if (lowerHtml.includes('mixpanel')) {
+    techStack.analytics.push('Mixpanel');
+  }
+
+  if (lowerHtml.includes('segment') || lowerHtml.includes('segment.com')) {
+    techStack.analytics.push('Segment');
+  }
+
+  if (lowerHtml.includes('amplitude')) {
+    techStack.analytics.push('Amplitude');
+  }
+
+  if (lowerHtml.includes('fullstory')) {
+    techStack.analytics.push('FullStory');
+  }
+
+  // Check for common CSS classes to detect frameworks
+  const bodyClasses = $('body').attr('class') || '';
+  const htmlClasses = $('html').attr('class') || '';
+
+  if (bodyClasses.includes('wp-') || htmlClasses.includes('wp-')) {
+    techStack.cms.push('WordPress');
+    techStack.backend.push('PHP');
+  }
+
+  // Check for specific framework patterns in HTML
+  if (lowerHtml.includes('data-v-') || lowerHtml.includes('vue-router')) {
+    techStack.frontend.push('Vue.js');
+    techStack.frameworks.push('Vue.js');
+  }
+
+  if (lowerHtml.includes('ng-') || lowerHtml.includes('data-ng-')) {
+    techStack.frontend.push('Angular');
+    techStack.frameworks.push('Angular');
+  }
+
+  if (lowerHtml.includes('data-react') || lowerHtml.includes('react-root')) {
+    techStack.frontend.push('React');
+    techStack.frameworks.push('React');
+  }
+
+  // Server detection from headers
+  const serverHeader = headers['server'] || headers['Server'];
+  if (serverHeader) {
+    if (serverHeader.toLowerCase().includes('nginx')) {
+      techStack.server.push('Nginx');
+    }
+    if (serverHeader.toLowerCase().includes('apache')) {
+      techStack.server.push('Apache');
+    }
+    if (serverHeader.toLowerCase().includes('iis')) {
+      techStack.server.push('IIS');
+    }
+    if (serverHeader.toLowerCase().includes('vercel')) {
+      techStack.server.push('Vercel');
+    }
+    if (serverHeader.toLowerCase().includes('netlify')) {
+      techStack.server.push('Netlify');
+    }
+  }
+
+  const poweredBy = headers['x-powered-by'] || headers['X-Powered-By'];
+  if (poweredBy) {
+    if (poweredBy.toLowerCase().includes('express')) {
+      techStack.backend.push('Express.js');
+      techStack.frameworks.push('Express.js');
+    }
+    if (poweredBy.toLowerCase().includes('php')) {
+      techStack.backend.push('PHP');
+    }
+    if (poweredBy.toLowerCase().includes('asp.net')) {
+      techStack.backend.push('ASP.NET');
+    }
+    if (poweredBy.toLowerCase().includes('django')) {
+      techStack.backend.push('Django');
+      techStack.frameworks.push('Django');
+    }
+    if (poweredBy.toLowerCase().includes('flask')) {
+      techStack.backend.push('Flask');
+      techStack.frameworks.push('Flask');
+    }
+  }
+
+  // CDN detection
+  const via = headers['via'] || headers['Via'];
+  const cfRay = headers['cf-ray'] || headers['CF-RAY'];
+  if (cfRay || lowerHtml.includes('cloudflare') || via?.toLowerCase().includes('cloudflare')) {
+    techStack.server.push('Cloudflare');
+  }
+
+  if (lowerHtml.includes('stackpath') || lowerHtml.includes('bootstrapcdn')) {
+    techStack.other.push('BootstrapCDN');
+  }
+
+  if (lowerHtml.includes('jsdelivr')) {
+    techStack.other.push('jsDelivr');
+  }
+
+  if (lowerHtml.includes('unpkg.com')) {
+    techStack.other.push('UNPKG');
+  }
+
+  // Check for build tools and bundlers in meta tags
+  if (metaTags['generator']) {
+    const generator = metaTags['generator'];
+    if (generator.includes('next.js')) {
+      techStack.frameworks.push('Next.js');
+    }
+    if (generator.includes('nuxt')) {
+      techStack.frameworks.push('Nuxt.js');
+    }
+    if (generator.includes('gatsby')) {
+      techStack.frameworks.push('Gatsby');
+    }
+    if (generator.includes('jekyll')) {
+      techStack.other.push('Jekyll');
+    }
+    if (generator.includes('hugo')) {
+      techStack.other.push('Hugo');
+    }
+  }
+
+  // If no frontend technologies detected beyond basic HTML, add them
+  if (techStack.frontend.length === 0 || (techStack.frontend.length === 1 && techStack.frontend[0] === 'jQuery')) {
+    techStack.frontend.push('HTML5', 'CSS3', 'JavaScript');
+  }
+
+  // Remove duplicates
+  Object.keys(techStack).forEach(key => {
+    if (Array.isArray(techStack[key])) {
+      techStack[key] = [...new Set(techStack[key])];
+    }
+  });
+
+  return techStack;
 }
 
 module.exports = router;

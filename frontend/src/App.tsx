@@ -216,7 +216,7 @@ const App = () => (
           {/* PDF Tools */}
           <Route path="/pdf-merge" element={<PDFMergeTool />} />
           <Route path="/pdf-split" element={<PDFSplitTool />} />
-          <Route path="/pdf-to-jpg" element={<PDFToImageTool />} />
+          <Route path="/pdf-to-png" element={<PDFToImageTool />} />
           <Route path="/pdf-password" element={<PDFPasswordTool />} />
           <Route path="/pdf-unlock" element={<PDFUnlockTool />} />
           <Route path="/pdf-page-remover" element={<PDFPageRemoverTool />} />
