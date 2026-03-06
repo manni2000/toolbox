@@ -46,6 +46,43 @@ if (!global.performance) {
   };
 }
 
+// Add global polyfills for DOM APIs required by pdfjs-dist in Node.js
+if (typeof globalThis.DOMMatrix === 'undefined') {
+  globalThis.DOMMatrix = class DOMMatrix {
+    constructor() {}
+    translate() { return this; }
+    scale() { return this; }
+    rotate() { return this; }
+    multiply() { return this; }
+    inverse() { return this; }
+  };
+}
+
+if (typeof globalThis.ImageData === 'undefined') {
+  globalThis.ImageData = class ImageData {
+    constructor(data, width, height) {
+      this.data = data;
+      this.width = width;
+      this.height = height;
+    }
+  };
+}
+
+if (typeof globalThis.Path2D === 'undefined') {
+  globalThis.Path2D = class Path2D {
+    constructor() {}
+    moveTo() {}
+    lineTo() {}
+    closePath() {}
+    bezierCurveTo() {}
+    quadraticCurveTo() {}
+    arc() {}
+    arcTo() {}
+    ellipse() {}
+    rect() {}
+  };
+}
+
 // Fast PDF to PNG converter using pdf-to-img for in-memory conversion (serverless-friendly)
 let pdfToImg;
 (async () => {
@@ -70,10 +107,9 @@ if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
   // Set the worker path for pdfjs-dist in serverless
   (async () => {
     try {
-      const pdfjsLib = await import('pdfjs-dist');
-      // Use the standard worker for better compatibility
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-      console.log('pdfjs-dist configured with CDN worker:', pdfjsLib.GlobalWorkerOptions.workerSrc);
+      const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
+      // Legacy build doesn't need a worker - it's self-contained
+      console.log('pdfjs-dist configured with legacy build (no worker needed)');
     } catch (error) {
       console.warn('Could not configure pdfjs-dist worker:', error.message);
     }
@@ -84,20 +120,22 @@ if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
 try {
   const path = require('path');
   const fs = require('fs');
-  const workerPath = path.join(__dirname, '../node_modules/pdfjs-dist/build/pdf.worker.js');
+  const workerPath = path.join(__dirname, '../node_modules/pdfjs-dist/legacy/build/pdf.worker.js');
   if (fs.existsSync(workerPath)) {
     (async () => {
       try {
-        const pdfjsLib = await import('pdfjs-dist');
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `file://${workerPath}`;
-        console.log('Using local pdfjs-dist worker');
+        const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
+        // Legacy build doesn't need a worker
+        console.log('Using pdfjs-dist legacy build (no worker needed)');
       } catch (error) {
         console.warn('Could not set local worker:', error.message);
       }
     })();
+  } else {
+    console.log('Local pdfjs-dist legacy worker not found, using default');
   }
 } catch (error) {
-  console.warn('Could not set local worker:', error.message);
+  console.warn('Could not check for local worker:', error.message);
 }
 
 // Configure multer for file uploads
