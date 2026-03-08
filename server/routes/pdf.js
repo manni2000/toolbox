@@ -25,14 +25,6 @@ if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
 }
 const router = express.Router();
 
-// PDF.js for text extraction (commented out to avoid conflicts with pdftoimg-js)
-// const pdfjsLib = require('pdfjs-dist');
-// Set worker - use the correct build for Node.js
-// const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
-// pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-
-// Remove polyfills for canvas - they cause issues
-// Use only essential polyfills
 if (!global.URL) {
   global.URL = {
     createObjectURL: () => 'mock-object-url',
@@ -44,98 +36,6 @@ if (!global.performance) {
   global.performance = {
     now: () => Date.now()
   };
-}
-
-// Add global polyfills for DOM APIs required by pdfjs-dist in Node.js
-if (typeof globalThis.DOMMatrix === 'undefined') {
-  globalThis.DOMMatrix = class DOMMatrix {
-    constructor() {}
-    translate() { return this; }
-    scale() { return this; }
-    rotate() { return this; }
-    multiply() { return this; }
-    inverse() { return this; }
-  };
-}
-
-if (typeof globalThis.ImageData === 'undefined') {
-  globalThis.ImageData = class ImageData {
-    constructor(data, width, height) {
-      this.data = data;
-      this.width = width;
-      this.height = height;
-    }
-  };
-}
-
-if (typeof globalThis.Path2D === 'undefined') {
-  globalThis.Path2D = class Path2D {
-    constructor() {}
-    moveTo() {}
-    lineTo() {}
-    closePath() {}
-    bezierCurveTo() {}
-    quadraticCurveTo() {}
-    arc() {}
-    arcTo() {}
-    ellipse() {}
-    rect() {}
-  };
-}
-
-// Fast PDF to PNG converter using pdf-to-img for in-memory conversion (serverless-friendly)
-let pdfToImg;
-(async () => {
-  try {
-    const pdfToImgModule = await import('pdf-to-img');
-    pdfToImg = pdfToImgModule;
-  } catch (error) {
-    console.warn('pdf-to-img not available:', error.message);
-  }
-})();
-
-// Alternative PDF to image converter using pdf2pic (requires system dependencies)
-let pdf2pic;
-try {
-  pdf2pic = require('pdf2pic');
-} catch (error) {
-  console.warn('pdf2pic not available:', error.message);
-}
-
-// Configure pdfjs-dist for serverless environments
-if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
-  // Set the worker path for pdfjs-dist in serverless
-  (async () => {
-    try {
-      const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
-      // Legacy build doesn't need a worker - it's self-contained
-      console.log('pdfjs-dist configured with legacy build (no worker needed)');
-    } catch (error) {
-      console.warn('Could not configure pdfjs-dist worker:', error.message);
-    }
-  })();
-}
-
-// Alternative: Try to use a local worker if available
-try {
-  const path = require('path');
-  const fs = require('fs');
-  const workerPath = path.join(__dirname, '../node_modules/pdfjs-dist/legacy/build/pdf.worker.js');
-  if (fs.existsSync(workerPath)) {
-    (async () => {
-      try {
-        const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
-        // Legacy build doesn't need a worker
-        console.log('Using pdfjs-dist legacy build (no worker needed)');
-      } catch (error) {
-        console.warn('Could not set local worker:', error.message);
-      }
-    })();
-  } else {
-    console.log('Local pdfjs-dist legacy worker not found, using default');
-  }
-} catch (error) {
-  console.warn('Could not check for local worker:', error.message);
 }
 
 // Configure multer for file uploads
@@ -192,73 +92,38 @@ function degreesToRadians(degrees) {
   return degrees * (Math.PI / 180);
 }
 
-// Helper function to convert PDF using pdf2pic (alternative method)
-async function convertPdfWithPdf2pic(pdfBuffer, baseFilename, format = 'png') {
-  if (!pdf2pic) {
-    throw new Error('pdf2pic is not available');
-  }
+// Helper function to convert PDF using pdf-to-png-converter
+async function convertPdfWithPngConverter(pdfBuffer, baseFilename, format = 'png') {
+  const pdfToPng = require('pdf-to-png-converter');
 
-  console.log('Attempting PDF conversion with pdf2pic...');
-
-  // Write PDF to temporary file (required by pdf2pic)
-  const tempDir = os.tmpdir();
-  const tempPdfPath = path.join(tempDir, `temp_${Date.now()}.pdf`);
-  const outputDir = path.join(tempDir, `pdf2pic_${Date.now()}`);
+  console.log('Attempting PDF conversion with pdf-to-png-converter...');
 
   try {
-    // Write PDF buffer to temp file
-    fs.writeFileSync(tempPdfPath, pdfBuffer);
-
-    // Configure pdf2pic
-    const convert = pdf2pic.fromPath(tempPdfPath, {
-      density: 200,           // higher dpi for better quality
-      saveFilename: baseFilename,
-      savePath: outputDir,
-      format: format,
-      width: 2000,            // max width
-      height: 2000            // max height
+    const results = await pdfToPng.pdfToPng(pdfBuffer, {
+      width: 2000,           // max width
+      height: 2000,          // max height
+      scale: 2.0             // higher scale for better quality
     });
 
-    // Convert all pages
-    const results = await convert.bulk(-1); // -1 means all pages
-
     if (!results || results.length === 0) {
-      throw new Error('pdf2pic returned no results');
+      throw new Error('pdf-to-png-converter returned no results');
     }
 
-    // Read generated images
-    const processedImages = [];
-    for (const result of results) {
-      if (result.path && fs.existsSync(result.path)) {
-        const imageBuffer = fs.readFileSync(result.path);
-        const base64Image = imageBuffer.toString('base64');
-        const mimeType = format === 'jpeg' ? 'image/jpeg' : 'image/png';
-
-        processedImages.push({
-          page: result.page,
-          image: `data:${mimeType};base64,${base64Image}`,
-          name: result.name || `${baseFilename}_page_${result.page}.${format}`,
-          width: result.width || 2000,
-          height: result.height || 2000,
-          format: format,
-          size: imageBuffer.length
-        });
-      }
-    }
+    // Process the results
+    const processedImages = results.map((result, index) => ({
+      page: result.page || (index + 1),
+      image: `data:image/png;base64,${result.base64}`,
+      name: result.name || `${baseFilename}_page_${index + 1}.png`,
+      width: result.width || 2000,
+      height: result.height || 2000,
+      format: 'png',
+      size: Buffer.from(result.base64, 'base64').length
+    }));
 
     return processedImages;
-  } finally {
-    // Cleanup temp files
-    try {
-      if (fs.existsSync(tempPdfPath)) fs.unlinkSync(tempPdfPath);
-      if (fs.existsSync(outputDir)) {
-        const files = fs.readdirSync(outputDir);
-        files.forEach(file => fs.unlinkSync(path.join(outputDir, file)));
-        fs.rmdirSync(outputDir);
-      }
-    } catch (cleanupError) {
-      console.warn('Failed to cleanup temp files:', cleanupError.message);
-    }
+  } catch (error) {
+    console.error('pdf-to-png-converter conversion failed:', error);
+    throw error;
   }
 }
 
@@ -417,56 +282,25 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     if (isProduction) {
       console.log('Attempting PDF conversion in production environment for debugging...');
       
-      // Try pdf-to-img first (should be more serverless-friendly)
+      // Try pdf-to-png-converter first (serverless-friendly with @napi-rs/canvas)
       try {
-        console.log('Trying pdf-to-img...');
-        if (!pdfToImg) {
-          throw new Error('pdf-to-img is not available');
-        }
+        console.log('Trying pdf-to-png-converter...');
         
-        const images = await pdfToImg.pdf(req.file.buffer, {
-          width: 2000,           // max width
-          height: 2000,          // max height
-          scale: 2.0             // higher scale for better quality
-        });
+        const images = await convertPdfWithPngConverter(req.file.buffer, baseFilename, 'png');
         
-        if (images && typeof images[Symbol.asyncIterator] === 'function') {
-          console.log('PDF conversion succeeded with pdf-to-img!');
+        if (images && images.length > 0) {
+          console.log('PDF conversion succeeded with pdf-to-png-converter!');
           
-          // Process the async iterable images
-          const processedImagesArray = [];
-          let pageIndex = 0;
-          
-          for await (const image of images) {
-            const base64Image = image.toString('base64');
-            const mimeType = 'image/png';
-            
-            const name = pageIndex === 0 
-              ? `${baseFilename}.png` 
-              : `${baseFilename}_page_${pageIndex + 1}.png`;
-
-            processedImagesArray.push({
-              page: pageIndex + 1,
-              image: `data:${mimeType};base64,${base64Image}`,
-              name: name,
-              width: image.width || 2000,
-              height: image.height || 2000,
-              format: 'png',
-              size: image.length
-            });
-            
-            pageIndex++;
-          }
-          
-          conversionResult = processedImagesArray;
+          // Images are already processed by convertPdfWithPngConverter
+          conversionResult = images;
           
           conversionAttempted = true;
         } else {
-          throw new Error('pdf-to-img returned empty result');
+          throw new Error('pdf-to-png-converter returned empty result');
         }
       } catch (error) {
         conversionError = error;
-        console.error('pdf-to-img failed:', {
+        console.error('pdf-to-png-converter failed:', {
           message: error.message,
           stack: error.stack,
           name: error.name,
@@ -490,44 +324,7 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
           name: req.file.originalname,
           format: 'pdf',
           size: req.file.size,
-          error: `PDF to image conversion not available in production environment. Error: ${conversionError?.message || 'pdf-to-img failed'}`
-        }],
-        totalPages: 1,
-        renderedPages: 1,
-        format: 'pdf',
-        pdfName: path.parse(req.file.originalname).name,
-        method: 'production-fallback',
-        debug: {
-          attempted: conversionAttempted,
-          error: conversionError ? {
-            message: conversionError.message,
-            code: conversionError.code,
-            name: conversionError.name
-          } : null,
-          environment: {
-            NODE_ENV: process.env.NODE_ENV,
-            VERCEL: process.env.VERCEL,
-            VERCEL_ENV: process.env.VERCEL_ENV
-          }
-        },
-        performance: { render: Date.now() }
-      });
-    }
-
-    if (isProduction && !conversionAttempted) {
-      console.log('PDF conversion disabled in production - using fallback due to known issues');
-      
-      // Return PDF as base64 in production since image conversion has worker issues
-      const pdfBase64 = req.file.buffer.toString('base64');
-      return res.json({
-        success: true,
-        images: [{
-          page: 1,
-          image: `data:application/pdf;base64,${pdfBase64}`,
-          name: req.file.originalname,
-          format: 'pdf',
-          size: req.file.size,
-          error: `PDF to image conversion not available in production environment. Error: ${conversionError?.message || 'pdfjs-dist worker issues'}`
+          error: `PDF to image conversion not available in production environment. Error: ${conversionError?.message || 'Cloudinary failed'}`
         }],
         totalPages: 1,
         renderedPages: 1,
@@ -558,37 +355,8 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     if (conversionResult) {
       images = conversionResult;
     } else {
-      // Convert PDF buffer to images using pdf-to-img
-      const pdfImages = await pdfToImg.pdf(req.file.buffer, {
-        width: 2000,           // max width
-        height: 2000,          // max height
-        scale: 2.0             // higher scale for better quality
-      });
-      
-      // Convert async iterable to array
-      images = [];
-      let pageIndex = 0;
-      
-      for await (const image of pdfImages) {
-        const base64Image = image.toString('base64');
-        const mimeType = 'image/png';
-        
-        const name = pageIndex === 0 
-          ? `${baseFilename}.png` 
-          : `${baseFilename}_page_${pageIndex + 1}.png`;
-
-        images.push({
-          page: pageIndex + 1,
-          image: `data:${mimeType};base64,${base64Image}`,
-          name: name,
-          width: image.width || 2000,
-          height: image.height || 2000,
-          format: 'png',
-          size: image.length
-        });
-        
-        pageIndex++;
-      }
+      // Convert PDF buffer to images using pdf-to-png-converter (serverless-friendly with @napi-rs/canvas)
+      images = await convertPdfWithPngConverter(req.file.buffer, baseFilename, 'png');
     }
 
     if (!images || images.length === 0) {
@@ -599,6 +367,7 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     const processedImages = images.map((page, index) => {
       // Handle both pdf-to-img buffer format and our processed format
       const imgBuffer = page.content || page;
+
       const base64Image = imgBuffer.toString('base64');
       const mimeType = imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png';
       const ext = imageFormat === 'jpeg' ? 'jpg' : 'png';
@@ -610,12 +379,12 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
 
       return {
         page: page.pageNumber || (index + 1),
-        image: `data:${mimeType};base64,${base64Image}`,
+        image: page.image || `data:${mimeType};base64,${base64Image}`, // Use existing image if URL
         name: name,
         width: page.width || 2000,
         height: page.height || 2000,
         format: imageFormat,
-        size: imgBuffer.length
+        size: page.size || imgBuffer.length
       };
     });
 
@@ -626,7 +395,7 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
       renderedPages: processedImages.length,
       format: imageFormat,
       pdfName: baseFilename,
-      method: 'pdf-to-img',
+      method: 'pdf-to-png-converter',
       performance: { render: Date.now() }
     });
 
