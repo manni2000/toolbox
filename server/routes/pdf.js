@@ -100,25 +100,27 @@ async function convertPdfWithPngConverter(pdfBuffer, baseFilename, format = 'png
 
   try {
     const results = await pdfToPng.pdfToPng(pdfBuffer, {
-      width: 2000,           // max width
-      height: 2000,          // max height
-      scale: 2.0             // higher scale for better quality
+      viewportScale: 2.0,            // higher scale for better quality
+      returnPageContent: true        // ensure we get the PNG buffer
     });
 
     if (!results || results.length === 0) {
       throw new Error('pdf-to-png-converter returned no results');
     }
 
-    // Process the results
-    const processedImages = results.map((result, index) => ({
-      page: result.page || (index + 1),
-      image: `data:image/png;base64,${result.base64}`,
-      name: result.name || `${baseFilename}_page_${index + 1}.png`,
-      width: result.width || 2000,
-      height: result.height || 2000,
-      format: 'png',
-      size: Buffer.from(result.base64, 'base64').length
-    }));
+    // Process the results - pdf-to-png-converter returns { pageNumber, name, content (Buffer), path, width, height, rotation }
+    const processedImages = results.map((result, index) => {
+      const base64 = result.content ? result.content.toString('base64') : '';
+      return {
+        page: result.pageNumber || (index + 1),
+        image: `data:image/png;base64,${base64}`,
+        name: result.name || `${baseFilename}_page_${index + 1}.png`,
+        width: result.width || 2000,
+        height: result.height || 2000,
+        format: 'png',
+        size: result.content ? result.content.length : 0
+      };
+    });
 
     return processedImages;
   } catch (error) {
