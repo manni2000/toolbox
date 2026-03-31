@@ -94,11 +94,20 @@ function degreesToRadians(degrees) {
 
 // Helper function to convert PDF using pdf-to-png-converter
 async function convertPdfWithPngConverter(pdfBuffer, baseFilename, format = 'png') {
-  const pdfToPng = require('pdf-to-png-converter');
-
   console.log('Attempting PDF conversion with pdf-to-png-converter...');
 
+  const isProduction = process.env.NODE_ENV === 'production' || 
+                       process.env.VERCEL === '1' || 
+                       process.env.VERCEL_ENV === 'production';
+
   try {
+    // In production/serverless, use direct pdfjs-dist with worker disabled
+    if (isProduction) {
+      return await convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format);
+    }
+
+    // In development, use pdf-to-png-converter
+    const pdfToPng = require('pdf-to-png-converter');
     const results = await pdfToPng.pdfToPng(pdfBuffer, {
       viewportScale: 2.0,            // higher scale for better quality
       returnPageContent: true        // ensure we get the PNG buffer
@@ -125,6 +134,82 @@ async function convertPdfWithPngConverter(pdfBuffer, baseFilename, format = 'png
     return processedImages;
   } catch (error) {
     console.error('pdf-to-png-converter conversion failed:', error);
+    throw error;
+  }
+}
+
+// Serverless-friendly PDF conversion using pdfjs-dist directly with worker disabled
+async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png') {
+  console.log('Using direct pdfjs-dist conversion (serverless mode)...');
+  
+  try {
+    // Import pdfjs-dist and configure for serverless (no worker)
+    const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
+    
+    // Disable worker completely - critical for serverless environments
+    // Setting workerSrc to empty string forces pdfjs to use "fake worker" mode
+    if (pdfjsLib.GlobalWorkerOptions) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+    }
+    
+    // Load the PDF document with worker disabled
+    const loadingTask = pdfjsLib.getDocument({
+      data: new Uint8Array(pdfBuffer),
+      disableFontFace: true,
+      useSystemFonts: false,
+      isEvalSupported: false,
+      // These options help avoid worker-related issues
+      disableAutoFetch: true,
+      disableStream: true,
+    });
+    
+    const pdfDocument = await loadingTask.promise;
+    const numPages = pdfDocument.numPages;
+    const processedImages = [];
+    
+    console.log(`PDF has ${numPages} pages, converting...`);
+    
+    // Import canvas library
+    const { createCanvas } = require('@napi-rs/canvas');
+    
+    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+      const page = await pdfDocument.getPage(pageNum);
+      const viewport = page.getViewport({ scale: 2.0 });
+      
+      // Create canvas
+      const canvas = createCanvas(Math.floor(viewport.width), Math.floor(viewport.height));
+      const context = canvas.getContext('2d');
+      
+      // Render the page
+      await page.render({
+        canvasContext: context,
+        viewport: viewport,
+      }).promise;
+      
+      // Get PNG buffer
+      const pngBuffer = canvas.toBuffer('image/png');
+      const base64 = pngBuffer.toString('base64');
+      
+      processedImages.push({
+        page: pageNum,
+        image: `data:image/png;base64,${base64}`,
+        name: `${baseFilename}_page_${pageNum}.png`,
+        width: Math.floor(viewport.width),
+        height: Math.floor(viewport.height),
+        format: 'png',
+        size: pngBuffer.length
+      });
+      
+      page.cleanup();
+    }
+    
+    await pdfDocument.cleanup();
+    
+    console.log(`Successfully converted ${processedImages.length} pages`);
+    return processedImages;
+    
+  } catch (error) {
+    console.error('Direct pdfjs-dist conversion failed:', error);
     throw error;
   }
 }
