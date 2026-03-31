@@ -143,22 +143,25 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
   console.log('Using direct pdfjs-dist conversion (serverless mode)...');
   
   try {
-    // Import pdfjs-dist and configure for serverless (no worker)
+    // Import pdfjs-dist and configure for serverless
     const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
     
-    // Disable worker completely - critical for serverless environments
-    // Setting workerSrc to empty string forces pdfjs to use "fake worker" mode
-    if (pdfjsLib.GlobalWorkerOptions) {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = '';
-    }
+    // Set workerSrc to the actual file path - required for fake worker mode in serverless
+    // __dirname in routes folder is /var/task/server/routes, so go up to server/ then to node_modules
+    const workerPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.mjs');
     
-    // Load the PDF document with worker disabled
+    // Use file:// URL format for ESM import
+    const { pathToFileURL } = require('url');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = pathToFileURL(workerPath).href;
+    
+    console.log('Worker source set to:', pdfjsLib.GlobalWorkerOptions.workerSrc);
+    
+    // Load the PDF document
     const loadingTask = pdfjsLib.getDocument({
       data: new Uint8Array(pdfBuffer),
       disableFontFace: true,
       useSystemFonts: false,
       isEvalSupported: false,
-      // These options help avoid worker-related issues
       disableAutoFetch: true,
       disableStream: true,
     });
