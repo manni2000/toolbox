@@ -83,11 +83,6 @@ app.use('/api', (req, res, next) => {
 // Static files with proper MIME types
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Serve frontend static files with correct MIME types
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-}
-
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
@@ -213,16 +208,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler - serve frontend in production
+// 404 handler
 app.use('*', (req, res) => {
-  if (process.env.NODE_ENV === 'production') {
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-  } else {
-    res.status(404).json({
-      error: 'Not Found',
-      message: 'The requested resource was not found'
-    });
-  }
+  res.status(404).json({
+    error: 'Not Found',
+    message: 'The requested resource was not found'
+  });
 });
 
 // Start server - only for non-serverless environments
