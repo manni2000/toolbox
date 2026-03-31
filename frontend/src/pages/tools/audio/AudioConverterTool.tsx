@@ -4,6 +4,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 
 const AudioConverterTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -35,6 +36,21 @@ const AudioConverterTool = () => {
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
     if (file) handleFile(file);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const reset = () => {
@@ -92,24 +108,18 @@ const AudioConverterTool = () => {
       <div className="space-y-6">
         {/* Upload Area */}
         {!file && (
-          <div
+          <AudioUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""} p-6 sm:p-8`}
-          >
-            <Upload className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
-            <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop audio file here</p>
-            <p className="text-xs sm:text-sm text-muted-foreground">MP3, WAV, AAC, OGG, FLAC supported</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="audio/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop audio file here or click to browse"
+            subtitle="Supports MP3, WAV, AAC, OGG, FLAC up to 100MB"
+          />
         )}
 
         {file && (
@@ -122,7 +132,7 @@ const AudioConverterTool = () => {
                   <p className="text-xs sm:text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted self-end sm:self-auto">
+              <button onClick={reset} title="Remove file" className="rounded-lg p-2 hover:bg-muted self-end sm:self-auto">
                 <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
@@ -130,8 +140,9 @@ const AudioConverterTool = () => {
             {/* Format Selection */}
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-xs sm:text-sm font-medium">Output Format</label>
+                <label htmlFor="output-format" className="mb-2 block text-xs sm:text-sm font-medium">Output Format</label>
                 <select
+                  id="output-format"
                   value={outputFormat}
                   onChange={(e) => setOutputFormat(e.target.value)}
                   className="input-tool text-sm sm:text-base"

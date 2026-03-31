@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Upload, Camera, MapPin, Calendar, Settings, X } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 
 interface EXIFData {
   camera?: string;
@@ -51,6 +52,21 @@ const EXIFViewerTool = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
@@ -84,31 +100,25 @@ const EXIFViewerTool = () => {
     >
       <div className="space-y-6">
         {!image && (
-          <div
+          <ImageUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Camera className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your photo here</p>
-            <p className="text-sm text-muted-foreground">JPG photos typically contain EXIF data</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop your photo here"
+            subtitle="JPG photos typically contain EXIF data"
+          />
         )}
 
         {image && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <span className="font-medium">{fileName}</span>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Clear image">
                 <X className="h-5 w-5" />
               </button>
             </div>

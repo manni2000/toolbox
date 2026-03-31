@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import { Camera, Upload, X, Loader2, Video } from "lucide-react";
+import { Camera, X, Loader2, Video } from "lucide-react";
+import { VideoUploadZone } from "@/components/ui/video-upload-zone";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
@@ -28,6 +29,21 @@ const VideoThumbnailTool = () => {
     setFile(f);
     setFileName(f.name);
     setThumbnailData(null);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -93,24 +109,28 @@ const VideoThumbnailTool = () => {
       <div className="space-y-6">
         {/* Upload Area */}
         {!file && (
-          <div
-            onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
-            onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop video file here</p>
-            <p className="text-sm text-muted-foreground">MP4, AVI, MOV, MKV, WebM supported</p>
+          <>
+            <VideoUploadZone
+              isDragging={isDragging}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onClick={() => inputRef.current?.click()}
+              onFileSelect={handleFile}
+              multiple={false}
+              title="Drop video file here or click to browse"
+              subtitle="Generate thumbnails from MP4, AVI, MOV, WebM up to 500MB"
+            />
             <input
               ref={inputRef}
               type="file"
               accept="video/*"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               className="hidden"
+              title="Select a video file"
             />
-          </div>
+          </>
         )}
 
         {file && (
@@ -123,7 +143,7 @@ const VideoThumbnailTool = () => {
                   <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Clear video selection">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -138,6 +158,8 @@ const VideoThumbnailTool = () => {
                 value={thumbnailTime}
                 onChange={(e) => setThumbnailTime(Number(e.target.value))}
                 className="input-tool"
+                placeholder="Enter timestamp in seconds"
+                title="Enter the timestamp in seconds to extract thumbnail"
               />
               <p className="mt-1 text-sm text-muted-foreground">
                 Extract thumbnail at {thumbnailTime} seconds

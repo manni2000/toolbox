@@ -137,6 +137,7 @@ const PNGToJPGConverter = () => {
               accept="image/*"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               className="hidden"
+              title="Select PNG image file to convert"
             />
           </div>
         )}
@@ -157,6 +158,7 @@ const PNGToJPGConverter = () => {
               <button
                 onClick={reset}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
+                title="Clear image and reset converter"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -199,6 +201,7 @@ const PNGToJPGConverter = () => {
                   setConvertedUrl(null);
                 }}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                title="Adjust JPG compression quality (10-100%)"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
                 <span>Low (10%)</span>
@@ -219,6 +222,7 @@ const PNGToJPGConverter = () => {
               onClick={convert} 
               disabled={isConverting}
               className="btn-primary w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
+              title="Convert PNG image to JPG format"
             >
               <RefreshCw className={`h-5 w-5 ${isConverting ? "animate-spin" : ""}`} />
               {isConverting ? "Converting to JPG..." : "Convert to JPG"}

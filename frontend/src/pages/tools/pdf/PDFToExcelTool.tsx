@@ -4,6 +4,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 
 const PDFToExcelTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -19,6 +20,20 @@ const PDFToExcelTool = () => {
     setFile(f);
     setFileName(f.name);
     setResultData(null);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -82,23 +97,17 @@ const PDFToExcelTool = () => {
     >
       <div className="space-y-6">
         {!file && (
-          <div
+          <PDFUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop file here</p>
-            <p className="text-sm text-muted-foreground">Click to browse or drag and drop</p>
-            <input
-              ref={inputRef}
-              type="file"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            title="Drop PDF file here"
+            subtitle="Extract tables to Excel spreadsheets"
+          />
         )}
 
         {file && (
@@ -111,7 +120,7 @@ const PDFToExcelTool = () => {
                   <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Clear selected file">
                 <X className="h-5 w-5" />
               </button>
             </div>

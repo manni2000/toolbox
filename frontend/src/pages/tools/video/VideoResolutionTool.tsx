@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import { Video, Upload, X, Loader2 } from "lucide-react";
+import { Video, X, Loader2 } from "lucide-react";
+import { VideoUploadZone } from "@/components/ui/video-upload-zone";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
@@ -24,6 +25,21 @@ const VideoResolutionTool = () => {
     setFile(f);
     setFileName(f.name);
     setResultData(null);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -157,23 +173,32 @@ const VideoResolutionTool = () => {
     >
       <div className="space-y-6">
         {!file && (
-          <div
-            onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
-            onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop file here</p>
-            <p className="text-sm text-muted-foreground">Click to browse or drag and drop</p>
+          <>
+            <VideoUploadZone
+              isDragging={isDragging}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onClick={() => inputRef.current?.click()}
+              onFileSelect={handleFile}
+              multiple={false}
+              title="Drop video file here or click to browse"
+              subtitle="Change resolution of MP4, AVI, MOV, WebM up to 500MB"
+            />
+            <label htmlFor="video-input" className="sr-only">
+              Upload video file
+            </label>
             <input
+              id="video-input"
               ref={inputRef}
               type="file"
+              accept="video/*"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               className="hidden"
+              title="Select a video file to upload"
             />
-          </div>
+          </>
         )}
 
         {file && (
@@ -186,7 +211,7 @@ const VideoResolutionTool = () => {
                   <p className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Remove file">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -203,6 +228,7 @@ const VideoResolutionTool = () => {
                     max="3840"
                     value={width}
                     onChange={(e) => setWidth(Number(e.target.value))}
+                    placeholder="Enter width in pixels"
                     className="input-tool"
                   />
                 </div>
@@ -214,6 +240,7 @@ const VideoResolutionTool = () => {
                     max="2160"
                     value={height}
                     onChange={(e) => setHeight(Number(e.target.value))}
+                    placeholder="Enter height in pixels"
                     className="input-tool"
                   />
                 </div>

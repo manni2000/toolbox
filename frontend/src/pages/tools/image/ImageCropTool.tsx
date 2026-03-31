@@ -3,6 +3,7 @@ import { Upload, Crop, X, RotateCcw } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 
 const ImageCropTool = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -29,6 +30,21 @@ const ImageCropTool = () => {
       img.src = dataUrl;
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -106,24 +122,18 @@ const ImageCropTool = () => {
     >
       <div className="space-y-6">
         {!image && (
-          <div
+          <ImageUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""} p-6 sm:p-8`}
-          >
-            <Crop className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
-            <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop your image here</p>
-            <p className="text-xs sm:text-sm text-muted-foreground">Supports PNG, JPG, WebP</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop image here or click to browse"
+            subtitle="Supports JPG, PNG, WebP, GIF up to 10MB"
+          />
         )}
 
         {image && (
@@ -132,7 +142,7 @@ const ImageCropTool = () => {
               <span className="font-medium text-sm sm:text-base">
                 Original: {originalSize.width} × {originalSize.height}px
               </span>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted self-start sm:self-auto">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted self-start sm:self-auto" title="Reset crop area">
                 <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
@@ -144,6 +154,7 @@ const ImageCropTool = () => {
                   key={preset.label}
                   onClick={() => applyPreset(preset.ratio)}
                   className="rounded-lg bg-secondary px-3 py-2 text-xs sm:px-4 sm:py-2 sm:text-sm font-medium transition-colors hover:bg-secondary/80"
+                  title={`Apply ${preset.label} aspect ratio preset`}
                 >
                   {preset.label}
                 </button>
@@ -151,6 +162,7 @@ const ImageCropTool = () => {
               <button
                 onClick={() => setCropArea({ x: 0, y: 0, width: originalSize.width, height: originalSize.height })}
                 className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2 text-xs sm:px-4 sm:py-2 sm:text-sm font-medium transition-colors hover:bg-secondary/80"
+                title="Reset crop area to full image"
               >
                 <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span className="hidden sm:inline">Reset</span>
@@ -169,6 +181,7 @@ const ImageCropTool = () => {
                   className="input-field w-full text-sm"
                   min={0}
                   max={originalSize.width - cropArea.width}
+                  title="Set horizontal starting position in pixels"
                 />
               </div>
               <div>
@@ -180,6 +193,7 @@ const ImageCropTool = () => {
                   className="input-field w-full text-sm"
                   min={0}
                   max={originalSize.height - cropArea.height}
+                  title="Set vertical starting position in pixels"
                 />
               </div>
               <div>
@@ -191,6 +205,7 @@ const ImageCropTool = () => {
                   className="input-field w-full text-sm"
                   min={1}
                   max={originalSize.width - cropArea.x}
+                  title="Set crop width in pixels"
                 />
               </div>
               <div>
@@ -202,6 +217,7 @@ const ImageCropTool = () => {
                   className="input-field w-full text-sm"
                   min={1}
                   max={originalSize.height - cropArea.y}
+                  title="Set crop height in pixels"
                 />
               </div>
             </div>
@@ -213,7 +229,7 @@ const ImageCropTool = () => {
 
             {/* Actions */}
             <div className="flex gap-3 sm:gap-4">
-              <button onClick={crop} className="btn-primary flex-1 text-sm sm:text-base py-3 sm:py-4">
+              <button onClick={crop} className="btn-primary flex-1 text-sm sm:text-base py-3 sm:py-4" title="Crop image with specified dimensions">
                 <Crop className="h-4 w-4 sm:h-5 sm:w-5" />
                 Crop Image
               </button>

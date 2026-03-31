@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 
 interface AudioItem {
   id: string;
@@ -65,10 +66,32 @@ const AudioMergerTool = () => {
     });
   };
 
+  const handleFileSelect = (file: File) => {
+    // Convert single file to FileList-like object for handleFiles
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    handleFiles(dataTransfer.files);
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     handleFiles(e.dataTransfer.files);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const removeFile = (id: string) => {
@@ -233,27 +256,18 @@ const AudioMergerTool = () => {
     >
       <div className="space-y-6">
         {/* Upload Area */}
-        <div
-          className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""} p-6 sm:p-8`}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-          onDragLeave={() => setIsDragging(false)}
+        <AudioUploadZone
+          isDragging={isDragging}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
-        >
-          <input
-            ref={inputRef}
-            type="file"
-            accept="audio/*"
-            multiple
-            className="hidden"
-            onChange={(e) => handleFiles(e.target.files)}
-          />
-          <Upload className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
-          <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop audio files here or click to upload</p>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Supports MP3, WAV, M4A, OGG • Select multiple files
-          </p>
-        </div>
+          onFileSelect={handleFileSelect}
+          multiple={true}
+          title="Drop audio files here or click to browse"
+          subtitle="Supports MP3, WAV, M4A, OGG • Select multiple files"
+        />
 
         {/* File List */}
         {audioFiles.length > 0 && (

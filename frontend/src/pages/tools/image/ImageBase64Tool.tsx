@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import { Upload, Copy, Check, Image as ImageIcon, FileCode, Download } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const ImageBase64Tool = () => {
   const [mode, setMode] = useState<"encode" | "decode">("encode");
@@ -11,6 +13,7 @@ const ImageBase64Tool = () => {
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
 
   const handleFile = (file: File) => {
     if (!file.type.startsWith("image/")) return;
@@ -23,6 +26,21 @@ const ImageBase64Tool = () => {
       setBase64(dataUrl);
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -45,7 +63,13 @@ const ImageBase64Tool = () => {
       // Validate by creating an image
       const img = new Image();
       img.onerror = () => setError("Invalid Base64 image data");
-      img.onload = () => setDecodedImage(base64String);
+      img.onload = () => {
+        setDecodedImage(base64String);
+        // Scroll to download section after successful decoding
+        setTimeout(() => {
+          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      };
       img.src = base64String;
     } catch {
       setError("Failed to decode Base64 string");
@@ -82,6 +106,7 @@ const ImageBase64Tool = () => {
                 ? "bg-primary text-primary-foreground"
                 : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
             }`}
+            title="Switch to image to Base64 encoding mode"
           >
             <ImageIcon className="mr-2 inline h-4 w-4" />
             Image → Base64
@@ -93,6 +118,7 @@ const ImageBase64Tool = () => {
                 ? "bg-primary text-primary-foreground"
                 : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
             }`}
+            title="Switch to Base64 to image decoding mode"
           >
             <FileCode className="mr-2 inline h-4 w-4" />
             Base64 → Image
@@ -102,37 +128,30 @@ const ImageBase64Tool = () => {
         {mode === "encode" ? (
           <>
             {/* Upload Area */}
-            <div
+            <ImageUploadZone
+              isDragging={isDragging}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
               onDrop={handleDrop}
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
               onClick={() => inputRef.current?.click()}
-              className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-            >
-              {image ? (
-                <img src={image} alt="Uploaded" className="max-h-40 rounded-lg object-contain" />
-              ) : (
-                <>
-                  <Upload className="h-12 w-12 text-muted-foreground" />
-                  <p className="mt-4 text-lg font-medium">Drop your image here</p>
-                  <p className="text-sm text-muted-foreground">PNG, JPG, WebP, GIF</p>
-                </>
-              )}
-              <input
-                ref={inputRef}
-                type="file"
-                accept="image/*"
-                onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-                className="hidden"
-              />
-            </div>
+              onFileSelect={handleFile}
+              multiple={false}
+              title="Drop your image here"
+              subtitle="Supports PNG, JPG, WebP, GIF up to 10MB"
+            />
+            {image && (
+              <div className="rounded-lg border border-border bg-card p-6 text-center">
+                <img src={image} alt="Uploaded" className="mx-auto max-h-40 rounded-lg object-contain" />
+              </div>
+            )}
 
             {/* Base64 Output */}
             {base64 && (
               <div className="rounded-xl border border-border bg-card p-6">
                 <div className="mb-3 flex items-center justify-between">
                   <span className="font-medium">Base64 String</span>
-                  <button onClick={handleCopy} className="btn-secondary">
+                  <button onClick={handleCopy} className="btn-secondary" title="Copy Base64 string to clipboard">
                     {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
                     {copied ? "Copied!" : "Copy"}
                   </button>
@@ -140,6 +159,7 @@ const ImageBase64Tool = () => {
                 <textarea
                   value={base64}
                   readOnly
+                  title="Base64 encoded image string"
                   className="input-field h-40 w-full resize-none font-mono text-xs"
                 />
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -157,11 +177,12 @@ const ImageBase64Tool = () => {
                 value={base64}
                 onChange={(e) => setBase64(e.target.value)}
                 placeholder="Paste your Base64 encoded image string here..."
+                title="Paste your Base64 encoded image string here"
                 className="input-field h-40 w-full resize-none font-mono text-xs"
               />
             </div>
 
-            <button onClick={decodeBase64} className="btn-primary w-full">
+            <button onClick={decodeBase64} className="btn-primary w-full" title="Decode Base64 string to image">
               <ImageIcon className="h-5 w-5" />
               Decode to Image
             </button>
@@ -174,21 +195,23 @@ const ImageBase64Tool = () => {
 
             {/* Decoded Image */}
             {decodedImage && (
-              <div className="rounded-xl border border-border bg-card p-6 text-center">
-                <p className="mb-4 text-sm text-muted-foreground">Decoded Image:</p>
-                <img
-                  src={decodedImage}
-                  alt="Decoded"
-                  className="mx-auto max-h-64 rounded-lg object-contain"
+              <div ref={downloadSectionRef} className="space-y-4">
+                <div className="rounded-xl border border-border bg-card p-6 text-center">
+                  <p className="mb-4 text-sm text-muted-foreground">Decoded Image:</p>
+                  <img
+                    src={decodedImage}
+                    alt="Decoded"
+                    className="mx-auto max-h-64 rounded-lg object-contain"
+                  />
+                </div>
+                <EnhancedDownload
+                  data={decodedImage}
+                  fileName="decoded-image.png"
+                  fileType="image"
+                  title="Base64 Decoded Successfully"
+                  description="Your Base64 string has been decoded to an image"
+                  fileSize={`${(base64.length / 1024).toFixed(1)} KB (encoded)`}
                 />
-                <a
-                  href={decodedImage}
-                  download="decoded-image.png"
-                  className="btn-secondary mt-4 inline-flex items-center gap-2"
-                >
-                  <Download className="h-4 w-4" />
-                  Download Image
-                </a>
               </div>
             )}
           </>

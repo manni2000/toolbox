@@ -3,6 +3,7 @@ import { Upload, Merge, X, FileText, GripVertical } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 
 const PDFMergeTool = () => {
   const [files, setFiles] = useState<{ file: File; name: string }[]>([]);
@@ -72,25 +73,22 @@ const PDFMergeTool = () => {
     >
       <div className="space-y-6">
         {/* Upload Area */}
-        <div
-          onDrop={handleDrop}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+        <PDFUploadZone
+          isDragging={isDragging}
+          onDragEnter={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
+          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+          onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
-          className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-        >
-          <Upload className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">Drop PDF files here</p>
-          <p className="text-sm text-muted-foreground">Or click to browse (select multiple)</p>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="application/pdf"
-            multiple
-            onChange={(e) => handleFiles(e.target.files)}
-            className="hidden"
-          />
-        </div>
+          onFileSelect={(file) => {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            handleFiles(dataTransfer.files);
+          }}
+          multiple={true}
+          title="Drop PDF files here or click to browse"
+          subtitle="Select multiple PDF files to merge (up to 50MB each)"
+        />
 
         {/* File List */}
         {files.length > 0 && (
@@ -110,6 +108,8 @@ const PDFMergeTool = () => {
                       <button
                         onClick={() => moveFile(index, index - 1)}
                         className="rounded p-1 hover:bg-muted"
+                        title="Move file up"
+                        aria-label="Move file up"
                       >
                         ↑
                       </button>
@@ -118,6 +118,8 @@ const PDFMergeTool = () => {
                       <button
                         onClick={() => moveFile(index, index + 1)}
                         className="rounded p-1 hover:bg-muted"
+                        title="Move file down"
+                        aria-label="Move file down"
                       >
                         ↓
                       </button>
@@ -126,6 +128,8 @@ const PDFMergeTool = () => {
                   <button
                     onClick={() => removeFile(index)}
                     className="rounded-lg p-1 text-destructive hover:bg-destructive/10"
+                    title="Remove file"
+                    aria-label="Remove file"
                   >
                     <X className="h-5 w-5" />
                   </button>

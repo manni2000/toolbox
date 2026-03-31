@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { Upload, ScanLine, Copy, Check, X, ExternalLink, QrCode } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 
 const QRScannerTool = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -77,6 +78,21 @@ const QRScannerTool = () => {
     }
   };
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
@@ -110,31 +126,25 @@ const QRScannerTool = () => {
       
       <div className="space-y-6">
         {!image && (
-          <div
+          <ImageUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <ScanLine className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Upload QR Code Image</p>
-            <p className="text-sm text-muted-foreground">Drop an image or click to browse</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Upload QR Code Image"
+            subtitle="Drop an image or click to browse"
+          />
         )}
 
         {image && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <span className="font-medium">Uploaded Image</span>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Clear image and reset scanner">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -161,11 +171,12 @@ const QRScannerTool = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="rounded-lg p-2 hover:bg-muted"
+                        title="Open URL in new tab"
                       >
                         <ExternalLink className="h-5 w-5" />
                       </a>
                     )}
-                    <button onClick={handleCopy} className="rounded-lg p-2 hover:bg-muted">
+                    <button onClick={handleCopy} className="rounded-lg p-2 hover:bg-muted" title="Copy decoded QR code content to clipboard">
                       {copied ? <Check className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5" />}
                     </button>
                   </div>

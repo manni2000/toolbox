@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Download, Link as LinkIcon, RefreshCw } from "lucide-react";
 import QRCode from "qrcode";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const QRGeneratorTool = () => {
   const [text, setText] = useState("");
@@ -9,7 +10,9 @@ const QRGeneratorTool = () => {
   const [size, setSize] = useState(300);
   const [fgColor, setFgColor] = useState("#000000");
   const [bgColor, setBgColor] = useState("#ffffff");
+  const [showDownload, setShowDownload] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
 
   const generateQRCode = async () => {
     if (!text.trim()) return;
@@ -35,11 +38,12 @@ const QRGeneratorTool = () => {
 
   const downloadQRCode = () => {
     if (!qrCodeUrl) return;
+    setShowDownload(true);
     
-    const link = document.createElement("a");
-    link.download = "qrcode.png";
-    link.href = qrCodeUrl;
-    link.click();
+    // Scroll to download section after successful generation
+    setTimeout(() => {
+      downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   };
 
   return (
@@ -64,6 +68,7 @@ const QRGeneratorTool = () => {
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Enter URL or text..."
                 className="input-tool pl-12"
+                title="Enter URL or text for QR code generation"
               />
             </div>
           </div>
@@ -79,6 +84,7 @@ const QRGeneratorTool = () => {
               value={size}
               onChange={(e) => setSize(Number(e.target.value))}
               className="w-full accent-primary"
+              title="Adjust QR code size in pixels"
             />
           </div>
 
@@ -93,12 +99,14 @@ const QRGeneratorTool = () => {
                   value={fgColor}
                   onChange={(e) => setFgColor(e.target.value)}
                   className="h-10 w-14 cursor-pointer rounded-lg border border-border"
+                  title="Choose QR code foreground color"
                 />
                 <input
                   type="text"
                   value={fgColor}
                   onChange={(e) => setFgColor(e.target.value)}
                   className="input-tool flex-1"
+                  title="Enter hex color code for QR code"
                 />
               </div>
             </div>
@@ -112,19 +120,21 @@ const QRGeneratorTool = () => {
                   value={bgColor}
                   onChange={(e) => setBgColor(e.target.value)}
                   className="h-10 w-14 cursor-pointer rounded-lg border border-border"
+                  title="Choose QR code background color"
                 />
                 <input
                   type="text"
                   value={bgColor}
                   onChange={(e) => setBgColor(e.target.value)}
                   className="input-tool flex-1"
+                  title="Enter hex color code for background"
                 />
               </div>
             </div>
           </div>
 
           <div className="flex gap-4">
-            <button onClick={generateQRCode} className="btn-secondary">
+            <button onClick={generateQRCode} className="btn-secondary" title="Regenerate QR code">
               <RefreshCw className="h-4 w-4" />
               Regenerate
             </button>
@@ -132,6 +142,7 @@ const QRGeneratorTool = () => {
               onClick={downloadQRCode}
               disabled={!qrCodeUrl}
               className="btn-primary flex-1"
+              title="Download QR code as PNG image"
             >
               <Download className="h-4 w-4" />
               Download PNG
@@ -147,7 +158,7 @@ const QRGeneratorTool = () => {
               src={qrCodeUrl}
               alt="Generated QR Code"
               className="max-w-full rounded-lg"
-              style={{ maxHeight: size }}
+              style={{ maxHeight: `${size}px` }}
             />
           ) : (
             <div className="text-center text-muted-foreground">
@@ -156,6 +167,21 @@ const QRGeneratorTool = () => {
           )}
         </div>
       </div>
+
+      {/* Enhanced Download Section */}
+      {showDownload && qrCodeUrl && (
+        <div ref={downloadSectionRef} className="mt-6">
+          <EnhancedDownload
+            data={qrCodeUrl}
+            fileName="qrcode.png"
+            fileType="image"
+            title="QR Code Generated Successfully"
+            description={`QR code created for: ${text.length > 50 ? text.substring(0, 50) + '...' : text}`}
+            fileSize={`${size}×${size}px`}
+            dimensions={{ width: size, height: size }}
+          />
+        </div>
+      )}
     </ToolLayout>
   );
 };

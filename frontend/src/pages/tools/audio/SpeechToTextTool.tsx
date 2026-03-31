@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 
 const SpeechToTextTool = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -54,6 +55,21 @@ const SpeechToTextTool = () => {
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
     if (file) handleFile(file);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const transcribe = async () => {
@@ -179,28 +195,18 @@ const SpeechToTextTool = () => {
         </Card>
 
         {/* Upload Area */}
-        <div
-          className={`file-drop ${isDragging ? "border-primary bg-primary/5" : ""} p-6 sm:p-8`}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-          onDragLeave={() => setIsDragging(false)}
+        <AudioUploadZone
+          isDragging={isDragging}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
-        >
-          <input
-            ref={inputRef}
-            type="file"
-            accept="audio/*"
-            className="hidden"
-            onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-          />
-          <Mic className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
-          <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">
-            {audioFile ? audioFile.name : "Drop audio file here or click to upload"}
-          </p>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Supports MP3, WAV, M4A, OGG, FLAC
-          </p>
-        </div>
+          onFileSelect={handleFile}
+          multiple={false}
+          title={audioFile ? audioFile.name : "Drop audio file here or click to browse"}
+          subtitle="Supports MP3, WAV, M4A, OGG, FLAC for accurate speech recognition"
+        />
 
         {audioFile && (
           <>

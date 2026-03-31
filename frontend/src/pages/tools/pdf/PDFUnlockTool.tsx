@@ -3,6 +3,7 @@ import { Upload, Unlock, FileText, X, Key } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 
 const PDFUnlockTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -13,6 +14,20 @@ const PDFUnlockTool = () => {
   const handleFile = async (f: File) => {
     if (f.type !== "application/pdf") return;
     setFile(f);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -49,24 +64,17 @@ const PDFUnlockTool = () => {
         </div>
 
         {!file && (
-          <div
+          <PDFUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop password-protected PDF here</p>
-            <p className="text-sm text-muted-foreground">You must know the password to unlock</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="application/pdf"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            title="Drop password-protected PDF here"
+            subtitle="You must know the password to unlock"
+          />
         )}
 
         {file && (
@@ -76,7 +84,7 @@ const PDFUnlockTool = () => {
                 <FileText className="h-6 w-6 text-primary" />
                 <p className="font-medium">{file.name}</p>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Clear file">
                 <X className="h-5 w-5" />
               </button>
             </div>

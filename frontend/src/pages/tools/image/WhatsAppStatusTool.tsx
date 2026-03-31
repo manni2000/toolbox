@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
-import { Upload, Download, Smartphone, X, Type, Palette, AlignLeft, AlignCenter, AlignRight, Sparkles, Image as ImageIcon } from "lucide-react";
+import { Upload, Smartphone, X, Type, Palette, AlignLeft, AlignCenter, AlignRight, Sparkles, Image as ImageIcon } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const WhatsAppStatusTool = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -16,6 +18,7 @@ const WhatsAppStatusTool = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
 
   const STATUS_WIDTH = 1080;
   const STATUS_HEIGHT = 1920;
@@ -41,6 +44,21 @@ const WhatsAppStatusTool = () => {
     const reader = new FileReader();
     reader.onload = (e) => setImage(e.target?.result as string);
     reader.readAsDataURL(file);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -141,12 +159,20 @@ const WhatsAppStatusTool = () => {
         drawText();
         setResultUrl(canvas.toDataURL("image/jpeg", 0.95));
         setIsGenerating(false);
+        // Scroll to download section after successful generation
+        setTimeout(() => {
+          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
       };
       img.src = image;
     } else {
       drawText();
       setResultUrl(canvas.toDataURL("image/jpeg", 0.95));
       setIsGenerating(false);
+      // Scroll to download section after successful generation
+      setTimeout(() => {
+        downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     }
   };
 
@@ -189,38 +215,31 @@ const WhatsAppStatusTool = () => {
               <ImageIcon className="h-5 w-5" />
               Background Image
             </h3>
-            <div
+            <ImageUploadZone
+              isDragging={isDragging}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
               onDrop={handleDrop}
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
               onClick={() => inputRef.current?.click()}
-              className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-            >
-              {image ? (
-                <div className="relative">
-                  <img src={image} alt="Background" className="max-h-40 rounded-lg object-contain" />
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setImage(null); }}
-                    className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-white hover:bg-destructive/80 transition-colors"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <Upload className="h-12 w-12 text-muted-foreground" />
-                  <p className="mt-3 font-medium">Drop image here or click to upload</p>
-                  <p className="text-sm text-muted-foreground">Optional - creates text-only status if no image</p>
-                </>
-              )}
-              <input
-                ref={inputRef}
-                type="file"
-                accept="image/*"
-                onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-                className="hidden"
-              />
-            </div>
+              onFileSelect={handleFile}
+              multiple={false}
+              title="Drop image here or click to upload"
+              subtitle="Optimized for WhatsApp Status (1080×1920) - Optional"
+            />
+            {image && (
+              <div className="relative inline-block">
+                <img src={image} alt="Background" className="max-h-40 rounded-lg object-contain" />
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); setImage(null); }}
+                  className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-white hover:bg-destructive/80 transition-colors"
+                  title="Remove background image"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Background Color */}
@@ -251,6 +270,9 @@ const WhatsAppStatusTool = () => {
                   value={backgroundColor.startsWith("linear") ? "#1a1a1a" : backgroundColor}
                   onChange={(e) => setBackgroundColor(e.target.value)}
                   className="h-10 w-14 cursor-pointer rounded-lg border-0"
+                  title="Choose background color"
+                  placeholder="Background color"
+                  aria-label="Background color picker"
                 />
                 <input
                   type="text"
@@ -258,6 +280,8 @@ const WhatsAppStatusTool = () => {
                   onChange={(e) => setBackgroundColor(e.target.value)}
                   className="input-field flex-1"
                   placeholder="#1a1a1a"
+                  title="Background color value (hex or gradient)"
+                  aria-label="Background color value"
                 />
               </div>
             </div>
@@ -292,6 +316,8 @@ const WhatsAppStatusTool = () => {
                   value={textPosition}
                   onChange={(e) => setTextPosition(e.target.value as "top" | "center" | "bottom")}
                   className="input-field w-full"
+                  aria-label="Text position"
+                  title="Select text position on status"
                 >
                   <option value="top">Top</option>
                   <option value="center">Center</option>
@@ -304,32 +330,41 @@ const WhatsAppStatusTool = () => {
                 <label className="mb-2 block text-sm font-medium">Alignment</label>
                 <div className="flex gap-1">
                   <button
+                    type="button"
                     onClick={() => setTextAlign("left")}
+                    title="Align text to the left"
                     className={`flex-1 rounded-lg border p-2 transition-colors ${
                       textAlign === "left"
                         ? "border-primary bg-primary/10 text-primary"
                         : "border-border hover:border-primary/50"
                     }`}
+                    aria-label="Align text left"
                   >
                     <AlignLeft className="h-4 w-4 mx-auto" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setTextAlign("center")}
+                    title="Align text center"
                     className={`flex-1 rounded-lg border p-2 transition-colors ${
                       textAlign === "center"
                         ? "border-primary bg-primary/10 text-primary"
                         : "border-border hover:border-primary/50"
                     }`}
+                    aria-label="Align text center"
                   >
                     <AlignCenter className="h-4 w-4 mx-auto" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setTextAlign("right")}
+                    title="Align text right"
                     className={`flex-1 rounded-lg border p-2 transition-colors ${
                       textAlign === "right"
                         ? "border-primary bg-primary/10 text-primary"
                         : "border-border hover:border-primary/50"
                     }`}
+                    aria-label="Align text right"
                   >
                     <AlignRight className="h-4 w-4 mx-auto" />
                   </button>
@@ -346,6 +381,7 @@ const WhatsAppStatusTool = () => {
                   className="input-field w-full"
                   min={16}
                   max={120}
+                  title="Set font size for status text"
                 />
               </div>
 
@@ -359,6 +395,7 @@ const WhatsAppStatusTool = () => {
                       ? "border-primary bg-primary/10 text-primary"
                       : "border-border hover:border-primary/50"
                   }`}
+                  title="Toggle text shadow effect"
                 >
                   {textShadow ? "Enabled" : "Disabled"}
                 </button>
@@ -378,6 +415,8 @@ const WhatsAppStatusTool = () => {
                         textColor === color ? "border-primary" : "border-border"
                       }`}
                       style={{ backgroundColor: color }}
+                      title={`Select color ${color}`}
+                      aria-label={`Select color ${color}`}
                     />
                   ))}
                 </div>
@@ -386,12 +425,17 @@ const WhatsAppStatusTool = () => {
                   value={textColor}
                   onChange={(e) => setTextColor(e.target.value)}
                   className="h-8 w-12 cursor-pointer rounded-lg border-0"
+                  title="Choose text color"
+                  aria-label="Text color picker"
                 />
                 <input
                   type="text"
                   value={textColor}
                   onChange={(e) => setTextColor(e.target.value)}
                   className="input-field flex-1"
+                  placeholder="#ffffff"
+                  title="Enter hex color code for text"
+                  aria-label="Text color value"
                 />
               </div>
             </div>
@@ -404,40 +448,39 @@ const WhatsAppStatusTool = () => {
             onClick={generate} 
             disabled={isGenerating}
             className="btn-primary flex-1 disabled:opacity-50"
+            title="Generate WhatsApp status"
           >
             <Sparkles className={`h-5 w-5 ${isGenerating ? 'animate-pulse' : ''}`} />
             {isGenerating ? "Generating..." : "Generate Status"}
           </button>
-          <button onClick={reset} className="btn-secondary">
+          <button onClick={reset} className="btn-secondary" title="Reset all settings">
             <X className="h-5 w-5" />
             Reset
           </button>
-          {resultUrl && (
-            <a
-              href={resultUrl}
-              download="whatsapp-status.jpg"
-              className="btn-secondary flex items-center gap-2"
-            >
-              <Download className="h-5 w-5" />
-              Download
-            </a>
-          )}
         </div>
 
-        {/* Result Preview */}
+        {/* Result Preview and Download */}
         {resultUrl && (
-          <div className="text-center">
-            <p className="mb-4 text-lg font-semibold">Preview</p>
-            <div className="inline-block rounded-2xl border border-border bg-muted/30 p-4 shadow-lg">
-              <img
-                src={resultUrl}
-                alt="WhatsApp Status"
-                className="h-96 rounded-xl object-contain"
-              />
+          <div ref={downloadSectionRef} className="space-y-6">
+            <div className="text-center">
+              <p className="mb-4 text-lg font-semibold">Preview</p>
+              <div className="inline-block rounded-2xl border border-border bg-muted/30 p-4 shadow-lg">
+                <img
+                  src={resultUrl}
+                  alt="WhatsApp Status"
+                  className="h-96 rounded-xl object-contain"
+                />
+              </div>
             </div>
-            <p className="mt-4 text-sm text-muted-foreground">
-              ✅ Ready for WhatsApp Status! Image is perfectly sized at 1080×1920 pixels.
-            </p>
+            <EnhancedDownload
+              data={resultUrl}
+              fileName="whatsapp-status.jpg"
+              fileType="image"
+              title="WhatsApp Status Generated Successfully"
+              description="Perfectly sized at 1080×1920 pixels for WhatsApp Status"
+              fileSize="High Quality JPEG"
+              dimensions={{ width: 1080, height: 1920 }}
+            />
           </div>
         )}
       </div>

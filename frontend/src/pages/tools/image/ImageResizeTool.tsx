@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Upload, Image as ImageIcon, X, Maximize2, Settings, Download } from "lucide-react";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
@@ -149,24 +150,18 @@ const ImageResizeTool = () => {
       <div className="space-y-8">
         {/* Upload Area */}
         {!image && (
-          <div
+          <ImageUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your image here</p>
-            <p className="text-sm text-muted-foreground">Supports PNG, JPG, WebP, GIF</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop image here or click to browse"
+            subtitle="Supports JPG, PNG, WebP, GIF up to 10MB"
+          />
         )}
 
         {/* Image Loaded */}
@@ -185,6 +180,7 @@ const ImageResizeTool = () => {
               <button
                 onClick={reset}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
+                title="Clear image and reset resize settings"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -214,6 +210,7 @@ const ImageResizeTool = () => {
                     onChange={(e) => handleWidthChange(parseInt(e.target.value) || 0)}
                     className="input-field w-full"
                     min={1}
+                    title="Enter desired image width in pixels"
                   />
                 </div>
                 <div className="flex-1">
@@ -224,6 +221,7 @@ const ImageResizeTool = () => {
                     onChange={(e) => handleHeightChange(parseInt(e.target.value) || 0)}
                     className="input-field w-full"
                     min={1}
+                    title="Enter desired image height in pixels"
                   />
                 </div>
               </div>
@@ -234,6 +232,7 @@ const ImageResizeTool = () => {
                   checked={maintainRatio}
                   onChange={(e) => setMaintainRatio(e.target.checked)}
                   className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+                  title="Maintain aspect ratio when resizing"
                 />
                 <span className="text-sm">Maintain aspect ratio</span>
               </label>
@@ -253,6 +252,7 @@ const ImageResizeTool = () => {
                       setResizedUrl(null);
                     }}
                     className="rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
+                    title={`Apply ${preset.label} preset dimensions`}
                   >
                     {preset.label} ({preset.w}×{preset.h})
                   </button>
@@ -262,7 +262,7 @@ const ImageResizeTool = () => {
 
             {/* Actions */}
             <div className="flex gap-4">
-              <button onClick={resize} className="btn-primary flex-1">
+              <button onClick={resize} className="btn-primary flex-1" title="Resize image to specified dimensions">
                 <Maximize2 className="h-5 w-5" />
                 Resize Image
               </button>

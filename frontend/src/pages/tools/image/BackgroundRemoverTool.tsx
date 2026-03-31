@@ -4,6 +4,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 
 const BackgroundRemoverTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -27,6 +28,21 @@ const BackgroundRemoverTool = () => {
     const reader = new FileReader();
     reader.onload = (e) => setImage(e.target?.result as string);
     reader.readAsDataURL(file);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -92,24 +108,18 @@ const BackgroundRemoverTool = () => {
       <div className="space-y-6">
         {/* Upload Area */}
         {!image && (
-          <div
+          <ImageUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Eraser className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your image here</p>
-            <p className="text-sm text-muted-foreground">PNG, JPG, WebP supported</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop your image here"
+            subtitle="PNG, JPG, WebP supported"
+          />
         )}
 
         {image && (
@@ -119,7 +129,7 @@ const BackgroundRemoverTool = () => {
                 <ImageIcon className="h-5 w-5 text-muted-foreground" />
                 <span className="font-medium">{fileName}</span>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Reset image">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -161,6 +171,7 @@ const BackgroundRemoverTool = () => {
               onClick={removeBackground}
               disabled={isProcessing}
               className="btn-primary w-full"
+              title="Remove background from image using AI"
             >
               {isProcessing ? (
                 <>

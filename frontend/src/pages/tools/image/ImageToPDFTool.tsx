@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import { Upload, FileText, X, Plus, GripVertical, Image as ImageIcon, Download } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 interface ImageFile {
   id: string;
@@ -15,7 +17,10 @@ const ImageToPDFTool = () => {
   const [isConverting, setIsConverting] = useState(false);
   const [pageSize, setPageSize] = useState<"fit" | "a4" | "letter">("a4");
   const [orientation, setOrientation] = useState<"portrait" | "landscape">("portrait");
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [pdfSize, setPdfSize] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
 
   const handleFiles = (files: FileList) => {
     const newImages: ImageFile[] = [];
@@ -37,11 +42,42 @@ const ImageToPDFTool = () => {
     });
   };
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files.length > 0) {
       handleFiles(e.dataTransfer.files);
+    }
+  };
+
+  const handleSingleFile = (file: File) => {
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newImage: ImageFile = {
+          id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          file,
+          preview: e.target?.result as string,
+        };
+        if (newImage.preview) {
+          setImages((prev) => [...prev, newImage]);
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -126,12 +162,13 @@ const ImageToPDFTool = () => {
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "images-converted.pdf";
-      link.click();
-
-      URL.revokeObjectURL(url);
+      setPdfUrl(url);
+      setPdfSize(pdfBytes.length);
+      
+      // Scroll to download section after successful conversion
+      setTimeout(() => {
+        downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     } catch (error) {
       console.error("Error converting to PDF:", error);
       alert("Error converting images to PDF. Please try with JPG or PNG images.");
@@ -141,7 +178,12 @@ const ImageToPDFTool = () => {
   };
 
   const reset = () => {
+    if (pdfUrl) {
+      URL.revokeObjectURL(pdfUrl);
+    }
     setImages([]);
+    setPdfUrl(null);
+    setPdfSize(0);
   };
 
   return (
@@ -153,25 +195,19 @@ const ImageToPDFTool = () => {
     >
       <div className="space-y-6">
         {/* Upload Area */}
-        <div
+        <ImageUploadZone
+          isDragging={isDragging}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
           onDrop={handleDrop}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-          onDragLeave={() => setIsDragging(false)}
           onClick={() => inputRef.current?.click()}
-          className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-        >
-          <Upload className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">Drop images here or click to upload</p>
-          <p className="text-sm text-muted-foreground">Supports JPG, PNG, WebP • Multiple files allowed</p>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            multiple
-            onChange={(e) => e.target.files && handleFiles(e.target.files)}
-            className="hidden"
-          />
-        </div>
+          onFileSelect={handleSingleFile}
+          accept="image/jpeg,image/png,image/webp"
+          multiple={true}
+          title="Drop images here or click to upload"
+          subtitle="Supports JPG, PNG, WebP • Multiple files allowed"
+        />
 
         {/* Image List */}
         {images.length > 0 && (
@@ -182,11 +218,12 @@ const ImageToPDFTool = () => {
                 <button
                   onClick={() => inputRef.current?.click()}
                   className="btn-secondary text-sm"
+                  title="Add more images to PDF"
                 >
                   <Plus className="h-4 w-4" />
                   Add More
                 </button>
-                <button onClick={reset} className="text-sm text-muted-foreground hover:text-foreground">
+                <button onClick={reset} className="text-sm text-muted-foreground hover:text-foreground" title="Remove all images from PDF">
                   Clear All
                 </button>
               </div>
@@ -213,6 +250,7 @@ const ImageToPDFTool = () => {
                   <button
                     onClick={() => removeImage(img.id)}
                     className="rounded-lg p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-muted hover:text-foreground group-hover:opacity-100"
+                    title="Remove this image from PDF"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -228,6 +266,7 @@ const ImageToPDFTool = () => {
                   value={pageSize}
                   onChange={(e) => setPageSize(e.target.value as "fit" | "a4" | "letter")}
                   className="input-field w-full"
+                  aria-label="Page size"
                 >
                   <option value="a4">A4 (210 × 297 mm)</option>
                   <option value="letter">Letter (8.5 × 11 in)</option>
@@ -241,6 +280,7 @@ const ImageToPDFTool = () => {
                   onChange={(e) => setOrientation(e.target.value as "portrait" | "landscape")}
                   className="input-field w-full"
                   disabled={pageSize === "fit"}
+                  aria-label="Page orientation"
                 >
                   <option value="portrait">Portrait</option>
                   <option value="landscape">Landscape</option>
@@ -253,6 +293,7 @@ const ImageToPDFTool = () => {
               onClick={convertToPDF}
               disabled={isConverting}
               className="btn-primary w-full"
+              title="Convert selected images to PDF"
             >
               {isConverting ? (
                 <>
@@ -266,6 +307,21 @@ const ImageToPDFTool = () => {
                 </>
               )}
             </button>
+
+            {/* Download Section */}
+            {pdfUrl && (
+              <div ref={downloadSectionRef}>
+                <EnhancedDownload
+                  data={pdfUrl}
+                  fileName="images-converted.pdf"
+                  fileType="pdf"
+                  title="Images Converted to PDF"
+                  description={`Successfully converted ${images.length} image${images.length > 1 ? 's' : ''} to PDF`}
+                  fileSize={`${(pdfSize / 1024 / 1024).toFixed(2)} MB`}
+                  pageCount={images.length}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

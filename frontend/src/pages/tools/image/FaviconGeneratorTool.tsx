@@ -3,6 +3,8 @@ import { Upload, Download, Image as ImageIcon, X, Package } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
+import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 const FaviconGeneratorTool = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -10,7 +12,9 @@ const FaviconGeneratorTool = () => {
   const [favicons, setFavicons] = useState<{ size: number; url: string }[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [zipUrl, setZipUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const downloadSectionRef = useRef<HTMLDivElement>(null);
 
   const sizes = [16, 32, 48, 64, 128, 180, 192, 512];
 
@@ -22,6 +26,21 @@ const FaviconGeneratorTool = () => {
     const reader = new FileReader();
     reader.onload = (e) => setImage(e.target?.result as string);
     reader.readAsDataURL(file);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -89,13 +108,23 @@ const FaviconGeneratorTool = () => {
     zip.file("README.txt", htmlSnippet);
 
     const blob = await zip.generateAsync({ type: "blob" });
-    saveAs(blob, "favicons.zip");
+    const url = URL.createObjectURL(blob);
+    setZipUrl(url);
+    
+    // Scroll to download section after successful generation
+    setTimeout(() => {
+      downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   };
 
   const reset = () => {
+    if (zipUrl) {
+      URL.revokeObjectURL(zipUrl);
+    }
     setImage(null);
     setFavicons([]);
     setFileName("");
+    setZipUrl(null);
   };
 
   return (
@@ -107,24 +136,18 @@ const FaviconGeneratorTool = () => {
     >
       <div className="space-y-6">
         {!image && (
-          <div
+          <ImageUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your logo or icon</p>
-            <p className="text-sm text-muted-foreground">Use a square image for best results (512×512 or larger)</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop your logo or icon"
+            subtitle="PNG or square image (512×512 or larger) • Generate various favicon sizes"
+          />
         )}
 
         {image && (
@@ -134,7 +157,7 @@ const FaviconGeneratorTool = () => {
                 <ImageIcon className="h-5 w-5 text-muted-foreground" />
                 <span className="font-medium">{fileName}</span>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Reset image">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -146,7 +169,7 @@ const FaviconGeneratorTool = () => {
 
             {/* Generate Button */}
             {favicons.length === 0 && (
-              <button onClick={generate} disabled={isGenerating} className="btn-primary w-full">
+              <button onClick={generate} disabled={isGenerating} className="btn-primary w-full" title="Generate favicon sizes from image">
                 {isGenerating ? "Generating..." : "Generate Favicons"}
               </button>
             )}
@@ -178,11 +201,25 @@ const FaviconGeneratorTool = () => {
 
                 {/* Download Actions */}
                 <div className="flex gap-4">
-                  <button onClick={downloadAll} className="btn-primary flex-1">
+                  <button onClick={downloadAll} className="btn-primary flex-1" title="Download all favicons as ZIP">
                     <Package className="h-5 w-5" />
-                    Download All as ZIP
+                    Prepare ZIP Package
                   </button>
                 </div>
+
+                {/* Enhanced Download Section */}
+                {zipUrl && (
+                  <div ref={downloadSectionRef}>
+                    <EnhancedDownload
+                      data={zipUrl}
+                      fileName="favicons.zip"
+                      fileType="zip"
+                      title="Favicons Generated Successfully"
+                      description={`Generated ${favicons.length} favicon sizes with manifest.json and HTML snippet`}
+                      fileSize={`${favicons.length} files`}
+                    />
+                  </div>
+                )}
 
                 {/* Individual Downloads */}
                 <div className="rounded-xl border border-border bg-card p-6">

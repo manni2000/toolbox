@@ -1,5 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { Upload, Image, X, Zap, Settings, Download } from "lucide-react";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
@@ -15,6 +16,22 @@ const ImageCompressorTool = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -109,22 +126,18 @@ const ImageCompressorTool = () => {
       <div className="space-y-8">
         {/* Upload Area */}
         {!image && (
-          <div
+          <ImageUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
-            className={`file-drop ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your image here</p>
-            <p className="text-sm text-muted-foreground">or click to browse</p>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="absolute inset-0 cursor-pointer opacity-0"
-            />
-          </div>
+            onClick={() => inputRef.current?.click()}
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop image here or click to browse"
+            subtitle="Supports JPG, PNG, WebP, GIF up to 10MB"
+          />
         )}
 
         {/* Image Preview */}
@@ -141,6 +154,7 @@ const ImageCompressorTool = () => {
               <button
                 onClick={() => { setImage(null); setPreview(null); setCompressedUrl(null); }}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
+                title="Clear image"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -188,12 +202,13 @@ const ImageCompressorTool = () => {
                 value={quality}
                 onChange={(e) => setQuality(Number(e.target.value))}
                 className="w-full accent-primary"
+                title="Adjust image compression quality"
               />
             </div>
 
             {/* Actions */}
             <div className="flex gap-4">
-              <button onClick={compressImage} className="btn-primary flex-1">
+              <button onClick={compressImage} className="btn-primary flex-1" title="Compress image with selected quality">
                 Compress Image
               </button>
             </div>

@@ -139,6 +139,7 @@ const PNGToWebPConverter = () => {
               accept="image/png"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               className="hidden"
+              title="Select PNG image file to convert"
             />
           </div>
         )}
@@ -159,6 +160,7 @@ const PNGToWebPConverter = () => {
               <button
                 onClick={reset}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
+                title="Clear image and reset converter"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -201,6 +203,7 @@ const PNGToWebPConverter = () => {
                   setConvertedUrl(null);
                 }}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                title="Adjust WebP compression quality (10-100%)"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
                 <span>Low (10%)</span>
@@ -244,6 +247,7 @@ const PNGToWebPConverter = () => {
               onClick={convert} 
               disabled={isConverting}
               className="btn-primary w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
+              title="Convert PNG image to WebP format"
             >
               <RefreshCw className={`h-5 w-5 ${isConverting ? "animate-spin" : ""}`} />
               {isConverting ? "Converting PNG to WebP..." : "Convert PNG to WebP"}

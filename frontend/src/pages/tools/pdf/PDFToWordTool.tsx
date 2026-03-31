@@ -5,6 +5,7 @@ import { PDFDocument } from "pdf-lib";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 
 const PDFToWordTool = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -40,6 +41,20 @@ const PDFToWordTool = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -108,24 +123,17 @@ const PDFToWordTool = () => {
     >
       <div className="space-y-6">
         {!file && (
-          <div
+          <PDFUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your PDF here</p>
-            <p className="text-sm text-muted-foreground">Convert to editable Word document</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="application/pdf"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            title="Drop your PDF here"
+            subtitle="Convert to editable Word document"
+          />
         )}
 
         {file && (
@@ -138,7 +146,7 @@ const PDFToWordTool = () => {
                   <p className="text-xs sm:text-sm text-muted-foreground">{pageCount} pages • {(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted flex-shrink-0">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted flex-shrink-0" title="Remove file">
                 <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>

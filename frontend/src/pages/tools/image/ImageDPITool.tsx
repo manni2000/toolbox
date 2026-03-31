@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Upload, Info, Image as ImageIcon, X } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 
 interface ImageInfo {
   name: string;
@@ -39,6 +40,21 @@ const ImageDPITool = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
@@ -73,24 +89,18 @@ const ImageDPITool = () => {
     >
       <div className="space-y-6">
         {!image && (
-          <div
+          <ImageUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
             onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your image here</p>
-            <p className="text-sm text-muted-foreground">Check DPI and print size calculations</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop your image here"
+            subtitle="Check DPI and print size calculations"
+          />
         )}
 
         {image && imageInfo && (
@@ -100,7 +110,7 @@ const ImageDPITool = () => {
                 <ImageIcon className="h-5 w-5 text-muted-foreground" />
                 <span className="font-medium">{imageInfo.name}</span>
               </div>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted">
+              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Clear image and reset DPI calculator">
                 <X className="h-5 w-5" />
               </button>
             </div>
