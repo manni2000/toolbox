@@ -149,14 +149,14 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
     // Set workerSrc to the actual file path - required for fake worker mode in serverless
     // __dirname in routes folder is /var/task/server/routes, so go up to server/ then to node_modules
     const workerPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.mjs');
+    const standardFontDataPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'standard_fonts') + '/';
+    const cMapPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'cmaps') + '/';
     
     // Use file:// URL format for ESM import
     const { pathToFileURL } = require('url');
     pdfjsLib.GlobalWorkerOptions.workerSrc = pathToFileURL(workerPath).href;
     
-    console.log('Worker source set to:', pdfjsLib.GlobalWorkerOptions.workerSrc);
-    
-    // Load the PDF document
+    // Load the PDF document with optimized settings
     const loadingTask = pdfjsLib.getDocument({
       data: new Uint8Array(pdfBuffer),
       disableFontFace: true,
@@ -164,6 +164,9 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
       isEvalSupported: false,
       disableAutoFetch: true,
       disableStream: true,
+      standardFontDataUrl: pathToFileURL(standardFontDataPath).href,
+      cMapUrl: pathToFileURL(cMapPath).href,
+      cMapPacked: true,
     });
     
     const pdfDocument = await loadingTask.promise;
@@ -175,9 +178,12 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
     // Import canvas library
     const { createCanvas } = require('@napi-rs/canvas');
     
+    // Use lower scale for faster conversion (1.5 instead of 2.0)
+    const scale = 1.5;
+    
     for (let pageNum = 1; pageNum <= numPages; pageNum++) {
       const page = await pdfDocument.getPage(pageNum);
-      const viewport = page.getViewport({ scale: 2.0 });
+      const viewport = page.getViewport({ scale });
       
       // Create canvas
       const canvas = createCanvas(Math.floor(viewport.width), Math.floor(viewport.height));
