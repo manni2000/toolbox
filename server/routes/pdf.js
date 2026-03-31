@@ -109,8 +109,8 @@ async function convertPdfWithPngConverter(pdfBuffer, baseFilename, format = 'png
     // In development, use pdf-to-png-converter
     const pdfToPng = require('pdf-to-png-converter');
     const results = await pdfToPng.pdfToPng(pdfBuffer, {
-      viewportScale: 2.0,            // higher scale for better quality
-      returnPageContent: true        // ensure we get the PNG buffer
+      viewportScale: 0.8,            // much lower scale for speed
+      returnPageContent: true        // ensure we get the buffer
     });
 
     if (!results || results.length === 0) {
@@ -156,7 +156,7 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
     const { pathToFileURL } = require('url');
     pdfjsLib.GlobalWorkerOptions.workerSrc = pathToFileURL(workerPath).href;
     
-    // Load the PDF document with optimized settings
+    // Load the PDF document with aggressive speed optimizations
     const loadingTask = pdfjsLib.getDocument({
       data: new Uint8Array(pdfBuffer),
       disableFontFace: true,
@@ -164,6 +164,8 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
       isEvalSupported: false,
       disableAutoFetch: true,
       disableStream: true,
+      disableRange: true,      // Disable range requests for speed
+      disableCreateObjectURL: true, // Disable object URLs for speed
       standardFontDataUrl: pathToFileURL(standardFontDataPath).href,
       cMapUrl: pathToFileURL(cMapPath).href,
       cMapPacked: true,
@@ -171,46 +173,84 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
     
     const pdfDocument = await loadingTask.promise;
     const numPages = pdfDocument.numPages;
-    const processedImages = [];
     
-    console.log(`PDF has ${numPages} pages, converting...`);
+    // Limit pages for faster conversion - process max 20 pages for speed
+    const maxPages = Math.min(numPages, 20);
+    console.log(`PDF has ${numPages} pages, converting first ${maxPages} for speed...`);
+    
+    const processedImages = [];
     
     // Import canvas library
     const { createCanvas } = require('@napi-rs/canvas');
     
-    // Use lower scale for faster conversion (1.5 instead of 2.0)
-    const scale = 1.5;
+    // Use much lower scale for maximum speed (0.75 instead of 1.5)
+    const scale = 0.75;
     
-    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-      const page = await pdfDocument.getPage(pageNum);
-      const viewport = page.getViewport({ scale });
+    // Process pages in batches with controlled concurrency for maximum speed
+    const BATCH_SIZE = 6; // Process 6 pages simultaneously
+    
+    for (let i = 0; i < maxPages; i += BATCH_SIZE) {
+      const batch = [];
+      for (let j = 0; j < BATCH_SIZE && (i + j) < maxPages; j++) {
+        const pageNum = i + j + 1;
+        batch.push(
+          pdfDocument.getPage(pageNum).then(async (page) => {
+            const viewport = page.getViewport({ scale });
+            
+            // Create smaller canvas for speed
+            const canvas = createCanvas(Math.floor(viewport.width), Math.floor(viewport.height));
+            const context = canvas.getContext('2d');
+            
+            // Render the page with timeout for speed
+            const renderPromise = page.render({
+              canvasContext: context,
+              viewport: viewport,
+            }).promise;
+            
+            // Add 3-second timeout per page
+            const timeoutPromise = new Promise((_, reject) => 
+              setTimeout(() => reject(new Error('Page render timeout')), 3000)
+            );
+            
+            try {
+              await Promise.race([renderPromise, timeoutPromise]);
+            } catch (error) {
+              console.warn(`Page ${pageNum} render failed, using placeholder:`, error.message);
+              // Create a simple placeholder if render fails
+              context.fillStyle = '#f0f0f0';
+              context.fillRect(0, 0, viewport.width, viewport.height);
+              context.fillStyle = '#666';
+              context.font = '20px Arial';
+              context.textAlign = 'center';
+              context.fillText(`Page ${pageNum}`, viewport.width/2, viewport.height/2);
+            }
+            
+            // Use JPEG with lower quality for maximum compression speed
+            const imageBuffer = canvas.toBuffer('image/jpeg', { quality: 0.7 });
+            const base64 = imageBuffer.toString('base64');
+            
+            const result = {
+              page: pageNum,
+              image: `data:image/jpeg;base64,${base64}`,
+              name: `${baseFilename}_page_${pageNum}.jpg`,
+              width: Math.floor(viewport.width),
+              height: Math.floor(viewport.height),
+              format: 'jpg',
+              size: imageBuffer.length
+            };
+            
+            page.cleanup();
+            return result;
+          })
+        );
+      }
       
-      // Create canvas
-      const canvas = createCanvas(Math.floor(viewport.width), Math.floor(viewport.height));
-      const context = canvas.getContext('2d');
-      
-      // Render the page
-      await page.render({
-        canvasContext: context,
-        viewport: viewport,
-      }).promise;
-      
-      // Get PNG buffer
-      const pngBuffer = canvas.toBuffer('image/png');
-      const base64 = pngBuffer.toString('base64');
-      
-      processedImages.push({
-        page: pageNum,
-        image: `data:image/png;base64,${base64}`,
-        name: `${baseFilename}_page_${pageNum}.png`,
-        width: Math.floor(viewport.width),
-        height: Math.floor(viewport.height),
-        format: 'png',
-        size: pngBuffer.length
-      });
-      
-      page.cleanup();
+      const batchResults = await Promise.all(batch);
+      processedImages.push(...batchResults);
     }
+    
+    // Sort by page number
+    processedImages.sort((a, b) => a.page - b.page);
     
     await pdfDocument.cleanup();
     
