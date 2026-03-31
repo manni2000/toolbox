@@ -269,6 +269,8 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
                         process.env.VERCEL_ENV === 'production' ||
                         !process.env.NODE_ENV; // Default to production if not set
     
+    const baseFilename = path.parse(req.file.originalname).name;
+    
     console.log('Environment check:', { 
       NODE_ENV: process.env.NODE_ENV, 
       VERCEL: process.env.VERCEL,
@@ -349,8 +351,6 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
         performance: { render: Date.now() }
       });
     }
-
-    const baseFilename = path.parse(req.file.originalname).name;
 
     // Check if we already have processed images from production conversion
     let images;

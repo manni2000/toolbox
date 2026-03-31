@@ -204,7 +204,7 @@ const PDFToImageTool = () => {
                     </p>
                   </div>
                 </div>
-                <button onClick={reset} className="p-1 hover:bg-destructive/20 rounded">
+                <button onClick={reset} className="p-1 hover:bg-destructive/20 rounded" title="Clear selection">
                   <X className="w-4 h-4 text-muted-foreground" />
                 </button>
               </div>
