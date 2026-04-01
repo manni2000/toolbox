@@ -42,7 +42,7 @@ const cleanupTempFile = (filePath) => {
       fs.unlinkSync(filePath);
     }
   } catch (error) {
-    console.error('Error cleaning up temp file:', error);
+    // Silent cleanup failure
   }
 };
 
@@ -79,7 +79,6 @@ router.get('/thumbnail-proxy', async (req, res) => {
     
     res.send(buffer);
   } catch (error) {
-    console.error('Thumbnail proxy error:', error);
     res.status(500).json({ error: 'Failed to fetch thumbnail' });
   }
 });
@@ -121,6 +120,7 @@ router.post('/to-audio', upload.single('video'), async (req, res) => {
 
     const { format = 'mp3', quality = 'medium' } = req.body;
     const supportedFormats = ['mp3', 'wav', 'aac', 'ogg'];
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
     
     if (!supportedFormats.includes(format)) {
       return res.status(400).json({ 
@@ -136,7 +136,7 @@ router.post('/to-audio', upload.single('video'), async (req, res) => {
       success: true,
       result: {
         audio: null,
-        filename: `extracted_audio.${format}`,
+        filename: `${baseFilename}.${format}`,
         format,
         originalVideo: req.file.originalname,
         note: 'Audio extraction requires file processing. This is a placeholder implementation.'
@@ -156,6 +156,7 @@ router.post('/trim', upload.single('video'), async (req, res) => {
     }
 
     const { startTime, endTime } = req.body;
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
     
     if (!startTime || !endTime) {
       return res.status(400).json({ error: 'Start time and end time are required' });
@@ -169,7 +170,7 @@ router.post('/trim', upload.single('video'), async (req, res) => {
       success: true,
       result: {
         video: null,
-        filename: 'trimmed_video.mp4',
+        filename: `${baseFilename}.mp4`,
         startTime,
         endTime,
         duration: parseFloat(endTime) - parseFloat(startTime),
@@ -190,6 +191,7 @@ router.post('/speed', upload.single('video'), async (req, res) => {
     }
 
     const { speedFactor = 1.0 } = req.body;
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
     
     if (speedFactor <= 0 || speedFactor > 4) {
       return res.status(400).json({ error: 'Speed factor must be between 0.1 and 4.0' });
@@ -203,7 +205,7 @@ router.post('/speed', upload.single('video'), async (req, res) => {
       success: true,
       result: {
         video: null,
-        filename: `speed_${speedFactor}x_video.mp4`,
+        filename: `${baseFilename}.mp4`,
         speedFactor: parseFloat(speedFactor),
         note: 'Video speed change requires file processing. This is a placeholder implementation.'
       }
@@ -222,6 +224,7 @@ router.post('/thumbnail', upload.single('video'), async (req, res) => {
     }
 
     const { timestamp = '00:00:01', width = 320, height = 240 } = req.body;
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
 
     const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
     const tempOutputPath = path.join(__dirname, '../temp', `thumbnail_${Date.now()}.jpg`);
@@ -249,7 +252,7 @@ router.post('/thumbnail', upload.single('video'), async (req, res) => {
             success: true,
             result: {
               thumbnail: `data:image/jpeg;base64,${thumbnailBase64}`,
-              filename: 'thumbnail.jpg',
+              filename: `${baseFilename}.jpg`,
               timestamp,
               width: parseInt(width),
               height: parseInt(height)
@@ -281,6 +284,7 @@ router.post('/resolution', upload.single('video'), async (req, res) => {
     }
 
     const { width, height, maintainAspect = true } = req.body;
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
     
     if (!width && !height) {
       return res.status(400).json({ error: 'At least width or height is required' });
@@ -327,7 +331,7 @@ router.post('/resolution', upload.single('video'), async (req, res) => {
             success: true,
             result: {
               video: `data:video/mp4;base64,${videoBase64}`,
-              filename: 'resized_video.mp4',
+              filename: `${baseFilename}.mp4`,
               width: width || 'auto',
               height: height || 'auto',
               maintainAspect: maintainAspect === 'true'
@@ -360,6 +364,7 @@ router.post('/convert', upload.single('video'), async (req, res) => {
 
     const { format = 'mp4', quality = 'medium' } = req.body;
     const supportedFormats = ['mp4', 'webm', 'avi', 'mov', 'flv'];
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
     
     if (!supportedFormats.includes(format)) {
       return res.status(400).json({ 
@@ -404,7 +409,7 @@ router.post('/convert', upload.single('video'), async (req, res) => {
             success: true,
             result: {
               video: `data:video/${format};base64,${videoBase64}`,
-              filename: `converted.${format}`,
+              filename: `${baseFilename}.${format}`,
               format,
               quality,
               originalFormat: path.extname(req.file.originalname).slice(1)
@@ -488,6 +493,7 @@ router.post('/compress', upload.single('video'), async (req, res) => {
     }
 
     const { quality = 'medium', crf = '23' } = req.body;
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
 
     const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
     const tempOutputPath = path.join(__dirname, '../temp', `compressed_${Date.now()}.mp4`);
@@ -516,7 +522,7 @@ router.post('/compress', upload.single('video'), async (req, res) => {
             success: true,
             result: {
               video: `data:video/mp4;base64,${videoBase64}`,
-              filename: 'compressed_video.mp4',
+              filename: `${baseFilename}.mp4`,
               originalSize: req.file.size,
               compressedSize: outputBuffer.length,
               compressionRatio: ((req.file.size - outputBuffer.length) / req.file.size * 100).toFixed(2),

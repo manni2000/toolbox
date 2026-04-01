@@ -701,7 +701,6 @@ router.post('/invoice-generator/', (req, res) => {
     res.send(html);
 
   } catch (error) {
-    console.error('Error generating invoice:', error);
     res.status(500).json({ error: 'Failed to generate invoice' });
   }
 });

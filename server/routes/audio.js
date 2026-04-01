@@ -39,7 +39,7 @@ const cleanupTempFile = (filePath) => {
       fs.unlinkSync(filePath);
     }
   } catch (error) {
-    console.error('Error cleaning up temp file:', error);
+    // Silent cleanup failure
   }
 };
 
@@ -52,6 +52,7 @@ router.post('/convert', upload.single('audio'), async (req, res) => {
 
     const targetFormat = req.body.format || 'mp3';
     const supportedFormats = ['mp3', 'wav', 'aac', 'ogg', 'flac'];
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
     
     if (!supportedFormats.includes(targetFormat.toLowerCase())) {
       return res.status(400).json({ 
@@ -89,7 +90,7 @@ router.post('/convert', upload.single('audio'), async (req, res) => {
           res.json({
             success: true,
             audio: `data:${mimeTypes[targetFormat]};base64,${audioBase64}`,
-            filename: `converted.${targetFormat}`,
+            filename: `${baseFilename}.${targetFormat}`,
             original_format: path.extname(req.file.originalname).slice(1)
           });
         } catch (error) {
@@ -119,6 +120,7 @@ router.post('/trim', upload.single('audio'), async (req, res) => {
 
     const startTime = parseFloat(req.body.start_time) || 0;
     const endTime = parseFloat(req.body.end_time) || 10;
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
 
     const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
     const tempOutputPath = path.join(__dirname, '../temp', `trimmed_${Date.now()}.mp3`);
@@ -144,7 +146,7 @@ router.post('/trim', upload.single('audio'), async (req, res) => {
           res.json({
             success: true,
             audio: `data:audio/mpeg;base64,${audioBase64}`,
-            filename: 'trimmed_audio.mp3',
+            filename: `${baseFilename}.mp3`,
             duration: endTime - startTime
           });
         } catch (error) {
@@ -171,6 +173,9 @@ router.post('/merge', upload.array('audios', 10), async (req, res) => {
     if (!req.files || req.files.length < 2) {
       return res.status(400).json({ error: 'At least 2 audio files are required' });
     }
+
+    // Use the first file's name as the base filename
+    const baseFilename = req.files[0].originalname.replace(/\.[^/.]+$/, '');
 
     const tempDir = path.join(__dirname, '../temp');
     if (!fs.existsSync(tempDir)) {
@@ -206,7 +211,7 @@ router.post('/merge', upload.array('audios', 10), async (req, res) => {
           res.json({
             success: true,
             audio: `data:audio/mpeg;base64,${audioBase64}`,
-            filename: 'merged_audio.mp3',
+            filename: `${baseFilename}.mp3`,
             files_merged: req.files.length
           });
         } catch (error) {
@@ -235,6 +240,7 @@ router.post('/speed', upload.single('audio'), async (req, res) => {
     }
 
     const speedFactor = parseFloat(req.body.speed_factor) || 1.0;
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
     
     if (speedFactor <= 0 || speedFactor > 4) {
       return res.status(400).json({ error: 'Speed factor must be between 0.1 and 4.0' });
@@ -263,7 +269,7 @@ router.post('/speed', upload.single('audio'), async (req, res) => {
           res.json({
             success: true,
             audio: `data:audio/mpeg;base64,${audioBase64}`,
-            filename: `speed_${speedFactor}x_audio.mp3`,
+            filename: `${baseFilename}.mp3`,
             speed_factor: speedFactor
           });
         } catch (error) {
@@ -325,7 +331,6 @@ router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
 
     } catch (error) {
       cleanupTempFile(tempInputPath);
-      console.error('Speech recognition error:', error);
       
       // Fallback to placeholder if speech recognition fails
       res.json({
@@ -339,7 +344,6 @@ router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
     }
 
   } catch (error) {
-    console.error('Speech-to-text error:', error);
     res.status(500).json({ error: error.message || 'Failed to process speech-to-text' });
   }
 });

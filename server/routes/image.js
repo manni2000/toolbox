@@ -66,20 +66,20 @@ router.post('/compress', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'No image file provided' });
     }
 
-    const { quality = 80, format = 'jpeg' } = req.body;
+    const { quality = 95, format = 'jpeg' } = req.body;
 
     let compressedImage;
     if (format === 'jpeg') {
       compressedImage = await sharp(req.file.buffer)
-        .jpeg({ quality: parseInt(quality) })
+        .jpeg({ quality: parseInt(quality), chromaSubsampling: '4:4:4' })
         .toBuffer();
     } else if (format === 'png') {
       compressedImage = await sharp(req.file.buffer)
-        .png({ quality: parseInt(quality) })
+        .png({ compressionLevel: 6, quality: 100 })
         .toBuffer();
     } else if (format === 'webp') {
       compressedImage = await sharp(req.file.buffer)
-        .webp({ quality: parseInt(quality) })
+        .webp({ quality: parseInt(quality), lossless: false })
         .toBuffer();
     }
 
@@ -108,7 +108,7 @@ router.post('/convert', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'No image file provided' });
     }
 
-    const { format = 'jpeg', quality = 80 } = req.body;
+    const { format = 'jpeg', quality = 95 } = req.body;
     const supportedFormats = ['jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff'];
     
     if (!supportedFormats.includes(format)) {
@@ -122,13 +122,13 @@ router.post('/convert', upload.single('image'), async (req, res) => {
 
     switch (format) {
       case 'jpeg':
-        convertedImage = await image.jpeg({ quality: parseInt(quality) }).toBuffer();
+        convertedImage = await image.jpeg({ quality: parseInt(quality), chromaSubsampling: '4:4:4' }).toBuffer();
         break;
       case 'png':
-        convertedImage = await image.png().toBuffer();
+        convertedImage = await image.png({ compressionLevel: 6, quality: 100 }).toBuffer();
         break;
       case 'webp':
-        convertedImage = await image.webp({ quality: parseInt(quality) }).toBuffer();
+        convertedImage = await image.webp({ quality: parseInt(quality), lossless: false }).toBuffer();
         break;
       case 'gif':
         convertedImage = await image.gif().toBuffer();
@@ -166,7 +166,7 @@ router.post('/resize', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'No image file provided' });
     }
 
-    const { width, height, maintainAspect = true } = req.body;
+    const { width, height, maintainAspect = true, quality = 95 } = req.body;
 
     if (!width && !height) {
       return res.status(400).json({ error: 'At least width or height is required' });
@@ -182,6 +182,7 @@ router.post('/resize', upload.single('image'), async (req, res) => {
 
     const resizedImage = await sharp(req.file.buffer)
       .resize(resizeOptions)
+      .jpeg({ quality: parseInt(quality), chromaSubsampling: '4:4:4' })
       .toBuffer();
 
     const resizedBase64 = resizedImage.toString('base64');
@@ -209,7 +210,7 @@ router.post('/crop', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'No image file provided' });
     }
 
-    const { x, y, width, height } = req.body;
+    const { x, y, width, height, quality = 95 } = req.body;
 
     if (x === undefined || y === undefined || !width || !height) {
       return res.status(400).json({ error: 'X, Y, width, and height are required' });
@@ -222,6 +223,7 @@ router.post('/crop', upload.single('image'), async (req, res) => {
         width: parseInt(width),
         height: parseInt(height)
       })
+      .jpeg({ quality: parseInt(quality), chromaSubsampling: '4:4:4' })
       .toBuffer();
 
     const croppedBase64 = croppedImage.toString('base64');
@@ -289,7 +291,6 @@ router.post('/background-remover', upload.single('image'), async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Background removal error:', error);
     res.status(500).json({ error: error.message || 'Failed to remove background' });
   }
 });
@@ -465,7 +466,6 @@ router.post('/image-to-pdf', upload.single('image'), async (req, res) => {
       filename: req.file.originalname.replace(/\.[^/.]+$/, '.pdf')
     });
   } catch (error) {
-    console.error('Image to PDF conversion error:', error);
     res.status(500).json({ error: error.message || 'Failed to convert image to PDF' });
   }
 });
@@ -500,7 +500,6 @@ router.post('/qr-scanner', upload.single('image'), async (req, res) => {
       imageData: `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`
     });
   } catch (error) {
-    console.error('QR code scanning error:', error);
     res.status(500).json({ error: error.message || 'Failed to scan QR code' });
   }
 });
@@ -551,7 +550,6 @@ router.post('/dpi-checker', upload.single('image'), async (req, res) => {
       result: dpiInfo
     });
   } catch (error) {
-    console.error('DPI checker error:', error);
     res.status(500).json({ error: error.message || 'Failed to check image DPI' });
   }
 });
@@ -588,10 +586,9 @@ router.post('/image-to-word', upload.single('image'), async (req, res) => {
       success: true,
       result: ocrResult,
       file: `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${wordBase64}`,
-      filename: req.file.originalname.replace(/\.[^/.]+$/, '_extracted.docx')
+      filename: req.file.originalname.replace(/\.[^/.]+$/, '.docx')
     });
   } catch (error) {
-    console.error('Image to Word error:', error);
     res.status(500).json({ error: error.message || 'Failed to convert image to Word' });
   }
 });

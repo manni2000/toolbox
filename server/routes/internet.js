@@ -55,8 +55,6 @@ router.post('/ip-lookup', async (req, res) => {
         throw new Error(response.data?.message || 'IP lookup service failed');
       }
     } catch (apiError) {
-      console.warn('IP API service failed, using fallback:', apiError.message);
-      
       // Fallback to basic IP info if API fails
       const ipInfo = {
         ip: targetIP,
@@ -79,7 +77,6 @@ router.post('/ip-lookup', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('IP lookup error:', error);
     res.status(500).json({ 
       error: error.message || 'Failed to lookup IP address',
       details: process.env.NODE_ENV === 'development' ? error.stack : undefined
@@ -203,8 +200,6 @@ router.post('/dns-lookup', async (req, res) => {
       });
       
     } catch (dnsError) {
-      console.warn('DNS lookup failed:', dnsError.message);
-      
       // Return error if DNS lookup fails
       const dnsInfo = {
         domain,
@@ -219,7 +214,6 @@ router.post('/dns-lookup', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('DNS lookup error:', error);
     res.status(500).json({ 
       error: error.message || 'Failed to lookup DNS records',
       details: process.env.NODE_ENV === 'development' ? error.stack : undefined
@@ -257,8 +251,6 @@ router.post('/ssl-checker', async (req, res) => {
     const https = require('https');
     
     try {
-      console.log(`Attempting SSL check for domain: ${targetDomain}`);
-      
       // Create a TLS connection to check SSL certificate
       const socket = tls.connect(443, targetDomain, { servername: targetDomain }, () => {
         const cert = socket.getPeerCertificate(true);
@@ -294,7 +286,6 @@ router.post('/ssl-checker', async (req, res) => {
 
         socket.destroy();
         
-        console.log(`SSL check successful for ${targetDomain}`);
         res.json({
           success: true,
           result: sslInfo
@@ -302,7 +293,6 @@ router.post('/ssl-checker', async (req, res) => {
       });
 
       socket.on('error', (error) => {
-        console.warn(`SSL check failed for ${targetDomain}:`, error.message);
         socket.destroy();
         
         // Try HTTPS fallback
@@ -321,7 +311,6 @@ router.post('/ssl-checker', async (req, res) => {
               note: 'SSL certificate verified via HTTPS. Detailed certificate information not available.'
             };
 
-            console.log(`HTTPS fallback successful for ${targetDomain}`);
             res.json({
               success: true,
               result: sslInfo
@@ -329,7 +318,6 @@ router.post('/ssl-checker', async (req, res) => {
           });
 
           req.on('error', () => {
-            console.error(`HTTPS fallback also failed for ${targetDomain}`);
             res.status(400).json({
               success: false,
               error: 'SSL certificate check failed. The domain may not have SSL certificate or the connection failed.',
@@ -348,7 +336,6 @@ router.post('/ssl-checker', async (req, res) => {
 
           req.end();
         } catch (fallbackError) {
-          console.error(`HTTPS fallback error for ${targetDomain}:`, fallbackError.message);
           res.status(400).json({
             success: false,
             error: 'SSL certificate check failed. The domain may not have SSL certificate or the connection failed.',
@@ -358,7 +345,6 @@ router.post('/ssl-checker', async (req, res) => {
       });
 
       socket.setTimeout(5000, () => {
-        console.warn(`SSL check timed out for ${targetDomain}`);
         socket.destroy();
         res.status(408).json({
           success: false,
@@ -368,7 +354,6 @@ router.post('/ssl-checker', async (req, res) => {
       });
 
     } catch (sslError) {
-      console.error('SSL checker error:', sslError);
       res.status(500).json({ 
         success: false,
         error: sslError.message || 'Failed to check SSL certificate',
@@ -376,7 +361,6 @@ router.post('/ssl-checker', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('SSL checker error:', error);
     res.status(500).json({ 
       success: false,
       error: error.message || 'Failed to check SSL certificate',
@@ -476,8 +460,6 @@ router.post('/website-ping', async (req, res) => {
       });
       
     } catch (error) {
-      console.error('Website ping error:', error);
-      
       const pingInfo = {
         url: targetUrl,
         host: new URL(targetUrl).hostname,
@@ -498,7 +480,6 @@ router.post('/website-ping', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Website ping error:', error);
     res.status(500).json({ 
       error: error.message || 'Failed to ping website',
       details: process.env.NODE_ENV === 'development' ? error.stack : undefined

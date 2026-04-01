@@ -10,7 +10,7 @@ const ImageCompressorTool = () => {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [compressedUrl, setCompressedUrl] = useState<string | null>(null);
-  const [quality, setQuality] = useState(80);
+  const [quality, setQuality] = useState(95);
   const [originalSize, setOriginalSize] = useState(0);
   const [compressedSize, setCompressedSize] = useState(0);
   const [isDragging, setIsDragging] = useState(false);

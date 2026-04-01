@@ -403,7 +403,6 @@ router.post('/tech-stack-detector', async (req, res) => {
       result: techStack
     });
   } catch (error) {
-    console.error('Tech stack detection error:', error.message);
     res.status(500).json({ error: error.message });
   }
 });
