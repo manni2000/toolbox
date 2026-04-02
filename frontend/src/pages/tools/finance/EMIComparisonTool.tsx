@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { Copy, Check, Calculator, DollarSign, TrendingUp, CheckCircle, AlertCircle } from 'lucide-react';
+import { Copy, Check, Calculator, DollarSign, TrendingUp, CheckCircle, AlertCircle, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 interface EMIResult {
   principal: number;
@@ -237,7 +241,7 @@ export default function EMIComparisonTool() {
               </div>
             </div>
 
-            <button 
+            <button
               onClick={compareLoans} 
               disabled={!loanAmount || !loan1Rate || !loan1Tenure || loading}
               className="btn-primary w-full flex items-center justify-center gap-2"

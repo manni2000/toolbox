@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Palette } from "lucide-react";
+import { Copy, Check, Palette, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 const ColorConverterTool = () => {
   const [hex, setHex] = useState("#3b82f6");
@@ -116,6 +120,8 @@ const ColorConverterTool = () => {
             type="color"
             value={hex}
             onChange={(e) => updateFromHex(e.target.value)}
+            aria-label="Choose color"
+            title="Choose color"
             className="h-14 w-32 cursor-pointer rounded-lg border border-border"
           />
         </div>
@@ -123,7 +129,7 @@ const ColorConverterTool = () => {
         {/* HEX */}
         <div className="rounded-lg border border-border bg-card p-4">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium">HEX</label>
+            <label htmlFor="hex-input" className="text-sm font-medium">HEX</label>
             <button
               onClick={() => handleCopy("hex", hex.toUpperCase())}
               className="text-muted-foreground hover:text-foreground"
@@ -132,6 +138,7 @@ const ColorConverterTool = () => {
             </button>
           </div>
           <input
+            id="hex-input"
             type="text"
             value={hex.toUpperCase()}
             onChange={(e) => updateFromHex(e.target.value)}
@@ -152,8 +159,9 @@ const ColorConverterTool = () => {
           </div>
           <div className="mt-2 grid grid-cols-3 gap-4">
             <div>
-              <label className="text-xs text-muted-foreground">R</label>
+              <label htmlFor="rgb-r-input" className="text-xs text-muted-foreground">R</label>
               <input
+                id="rgb-r-input"
                 type="number"
                 min="0"
                 max="255"
@@ -163,8 +171,9 @@ const ColorConverterTool = () => {
               />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">G</label>
+              <label htmlFor="rgb-g-input" className="text-xs text-muted-foreground">G</label>
               <input
+                id="rgb-g-input"
                 type="number"
                 min="0"
                 max="255"
@@ -174,8 +183,9 @@ const ColorConverterTool = () => {
               />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">B</label>
+              <label htmlFor="rgb-b-input" className="text-xs text-muted-foreground">B</label>
               <input
+                id="rgb-b-input"
                 type="number"
                 min="0"
                 max="255"
@@ -203,8 +213,9 @@ const ColorConverterTool = () => {
           </div>
           <div className="mt-2 grid grid-cols-3 gap-4">
             <div>
-              <label className="text-xs text-muted-foreground">H</label>
+              <label htmlFor="hsl-h-input" className="text-xs text-muted-foreground">H</label>
               <input
+                id="hsl-h-input"
                 type="number"
                 min="0"
                 max="360"
@@ -214,8 +225,9 @@ const ColorConverterTool = () => {
               />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">S%</label>
+              <label htmlFor="hsl-s-input" className="text-xs text-muted-foreground">S%</label>
               <input
+                id="hsl-s-input"
                 type="number"
                 min="0"
                 max="100"
@@ -225,8 +237,9 @@ const ColorConverterTool = () => {
               />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">L%</label>
+              <label htmlFor="hsl-l-input" className="text-xs text-muted-foreground">L%</label>
               <input
+                id="hsl-l-input"
                 type="number"
                 min="0"
                 max="100"

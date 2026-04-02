@@ -2,9 +2,13 @@ import { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Delete, RotateCcw } from "lucide-react";
+import { Delete, RotateCcw, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 
-// Define button components outside the main component to prevent recreation on each render
+const categoryColor = "145 70% 45%";
+
+// Define button componentsoutside the main component to prevent recreation on each render
 const ScientificButton = ({ 
   label, 
   onClick, 

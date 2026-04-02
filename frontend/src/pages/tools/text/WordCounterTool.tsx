@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Type, AlignLeft, Hash, FileText } from "lucide-react";
+import { Copy, Check, Type, AlignLeft, Hash, FileText, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "260 70% 55%";
 
 const WordCounterTool = () => {
   const [text, setText] = useState("");

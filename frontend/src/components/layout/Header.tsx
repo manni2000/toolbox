@@ -12,8 +12,17 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/50 bg-background">
-      <div className="container">
+    <>
+      {/* Skip to main content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      >
+        Skip to main content
+      </a>
+      
+      <header className="sticky top-0 z-50 border-b border-border/50 bg-background">
+        <div className="container">
         <div className="flex h-20 items-center justify-between sm:h-20 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center">
@@ -193,6 +202,7 @@ const Header = () => {
         )}
       </AnimatePresence>
     </header>
+    </>
   );
 };
 

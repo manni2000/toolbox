@@ -1,9 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, ChevronRight, ArrowRight, TrendingUp, Star } from "lucide-react";
+import { Home, ChevronRight, TrendingUp, Star } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { getCategoryById } from "@/data/toolCategories";
+import ToolCard from "@/components/ToolCard";
+import { staggerContainer, fadeInUp } from "@/lib/animations";
 
 const CategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -62,61 +64,143 @@ const CategoryPage = () => {
           </div>
         </div>
 
-        {/* Category Header */}
-        <section className="border-b border-border bg-gradient-to-b from-muted/50 to-background py-8 sm:py-12">
-          <div className="container">
+        {/* Category Header - Enhanced */}
+        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 py-12 sm:py-16">
+          {/* Animated background elements */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${category.color} / 0.2)` }}
+          />
+          
+          <div className="container relative">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
               className="flex items-center gap-4 sm:gap-6"
             >
-              <div
-                className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl flex-shrink-0"
-                style={{ backgroundColor: `hsl(${category.color} / 0.15)` }}
+              {/* Enhanced icon with glow effect */}
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                transition={{ duration: 0.5 }}
+                className="relative flex h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 items-center justify-center rounded-2xl sm:rounded-3xl"
+                style={{
+                  backgroundColor: `hsl(${category.color} / 0.15)`,
+                  boxShadow: `0 8px 30px hsl(${category.color} / 0.3)`,
+                }}
               >
                 <Icon
-                  className="h-7 w-7 sm:h-8 sm:w-8"
+                  className="h-8 w-8 sm:h-10 sm:w-10"
                   style={{ color: `hsl(${category.color})` }}
                 />
-              </div>
+                {/* Glow ring */}
+                <div
+                  className="absolute inset-0 rounded-2xl sm:rounded-3xl"
+                  style={{
+                    boxShadow: `inset 0 0 20px hsl(${category.color} / 0.2)`,
+                  }}
+                />
+              </motion.div>
+              
               <div className="text-left">
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">
+                <motion.h1
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
+                >
                   {category.name}
-                </h1>
-                <p className="mt-2 text-base sm:text-lg text-muted-foreground">
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="mt-2 text-base text-muted-foreground sm:text-lg"
+                >
                   {category.description}
-                </p>
-                <p className="mt-1 sm:mt-2 text-sm text-muted-foreground">
-                  {category.tools.length} tools available
-                </p>
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="mt-2 flex items-center gap-2 sm:mt-3"
+                >
+                  <span
+                    className="rounded-full px-3 py-1 text-xs font-semibold text-white sm:text-sm"
+                    style={{ backgroundColor: `hsl(${category.color})` }}
+                  >
+                    {category.tools.length} tools
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <Star className="h-3 w-3 fill-current text-yellow-500 sm:h-4 sm:w-4" />
+                    <Star className="h-3 w-3 fill-current text-yellow-500 sm:h-4 sm:w-4" />
+                    <Star className="h-3 w-3 fill-current text-yellow-500 sm:h-4 sm:w-4" />
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
         </section>
 
-        {/* All Tools Section */}
-        <section className="py-8 sm:py-12">
+        {/* All Tools Section - Enhanced */}
+        <section className="py-12 sm:py-16">
           <div className="container">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-8"
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+              className="mb-10"
             >
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/10">
-                  <TrendingUp className="h-5 w-5 text-primary" />
-                </div>
-                <h2 className="text-2xl font-bold tracking-tight">All {category.name}</h2>
+                <motion.div
+                  whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                  className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 shadow-lg"
+                >
+                  <TrendingUp className="h-6 w-6 text-primary" />
+                </motion.div>
+                <h2 className="text-3xl font-bold tracking-tight">All {category.name}</h2>
                 <div className="flex items-center gap-1">
-                  <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                  <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                  <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                  {[...Array(3)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      animate={{
+                        scale: [1, 1.2, 1],
+                        rotate: [0, 180, 360],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: i * 0.2,
+                      }}
+                    >
+                      <Star className="h-4 w-4 fill-current text-yellow-500" />
+                    </motion.div>
+                  ))}
                 </div>
               </div>
-              <p className="mt-2 text-muted-foreground">Complete collection of {category.name.toLowerCase()} - Trending tools shown first</p>
+              <p className="mt-2 text-muted-foreground">
+                Complete collection of {category.name.toLowerCase()} - Trending tools shown first
+              </p>
             </motion.div>
 
-            <div className="grid gap-4 sm:gap-6 grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {/* Enhanced grid with stagger animation */}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 gap-6 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            >
               {category.tools
                 .sort((a, b) => {
                   const aIsTrending = isTrending(a.id);
@@ -126,48 +210,18 @@ const CategoryPage = () => {
                   return 0;
                 })
                 .map((tool, index) => (
-                <motion.div
-                  key={tool.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Link
-                    to={tool.path}
-                    className={`group relative flex h-full flex-col overflow-hidden rounded-xl border p-4 sm:p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 ${
-                      isTrending(tool.id)
-                        ? "border-primary/30 bg-gradient-to-br from-primary/5 via-background to-primary/5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
-                        : "border-border bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
-                    }`}
-                  >
-                    {/* Trending Indicator - Small icon */}
-                    {isTrending(tool.id) && (
-                      <div className="absolute top-3 right-3 z-10 flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 shadow-sm">
-                        <TrendingUp className="h-3 w-3 text-white" />
-                      </div>
-                    )}
-                    
-                    <div className="flex-1">
-                      <h3 className={`font-semibold line-clamp-2 ${
-                        isTrending(tool.id)
-                          ? "text-foreground group-hover:text-primary"
-                          : "text-card-foreground group-hover:text-primary"
-                      }`}>
-                        {tool.name}
-                      </h3>
-                      <p className="mt-2 flex-1 text-muted-foreground line-clamp-3">
-                        {tool.description}
-                      </p>
-                    </div>
-                    
-                    <div className="mt-4 flex items-center gap-2 text-sm font-medium text-primary">
-                      <span>Use tool</span>
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+                  <ToolCard
+                    key={tool.id}
+                    id={tool.id}
+                    name={tool.name}
+                    description={tool.description}
+                    path={tool.path}
+                    categoryColor={category.color}
+                    isTrending={isTrending(tool.id)}
+                    delay={index * 0.05}
+                  />
+                ))}
+            </motion.div>
           </div>
         </section>
       </main>

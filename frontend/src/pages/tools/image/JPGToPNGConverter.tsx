@@ -1,7 +1,12 @@
 import { useState, useRef } from "react";
-import { Upload, Image as ImageIcon, X, RefreshCw, ArrowRight, FileImage, Sparkles } from "lucide-react";
+import { Upload, Image as ImageIcon, X, RefreshCw, ArrowRight, FileImage, Sparkles, Zap } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+
+const categoryColor = "173 80% 40%";
 
 const JPGToPNGConverter = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -83,36 +88,46 @@ const JPGToPNGConverter = () => {
       categoryPath="/category/image"
     >
       <div className="space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-blue-500 mb-4">
-            <FileImage className="h-8 w-8 text-white" />
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <FileImage className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Quick JPG to PNG Conversion</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Convert JPG images to PNG format with lossless quality and full transparency support.
+              </p>
+            </div>
           </div>
-          <h2 className="text-2xl font-bold mb-2">JPG to PNG Converter</h2>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            Convert JPG images to PNG format with full transparency support. 
-            Perfect for web graphics and images that need transparent backgrounds.
-          </p>
-        </div>
-
-        {/* Features */}
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-green-200 bg-green-50 p-4">
-            <Sparkles className="h-8 w-8 text-green-600 mb-2" />
-            <h3 className="font-semibold text-green-900">Lossless Quality</h3>
-            <p className="text-sm text-green-700 mt-1">Perfect image quality preservation</p>
-          </div>
-          <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
-            <FileImage className="h-8 w-8 text-blue-600 mb-2" />
-            <h3 className="font-semibold text-blue-900">Transparency Support</h3>
-            <p className="text-sm text-blue-700 mt-1">Supports transparent backgrounds</p>
-          </div>
-          <div className="rounded-xl border border-purple-200 bg-purple-50 p-4">
-            <RefreshCw className="h-8 w-8 text-purple-600 mb-2" />
-            <h3 className="font-semibold text-purple-900">Web Optimized</h3>
-            <p className="text-sm text-purple-700 mt-1">Perfect for web and graphics</p>
-          </div>
-        </div>
+        </motion.div>
 
         {/* Upload Area */}
         {!image && (
@@ -141,7 +156,13 @@ const JPGToPNGConverter = () => {
 
         {/* Preview and Convert */}
         {image && (
-          <div className="space-y-6">
+          <motion.div
+            variants={scaleIn}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.1 }}
+            className="space-y-6"
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <ImageIcon className="h-5 w-5 text-muted-foreground" />
@@ -152,25 +173,38 @@ const JPGToPNGConverter = () => {
                   </span>
                 </div>
               </div>
-              <button
-                onClick={reset}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
-                title="Clear image and reset converter"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <button
+                  onClick={reset}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
+                  title="Clear image and reset converter"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </motion.div>
             </div>
 
             {/* Preview */}
-            <div className="flex justify-center rounded-xl border border-border bg-muted/30 p-4">
+            <motion.div className="relative overflow-hidden flex justify-center rounded-xl border border-border bg-muted/30 p-4">
+              <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: "200%" }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "linear",
+                  repeatDelay: 1,
+                }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              />
               {preview && (
                 <img
                   src={preview}
                   alt="Preview"
-                  className="max-h-80 max-w-full rounded-lg object-contain"
+                  className="max-h-80 max-w-full rounded-lg object-contain relative z-10"
                 />
               )}
-            </div>
+            </motion.div>
 
             {/* Conversion Flow */}
             <div className="flex items-center justify-center gap-4 text-sm">
@@ -184,8 +218,16 @@ const JPGToPNGConverter = () => {
             </div>
 
             {/* PNG Benefits */}
-            <div className="rounded-xl border bg-card p-6">
-              <h3 className="mb-3 font-semibold text-foreground">Why Convert to PNG?</h3>
+            <div className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500">
+              <div className="mb-3 flex items-center gap-2">
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <Sparkles className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+                </motion.div>
+                <h3 className="font-semibold text-foreground">Why Convert to PNG?</h3>
+              </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-green-500" />
@@ -206,17 +248,34 @@ const JPGToPNGConverter = () => {
               </div>
             </div>
 
+            {isConverting && (
+              <div className="flex justify-center py-8">
+                <ModernLoadingSpinner 
+                  size="md" 
+                  text="Converting to PNG..." 
+                  color={`hsl(${categoryColor})`}
+                />
+              </div>
+            )}
+
             {/* Convert Button */}
-            <button 
-              onClick={convert} 
-              disabled={isConverting}
-              className="btn-primary w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
-              title="Convert JPG image to PNG format"
-            >
-              <RefreshCw className={`h-5 w-5 ${isConverting ? "animate-spin" : ""}`} />
-              {isConverting ? "Converting to PNG..." : "Convert to PNG"}
-            </button>
-          </div>
+            {!isConverting && (
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <button
+                  onClick={convert} 
+                  disabled={isConverting}
+                  className="btn-primary w-full"
+                  style={{
+                    background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                  }}
+                  title="Convert JPG image to PNG format"
+                >
+                  <RefreshCw className="h-5 w-5" />
+                  Convert to PNG
+                </button>
+              </motion.div>
+            )}
+          </motion.div>
         )}
 
         {/* Download Section */}

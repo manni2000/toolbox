@@ -1,10 +1,15 @@
 import { useState, useCallback, useRef } from "react";
-import { Upload, Image, X, Zap, Settings, Download } from "lucide-react";
+import { Upload, Image, X, Zap, Settings, Download, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { useToast } from "@/hooks/use-toast";
+
+const categoryColor = "173 80% 40%";
 
 const ImageCompressorTool = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -124,6 +129,48 @@ const ImageCompressorTool = () => {
       categoryPath="/category/image"
     >
       <div className="space-y-8">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Zap className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Smart Image Compression</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Reduce image file sizes by up to 90% while maintaining visual quality. Perfect for web optimization.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Upload Area */}
         {!image && (
           <ImageUploadZone
@@ -142,7 +189,12 @@ const ImageCompressorTool = () => {
 
         {/* Image Preview */}
         {image && (
-          <div className="space-y-6">
+          <motion.div 
+            variants={scaleIn}
+            initial="hidden"
+            animate="visible"
+            className="space-y-6"
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Image className="h-5 w-5 text-muted-foreground" />
@@ -151,49 +203,106 @@ const ImageCompressorTool = () => {
                   ({formatSize(originalSize)})
                 </span>
               </div>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => { setImage(null); setPreview(null); setCompressedUrl(null); }}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
                 title="Clear image"
               >
                 <X className="h-5 w-5" />
-              </button>
+              </motion.button>
             </div>
 
             <div className="grid gap-6 lg:grid-cols-2">
-              <div className="rounded-xl border border-border bg-muted/30 p-4">
-                <p className="mb-2 text-sm font-medium">Original</p>
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="rounded-xl border border-border bg-muted/30 p-4 shadow-lg hover:shadow-xl transition-shadow duration-500"
+              >
+                <p className="mb-2 text-sm font-medium flex items-center gap-2">
+                  <Sparkles className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
+                  Original
+                </p>
                 {preview && (
-                  <img
-                    src={preview}
-                    alt="Original"
-                    className="max-h-64 w-full rounded-lg object-contain"
-                  />
+                  <motion.div className="relative overflow-hidden rounded-lg">
+                    <motion.div
+                      initial={{ x: "-100%" }}
+                      animate={{ x: "200%" }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "linear",
+                        repeatDelay: 1,
+                      }}
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent z-10"
+                    />
+                    <img
+                      src={preview}
+                      alt="Original"
+                      className="max-h-64 w-full rounded-lg object-contain"
+                    />
+                  </motion.div>
                 )}
-              </div>
-              <div className="rounded-xl border border-border bg-muted/30 p-4">
-                <p className="mb-2 text-sm font-medium">
-                  Compressed {compressedUrl && `(${formatSize(compressedSize)} - ${reduction}% smaller)`}
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="rounded-xl border border-border bg-muted/30 p-4 shadow-lg hover:shadow-xl transition-shadow duration-500"
+              >
+                <p className="mb-2 text-sm font-medium flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-green-500" />
+                  Compressed {compressedUrl && (
+                    <span className="text-green-600 font-semibold">
+                      ({formatSize(compressedSize)} - {reduction}% smaller)
+                    </span>
+                  )}
                 </p>
                 {compressedUrl ? (
-                  <img
-                    src={compressedUrl}
-                    alt="Compressed"
-                    className="max-h-64 w-full rounded-lg object-contain"
-                  />
+                  <motion.div 
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="relative overflow-hidden rounded-lg"
+                  >
+                    <img
+                      src={compressedUrl}
+                      alt="Compressed"
+                      className="max-h-64 w-full rounded-lg object-contain"
+                    />
+                  </motion.div>
                 ) : (
                   <div className="flex h-64 items-center justify-center text-muted-foreground">
                     Click compress to see result
                   </div>
                 )}
-              </div>
+              </motion.div>
             </div>
 
             {/* Quality Slider */}
-            <div>
-              <div className="mb-2 flex justify-between">
-                <label className="text-sm font-medium">Quality</label>
-                <span className="text-sm text-muted-foreground">{quality}%</span>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-lg"
+            >
+              <div className="mb-3 flex items-center justify-between">
+                <label className="text-sm font-semibold flex items-center gap-2">
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Settings className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+                  </motion.div>
+                  Quality Level
+                </label>
+                <span className="text-sm font-bold px-3 py-1 rounded-full" style={{ 
+                  backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                  color: `hsl(${categoryColor})`
+                }}>
+                  {quality}%
+                </span>
               </div>
               <input
                 type="range"
@@ -201,20 +310,40 @@ const ImageCompressorTool = () => {
                 max="100"
                 value={quality}
                 onChange={(e) => setQuality(Number(e.target.value))}
-                className="w-full accent-primary"
+                className="w-full accent-primary h-2 rounded-lg"
                 title="Adjust image compression quality"
               />
-            </div>
+              <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                <span>Maximum Compression</span>
+                <span>Best Quality</span>
+              </div>
+            </motion.div>
 
             {/* Actions */}
-            <div className="flex gap-4">
-              <button onClick={compressImage} className="btn-primary flex-1" title="Compress image with selected quality">
+            <motion.div 
+              whileHover={{ scale: 1.02 }} 
+              whileTap={{ scale: 0.98 }}
+              className="flex gap-4"
+            >
+              <button
+                onClick={compressImage} 
+                className="btn-primary flex-1"
+                style={{
+                  background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                }}
+                title="Compress image with selected quality"
+              >
+                <Zap className="h-5 w-5 mr-2" />
                 Compress Image
               </button>
-            </div>
+            </motion.div>
 
             {compressedUrl && (
-              <div className="flex justify-center mt-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex justify-center mt-6"
+              >
                 <EnhancedDownload
                   data={compressedUrl}
                   fileName={`compressed-${image.name.split('.')[0]}.webp`}
@@ -223,9 +352,9 @@ const ImageCompressorTool = () => {
                   description={`Original: ${(originalSize / 1024).toFixed(1)}KB → Compressed: ${(compressedSize / 1024).toFixed(1)}KB (${Math.round((1 - compressedSize / originalSize) * 100)}% reduction)`}
                   fileSize={`${(compressedSize / 1024).toFixed(1)} KB`}
                 />
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         )}
       </div>
     </ToolLayout>

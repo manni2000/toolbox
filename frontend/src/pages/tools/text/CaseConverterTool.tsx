@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, ArrowUpDown } from "lucide-react";
+import { Copy, Check, ArrowUpDown, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "260 70% 55%";
 
 type CaseType = "upper" | "lower" | "title" | "sentence" | "camel" | "snake" | "kebab" | "constant" | "alternating" | "inverse";
 

@@ -1,7 +1,11 @@
 import { useState } from "react";
-import { Copy, Check, Code } from "lucide-react";
+import { Copy, Check, Code, Sparkles } from "lucide-react";
 import { marked } from "marked";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "260 70% 55%";
 
 const MarkdownHTMLTool = () => {
   const [markdown, setMarkdown] = useState("");

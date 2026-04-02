@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Copy, Check, Mail, AlertTriangle, Shield, CheckCircle, Calendar } from 'lucide-react';
+import { Copy, Check, Mail, AlertTriangle, Shield, CheckCircle, Calendar, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "0 80% 55%";
 
 interface BreachData {
   name: string;
@@ -90,7 +94,7 @@ export default function DataBreachEmailCheckerTool() {
               <p className="text-xs text-muted-foreground">Enter the email address to check for breaches</p>
             </div>
 
-            <button 
+            <button
               onClick={checkBreaches} 
               disabled={!email.trim() || !email.includes('@') || loading}
               className="btn-primary w-full flex items-center justify-center gap-2"

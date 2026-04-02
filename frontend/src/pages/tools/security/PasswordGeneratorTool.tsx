@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, RefreshCw, Shield, Eye, EyeOff } from "lucide-react";
+import { Copy, Check, RefreshCw, Shield, Eye, EyeOff, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "0 80% 55%";
 
 const PasswordGeneratorTool = () => {
   const [password, setPassword] = useState("");
@@ -127,10 +131,11 @@ const PasswordGeneratorTool = () => {
         <div className="space-y-6">
           <div>
             <div className="mb-2 flex justify-between">
-              <label className="text-sm font-medium">Length</label>
+              <label htmlFor="password-length" className="text-sm font-medium">Length</label>
               <span className="text-sm text-muted-foreground">{length} characters</span>
             </div>
             <input
+              id="password-length"
               type="range"
               min="4"
               max="64"

@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Clock, Copy, Check, Info } from "lucide-react";
+import { Clock, Copy, Check, Info, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 const CronGeneratorTool = () => {
   const [minute, setMinute] = useState("*");
@@ -117,18 +121,26 @@ const CronGeneratorTool = () => {
             { label: "Day (Month)", value: dayOfMonth, setter: setDayOfMonth, help: "1-31 or *" },
             { label: "Month", value: month, setter: setMonth, help: "1-12 or *" },
             { label: "Day (Week)", value: dayOfWeek, setter: setDayOfWeek, help: "0-6 (Sun-Sat) or *" },
-          ].map((field) => (
-            <div key={field.label} className="rounded-xl border border-border bg-card p-4">
-              <label className="mb-2 block text-sm font-medium">{field.label}</label>
-              <input
-                type="text"
-                value={field.value}
-                onChange={(e) => field.setter(e.target.value)}
-                className="input-field w-full text-center font-mono"
-              />
-              <p className="mt-1 text-center text-xs text-muted-foreground">{field.help}</p>
-            </div>
-          ))}
+          ].map((field) => {
+            const inputId = `cron-${field.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+
+            return (
+              <div key={field.label} className="rounded-xl border border-border bg-card p-4">
+                <label htmlFor={inputId} className="mb-2 block text-sm font-medium">
+                  {field.label}
+                </label>
+                <input
+                  id={inputId}
+                  type="text"
+                  value={field.value}
+                  onChange={(e) => field.setter(e.target.value)}
+                  placeholder={field.help}
+                  className="input-field w-full text-center font-mono"
+                />
+                <p className="mt-1 text-center text-xs text-muted-foreground">{field.help}</p>
+              </div>
+            );
+          })}
         </div>
 
         {/* Reference */}

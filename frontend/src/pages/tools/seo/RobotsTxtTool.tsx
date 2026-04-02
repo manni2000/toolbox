@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, FileText, Download, Shield, Globe, Settings, AlertCircle } from "lucide-react";
+import { Copy, Check, FileText, Download, Shield, Globe, Settings, AlertCircle, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "25 90% 50%";
 
 interface RobotRule {
   userAgent: string;
@@ -193,18 +197,21 @@ const RobotsTxtTool = () => {
           </div>
           <div className="flex gap-3">
             <button
+              type="button"
               onClick={() => loadPreset("basic")}
               className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
             >
               Basic Website
             </button>
             <button
+              type="button"
               onClick={() => loadPreset("blog")}
               className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
             >
               WordPress Blog
             </button>
             <button
+              type="button"
               onClick={() => loadPreset("ecommerce")}
               className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
             >
@@ -221,6 +228,7 @@ const RobotsTxtTool = () => {
               <h3 className="font-semibold">Crawler Rules</h3>
             </div>
             <button
+              type="button"
               onClick={addRule}
               className="rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90"
             >
@@ -241,8 +249,11 @@ const RobotsTxtTool = () => {
                   />
                   {rules.length > 1 && (
                     <button
+                      type="button"
                       onClick={() => removeRule(index)}
                       className="text-red-500 hover:text-red-600 ml-2"
+                      aria-label="Remove rule"
+                      title="Remove rule"
                     >
                       ✕
                     </button>
@@ -254,6 +265,7 @@ const RobotsTxtTool = () => {
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-green-600">Allow</span>
                       <button
+                        type="button"
                         onClick={() => addPath(index, "allow")}
                         className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200"
                       >
@@ -272,8 +284,11 @@ const RobotsTxtTool = () => {
                           />
                           {rule.allow.length > 1 && (
                             <button
+                              type="button"
                               onClick={() => removePath(index, pathIndex, "allow")}
                               className="text-red-500 hover:text-red-600"
+                              aria-label="Remove allow path"
+                              title="Remove allow path"
                             >
                               ✕
                             </button>
@@ -287,6 +302,7 @@ const RobotsTxtTool = () => {
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-red-600">Disallow</span>
                       <button
+                        type="button"
                         onClick={() => addPath(index, "disallow")}
                         className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200"
                       >
@@ -305,8 +321,11 @@ const RobotsTxtTool = () => {
                           />
                           {rule.disallow.length > 1 && (
                             <button
+                              type="button"
                               onClick={() => removePath(index, pathIndex, "disallow")}
                               className="text-red-500 hover:text-red-600"
+                              aria-label="Remove disallow path"
+                              title="Remove disallow path"
                             >
                               ✕
                             </button>
@@ -350,6 +369,7 @@ const RobotsTxtTool = () => {
 
         {/* Generate Button */}
         <button
+          type="button"
           onClick={generateRobotsTxt}
           className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
         >
@@ -364,14 +384,20 @@ const RobotsTxtTool = () => {
               <h3 className="font-semibold">Generated robots.txt</h3>
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={() => handleCopy("robots", generatedRobots)}
                   className="text-muted-foreground hover:text-foreground"
+                  aria-label="Copy robots.txt"
+                  title="Copy robots.txt"
                 >
                   {copied === "robots" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </button>
                 <button
+                  type="button"
                   onClick={downloadRobots}
                   className="text-muted-foreground hover:text-foreground"
+                  aria-label="Download robots.txt"
+                  title="Download robots.txt"
                 >
                   <Download className="h-4 w-4" />
                 </button>

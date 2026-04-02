@@ -1,10 +1,14 @@
 import { useState, useCallback } from "react";
-import { Upload, Archive, X, File, Gauge } from "lucide-react";
+import { Upload, Archive, X, File, Gauge, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+
+const categoryColor = "45 80% 50%";
 
 const CompressionZipTool = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -102,6 +106,8 @@ const CompressionZipTool = () => {
           <input
             type="file"
             multiple
+            aria-label="Upload files"
+            title="Upload files"
             onChange={handleFileSelect}
             className="absolute inset-0 cursor-pointer opacity-0"
           />
@@ -113,6 +119,7 @@ const CompressionZipTool = () => {
           <div className="grid gap-2">
             {compressionLevels.map((level) => (
               <button
+                type="button"
                 key={level.value}
                 onClick={() => setCompressionLevel(level.value)}
                 className={`flex items-center justify-between rounded-lg border p-4 text-left transition-colors ${
@@ -142,6 +149,7 @@ const CompressionZipTool = () => {
                 {files.length} file{files.length !== 1 ? "s" : ""} ({formatSize(totalSize)})
               </h3>
               <button
+                type="button"
                 onClick={() => setFiles([])}
                 className="text-sm text-muted-foreground hover:text-foreground"
               >
@@ -165,7 +173,10 @@ const CompressionZipTool = () => {
                     </div>
                   </div>
                   <button
+                    type="button"
                     onClick={() => removeFile(index)}
+                    aria-label={`Remove ${file.name}`}
+                    title={`Remove ${file.name}`}
                     className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
                   >
                     <X className="h-4 w-4" />
@@ -191,6 +202,7 @@ const CompressionZipTool = () => {
 
             {/* Create Button */}
             <button
+              type="button"
               onClick={createZip}
               disabled={isCreating || files.length === 0}
               className="btn-primary w-full"

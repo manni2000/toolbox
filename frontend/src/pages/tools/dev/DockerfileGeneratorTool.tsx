@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Download, Code, Plus, Trash2, AlertCircle, Settings } from "lucide-react";
+import { Copy, Check, Download, Code, Plus, Trash2, AlertCircle, Settings, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 interface DockerfileInstruction {
   id: string;
@@ -254,6 +258,7 @@ const DockerfileGeneratorTool = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {templates.map(template => (
               <button
+                type="button"
                 key={template.name}
                 onClick={() => loadTemplate(template.name)}
                 className="p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
@@ -272,6 +277,7 @@ const DockerfileGeneratorTool = () => {
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold">Dockerfile Instructions</h3>
             <button
+              type="button"
               onClick={addInstruction}
               className="flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90"
             >
@@ -289,8 +295,11 @@ const DockerfileGeneratorTool = () => {
                   </span>
                   {instructions.length > 1 && (
                     <button
+                      type="button"
                       onClick={() => removeInstruction(instruction.id)}
                       className="text-red-500 hover:text-red-600"
+                      aria-label="Remove instruction"
+                      title="Remove instruction"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -326,6 +335,7 @@ const DockerfileGeneratorTool = () => {
 
         {/* Generate Button */}
         <button
+          type="button"
           onClick={generateDockerfile}
           className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
         >
@@ -340,14 +350,20 @@ const DockerfileGeneratorTool = () => {
               <h3 className="font-semibold">Generated Dockerfile</h3>
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={() => handleCopy("dockerfile", generatedDockerfile)}
                   className="text-muted-foreground hover:text-foreground"
+                  aria-label="Copy generated Dockerfile"
+                  title="Copy generated Dockerfile"
                 >
                   {copied === "dockerfile" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </button>
                 <button
+                  type="button"
                   onClick={downloadDockerfile}
                   className="text-muted-foreground hover:text-foreground"
+                  aria-label="Download generated Dockerfile"
+                  title="Download generated Dockerfile"
                 >
                   <Download className="h-4 w-4" />
                 </button>

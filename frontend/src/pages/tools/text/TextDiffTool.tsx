@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Diff, Copy, Check } from "lucide-react";
+import { Diff, Copy, Check, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "260 70% 55%";
 
 const TextDiffTool = () => {
   const [text1, setText1] = useState("");

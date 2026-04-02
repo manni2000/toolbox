@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Download, FileText, Plus, Trash2, AlertCircle, Code, Send } from "lucide-react";
+import { Copy, Check, Download, FileText, Plus, Trash2, AlertCircle, Code, Send, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 interface PostmanRequest {
   id: string;
@@ -298,12 +302,14 @@ const PostmanCollectionTool = () => {
             <h3 className="font-semibold">API Requests</h3>
             <div className="flex gap-2">
               <button
+                type="button"
                 onClick={loadExample}
                 className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
               >
                 Load Example
               </button>
               <button
+                type="button"
                 onClick={addRequest}
                 className="flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90"
               >
@@ -324,12 +330,18 @@ const PostmanCollectionTool = () => {
                     type="text"
                     value={request.name}
                     onChange={(e) => updateRequest(request.id, 'name', e.target.value)}
+                    placeholder="Request name"
+                    title="Request name"
+                    aria-label="Request name"
                     className="font-medium bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none"
                   />
                 </div>
                 {requests.length > 1 && (
                   <button
+                    type="button"
                     onClick={() => removeRequest(request.id)}
+                    title="Remove request"
+                    aria-label="Remove request"
                     className="text-red-500 hover:text-red-600"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -364,6 +376,7 @@ const PostmanCollectionTool = () => {
                   <div className="flex items-center justify-between mb-2">
                     <label className="block text-sm font-medium">Headers</label>
                     <button
+                      type="button"
                       onClick={() => addHeader(request.id)}
                       className="text-xs bg-primary/10 text-primary px-2 py-1 rounded hover:bg-primary/20"
                     >
@@ -392,7 +405,10 @@ const PostmanCollectionTool = () => {
                         />
                         {key && (
                           <button
+                            type="button"
                             onClick={() => removeHeader(request.id, key)}
+                            title="Remove header"
+                            aria-label="Remove header"
                             className="text-red-500 hover:text-red-600"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -435,6 +451,7 @@ const PostmanCollectionTool = () => {
 
         {/* Generate Button */}
         <button
+          type="button"
           onClick={generateCollection}
           className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
         >
@@ -449,12 +466,16 @@ const PostmanCollectionTool = () => {
               <h3 className="font-semibold">Generated Collection</h3>
               <div className="flex gap-2">
                 <button
+                  type="button"
+                  title="Copy collection to clipboard"
                   onClick={() => handleCopy("collection", generatedCollection)}
                   className="text-muted-foreground hover:text-foreground"
                 >
                   {copied === "collection" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </button>
                 <button
+                  type="button"
+                  title="Download collection as JSON file"
                   onClick={downloadCollection}
                   className="text-muted-foreground hover:text-foreground"
                 >

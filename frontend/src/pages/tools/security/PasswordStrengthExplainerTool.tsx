@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Copy, Check, Shield, CheckCircle, XCircle, AlertTriangle, Eye, EyeOff } from 'lucide-react';
+import { Copy, Check, Shield, CheckCircle, XCircle, AlertTriangle, Eye, EyeOff, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "0 80% 55%";
 
 interface PasswordAnalysis {
   strength: string;
@@ -119,7 +123,7 @@ export default function PasswordStrengthExplainerTool() {
               <p className="text-xs text-muted-foreground">Your password is processed locally and never stored</p>
             </div>
 
-            <button 
+            <button
               onClick={analyzePassword} 
               disabled={!password.trim() || loading}
               className="btn-primary w-full flex items-center justify-center gap-2"

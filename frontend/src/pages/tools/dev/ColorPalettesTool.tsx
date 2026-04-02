@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Copy, Check, Palette, RefreshCw, Download, Sparkles, Eye, Droplets, Zap, Sun, Moon, Flower, Mountain } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 interface Color {
   hex: string;
@@ -528,20 +532,26 @@ const ColorPalettesTool = () => {
           <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center gap-2">
               <Droplets className="h-5 w-5 text-primary" />
-              <label className="font-medium">Base Color</label>
+              <label htmlFor="base-color-hex" className="font-medium">Base Color</label>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <input
+              id="base-color-picker"
               type="color"
               value={baseColor}
               onChange={(e) => setBaseColor(e.target.value)}
+              aria-label="Base color picker"
+              title="Base color picker"
               className="h-12 w-20 cursor-pointer rounded-lg border border-border"
             />
             <input
+              id="base-color-hex"
               type="text"
               value={baseColor.toUpperCase()}
               onChange={(e) => setBaseColor(e.target.value)}
+              aria-label="Base color hex value"
+              placeholder="Enter hex color"
               className="flex-1 rounded-lg bg-muted px-4 py-2 font-mono"
             />
             <button
@@ -561,10 +571,13 @@ const ColorPalettesTool = () => {
               <label className="font-medium">Generate Palette</label>
             </div>
             <div className="flex items-center gap-2">
-              <label className="text-sm text-muted-foreground">Colors:</label>
+              <label htmlFor="palette-color-count" className="text-sm text-muted-foreground">Colors:</label>
               <select
+                id="palette-color-count"
                 value={colorCount}
                 onChange={(e) => setColorCount(parseInt(e.target.value))}
+                aria-label="Palette color count"
+                title="Palette color count"
                 className="rounded-lg bg-muted px-3 py-1 text-sm"
               >
                 {[3, 4, 5, 6, 7, 8].map(num => (

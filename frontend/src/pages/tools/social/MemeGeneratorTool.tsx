@@ -1,6 +1,10 @@
 import { useState, useRef } from "react";
 import { Smile, Download, Type, Image as ImageIcon, Upload, X, Palette, AlignLeft, AlignCenter, AlignRight, Sparkles, RotateCw, RefreshCw, Grid3X3 } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "330 80% 55%";
 
 const MemeGeneratorTool = () => {
   const [topText, setTopText] = useState("");
@@ -138,6 +142,21 @@ const MemeGeneratorTool = () => {
     "#ffffff", "#000000", "#ff0000", "#00ff00", "#0000ff", "#ffff00",
     "#ff00ff", "#00ffff", "#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4"
   ];
+
+  const presetColorClassMap: Record<string, string> = {
+    "#ffffff": "bg-white",
+    "#000000": "bg-black",
+    "#ff0000": "bg-red-500",
+    "#00ff00": "bg-green-500",
+    "#0000ff": "bg-blue-500",
+    "#ffff00": "bg-yellow-400",
+    "#ff00ff": "bg-fuchsia-500",
+    "#00ffff": "bg-cyan-400",
+    "#ff6b6b": "bg-[#ff6b6b]",
+    "#4ecdc4": "bg-[#4ecdc4]",
+    "#45b7d1": "bg-[#45b7d1]",
+    "#96ceb4": "bg-[#96ceb4]"
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -375,7 +394,10 @@ const MemeGeneratorTool = () => {
                   <label className="mb-2 block text-sm font-medium">Text Alignment</label>
                   <div className="flex gap-1">
                     <button
+                      type="button"
                       onClick={() => setTextAlign("left")}
+                      aria-label="Align text left"
+                      title="Align text left"
                       className={`flex-1 rounded-lg border p-2 md:p-3 transition-colors ${
                         textAlign === "left"
                           ? "border-primary bg-primary/10 text-primary"
@@ -385,7 +407,10 @@ const MemeGeneratorTool = () => {
                       <AlignLeft className="h-4 w-4 mx-auto" />
                     </button>
                     <button
+                      type="button"
                       onClick={() => setTextAlign("center")}
+                      aria-label="Align text center"
+                      title="Align text center"
                       className={`flex-1 rounded-lg border p-2 md:p-3 transition-colors ${
                         textAlign === "center"
                           ? "border-primary bg-primary/10 text-primary"
@@ -395,7 +420,10 @@ const MemeGeneratorTool = () => {
                       <AlignCenter className="h-4 w-4 mx-auto" />
                     </button>
                     <button
+                      type="button"
                       onClick={() => setTextAlign("right")}
+                      aria-label="Align text right"
+                      title="Align text right"
                       className={`flex-1 rounded-lg border p-2 md:p-3 transition-colors ${
                         textAlign === "right"
                           ? "border-primary bg-primary/10 text-primary"
@@ -409,13 +437,16 @@ const MemeGeneratorTool = () => {
 
                 {/* Font Size */}
                 <div>
-                  <label className="mb-2 block text-sm font-medium">Font Size: {fontSize}px</label>
+                  <label htmlFor="font-size-range" className="mb-2 block text-sm font-medium">Font Size: {fontSize}px</label>
                   <input
+                    id="font-size-range"
                     type="range"
                     min={24}
                     max={72}
                     value={fontSize}
                     onChange={(e) => setFontSize(parseInt(e.target.value))}
+                    aria-label="Font size"
+                    title="Font size"
                     className="w-full h-2"
                   />
                 </div>
@@ -428,18 +459,24 @@ const MemeGeneratorTool = () => {
                       {presetColors.map((color) => (
                         <button
                           key={color}
+                          type="button"
                           onClick={() => setTextColor(color)}
-                          className={`h-8 w-8 md:h-10 md:w-10 rounded-lg border-2 transition-all ${
+                          aria-label={`Select text color ${color}`}
+                          title={`Select text color ${color}`}
+                          className={`h-8 w-8 md:h-10 md:w-10 rounded-lg border-2 transition-all ${presetColorClassMap[color]} ${
                             textColor === color ? "border-primary" : "border-border"
                           }`}
-                          style={{ backgroundColor: color }}
-                        />
+                        >
+                          <span className="sr-only">Select text color {color}</span>
+                        </button>
                       ))}
                     </div>
                     <input
                       type="color"
                       value={textColor}
                       onChange={(e) => setTextColor(e.target.value)}
+                      aria-label="Choose text color"
+                      title="Choose text color"
                       className="h-8 w-12 md:h-10 md:w-14 cursor-pointer rounded-lg border-0"
                     />
                   </div>
@@ -453,6 +490,8 @@ const MemeGeneratorTool = () => {
                       type="color"
                       value={strokeColor}
                       onChange={(e) => setStrokeColor(e.target.value)}
+                      aria-label="Choose stroke color"
+                      title="Choose stroke color"
                       className="h-8 w-12 md:h-10 md:w-14 cursor-pointer rounded-lg border-0"
                     />
                     <input
@@ -467,13 +506,16 @@ const MemeGeneratorTool = () => {
 
                 {/* Stroke Width */}
                 <div>
-                  <label className="mb-2 block text-sm font-medium">Stroke Width: {strokeWidth}px</label>
+                  <label htmlFor="stroke-width-range" className="mb-2 block text-sm font-medium">Stroke Width: {strokeWidth}px</label>
                   <input
+                    id="stroke-width-range"
                     type="range"
                     min={0}
                     max={10}
                     value={strokeWidth}
                     onChange={(e) => setStrokeWidth(parseInt(e.target.value))}
+                    aria-label="Stroke width"
+                    title="Stroke width"
                     className="w-full h-2"
                   />
                 </div>
@@ -495,6 +537,8 @@ const MemeGeneratorTool = () => {
                   type="file"
                   accept="image/*"
                   onChange={handleImageUpload}
+                  aria-label="Upload custom image"
+                  title="Upload custom image"
                   className="hidden"
                 />
               </label>

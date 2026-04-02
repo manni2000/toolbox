@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Download, FileText, Settings, Plus, Trash2, AlertCircle, Code } from "lucide-react";
+import { Copy, Check, Download, FileText, Settings, Plus, Trash2, AlertCircle, Code, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 interface EnvVariable {
   id: string;
@@ -256,6 +260,7 @@ const EnvironmentVariableTool = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {templates.map(template => (
               <button
+                type="button"
                 key={template.name}
                 onClick={() => loadTemplate(template.name)}
                 className={`p-3 rounded-lg border transition-colors ${
@@ -278,6 +283,7 @@ const EnvironmentVariableTool = () => {
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold">Environment Variables</h3>
             <button
+              type="button"
               onClick={addVariable}
               className="flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90"
             >
@@ -311,8 +317,10 @@ const EnvironmentVariableTool = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Type</label>
+                    <label htmlFor={`variable-type-${variable.id}`} className="block text-sm font-medium mb-1">Type</label>
                     <select
+                      id={`variable-type-${variable.id}`}
+                      title="Variable type"
                       value={variable.type}
                       onChange={(e) => updateVariable(variable.id, 'type', e.target.value)}
                       className="w-full rounded-lg bg-muted px-3 py-2 text-sm"
@@ -337,7 +345,10 @@ const EnvironmentVariableTool = () => {
                     </label>
                     {variables.length > 1 && (
                       <button
+                        type="button"
                         onClick={() => removeVariable(variable.id)}
+                        aria-label="Remove variable"
+                        title="Remove variable"
                         className="text-red-500 hover:text-red-600"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -368,6 +379,7 @@ const EnvironmentVariableTool = () => {
               <label className="block text-sm font-medium mb-2">Output Format</label>
               <div className="grid grid-cols-4 gap-3">
                 <button
+                  type="button"
                   onClick={() => setOutputFormat('env')}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                     outputFormat === 'env'
@@ -378,6 +390,7 @@ const EnvironmentVariableTool = () => {
                   .env
                 </button>
                 <button
+                  type="button"
                   onClick={() => setOutputFormat('json')}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                     outputFormat === 'json'
@@ -388,6 +401,7 @@ const EnvironmentVariableTool = () => {
                   JSON
                 </button>
                 <button
+                  type="button"
                   onClick={() => setOutputFormat('yaml')}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                     outputFormat === 'yaml'
@@ -398,6 +412,7 @@ const EnvironmentVariableTool = () => {
                   YAML
                 </button>
                 <button
+                  type="button"
                   onClick={() => setOutputFormat('docker')}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                     outputFormat === 'docker'
@@ -411,6 +426,7 @@ const EnvironmentVariableTool = () => {
             </div>
 
             <button
+              type="button"
               onClick={generateOutput}
               className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
             >
@@ -427,13 +443,19 @@ const EnvironmentVariableTool = () => {
               <h3 className="font-semibold">Generated Output</h3>
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={() => handleCopy("output", generatedOutput)}
+                  aria-label="Copy generated output"
+                  title="Copy generated output"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   {copied === "output" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </button>
                 <button
+                  type="button"
                   onClick={downloadOutput}
+                  aria-label="Download generated output"
+                  title="Download generated output"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   <Download className="h-4 w-4" />

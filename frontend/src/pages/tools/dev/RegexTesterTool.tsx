@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Code, AlertCircle, CheckCircle } from "lucide-react";
+import { Copy, Check, Code, AlertCircle, CheckCircle, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 const RegexTesterTool = () => {
   const [pattern, setPattern] = useState("");
@@ -90,7 +94,7 @@ const RegexTesterTool = () => {
         {/* Pattern Input */}
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <label className="text-sm font-medium">Regular Expression</label>
+            <label htmlFor="regex-pattern" className="text-sm font-medium">Regular Expression</label>
             <button
               onClick={handleCopy}
               disabled={!pattern}
@@ -112,17 +116,24 @@ const RegexTesterTool = () => {
           <div className="flex items-center gap-2">
             <span className="text-lg text-muted-foreground">/</span>
             <input
+              id="regex-pattern"
               type="text"
               value={pattern}
               onChange={(e) => setPattern(e.target.value)}
               placeholder="Enter regex pattern..."
+              title="Regular expression pattern"
+              aria-label="Regular expression pattern"
               className="input-tool flex-1 font-mono"
             />
             <span className="text-lg text-muted-foreground">/</span>
             <input
+              id="regex-flags"
               type="text"
               value={flags}
               onChange={(e) => setFlags(e.target.value)}
+              placeholder="gim"
+              title="Regular expression flags"
+              aria-label="Regular expression flags"
               className="input-tool w-16 font-mono text-center"
             />
           </div>

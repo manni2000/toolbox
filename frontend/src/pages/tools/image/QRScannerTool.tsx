@@ -1,8 +1,13 @@
 import { useState, useRef } from "react";
-import { Upload, ScanLine, Copy, Check, X, ExternalLink, QrCode } from "lucide-react";
+import { Upload, ScanLine, Copy, Check, X, ExternalLink, QrCode, Sparkles, Zap } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
+
+const categoryColor = "173 80% 40%";
 
 const QRScannerTool = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -125,6 +130,47 @@ const QRScannerTool = () => {
       <canvas ref={canvasRef} className="hidden" />
       
       <div className="space-y-6">
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <QrCode className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Quick QR Code Scanning</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Instantly decode QR codes from any image. Fast, secure, and works entirely in your browser.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {!image && (
           <ImageUploadZone
             isDragging={isDragging}
@@ -141,49 +187,113 @@ const QRScannerTool = () => {
         )}
 
         {image && (
-          <div className="space-y-6">
+          <motion.div
+            variants={scaleIn}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.1 }}
+            className="space-y-6"
+          >
             <div className="flex items-center justify-between">
               <span className="font-medium">Uploaded Image</span>
-              <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Clear image and reset scanner">
-                <X className="h-5 w-5" />
-              </button>
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <button onClick={reset} className="rounded-lg p-2 hover:bg-muted" title="Clear image and reset scanner">
+                  <X className="h-5 w-5" />
+                </button>
+              </motion.div>
             </div>
 
-            <div className="flex justify-center rounded-xl border border-border bg-muted/30 p-4">
-              <img src={image} alt="QR Code" className="max-h-64 rounded-lg object-contain" />
-            </div>
+            <motion.div 
+              className="relative overflow-hidden flex justify-center rounded-xl border border-border bg-muted/30 p-4"
+            >
+              <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: "200%" }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "linear",
+                  repeatDelay: 1,
+                }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              />
+              <img src={image} alt="QR Code" className="max-h-64 rounded-lg object-contain relative z-10" />
+            </motion.div>
+
+            {loading && (
+              <div className="flex justify-center py-12">
+                <ModernLoadingSpinner 
+                  size="md" 
+                  text="Scanning QR Code..." 
+                  color={`hsl(${categoryColor})`}
+                />
+              </div>
+            )}
 
             {error && (
-              <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-600 dark:text-amber-400">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-600 dark:text-amber-400"
+              >
                 {error}
-              </div>
+              </motion.div>
             )}
 
             {result && (
-              <div className="rounded-xl border border-border bg-card p-6">
-                <div className="mb-2 text-sm font-medium text-muted-foreground">Decoded Content</div>
-                <div className="flex items-start justify-between gap-4">
-                  <p className="flex-1 break-all font-mono text-sm">{result}</p>
-                  <div className="flex gap-2">
-                    {isUrl && (
-                      <a
-                        href={result}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-lg p-2 hover:bg-muted"
-                        title="Open URL in new tab"
-                      >
-                        <ExternalLink className="h-5 w-5" />
-                      </a>
-                    )}
-                    <button onClick={handleCopy} className="rounded-lg p-2 hover:bg-muted" title="Copy decoded QR code content to clipboard">
-                      {copied ? <Check className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5" />}
-                    </button>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative overflow-hidden rounded-xl border border-border bg-card p-6"
+              >
+                <motion.div
+                  initial={{ x: "-100%" }}
+                  animate={{ x: "200%" }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "linear",
+                    repeatDelay: 1,
+                  }}
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                />
+                <div className="relative z-10">
+                  <div className="mb-2 flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Sparkles className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
+                    </motion.div>
+                    Decoded Content
+                  </div>
+                  <div className="flex items-start justify-between gap-4">
+                    <p className="flex-1 break-all font-mono text-sm">{result}</p>
+                    <div className="flex gap-2">
+                      {isUrl && (
+                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                          <a
+                            href={result}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-lg p-2 hover:bg-muted"
+                            title="Open URL in new tab"
+                          >
+                            <ExternalLink className="h-5 w-5" />
+                          </a>
+                        </motion.div>
+                      )}
+                      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                        <button onClick={handleCopy} className="rounded-lg p-2 hover:bg-muted" title="Copy decoded QR code content to clipboard">
+                          {copied ? <Check className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5" />}
+                        </button>
+                      </motion.div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         )}
       </div>
     </ToolLayout>

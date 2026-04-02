@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Copy, Check, Calculator, DollarSign, Clock, Target, AlertCircle } from 'lucide-react';
+import { Copy, Check, Calculator, DollarSign, Clock, Target, AlertCircle, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 interface RateResult {
   hourly_rate: number;
@@ -124,8 +128,9 @@ export default function FreelancerRateCalculatorTool() {
           <h3 className="text-lg font-semibold mb-4">Rate Calculation</h3>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Desired Annual Income ($)</label>
+              <label htmlFor="desiredIncome" className="block text-sm font-medium mb-2">Desired Annual Income ($)</label>
               <input
+                id="desiredIncome"
                 type="number"
                 value={desiredIncome}
                 onChange={(e) => setDesiredIncome(e.target.value)}
@@ -136,8 +141,9 @@ export default function FreelancerRateCalculatorTool() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Business Expenses (%)</label>
+              <label htmlFor="businessExpenses" className="block text-sm font-medium mb-2">Business Expenses (%)</label>
               <input
+                id="businessExpenses"
                 type="number"
                 value={businessExpenses}
                 onChange={(e) => setBusinessExpenses(e.target.value)}
@@ -148,8 +154,9 @@ export default function FreelancerRateCalculatorTool() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Work Hours per Week</label>
+              <label htmlFor="workHours" className="block text-sm font-medium mb-2">Work Hours per Week</label>
               <select
+                id="workHours"
                 value={workHours}
                 onChange={(e) => setWorkHours(e.target.value)}
                 className="input-tool w-full"
@@ -163,8 +170,9 @@ export default function FreelancerRateCalculatorTool() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Work Weeks per Year</label>
+              <label htmlFor="workWeeks" className="block text-sm font-medium mb-2">Work Weeks per Year</label>
               <select
+                id="workWeeks"
                 value={workWeeks}
                 onChange={(e) => setWorkWeeks(e.target.value)}
                 className="input-tool w-full"
@@ -178,8 +186,9 @@ export default function FreelancerRateCalculatorTool() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Vacation Weeks per Year</label>
+              <label htmlFor="vacationWeeks" className="block text-sm font-medium mb-2">Vacation Weeks per Year</label>
               <select
+                id="vacationWeeks"
                 value={vacationWeeks}
                 onChange={(e) => setVacationWeeks(e.target.value)}
                 className="input-tool w-full"
@@ -193,8 +202,9 @@ export default function FreelancerRateCalculatorTool() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Sick Days per Year</label>
+              <label htmlFor="sickDays" className="block text-sm font-medium mb-2">Sick Days per Year</label>
               <select
+                id="sickDays"
                 value={sickDays}
                 onChange={(e) => setSickDays(e.target.value)}
                 className="input-tool w-full"
@@ -208,7 +218,7 @@ export default function FreelancerRateCalculatorTool() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={calculateRates} 
             disabled={!desiredIncome || loading}
             className="btn-primary w-full flex items-center justify-center gap-2 mt-4"

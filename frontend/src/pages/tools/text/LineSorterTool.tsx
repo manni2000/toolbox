@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { ArrowUpDown, Copy, Check } from "lucide-react";
+import { ArrowUpDown, Copy, Check, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "260 70% 55%";
 
 const LineSorterTool = () => {
   const [input, setInput] = useState("");
@@ -67,10 +71,13 @@ const LineSorterTool = () => {
       <div className="space-y-6">
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <label className="text-sm font-medium">Input Lines</label>
+            <label htmlFor="line-sorter-input" className="text-sm font-medium">
+              Input Lines
+            </label>
             <span className="text-sm text-muted-foreground">{lineCount} lines</span>
           </div>
           <textarea
+            id="line-sorter-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Enter lines to sort (one per line)..."
@@ -103,15 +110,20 @@ const LineSorterTool = () => {
         {output && (
           <div className="rounded-xl border border-border bg-card p-6">
             <div className="mb-3 flex items-center justify-between">
-              <span className="font-medium">Sorted Result</span>
+              <label htmlFor="line-sorter-output" className="font-medium">
+                Sorted Result
+              </label>
               <button onClick={handleCopy} className="btn-secondary text-sm">
                 {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
                 {copied ? "Copied!" : "Copy"}
               </button>
             </div>
             <textarea
+              id="line-sorter-output"
               value={output}
               readOnly
+              title="Sorted result output"
+              aria-label="Sorted result output"
               className="input-field h-40 w-full resize-none"
             />
           </div>

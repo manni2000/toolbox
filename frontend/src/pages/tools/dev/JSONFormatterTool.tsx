@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, FileJson, AlertCircle, CheckCircle } from "lucide-react";
+import { Copy, Check, FileJson, AlertCircle, CheckCircle, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 const JSONFormatterTool = () => {
   const [input, setInput] = useState("");
@@ -68,8 +72,9 @@ const JSONFormatterTool = () => {
         {/* Controls */}
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium">Indent:</label>
+            <label htmlFor="indent-size" className="text-sm font-medium">Indent:</label>
             <select
+              id="indent-size"
               value={indentSize}
               onChange={(e) => setIndentSize(Number(e.target.value))}
               className="input-tool w-20 py-2"

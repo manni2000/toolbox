@@ -44,8 +44,9 @@ const DuplicateRemoverTool = () => {
     >
       <div className="space-y-6">
         <div>
-          <label className="mb-2 block text-sm font-medium">Input Text</label>
+          <label htmlFor="duplicate-remover-input" className="mb-2 block text-sm font-medium">Input Text</label>
           <textarea
+            id="duplicate-remover-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Paste your text with duplicate lines here..."
@@ -83,13 +84,14 @@ const DuplicateRemoverTool = () => {
         {output && (
           <div className="rounded-xl border border-border bg-card p-6">
             <div className="mb-3 flex items-center justify-between">
-              <span className="font-medium">Result</span>
+              <label htmlFor="duplicate-remover-output" className="font-medium">Result</label>
               <button onClick={handleCopy} className="btn-secondary text-sm">
                 {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
                 {copied ? "Copied!" : "Copy"}
               </button>
             </div>
             <textarea
+              id="duplicate-remover-output"
               value={output}
               readOnly
               className="input-field h-40 w-full resize-none"

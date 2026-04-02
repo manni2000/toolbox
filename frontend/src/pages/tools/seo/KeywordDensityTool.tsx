@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Search, BarChart3, FileText, TrendingUp, AlertCircle, Target } from "lucide-react";
+import { Copy, Check, Search, BarChart3, FileText, TrendingUp, AlertCircle, Target, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "25 90% 50%";
 
 interface KeywordAnalysis {
   word: string;
@@ -172,6 +176,9 @@ const KeywordDensityTool = () => {
                     <h3 className="font-semibold">Target Keyword Analysis</h3>
                   </div>
                   <button
+                    type="button"
+                    title="Copy target keyword analysis"
+                    aria-label="Copy target keyword analysis"
                     onClick={() => handleCopy("target", JSON.stringify(targetAnalysis, null, 2))}
                     className="text-muted-foreground hover:text-foreground"
                   >
@@ -227,6 +234,9 @@ const KeywordDensityTool = () => {
                     <h3 className="font-semibold">Top Keywords</h3>
                   </div>
                   <button
+                    type="button"
+                    title="Export keyword density analysis"
+                    aria-label="Export keyword density analysis"
                     onClick={exportAnalysis}
                     className="text-muted-foreground hover:text-foreground"
                   >

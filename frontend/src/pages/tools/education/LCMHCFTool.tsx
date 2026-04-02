@@ -2,8 +2,12 @@ import { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Calculator, Plus, RotateCcw, Hash } from "lucide-react";
+import { Calculator, Plus, RotateCcw, Hash, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
+
+const categoryColor = "145 70% 45%";
 
 const LCMHCFTool = () => {
   const [numbers, setNumbers] = useState<string[]>(["", ""]);

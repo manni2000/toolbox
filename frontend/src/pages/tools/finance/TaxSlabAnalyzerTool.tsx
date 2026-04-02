@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Copy, Check, Calculator, DollarSign, FileText, TrendingUp, AlertCircle } from 'lucide-react';
+import { Copy, Check, Calculator, DollarSign, FileText, TrendingUp, AlertCircle, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "35 85% 55%";
 
 interface TaxSlab {
   range: string;
@@ -106,8 +110,9 @@ export default function TaxSlabAnalyzerTool() {
           <h3 className="text-lg font-semibold mb-4">Tax Calculation Details</h3>
           <div className="grid md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Annual Income (₹)</label>
+              <label htmlFor="annual-income" className="block text-sm font-medium mb-2">Annual Income (₹)</label>
               <input
+                id="annual-income"
                 type="number"
                 value={income}
                 onChange={(e) => setIncome(e.target.value)}
@@ -118,8 +123,9 @@ export default function TaxSlabAnalyzerTool() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Tax Regime</label>
+              <label htmlFor="tax-regime" className="block text-sm font-medium mb-2">Tax Regime</label>
               <select
+                id="tax-regime"
                 value={regime}
                 onChange={(e) => setRegime(e.target.value as 'old' | 'new')}
                 className="input-tool w-full"
@@ -131,8 +137,9 @@ export default function TaxSlabAnalyzerTool() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Age Group</label>
+              <label htmlFor="age-group" className="block text-sm font-medium mb-2">Age Group</label>
               <select
+                id="age-group"
                 value={ageGroup}
                 onChange={(e) => setAgeGroup(e.target.value as 'regular' | 'senior' | 'super_senior')}
                 className="input-tool w-full"
@@ -145,7 +152,7 @@ export default function TaxSlabAnalyzerTool() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={analyzeTax} 
             disabled={!income || loading}
             className="btn-primary w-full flex items-center justify-center gap-2 mt-4"

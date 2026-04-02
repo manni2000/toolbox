@@ -1,8 +1,13 @@
 import { useState, useRef } from "react";
-import { Upload, Copy, Check, Image as ImageIcon, FileCode, Download } from "lucide-react";
+import { Upload, Copy, Check, Image as ImageIcon, FileCode, Download, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+
+const categoryColor = "173 80% 40%";
 
 const ImageBase64Tool = () => {
   const [mode, setMode] = useState<"encode" | "decode">("encode");
@@ -97,33 +102,76 @@ const ImageBase64Tool = () => {
       categoryPath="/category/image"
     >
       <div className="space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.15)`, boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)` }}
+            >
+              <FileCode className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Base64 Encoder/Decoder</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Convert images to Base64 strings for embedding in code or data URIs.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Mode Toggle */}
-        <div className="flex gap-2">
-          <button
+        <motion.div 
+          variants={scaleIn} 
+          initial="hidden" 
+          animate="visible"
+          className="flex gap-2"
+        >
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => { setMode("encode"); reset(); }}
             className={`flex-1 rounded-lg px-4 py-3 font-medium transition-all ${
               mode === "encode"
-                ? "bg-primary text-primary-foreground"
+                ? "text-white shadow-lg"
                 : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
             }`}
+            style={mode === "encode" ? { backgroundColor: `hsl(${categoryColor})` } : {}}
             title="Switch to image to Base64 encoding mode"
           >
             <ImageIcon className="mr-2 inline h-4 w-4" />
             Image → Base64
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => { setMode("decode"); reset(); }}
             className={`flex-1 rounded-lg px-4 py-3 font-medium transition-all ${
               mode === "decode"
-                ? "bg-primary text-primary-foreground"
+                ? "text-white shadow-lg"
                 : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
             }`}
+            style={mode === "decode" ? { backgroundColor: `hsl(${categoryColor})` } : {}}
             title="Switch to Base64 to image decoding mode"
           >
             <FileCode className="mr-2 inline h-4 w-4" />
             Base64 → Image
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
         {mode === "encode" ? (
           <>

@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Link, Download, Plus, Trash2, Share2, Globe } from "lucide-react";
+import { Copy, Check, Link, Download, Plus, Trash2, Share2, Globe, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "25 90% 50%";
 
 interface UTMParams {
   utm_source: string;
@@ -19,7 +23,7 @@ interface UTMLink {
 }
 
 const UTMLinkBuilderTool = () => {
-  const [links, setLinks] = useState<UTMLLink[]>([
+  const [links, setLinks] = useState<UTMLink[]>([
     {
       id: '1',
       baseUrl: 'https://yoursite.com',
@@ -229,6 +233,9 @@ const UTMLinkBuilderTool = () => {
                 <div className="flex gap-2">
                   {links.length > 1 && (
                     <button
+                      type="button"
+                      title="Remove UTM link"
+                      aria-label="Remove UTM link"
                       onClick={() => removeLink(link.id)}
                       className="text-red-500 hover:text-red-600"
                     >

@@ -384,26 +384,61 @@ router.post('/tech-stack-detector', async (req, res) => {
       return res.status(400).json({ error: 'URL is required' });
     }
 
-    // Fetch the website HTML
+    // Validate URL format
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(url);
+    } catch (e) {
+      return res.status(400).json({ error: 'Invalid URL format' });
+    }
+
+    // Fetch the website HTML with enhanced error handling
     const response = await axios.get(url, {
-      timeout: 10000,
+      timeout: 15000,
+      maxRedirects: 5,
+      validateStatus: (status) => status < 400,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1'
       }
     });
 
     const html = response.data;
     const $ = cheerio.load(html);
 
-    // Analyze the HTML for technology signatures
-    const techStack = detectTechnologies($, html, url, response.headers);
+    // Enhanced technology detection with confidence scoring
+    const techStack = await detectTechnologiesEnhanced($, html, url, response.headers, parsedUrl);
 
     res.json({
       success: true,
       result: techStack
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Tech Stack Detection Error:', error.message);
+    
+    // Handle specific error types
+    if (error.code === 'ENOTFOUND') {
+      return res.status(404).json({ error: 'Website not found' });
+    }
+    if (error.code === 'ECONNREFUSED') {
+      return res.status(502).json({ error: 'Connection refused by website' });
+    }
+    if (error.code === 'TIMEOUT' || error.code === 'ETIMEDOUT') {
+      return res.status(408).json({ error: 'Website response timeout' });
+    }
+    if (error.response && error.response.status >= 400) {
+      return res.status(error.response.status).json({ 
+        error: `Website returned ${error.response.status} error` 
+      });
+    }
+    
+    res.status(500).json({ 
+      error: 'Failed to analyze website: ' + error.message 
+    });
   }
 });
 
@@ -416,58 +451,53 @@ router.post('/page-seo-analyzer', async (req, res) => {
       return res.status(400).json({ error: 'URL is required' });
     }
 
-    // This is a placeholder implementation
-    // In a real implementation, you would fetch and analyze the page
-    const seoAnalysis = {
-      url,
-      score: 85,
-      title: {
-        present: true,
-        length: 55,
-        optimal: true,
-        content: 'Example Page Title'
-      },
-      metaDescription: {
-        present: true,
-        length: 150,
-        optimal: true,
-        content: 'Example meta description for SEO analysis.'
-      },
-      headings: {
-        h1: { count: 1, optimal: true },
-        h2: { count: 5, optimal: true },
-        h3: { count: 10, optimal: true }
-      },
-      images: {
-        total: 15,
-        withAlt: 12,
-        withoutAlt: 3,
-        optimized: 10
-      },
-      links: {
-        internal: 25,
-        external: 8,
-        nofollow: 3
-      },
-      performance: {
-        loadTime: '2.3s',
-        pageSize: '1.2MB',
-        requests: 45
-      },
-      recommendations: [
-        'Add alt text to 3 images',
-        'Optimize image sizes for faster loading',
-        'Consider adding more internal links'
-      ],
-      note: 'This is a placeholder. Implement with real page analysis.'
-    };
+    // Validate URL format
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(url);
+    } catch (e) {
+      return res.status(400).json({ error: 'Invalid URL format' });
+    }
+
+    // Fetch the page with timeout and user agent
+    const startTime = Date.now();
+    const response = await axios.get(url, {
+      timeout: 10000,
+      maxRedirects: 5,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      }
+    });
+
+    const loadTime = Date.now() - startTime;
+    const html = response.data;
+    const headers = response.headers;
+    const $ = cheerio.load(html);
+
+    // Perform comprehensive SEO analysis
+    const seoAnalysis = await analyzeSEO($, html, url, headers, loadTime);
 
     res.json({
       success: true,
       result: seoAnalysis
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('SEO Analysis Error:', error.message);
+    
+    // Handle specific error types
+    if (error.code === 'ENOTFOUND') {
+      return res.status(404).json({ error: 'Website not found' });
+    }
+    if (error.code === 'ECONNREFUSED') {
+      return res.status(502).json({ error: 'Connection refused by website' });
+    }
+    if (error.code === 'TIMEOUT') {
+      return res.status(408).json({ error: 'Website response timeout' });
+    }
+    
+    res.status(500).json({ 
+      error: 'Failed to analyze website: ' + error.message 
+    });
   }
 });
 
@@ -1181,6 +1211,586 @@ function detectTechnologies($, html, url, headers) {
   });
 
   return techStack;
+}
+
+// Enhanced Technology Detection Function with Confidence Scoring
+async function detectTechnologiesEnhanced($, html, url, headers, parsedUrl) {
+  const techStack = {
+    url: url,
+    timestamp: new Date().toISOString(),
+    frontend: [],
+    backend: [],
+    database: [],
+    server: [],
+    cms: [],
+    analytics: [],
+    frameworks: [],
+    other: [],
+    confidence: {},
+    detectionMethods: []
+  };
+
+  const lowerHtml = html.toLowerCase();
+  const detected = new Set();
+  const confidence = {};
+
+  // Helper function to add technology with confidence score
+  function addTech(category, tech, score, method) {
+    const key = `${category}:${tech}`;
+    if (!detected.has(key)) {
+      detected.add(key);
+      techStack[category].push(tech);
+      confidence[tech] = Math.max(confidence[tech] || 0, score);
+      if (!techStack.detectionMethods.includes(method)) {
+        techStack.detectionMethods.push(method);
+      }
+    }
+  }
+
+  // 1. Enhanced Script Analysis
+  const scripts = [];
+  $('script').each((i, elem) => {
+    const src = $(elem).attr('src');
+    const content = $(elem).html();
+    const integrity = $(elem).attr('integrity');
+    const type = $(elem).attr('type');
+    
+    if (src) scripts.push({ src: src.toLowerCase(), type: 'external', integrity });
+    if (content) scripts.push({ src: content.toLowerCase(), type: 'inline' });
+    if (type) scripts.push({ src: type.toLowerCase(), type: 'type' });
+  });
+
+  // Enhanced React Detection
+  scripts.forEach(script => {
+    const s = script.src;
+    
+    // React with high confidence
+    if (s.includes('react-dom') || s.includes('/_react/') || s.includes('react@')) {
+      addTech('frontend', 'React', 95, 'script_analysis');
+    }
+    // React with medium confidence
+    else if (s.includes('react') && !s.includes('reactive') && !s.includes('attraction')) {
+      addTech('frontend', 'React', 75, 'script_analysis');
+    }
+    
+    // Next.js Detection
+    if (s.includes('next.js') || s.includes('_next/') || s.includes('next@') || 
+        lowerHtml.includes('__next') || $('script[src*="_next/"]').length > 0) {
+      addTech('frameworks', 'Next.js', 95, 'script_analysis');
+      addTech('backend', 'Node.js', 85, 'framework_inference');
+    }
+    
+    // Vue.js Detection
+    if (s.includes('vue@') || s.includes('vue.js') || s.includes('/vue/')) {
+      addTech('frontend', 'Vue.js', 90, 'script_analysis');
+    }
+    
+    // Nuxt.js Detection
+    if (s.includes('nuxt') || s.includes('_nuxt/') || lowerHtml.includes('__nuxt')) {
+      addTech('frameworks', 'Nuxt.js', 95, 'script_analysis');
+      addTech('backend', 'Node.js', 85, 'framework_inference');
+    }
+    
+    // Angular Detection
+    if (s.includes('@angular/') || s.includes('angular.js') || s.includes('zone.js')) {
+      addTech('frontend', 'Angular', 90, 'script_analysis');
+    }
+    
+    // Svelte Detection
+    if (s.includes('svelte') || s.includes('sveltekit')) {
+      addTech('frontend', 'Svelte', 90, 'script_analysis');
+    }
+    
+    // Build Tools
+    if (s.includes('webpack') || s.includes('__webpack')) {
+      addTech('other', 'Webpack', 85, 'script_analysis');
+    }
+    if (s.includes('vite') || s.includes('/@vite/')) {
+      addTech('other', 'Vite', 90, 'script_analysis');
+    }
+    
+    // Backend Technologies
+    if (s.includes('django') || s.includes('/admin/') && headers['server']?.includes('django')) {
+      addTech('backend', 'Django', 85, 'script_analysis');
+    }
+    
+    // Databases (client-side hints)
+    if (s.includes('firebase') || s.includes('firestore')) {
+      addTech('database', 'Firebase', 80, 'script_analysis');
+    }
+    if (s.includes('supabase')) {
+      addTech('database', 'Supabase', 90, 'script_analysis');
+      addTech('database', 'PostgreSQL', 70, 'service_inference');
+    }
+  });
+
+  // 2. Enhanced Header Analysis
+  const serverHeader = headers['server'] || '';
+  const poweredBy = headers['x-powered-by'] || '';
+  const cfRay = headers['cf-ray'];
+  const via = headers['via'] || '';
+  
+  // Server Detection
+  if (serverHeader.toLowerCase().includes('nginx')) {
+    addTech('server', 'Nginx', 95, 'http_headers');
+  }
+  if (serverHeader.toLowerCase().includes('apache')) {
+    addTech('server', 'Apache', 95, 'http_headers');
+  }
+  if (serverHeader.toLowerCase().includes('iis')) {
+    addTech('server', 'IIS', 95, 'http_headers');
+  }
+  
+  // Backend Framework Detection from headers
+  if (poweredBy.toLowerCase().includes('express')) {
+    addTech('backend', 'Express.js', 90, 'http_headers');
+    addTech('backend', 'Node.js', 85, 'framework_inference');
+  }
+  if (poweredBy.toLowerCase().includes('php')) {
+    addTech('backend', 'PHP', 90, 'http_headers');
+  }
+  if (poweredBy.toLowerCase().includes('asp.net')) {
+    addTech('backend', 'ASP.NET', 90, 'http_headers');
+  }
+  
+  // Hosting Provider Detection
+  if (cfRay) {
+    addTech('other', 'Cloudflare', 95, 'http_headers');
+  }
+  if (headers['x-vercel-id'] || headers['x-vercel-cache']) {
+    addTech('server', 'Vercel', 95, 'http_headers');
+    addTech('backend', 'Node.js', 70, 'hosting_inference');
+  }
+  if (headers['x-nf-request-id']) {
+    addTech('server', 'Netlify', 95, 'http_headers');
+  }
+
+  // 3. Enhanced Meta Tag Analysis
+  const metaTags = {};
+  $('meta').each((i, elem) => {
+    const name = $(elem).attr('name') || $(elem).attr('property');
+    const content = $(elem).attr('content');
+    if (name && content) metaTags[name.toLowerCase()] = content.toLowerCase();
+  });
+
+  // Generator Meta Tag
+  if (metaTags['generator']) {
+    const generator = metaTags['generator'];
+    if (generator.includes('wordpress')) {
+      addTech('cms', 'WordPress', 95, 'meta_tags');
+      addTech('backend', 'PHP', 80, 'cms_inference');
+    }
+    if (generator.includes('drupal')) {
+      addTech('cms', 'Drupal', 95, 'meta_tags');
+      addTech('backend', 'PHP', 80, 'cms_inference');
+    }
+    if (generator.includes('gatsby')) {
+      addTech('frameworks', 'Gatsby', 95, 'meta_tags');
+      addTech('frontend', 'React', 85, 'framework_inference');
+    }
+  }
+
+  // 4. Advanced Content Analysis
+  
+  // WordPress Detection
+  if (lowerHtml.includes('/wp-content/') || lowerHtml.includes('/wp-includes/') || 
+      lowerHtml.includes('wp-json') || $('link[href*="/wp-content/"]').length > 0) {
+    addTech('cms', 'WordPress', 90, 'content_analysis');
+    addTech('backend', 'PHP', 75, 'cms_inference');
+  }
+  
+  // Shopify Detection
+  if (lowerHtml.includes('shopify') || lowerHtml.includes('cdn.shopify.com') || 
+      $('script[src*="shopify"]').length > 0) {
+    addTech('cms', 'Shopify', 90, 'content_analysis');
+  }
+  
+  // Wix Detection
+  if (lowerHtml.includes('wix.com') || lowerHtml.includes('static.wixstatic.com')) {
+    addTech('cms', 'Wix', 95, 'content_analysis');
+  }
+  
+  // Webflow Detection
+  if (lowerHtml.includes('webflow') || lowerHtml.includes('uploads-ssl.webflow.com')) {
+    addTech('cms', 'Webflow', 95, 'content_analysis');
+  }
+
+  // 5. CSS Framework Detection
+  const links = [];
+  $('link').each((i, elem) => {
+    const href = $(elem).attr('href');
+    if (href) links.push(href.toLowerCase());
+  });
+
+  links.forEach(link => {
+    if (link.includes('bootstrap')) {
+      addTech('frontend', 'Bootstrap', 85, 'css_analysis');
+    }
+    if (link.includes('tailwind')) {
+      addTech('frontend', 'Tailwind CSS', 90, 'css_analysis');
+    }
+    if (link.includes('material')) {
+      addTech('frontend', 'Material UI', 80, 'css_analysis');
+    }
+  });
+
+  // 6. API Endpoint Probing (Limited for safety)
+  try {
+    // Check for common API patterns in the HTML
+    if (lowerHtml.includes('/api/') || lowerHtml.includes('api.')) {
+      addTech('other', 'REST API', 70, 'api_pattern_detection');
+    }
+    if (lowerHtml.includes('graphql') || lowerHtml.includes('/graphql')) {
+      addTech('other', 'GraphQL', 80, 'api_pattern_detection');
+    }
+  } catch (e) {
+    // Silent fail for API probing
+  }
+
+  // 7. Analytics and Tracking Detection
+  scripts.forEach(script => {
+    const s = script.src;
+    if (s.includes('google-analytics') || s.includes('gtag') || s.includes('ga.js')) {
+      addTech('analytics', 'Google Analytics', 95, 'script_analysis');
+    }
+    if (s.includes('facebook.net') || s.includes('fbevents')) {
+      addTech('analytics', 'Facebook Pixel', 90, 'script_analysis');
+    }
+    if (s.includes('hotjar')) {
+      addTech('analytics', 'Hotjar', 95, 'script_analysis');
+    }
+    if (s.includes('mixpanel')) {
+      addTech('analytics', 'Mixpanel', 95, 'script_analysis');
+    }
+  });
+
+  // 8. Modern Framework Detection via Special Patterns
+  
+  // Check for hydration patterns
+  if (lowerHtml.includes('__next_data__')) {
+    addTech('frameworks', 'Next.js', 98, 'hydration_pattern');
+  }
+  if (lowerHtml.includes('__nuxt__')) {
+    addTech('frameworks', 'Nuxt.js', 98, 'hydration_pattern');
+  }
+  
+  // Check for static site generators
+  if ($('meta[name="generator"][content*="gatsby"]').length > 0) {
+    addTech('frameworks', 'Gatsby', 95, 'meta_tags');
+  }
+  if (lowerHtml.includes('_astro/') || $('script[src*="_astro/"]').length > 0) {
+    addTech('frameworks', 'Astro', 90, 'static_pattern');
+  }
+
+  // 9. Database Inference from Tech Stack
+  if (techStack.frameworks.includes('Next.js') || techStack.backend.includes('Node.js')) {
+    // Common Node.js databases
+    if (lowerHtml.includes('mongodb') || lowerHtml.includes('mongoose')) {
+      addTech('database', 'MongoDB', 75, 'content_inference');
+    }
+  }
+  
+  if (techStack.cms.includes('WordPress')) {
+    addTech('database', 'MySQL', 85, 'cms_inference');
+  }
+
+  // 10. Clean up and deduplicate
+  Object.keys(techStack).forEach(category => {
+    if (Array.isArray(techStack[category])) {
+      techStack[category] = [...new Set(techStack[category])];
+    }
+  });
+
+  // Add confidence scores
+  techStack.confidence = confidence;
+  
+  // Add summary statistics
+  techStack.summary = {
+    totalTechnologies: Object.keys(confidence).length,
+    highConfidence: Object.values(confidence).filter(c => c >= 85).length,
+    mediumConfidence: Object.values(confidence).filter(c => c >= 70 && c < 85).length,
+    lowConfidence: Object.values(confidence).filter(c => c < 70).length
+  };
+
+  return techStack;
+}
+
+// Comprehensive SEO Analysis Function
+async function analyzeSEO($, html, url, headers, loadTime) {
+  const analysis = {
+    url: url,
+    timestamp: new Date().toISOString(),
+    loadTime: `${loadTime}ms`,
+    score: 0,
+    issues: [],
+    recommendations: []
+  };
+
+  let score = 0;
+  const issues = [];
+  const recommendations = [];
+
+  // 1. Title Tag Analysis (20 points)
+  const titleTag = $('title').first();
+  const title = {
+    present: titleTag.length > 0,
+    content: titleTag.text().trim(),
+    length: titleTag.text().trim().length
+  };
+  
+  if (!title.present) {
+    issues.push({ type: 'critical', message: 'Missing title tag', impact: 'high' });
+  } else if (title.length < 30) {
+    issues.push({ type: 'warning', message: 'Title too short (< 30 characters)', impact: 'medium' });
+    score += 10;
+  } else if (title.length > 60) {
+    issues.push({ type: 'warning', message: 'Title too long (> 60 characters)', impact: 'medium' });
+    score += 15;
+  } else {
+    score += 20;
+  }
+
+  // 2. Meta Description Analysis (15 points)
+  const metaDesc = $('meta[name="description"]').first();
+  const metaDescription = {
+    present: metaDesc.length > 0,
+    content: metaDesc.attr('content') || '',
+    length: (metaDesc.attr('content') || '').length
+  };
+
+  if (!metaDescription.present) {
+    issues.push({ type: 'critical', message: 'Missing meta description', impact: 'high' });
+  } else if (metaDescription.length < 120) {
+    issues.push({ type: 'warning', message: 'Meta description too short (< 120 characters)', impact: 'medium' });
+    score += 8;
+  } else if (metaDescription.length > 160) {
+    issues.push({ type: 'warning', message: 'Meta description too long (> 160 characters)', impact: 'medium' });
+    score += 10;
+  } else {
+    score += 15;
+  }
+
+  // 3. Heading Structure Analysis (15 points)
+  const h1Tags = $('h1');
+  const h2Tags = $('h2');
+  const h3Tags = $('h3');
+  
+  const headings = {
+    h1: { count: h1Tags.length, optimal: h1Tags.length === 1 },
+    h2: { count: h2Tags.length, optimal: h2Tags.length > 0 },
+    h3: { count: h3Tags.length, optimal: h3Tags.length >= 0 }
+  };
+
+  if (h1Tags.length === 0) {
+    issues.push({ type: 'critical', message: 'Missing H1 tag', impact: 'high' });
+  } else if (h1Tags.length > 1) {
+    issues.push({ type: 'warning', message: 'Multiple H1 tags found', impact: 'medium' });
+    score += 10;
+  } else {
+    score += 15;
+  }
+
+  // 4. Image Analysis (10 points)
+  const images = $('img');
+  const imagesWithAlt = images.filter((i, img) => $(img).attr('alt'));
+  const imagesWithoutAlt = images.length - imagesWithAlt.length;
+
+  const imageAnalysis = {
+    total: images.length,
+    withAlt: imagesWithAlt.length,
+    withoutAlt: imagesWithoutAlt,
+    percentage: images.length > 0 ? Math.round((imagesWithAlt.length / images.length) * 100) : 100
+  };
+
+  if (imagesWithoutAlt > 0) {
+    issues.push({ 
+      type: 'warning', 
+      message: `${imagesWithoutAlt} images missing alt text`, 
+      impact: 'medium' 
+    });
+    score += Math.max(0, 10 - (imagesWithoutAlt * 2));
+  } else {
+    score += 10;
+  }
+
+  // 5. Link Analysis (10 points)
+  const allLinks = $('a[href]');
+  const internalLinks = [];
+  const externalLinks = [];
+  const nofollowLinks = [];
+  
+  allLinks.each((i, link) => {
+    const href = $(link).attr('href');
+    const rel = $(link).attr('rel');
+    
+    if (href.startsWith('http')) {
+      if (href.includes(new URL(url).hostname)) {
+        internalLinks.push(href);
+      } else {
+        externalLinks.push(href);
+      }
+    } else if (href.startsWith('/') || !href.includes('://')) {
+      internalLinks.push(href);
+    }
+    
+    if (rel && rel.includes('nofollow')) {
+      nofollowLinks.push(href);
+    }
+  });
+
+  const linkAnalysis = {
+    total: allLinks.length,
+    internal: internalLinks.length,
+    external: externalLinks.length,
+    nofollow: nofollowLinks.length
+  };
+
+  if (linkAnalysis.total > 0) {
+    score += 10;
+  } else {
+    issues.push({ type: 'info', message: 'No links found', impact: 'low' });
+  }
+
+  // 6. Content Analysis (10 points)
+  const bodyText = $('body').text().trim();
+  const wordCount = bodyText.split(/\s+/).filter(word => word.length > 0).length;
+  const readingTime = Math.ceil(wordCount / 200);
+
+  const contentAnalysis = {
+    wordCount: wordCount,
+    readingTime: `${readingTime} min`,
+    hasContent: wordCount > 300
+  };
+
+  if (wordCount < 300) {
+    issues.push({ type: 'warning', message: 'Content too short (< 300 words)', impact: 'medium' });
+    score += 5;
+  } else {
+    score += 10;
+  }
+
+  // 7. Technical SEO (10 points)
+  const viewport = $('meta[name="viewport"]').first();
+  const charset = $('meta[charset]').first();
+  const lang = $('html').attr('lang');
+  const robots = $('meta[name="robots"]').attr('content');
+
+  const technical = {
+    viewport: viewport.length > 0,
+    charset: charset.length > 0,
+    lang: !!lang,
+    robots: robots || 'index,follow'
+  };
+
+  let technicalScore = 0;
+  if (technical.viewport) technicalScore += 3;
+  else issues.push({ type: 'warning', message: 'Missing viewport meta tag', impact: 'medium' });
+  
+  if (technical.charset) technicalScore += 2;
+  else issues.push({ type: 'warning', message: 'Missing charset meta tag', impact: 'low' });
+  
+  if (technical.lang) technicalScore += 3;
+  else issues.push({ type: 'warning', message: 'Missing lang attribute on html tag', impact: 'low' });
+  
+  if (technical.robots.includes('noindex')) {
+    issues.push({ type: 'info', message: 'Page set to noindex', impact: 'high' });
+  }
+  
+  technicalScore += 2; // Base points for having robots
+  score += technicalScore;
+
+  // 8. Social Media Tags (5 points)
+  const ogTitle = $('meta[property="og:title"]').attr('content');
+  const ogDescription = $('meta[property="og:description"]').attr('content');
+  const ogImage = $('meta[property="og:image"]').attr('content');
+  const twitterCard = $('meta[name="twitter:card"]').attr('content');
+
+  const socialMedia = {
+    openGraph: {
+      title: !!ogTitle,
+      description: !!ogDescription,
+      image: !!ogImage
+    },
+    twitter: {
+      card: !!twitterCard
+    }
+  };
+
+  let socialScore = 0;
+  if (ogTitle) socialScore += 1;
+  if (ogDescription) socialScore += 1;
+  if (ogImage) socialScore += 2;
+  if (twitterCard) socialScore += 1;
+  
+  if (socialScore < 3) {
+    recommendations.push('Add Open Graph and Twitter Card meta tags for better social sharing');
+  }
+  
+  score += socialScore;
+
+  // 9. Structured Data (5 points)
+  const jsonLdScripts = $('script[type="application/ld+json"]');
+  const structuredData = {
+    jsonLd: jsonLdScripts.length > 0,
+    count: jsonLdScripts.length
+  };
+
+  if (structuredData.jsonLd) {
+    score += 5;
+  } else {
+    recommendations.push('Consider adding structured data (JSON-LD) for better search visibility');
+  }
+
+  // 10. Performance & Security Headers (5 points)
+  const securityHeaders = {
+    https: url.startsWith('https://'),
+    hsts: !!(headers['strict-transport-security']),
+    csp: !!(headers['content-security-policy']),
+    xframe: !!(headers['x-frame-options'])
+  };
+
+  let securityScore = 0;
+  if (securityHeaders.https) {
+    securityScore += 2;
+  } else {
+    issues.push({ type: 'critical', message: 'Site not using HTTPS', impact: 'high' });
+  }
+  
+  if (securityHeaders.hsts) securityScore += 1;
+  if (securityHeaders.csp) securityScore += 1;
+  if (securityHeaders.xframe) securityScore += 1;
+  
+  score += securityScore;
+
+  // Generate recommendations based on analysis
+  if (recommendations.length === 0) {
+    recommendations.push('Great job! Your page follows most SEO best practices.');
+  }
+
+  // Final score calculation and grading
+  const finalScore = Math.min(100, Math.max(0, score));
+  let grade = 'F';
+  if (finalScore >= 90) grade = 'A';
+  else if (finalScore >= 80) grade = 'B';
+  else if (finalScore >= 70) grade = 'C';
+  else if (finalScore >= 60) grade = 'D';
+
+  analysis.score = finalScore;
+  analysis.grade = grade;
+  analysis.title = title;
+  analysis.metaDescription = metaDescription;
+  analysis.headings = headings;
+  analysis.images = imageAnalysis;
+  analysis.links = linkAnalysis;
+  analysis.content = contentAnalysis;
+  analysis.technical = technical;
+  analysis.socialMedia = socialMedia;
+  analysis.structuredData = structuredData;
+  analysis.security = securityHeaders;
+  analysis.issues = issues;
+  analysis.recommendations = recommendations;
+
+  return analysis;
 }
 
 module.exports = router;

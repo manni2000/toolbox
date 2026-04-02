@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { AlignLeft, Copy, Check } from "lucide-react";
+import { AlignLeft, Copy, Check, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "260 70% 55%";
 
 const RemoveSpacesTool = () => {
   const [input, setInput] = useState("");
@@ -35,8 +39,11 @@ const RemoveSpacesTool = () => {
     >
       <div className="space-y-6">
         <div>
-          <label className="mb-2 block text-sm font-medium">Input Text</label>
+          <label htmlFor="remove-spaces-input" className="mb-2 block text-sm font-medium">
+            Input Text
+          </label>
           <textarea
+            id="remove-spaces-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Paste your text with extra spaces here..."
@@ -63,7 +70,12 @@ const RemoveSpacesTool = () => {
                 {copied ? "Copied!" : "Copy"}
               </button>
             </div>
+            <label htmlFor="remove-spaces-output" className="sr-only">
+              Result Text
+            </label>
             <textarea
+              id="remove-spaces-output"
+              title="Result Text"
               value={output}
               readOnly
               className="input-field h-40 w-full resize-none"

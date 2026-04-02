@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "220 80% 55%";
 
 const DateDifferenceTool = () => {
   const [startDate, setStartDate] = useState("");
@@ -69,26 +73,30 @@ const DateDifferenceTool = () => {
         {/* Inputs */}
         <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-xs sm:text-sm font-medium">Start Date</label>
+            <label htmlFor="start-date" className="mb-2 block text-xs sm:text-sm font-medium">Start Date</label>
             <div className="relative">
               <Calendar className="absolute left-3 sm:left-4 top-1/2 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
               <input
+                id="start-date"
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 className="input-tool pl-10 sm:pl-12 text-sm"
+                aria-label="Start date for calculation"
               />
             </div>
           </div>
           <div>
-            <label className="mb-2 block text-xs sm:text-sm font-medium">End Date</label>
+            <label htmlFor="end-date" className="mb-2 block text-xs sm:text-sm font-medium">End Date</label>
             <div className="relative">
               <Calendar className="absolute left-3 sm:left-4 top-1/2 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
               <input
+                id="end-date"
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 className="input-tool pl-10 sm:pl-12 text-sm"
+                aria-label="End date for calculation"
               />
             </div>
           </div>

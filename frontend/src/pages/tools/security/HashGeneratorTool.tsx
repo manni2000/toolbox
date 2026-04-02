@@ -1,7 +1,11 @@
 import { useState } from "react";
-import { Copy, Check, Hash } from "lucide-react";
+import { Copy, Check, Hash, Sparkles } from "lucide-react";
 import CryptoJS from "crypto-js";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "0 80% 55%";
 
 const HashGeneratorTool = () => {
   const [input, setInput] = useState("");

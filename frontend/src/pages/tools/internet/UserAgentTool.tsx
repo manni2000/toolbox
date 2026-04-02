@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
-import { Monitor, Copy, Check, Smartphone, Laptop, Globe, Loader2 } from "lucide-react";
+import { Monitor, Copy, Check, Smartphone, Laptop, Globe, Loader2, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "200 85% 50%";
 
 interface ParsedUA {
   browser: string;

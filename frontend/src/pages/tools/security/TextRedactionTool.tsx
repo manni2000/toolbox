@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Copy, Check, FileText, Shield, Eye, EyeOff } from 'lucide-react';
+import { Copy, Check, FileText, Shield, Eye, EyeOff, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "0 80% 55%";
 
 interface RedactionItem {
   type: string;
@@ -112,7 +116,7 @@ export default function TextRedactionTool() {
               </div>
             </div>
 
-            <button 
+            <button
               onClick={redactText} 
               disabled={!text.trim() || loading}
               className="btn-primary w-full flex items-center justify-center gap-2"

@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { Copy, Check, Calculator, DollarSign, TrendingUp, Target, AlertCircle } from 'lucide-react';
+import { Copy, Check, Calculator, DollarSign, TrendingUp, Target, AlertCircle, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 interface MarginResult {
   revenue: number;
@@ -148,7 +152,7 @@ export default function ProfitMarginCalculatorTool() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={calculateMargins} 
             disabled={!revenue || !cost || loading}
             className="btn-primary w-full flex items-center justify-center gap-2 mt-4"

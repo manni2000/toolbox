@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
-import { Globe, Clock, RefreshCw, Search, MapPin, Sunrise, Sunset, Eye, EyeOff, Filter, Star, TrendingUp, Users, Calendar, Zap } from "lucide-react";
+import { Globe, Clock, RefreshCw, Search, MapPin, Sunrise, Sunset, Eye, EyeOff, Filter, Star, TrendingUp, Users, Calendar, Zap, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "220 80% 55%";
 
 interface TimeZone {
   id: string;
@@ -271,7 +275,10 @@ const WorldTimeTool = () => {
               />
               {searchQuery && (
                 <button
+                  type="button"
                   onClick={() => setSearchQuery("")}
+                  aria-label="Clear search"
+                  title="Clear search"
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
                   ✕
@@ -285,6 +292,8 @@ const WorldTimeTool = () => {
               <div className="flex items-center gap-2">
                 <Filter className="h-4 w-4 text-muted-foreground" />
                 <select
+                  title="Filter by region"
+                  aria-label="Filter time zones by region"
                   value={selectedRegion}
                   onChange={(e) => setSelectedRegion(e.target.value)}
                   className="input-field px-3 py-1 text-sm"
@@ -301,6 +310,8 @@ const WorldTimeTool = () => {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">Sort:</span>
                 <select
+                  title="Sort time zones"
+                  aria-label="Sort time zones"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as "name" | "offset" | "popularity")}
                   className="input-field px-3 py-1 text-sm"
@@ -313,6 +324,7 @@ const WorldTimeTool = () => {
 
               {/* Favorites Toggle */}
               <button
+                type="button"
                 onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
                 className={`flex items-center gap-2 rounded-lg px-3 py-1 text-sm font-medium transition-colors ${
                   showFavoritesOnly
@@ -328,6 +340,7 @@ const WorldTimeTool = () => {
             {/* Display Options */}
             <div className="flex flex-wrap gap-3">
               <button
+                type="button"
                 onClick={() => setIs24Hour(!is24Hour)}
                 className={`flex items-center gap-2 rounded-lg px-3 py-1 text-sm font-medium transition-colors ${
                   is24Hour
@@ -340,6 +353,7 @@ const WorldTimeTool = () => {
               </button>
               
               <button
+                type="button"
                 onClick={() => setShowSeconds(!showSeconds)}
                 className={`flex items-center gap-2 rounded-lg px-3 py-1 text-sm font-medium transition-colors ${
                   showSeconds
@@ -352,6 +366,7 @@ const WorldTimeTool = () => {
               </button>
               
               <button
+                type="button"
                 onClick={handleRefresh}
                 className="flex items-center gap-2 rounded-lg px-3 py-1 text-sm font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
               >
@@ -387,7 +402,10 @@ const WorldTimeTool = () => {
                       </div>
                     </div>
                     <button
+                      type="button"
                       onClick={() => toggleFavorite(timezone.id)}
+                      aria-label={`Add ${timezone.name} to favorites`}
+                      title={`Add ${timezone.name} to favorites`}
                       className="text-muted-foreground hover:text-primary transition-colors"
                     >
                       <Star className={`h-4 w-4 ${favorites.includes(timezone.id) ? 'fill-primary text-primary' : ''}`} />
@@ -444,7 +462,10 @@ const WorldTimeTool = () => {
                       </div>
                     </div>
                     <button
+                      type="button"
                       onClick={() => toggleFavorite(timezone.id)}
+                      aria-label={`${favorites.includes(timezone.id) ? "Remove" : "Add"} ${timezone.name} from favorites`}
+                      title={`${favorites.includes(timezone.id) ? "Remove" : "Add"} ${timezone.name} from favorites`}
                       className="text-muted-foreground hover:text-primary transition-colors"
                     >
                       <Star className={`h-4 w-4 ${favorites.includes(timezone.id) ? 'fill-primary text-primary' : ''}`} />

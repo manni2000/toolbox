@@ -1,9 +1,14 @@
 import { useState, useRef } from "react";
-import { Upload, Unlock, FileText, X, Key } from "lucide-react";
+import { Upload, Unlock, FileText, X, Key, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+
+const categoryColor = "0 70% 50%";
 
 const PDFUnlockTool = () => {
   const [file, setFile] = useState<File | null>(null);

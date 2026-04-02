@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Copy, Check, Shield, Globe, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
+import { Copy, Check, Shield, Globe, AlertTriangle, CheckCircle, XCircle, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "0 80% 55%";
 
 interface URLReputation {
   url: string;
@@ -114,7 +118,7 @@ export default function URLReputationCheckerTool() {
               <p className="text-xs text-muted-foreground">Enter the complete URL including http:// or https://</p>
             </div>
 
-            <button 
+            <button
               onClick={checkReputation} 
               disabled={!url.trim() || loading}
               className="btn-primary w-full flex items-center justify-center gap-2"

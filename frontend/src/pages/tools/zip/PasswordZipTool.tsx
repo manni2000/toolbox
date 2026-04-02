@@ -1,9 +1,13 @@
 import { useState, useRef } from "react";
-import { Lock, Upload, X, Loader2, FileText } from "lucide-react";
+import { Lock, Upload, X, Loader2, FileText, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+
+const categoryColor = "45 80% 50%";
 
 const PasswordZipTool = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -140,6 +144,8 @@ const PasswordZipTool = () => {
             multiple
             onChange={(e) => handleFiles(e.target.files)}
             className="hidden"
+            aria-label="Upload files to create password-protected ZIP"
+            title="Upload files"
           />
         </div>
 
@@ -159,7 +165,10 @@ const PasswordZipTool = () => {
                     {(file.size / 1024).toFixed(1)} KB
                   </span>
                   <button
+                    type="button"
                     onClick={() => removeFile(index)}
+                    aria-label={`Remove ${file.name}`}
+                    title={`Remove ${file.name}`}
                     className="rounded-lg p-1 text-destructive hover:bg-destructive/10 flex-shrink-0"
                   >
                     <X className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -196,8 +205,10 @@ const PasswordZipTool = () => {
 
         {/* Encryption Method */}
         <div>
-          <label className="mb-2 block text-xs sm:text-sm font-medium">Encryption Method</label>
+          <label htmlFor="encryption-method" className="mb-2 block text-xs sm:text-sm font-medium">Encryption Method</label>
           <select
+            id="encryption-method"
+            title="Encryption Method"
             value={encryptionMethod}
             onChange={(e) => setEncryptionMethod(e.target.value)}
             className="input-tool text-sm sm:text-base"
@@ -210,6 +221,7 @@ const PasswordZipTool = () => {
 
         {/* Create Button */}
         <button
+          type="button"
           onClick={createPasswordZip}
           disabled={isProcessing || files.length === 0}
           className="btn-primary w-full text-sm sm:text-base py-3 sm:py-4"
@@ -257,7 +269,8 @@ const PasswordZipTool = () => {
                   })()}
                 />
                 
-                <button 
+                <button
+                  type="button"
                   onClick={reset} 
                   className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full mt-4"
                 >

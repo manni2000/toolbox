@@ -1,6 +1,10 @@
 import { useMemo, useState } from "react";
-import { Copy, Check, Search, Download, Globe, AlertCircle, CheckCircle, XCircle, FileText, Filter } from "lucide-react";
+import { Copy, Check, Search, Download, Globe, AlertCircle, CheckCircle, XCircle, FileText, Filter, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "25 90% 50%";
 
 interface SEOIssue {
   type: 'error' | 'warning' | 'info' | 'success';
@@ -692,12 +696,18 @@ const PageSEOTool = () => {
                 <h3 className="font-semibold">SEO Score</h3>
                 <div className="flex gap-2">
                   <button
+                    type="button"
+                    title="Copy SEO score"
+                    aria-label="Copy SEO score"
                     onClick={() => handleCopy("score", analysis.score.toString())}
                     className="text-muted-foreground hover:text-foreground"
                   >
                     {copied === "score" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
+                    title="Download SEO report"
+                    aria-label="Download SEO report"
                     onClick={downloadReport}
                     className="text-muted-foreground hover:text-foreground"
                   >
@@ -781,6 +791,8 @@ const PageSEOTool = () => {
                 <div className="flex items-center gap-2">
                   <Filter className="h-4 w-4 text-muted-foreground" />
                   <select
+                    title="Filter SEO issues by type"
+                    aria-label="Filter SEO issues by type"
                     value={issueFilter}
                     onChange={(e) => setIssueFilter(e.target.value as typeof issueFilter)}
                     className="rounded-lg bg-muted px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"

@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, FileText, RefreshCw } from "lucide-react";
+import { Copy, Check, FileText, RefreshCw, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 const LoremGeneratorTool = () => {
   const [paragraphs, setParagraphs] = useState(3);
@@ -89,8 +93,10 @@ const LoremGeneratorTool = () => {
         {/* Options */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm font-medium">Type</label>
+            <label htmlFor="lorem-type" className="mb-2 block text-sm font-medium">Type</label>
             <select
+              id="lorem-type"
+              title="Select output type"
               value={type}
               onChange={(e) => setType(e.target.value as typeof type)}
               className="input-tool"
@@ -101,10 +107,13 @@ const LoremGeneratorTool = () => {
             </select>
           </div>
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label htmlFor="lorem-count" className="mb-2 block text-sm font-medium">
               Number of {type}
             </label>
             <input
+              id="lorem-count"
+              title={`Number of ${type} to generate`}
+              placeholder={`Enter number of ${type}`}
               type="number"
               min="1"
               max="100"

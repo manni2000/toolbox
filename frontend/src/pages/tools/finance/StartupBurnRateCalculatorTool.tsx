@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { Copy, Check, Calculator, TrendingUp, DollarSign, Target, AlertCircle } from 'lucide-react';
+import { Copy, Check, Calculator, TrendingUp, DollarSign, Target, AlertCircle, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 interface BurnRateResult {
   monthly_expenses: number;
@@ -146,7 +150,7 @@ export default function StartupBurnRateCalculatorTool() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={calculateBurnRate} 
             disabled={!monthlyExpenses || !monthlyRevenue || !currentCash || loading}
             className="btn-primary w-full flex items-center justify-center gap-2 mt-4"

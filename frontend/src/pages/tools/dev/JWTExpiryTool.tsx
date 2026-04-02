@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Clock, AlertCircle, RefreshCw, FileText, Download } from "lucide-react";
+import { Copy, Check, Clock, AlertCircle, RefreshCw, FileText, Download, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 interface JWTInfo {
   header: any;
@@ -238,12 +242,18 @@ const JWTExpiryTool = () => {
                 <h3 className="font-semibold">Token Status</h3>
                 <div className="flex gap-2">
                   <button
+                    type="button"
+                    aria-label="Copy JWT token"
+                    title="Copy JWT token"
                     onClick={() => handleCopy("jwt", jwtInput)}
                     className="text-muted-foreground hover:text-foreground"
                   >
                     {copied === "jwt" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
+                    aria-label="Download JWT analysis report"
+                    title="Download JWT analysis report"
                     onClick={downloadReport}
                     className="text-muted-foreground hover:text-foreground"
                   >

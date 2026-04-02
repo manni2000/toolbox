@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Search, Download, AlertTriangle, Image, Link, Globe, Loader } from "lucide-react";
+import { Copy, Check, Search, Download, AlertTriangle, Image, Link, Globe, Loader, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "25 90% 50%";
 
 interface BrokenImage {
   url: string;
@@ -274,6 +278,7 @@ const BrokenImageFinderTool = () => {
             </div>
 
             <button
+              type="button"
               onClick={scanForImages}
               disabled={isScanning || (!htmlContent && !url)}
               className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -320,7 +325,10 @@ const BrokenImageFinderTool = () => {
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Image Analysis</h3>
               <button
+                type="button"
                 onClick={downloadReport}
+                title="Download report"
+                aria-label="Download report"
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Download className="h-4 w-4" />
@@ -369,14 +377,20 @@ const BrokenImageFinderTool = () => {
                     <div className="flex items-center gap-2">
                       {image.status === 'working' && (
                         <button
+                          type="button"
                           onClick={() => window.open(image.url, '_blank')}
+                          title={`Open image URL: ${image.url}`}
+                          aria-label={`Open image URL: ${image.url}`}
                           className="text-blue-500 hover:text-blue-600"
                         >
                           <Link className="h-4 w-4" />
                         </button>
                       )}
                       <button
+                        type="button"
                         onClick={() => handleCopy(`url-${index}`, image.url)}
+                        title={`Copy image URL: ${image.url}`}
+                        aria-label={`Copy image URL: ${image.url}`}
                         className="text-muted-foreground hover:text-foreground"
                       >
                         {copied === `url-${index}` ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}

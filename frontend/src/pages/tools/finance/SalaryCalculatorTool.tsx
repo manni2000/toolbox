@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Calculator, ArrowRightLeft } from "lucide-react";
+import { Calculator, ArrowRightLeft, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 const SalaryCalculatorTool = () => {
   const [amount, setAmount] = useState("");
@@ -78,8 +82,9 @@ const SalaryCalculatorTool = () => {
         {/* Input */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm font-medium">Salary Amount (₹)</label>
+            <label htmlFor="salary-amount" className="mb-2 block text-sm font-medium">Salary Amount (₹)</label>
             <input
+              id="salary-amount"
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
@@ -88,8 +93,9 @@ const SalaryCalculatorTool = () => {
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-medium">Pay Period</label>
+            <label htmlFor="pay-period" className="mb-2 block text-sm font-medium">Pay Period</label>
             <select
+              id="pay-period"
               value={period}
               onChange={(e) => setPeriod(e.target.value as typeof period)}
               className="input-tool"
@@ -106,8 +112,9 @@ const SalaryCalculatorTool = () => {
         {/* Work Hours */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm font-medium">Hours per Week</label>
+            <label htmlFor="hours-per-week" className="mb-2 block text-sm font-medium">Hours per Week</label>
             <input
+              id="hours-per-week"
               type="number"
               value={hoursPerWeek}
               onChange={(e) => setHoursPerWeek(e.target.value)}
@@ -116,8 +123,9 @@ const SalaryCalculatorTool = () => {
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-medium">Days per Week</label>
+            <label htmlFor="days-per-week" className="mb-2 block text-sm font-medium">Days per Week</label>
             <input
+              id="days-per-week"
               type="number"
               value={daysPerWeek}
               onChange={(e) => setDaysPerWeek(e.target.value)}

@@ -1,7 +1,11 @@
 import { useState } from "react";
-import { Copy, Check, RefreshCw, Key } from "lucide-react";
+import { Copy, Check, RefreshCw, Key, Sparkles } from "lucide-react";
 import { v4 as uuidv4, v1 as uuidv1 } from "uuid";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "0 80% 55%";
 
 const UUIDGeneratorTool = () => {
   const [uuids, setUuids] = useState<string[]>([]);
@@ -43,8 +47,11 @@ const UUIDGeneratorTool = () => {
         {/* Options */}
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
-            <label className="mb-2 block text-sm font-medium">Version</label>
+            <label htmlFor="uuid-version" className="mb-2 block text-sm font-medium">Version</label>
             <select
+              id="uuid-version"
+              title="UUID version"
+              aria-label="UUID version"
               value={version}
               onChange={(e) => setVersion(e.target.value as "v4" | "v1")}
               className="input-tool"
@@ -54,9 +61,12 @@ const UUIDGeneratorTool = () => {
             </select>
           </div>
           <div>
-            <label className="mb-2 block text-sm font-medium">Count</label>
+            <label htmlFor="uuid-count" className="mb-2 block text-sm font-medium">Count</label>
             <input
+              id="uuid-count"
               type="number"
+              title="Number of UUIDs to generate"
+              placeholder="Enter count (1-100)"
               min={1}
               max={100}
               value={count}

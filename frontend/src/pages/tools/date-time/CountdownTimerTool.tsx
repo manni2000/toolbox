@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
-import { Clock, Play, Pause, RotateCcw, Bell } from "lucide-react";
+import { Clock, Play, Pause, RotateCcw, Bell, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "220 80% 55%";
 
 const CountdownTimerTool = () => {
   const [targetDate, setTargetDate] = useState("");
@@ -76,8 +80,9 @@ const CountdownTimerTool = () => {
       <div className="space-y-6">
         {/* Event Name */}
         <div>
-          <label className="mb-2 block text-sm font-medium">Event Name (Optional)</label>
+          <label htmlFor="eventName" className="mb-2 block text-sm font-medium">Event Name (Optional)</label>
           <input
+            id="eventName"
             type="text"
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
@@ -89,8 +94,9 @@ const CountdownTimerTool = () => {
         {/* Date & Time */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm font-medium">Target Date</label>
+            <label htmlFor="targetDate" className="mb-2 block text-sm font-medium">Target Date</label>
             <input
+              id="targetDate"
               type="date"
               value={targetDate}
               onChange={(e) => setTargetDate(e.target.value)}
@@ -99,8 +105,9 @@ const CountdownTimerTool = () => {
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-medium">Target Time</label>
+            <label htmlFor="targetTime" className="mb-2 block text-sm font-medium">Target Time</label>
             <input
+              id="targetTime"
               type="time"
               value={targetTime}
               onChange={(e) => setTargetTime(e.target.value)}
@@ -136,7 +143,7 @@ const CountdownTimerTool = () => {
               Pause
             </button>
           )}
-          <button onClick={reset} className="btn-secondary">
+          <button type="button" onClick={reset} className="btn-secondary" aria-label="Reset countdown" title="Reset countdown">
             <RotateCcw className="h-5 w-5" />
           </button>
         </div>

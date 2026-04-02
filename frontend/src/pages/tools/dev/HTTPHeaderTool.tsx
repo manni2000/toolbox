@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Globe, AlertCircle, Server } from "lucide-react";
+import { Globe, AlertCircle, Server, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 const HTTPHeaderTool = () => {
   const [url, setUrl] = useState("");

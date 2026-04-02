@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Clock, Calendar, Plus, Trash2 } from "lucide-react";
+import { Clock, Calendar, Plus, Trash2, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "145 70% 45%";
 
 interface StudySession {
   id: string;
@@ -84,9 +88,11 @@ const StudyTimetableTool = () => {
           
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <label className="mb-2 block text-sm font-medium">Subject</label>
+              <label htmlFor="study-subject" className="mb-2 block text-sm font-medium">Subject</label>
               <input
+                id="study-subject"
                 type="text"
+                title="Subject"
                 value={currentSession.subject}
                 onChange={(e) => setCurrentSession({...currentSession, subject: e.target.value})}
                 placeholder="e.g., Mathematics"
@@ -95,9 +101,11 @@ const StudyTimetableTool = () => {
             </div>
             
             <div>
-              <label className="mb-2 block text-sm font-medium">Start Time</label>
+              <label htmlFor="study-start-time" className="mb-2 block text-sm font-medium">Start Time</label>
               <input
+                id="study-start-time"
                 type="time"
+                title="Start Time"
                 value={currentSession.startTime}
                 onChange={(e) => setCurrentSession({...currentSession, startTime: e.target.value})}
                 className="input-tool"
@@ -105,9 +113,11 @@ const StudyTimetableTool = () => {
             </div>
             
             <div>
-              <label className="mb-2 block text-sm font-medium">End Time</label>
+              <label htmlFor="study-end-time" className="mb-2 block text-sm font-medium">End Time</label>
               <input
+                id="study-end-time"
                 type="time"
+                title="End Time"
                 value={currentSession.endTime}
                 onChange={(e) => setCurrentSession({...currentSession, endTime: e.target.value})}
                 className="input-tool"
@@ -115,9 +125,11 @@ const StudyTimetableTool = () => {
             </div>
             
             <div>
-              <label className="mb-2 block text-sm font-medium">Break (minutes)</label>
+              <label htmlFor="study-break-time" className="mb-2 block text-sm font-medium">Break (minutes)</label>
               <input
+                id="study-break-time"
                 type="number"
+                title="Break (minutes)"
                 min="0"
                 max="60"
                 value={currentSession.breakTime}
@@ -127,7 +139,7 @@ const StudyTimetableTool = () => {
             </div>
           </div>
           
-          <button onClick={addSession} className="btn-primary mt-4">
+          <button type="button" onClick={addSession} className="btn-primary mt-4">
             <Plus className="h-5 w-5" />
             Add Session
           </button>
@@ -159,6 +171,9 @@ const StudyTimetableTool = () => {
                     </div>
                   </div>
                   <button
+                    type="button"
+                    title={`Remove session ${index + 1}`}
+                    aria-label={`Remove session ${index + 1}`}
                     onClick={() => removeSession(session.id)}
                     className="text-destructive hover:text-destructive/80"
                   >

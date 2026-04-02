@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Download, Code, FileText, Zap, AlertCircle, RefreshCw } from "lucide-react";
+import { Copy, Check, Download, Code, FileText, Zap, AlertCircle, RefreshCw, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 interface TypeProperty {
   name: string;
@@ -252,13 +256,19 @@ const JsonToTypeScriptTool = () => {
                 <h3 className="font-semibold">Generated TypeScript Code</h3>
                 <div className="flex gap-2">
                   <button
+                    type="button"
                     onClick={() => handleCopy("interface", generatedInterface.interfaceCode)}
+                    aria-label={copied === "interface" ? "Code copied" : "Copy generated code"}
+                    title={copied === "interface" ? "Code copied" : "Copy generated code"}
                     className="text-muted-foreground hover:text-foreground"
                   >
                     {copied === "interface" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={downloadInterface}
+                    aria-label="Download generated TypeScript interface"
+                    title="Download generated TypeScript interface"
                     className="text-muted-foreground hover:text-foreground"
                   >
                     <Download className="h-4 w-4" />

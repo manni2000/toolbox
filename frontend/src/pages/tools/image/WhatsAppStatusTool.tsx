@@ -1,8 +1,13 @@
 import { useState, useRef } from "react";
 import { Upload, Smartphone, X, Type, Palette, AlignLeft, AlignCenter, AlignRight, Sparkles, Image as ImageIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+
+const categoryColor = "173 80% 40%";
 
 const WhatsAppStatusTool = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -192,11 +197,48 @@ const WhatsAppStatusTool = () => {
       <canvas ref={canvasRef} className="hidden" />
 
       <div className="space-y-8">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.15)`, boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)` }}
+            >
+              <Smartphone className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">WhatsApp Status Creator</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Design professional status images with the perfect 1080×1920 resolution for WhatsApp.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Header Info */}
-        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
+        <motion.div 
+          variants={scaleIn}
+          initial="hidden"
+          animate="visible"
+          className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6 shadow-lg"
+        >
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-              <Smartphone className="h-6 w-6 text-primary" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl" style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}>
+              <Smartphone className="h-6 w-6" style={{ color: `hsl(${categoryColor})` }} />
             </div>
             <div>
               <h3 className="text-lg font-semibold text-foreground">Perfect for WhatsApp Status</h3>
@@ -205,7 +247,7 @@ const WhatsAppStatusTool = () => {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Background Section */}
         <div className="grid gap-6 lg:grid-cols-2">
@@ -444,7 +486,7 @@ const WhatsAppStatusTool = () => {
 
         {/* Actions */}
         <div className="flex gap-4">
-          <button 
+          <button
             onClick={generate} 
             disabled={isGenerating}
             className="btn-primary flex-1 disabled:opacity-50"

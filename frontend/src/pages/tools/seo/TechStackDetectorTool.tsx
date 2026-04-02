@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { Copy, Check, Search, Download, Globe, Code, Database, Server, Palette } from "lucide-react";
+import { Copy, Check, Search, Download, Globe, Code, Database, Server, Palette, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 
+const categoryColor = "25 90% 50%";
+
 interface TechStack {
   url: string;
+  timestamp?: string;
   frontend: string[];
   backend: string[];
   database: string[];
@@ -14,6 +19,14 @@ interface TechStack {
   analytics: string[];
   frameworks: string[];
   other: string[];
+  confidence?: { [key: string]: number };
+  detectionMethods?: string[];
+  summary?: {
+    totalTechnologies: number;
+    highConfidence: number;
+    mediumConfidence: number;
+    lowConfidence: number;
+  };
 }
 
 const TechStackDetectorTool = () => {
@@ -23,6 +36,33 @@ const TechStackDetectorTool = () => {
   const [copied, setCopied] = useState<string | null>(null);
 
   const { toast } = useToast();
+
+  // Get confidence color and icon
+  const getConfidenceIndicator = (tech: string) => {
+    if (!techStack?.confidence) return null;
+    
+    const confidence = techStack.confidence[tech] || 0;
+    
+    if (confidence >= 85) {
+      return { 
+        color: "bg-green-100 text-green-800 border-green-200", 
+        icon: "🟢", 
+        text: `${confidence}% confidence` 
+      };
+    } else if (confidence >= 70) {
+      return { 
+        color: "bg-yellow-100 text-yellow-800 border-yellow-200", 
+        icon: "🟡", 
+        text: `${confidence}% confidence` 
+      };
+    } else {
+      return { 
+        color: "bg-red-100 text-red-800 border-red-200", 
+        icon: "🔴", 
+        text: `${confidence}% confidence` 
+      };
+    }
+  };
 
   const detectTechStack = async () => {
     if (!url.trim()) return;
@@ -119,6 +159,15 @@ const TechStackDetectorTool = () => {
     }
   };
 
+  const techCategories = techStack
+    ? Object.entries(techStack).filter(
+        ([category, technologies]) =>
+          category !== 'url' &&
+          Array.isArray(technologies) &&
+          technologies.length > 0
+      )
+    : [];
+
   return (
     <ToolLayout
       title="Website Tech Stack Detector"
@@ -160,6 +209,7 @@ const TechStackDetectorTool = () => {
             </div>
 
             <button
+              type="button"
               onClick={detectTechStack}
               disabled={isScanning || !url.trim()}
               className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -186,13 +236,19 @@ const TechStackDetectorTool = () => {
               <h3 className="font-semibold">Technology Stack Analysis</h3>
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={() => handleCopy("url", techStack.url)}
+                  aria-label="Copy analyzed URL"
+                  title="Copy analyzed URL"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   {copied === "url" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </button>
                 <button
+                  type="button"
                   onClick={downloadReport}
+                  aria-label="Download tech stack report"
+                  title="Download tech stack report"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   <Download className="h-4 w-4" />
@@ -207,7 +263,7 @@ const TechStackDetectorTool = () => {
                 <h4 className="font-semibold">{techStack.url}</h4>
               </div>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <div className="text-2xl font-bold text-primary">
                     {techStack.frontend.length}
@@ -233,13 +289,41 @@ const TechStackDetectorTool = () => {
                   <div className="text-sm text-muted-foreground">Server</div>
                 </div>
               </div>
+
+              {/* Confidence Summary */}
+              {techStack.summary && (
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-muted/50 rounded-lg">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-foreground">
+                      {techStack.summary.totalTechnologies}
+                    </div>
+                    <div className="text-xs text-muted-foreground">Total Detected</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-green-600">
+                      {techStack.summary.highConfidence}
+                    </div>
+                    <div className="text-xs text-muted-foreground">High Confidence</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-yellow-600">
+                      {techStack.summary.mediumConfidence}
+                    </div>
+                    <div className="text-xs text-muted-foreground">Medium Confidence</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-red-600">
+                      {techStack.summary.lowConfidence}
+                    </div>
+                    <div className="text-xs text-muted-foreground">Low Confidence</div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Detailed Breakdown */}
-            {Object.entries(techStack).map(([category, technologies]) => {
-              if (category === 'url' || technologies.length === 0) return null;
-              
-              return (
+            {techCategories.length > 0 ? (
+              techCategories.map(([category, technologies]) => (
                 <div key={category} className="rounded-xl border border-border bg-card p-6">
                   <div className="flex items-center gap-2 mb-4">
                     {getTechIcon(category)}
@@ -248,20 +332,39 @@ const TechStackDetectorTool = () => {
                       ({technologies.length} technologies)
                     </span>
                   </div>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {technologies.map((tech, index) => (
-                      <span
-                        key={index}
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(category)}`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
+
+                  <div className="flex flex-wrap gap-3">
+                    {technologies.map((tech, index) => {
+                      const confidence = getConfidenceIndicator(tech);
+                      return (
+                        <div
+                          key={index}
+                          className={`group relative px-3 py-2 rounded-lg text-sm font-medium border transition-all hover:scale-105 ${getCategoryColor(category)}`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span>{tech}</span>
+                            {confidence && (
+                              <span className="text-xs opacity-75" title={confidence.text}>
+                                {confidence.icon}
+                              </span>
+                            )}
+                          </div>
+                          {confidence && (
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                              {confidence.text}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-              );
-            })}
+              ))
+            ) : (
+              <div className="rounded-xl border border-dashed border-border bg-card p-6 text-sm text-muted-foreground">
+                No detected technologies were returned for this website.
+              </div>
+            )}
           </div>
         )}
 
@@ -269,29 +372,48 @@ const TechStackDetectorTool = () => {
         <div className="rounded-xl border border-border bg-muted/30 p-6">
           <h4 className="font-semibold mb-4 flex items-center gap-2">
             <Code className="h-5 w-5" />
-            Tech Stack Analysis
+            Enhanced Tech Stack Analysis
           </h4>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <h5 className="font-medium text-foreground mb-2">🔍 What We Detect</h5>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Frontend frameworks & libraries</li>
-                <li>• Backend programming languages</li>
-                <li>• Database systems</li>
-                <li>• Server & hosting platforms</li>
-                <li>• CMS & analytics tools</li>
+                <li>• Frontend frameworks & libraries (React, Vue, Angular)</li>
+                <li>• Backend programming languages (Node.js, PHP, Python)</li>
+                <li>• Database systems & cloud services</li>
+                <li>• Server & hosting platforms (Nginx, Vercel, Netlify)</li>
+                <li>• CMS & analytics tools (WordPress, GA, Shopify)</li>
+                <li>• Build tools & bundlers (Webpack, Vite)</li>
               </ul>
             </div>
             <div>
-              <h5 className="font-medium text-foreground mb-2">📊 How It Works</h5>
+              <h5 className="font-medium text-foreground mb-2">📊 Enhanced Analysis</h5>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Analyzes HTML, CSS, and JavaScript</li>
-                <li>• Checks HTTP headers and responses</li>
-                <li>• Identifies common patterns</li>
-                <li>• Cross-references with known signatures</li>
+                <li>• Confidence scoring for each technology</li>
+                <li>• Multiple detection methods (scripts, headers, patterns)</li>
+                <li>• Framework inference (Next.js → React + Node.js)</li>
+                <li>• Version detection where possible</li>
+                <li>• API endpoint pattern recognition</li>
+                <li>• Hosting provider identification</li>
               </ul>
             </div>
           </div>
+          
+          {techStack?.detectionMethods && techStack.detectionMethods.length > 0 && (
+            <div className="mt-4 p-3 bg-muted/50 rounded-lg">
+              <h5 className="font-medium text-foreground mb-2 text-sm">Detection Methods Used:</h5>
+              <div className="flex flex-wrap gap-2">
+                {techStack.detectionMethods.map((method, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-md"
+                  >
+                    {method.replace(/_/g, ' ')}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </ToolLayout>

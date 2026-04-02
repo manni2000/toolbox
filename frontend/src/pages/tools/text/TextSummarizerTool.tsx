@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { FileText, Copy, Check } from "lucide-react";
+import { FileText, Copy, Check, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "260 70% 55%";
 
 const TextSummarizerTool = () => {
   const [input, setInput] = useState("");
@@ -69,31 +73,41 @@ const TextSummarizerTool = () => {
       <div className="space-y-6">
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <label className="text-sm font-medium">Input Text</label>
-            <span className="text-sm text-muted-foreground">{wordCount} words</span>
+            <label htmlFor="input-text" className="text-sm font-medium">Input Text</label>
+            <span id="word-count" className="text-sm text-muted-foreground">{wordCount} words</span>
           </div>
           <textarea
+            id="input-text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Paste your article or long text here..."
             className="input-field h-48 w-full resize-none"
+            aria-describedby="word-count"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-3">
-            <label className="text-sm font-medium">Key sentences:</label>
+            <label htmlFor="summary-sentence-count" className="text-sm font-medium">Key sentences:</label>
             <select
+              id="summary-sentence-count"
+              title="Number of key sentences to extract"
               value={sentences}
               onChange={(e) => setSentences(parseInt(e.target.value))}
               className="input-field w-20"
+              aria-label="Select number of sentences for summary"
             >
               {[2, 3, 4, 5, 6, 7, 8].map((n) => (
                 <option key={n} value={n}>{n}</option>
               ))}
             </select>
           </div>
-          <button onClick={summarize} className="btn-primary">
+          <button
+            type="button"
+            onClick={summarize} 
+            className="btn-primary"
+            aria-label="Summarize the input text"
+          >
             <FileText className="h-5 w-5" />
             Summarize
           </button>
@@ -108,7 +122,12 @@ const TextSummarizerTool = () => {
                   {outputWordCount} words ({Math.round((outputWordCount / wordCount) * 100) || 0}% of original)
                 </span>
               </div>
-              <button onClick={handleCopy} className="btn-secondary text-sm">
+              <button
+                type="button"
+                onClick={handleCopy} 
+                className="btn-secondary text-sm"
+                aria-label={copied ? "Text copied to clipboard" : "Copy summary to clipboard"}
+              >
                 {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
                 {copied ? "Copied!" : "Copy"}
               </button>

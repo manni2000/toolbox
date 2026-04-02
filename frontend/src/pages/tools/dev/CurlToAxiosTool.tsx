@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Download, Code, RefreshCw, AlertCircle, Terminal } from "lucide-react";
+import { Copy, Check, Download, Code, RefreshCw, AlertCircle, Terminal, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 interface ConversionResult {
   axiosCode: string;
@@ -335,6 +339,7 @@ const CurlToAxiosTool = () => {
 
             <div className="flex gap-3">
               <button
+                type="button"
                 onClick={convertCurl}
                 disabled={!curlCommand.trim()}
                 className="flex-1 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -343,6 +348,7 @@ const CurlToAxiosTool = () => {
                 Convert
               </button>
               <button
+                type="button"
                 onClick={loadExample}
                 className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 transition-colors"
               >
@@ -360,6 +366,7 @@ const CurlToAxiosTool = () => {
                 <label className="block text-sm font-medium mb-2">Output Language</label>
                 <div className="grid grid-cols-4 gap-3">
                   <button
+                    type="button"
                     onClick={() => setSelectedLanguage('axios')}
                     className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                       selectedLanguage === 'axios'
@@ -371,6 +378,7 @@ const CurlToAxiosTool = () => {
                     Axios
                   </button>
                   <button
+                    type="button"
                     onClick={() => setSelectedLanguage('fetch')}
                     className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                       selectedLanguage === 'fetch'
@@ -382,6 +390,7 @@ const CurlToAxiosTool = () => {
                     Fetch
                   </button>
                   <button
+                    type="button"
                     onClick={() => setSelectedLanguage('javascript')}
                     className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                       selectedLanguage === 'javascript'
@@ -393,6 +402,7 @@ const CurlToAxiosTool = () => {
                     JavaScript
                   </button>
                   <button
+                    type="button"
                     onClick={() => setSelectedLanguage('python')}
                     className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                       selectedLanguage === 'python'
@@ -418,14 +428,20 @@ const CurlToAxiosTool = () => {
               </h3>
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={() => handleCopy(selectedLanguage, conversionResult[`${selectedLanguage}Code`])}
                   className="text-muted-foreground hover:text-foreground"
+                  aria-label="Copy generated code"
+                  title="Copy generated code"
                 >
                   {copied === selectedLanguage ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </button>
                 <button
+                  type="button"
                   onClick={downloadCode}
                   className="text-muted-foreground hover:text-foreground"
+                  aria-label="Download generated code"
+                  title="Download generated code"
                 >
                   <Download className="h-4 w-4" />
                 </button>

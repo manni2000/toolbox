@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Calendar, Search, Download, Globe, Clock, AlertCircle } from "lucide-react";
+import { Copy, Check, Calendar, Search, Download, Globe, Clock, AlertCircle, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "25 90% 50%";
 
 interface DomainInfo {
   domain: string;
@@ -184,6 +188,7 @@ const DomainAgeTool = () => {
             </div>
 
             <button
+              type="button"
               onClick={checkDomains}
               disabled={isChecking || !inputDomains.trim()}
               className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -209,7 +214,10 @@ const DomainAgeTool = () => {
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">Domain Analysis Results</h3>
               <button
+                type="button"
                 onClick={downloadReport}
+                title="Download domain age report"
+                aria-label="Download domain age report"
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Download className="h-4 w-4" />
@@ -230,7 +238,10 @@ const DomainAgeTool = () => {
                       {domain.status === 'valid' ? 'Valid' : 'Error'}
                     </span>
                     <button
+                      type="button"
                       onClick={() => handleCopy(`domain-${index}`, domain.domain)}
+                      title={`Copy ${domain.domain}`}
+                      aria-label={`Copy ${domain.domain}`}
                       className="text-muted-foreground hover:text-foreground"
                     >
                       {copied === `domain-${index}` ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}

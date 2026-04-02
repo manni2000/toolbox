@@ -1,10 +1,15 @@
 import { useState, useRef } from "react";
-import { Upload, Image as ImageIcon, X, Maximize2, Settings, Download } from "lucide-react";
+import { Upload, Image as ImageIcon, X, Maximize2, Settings, Download, Sparkles, Zap } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { useToast } from "@/hooks/use-toast";
+
+const categoryColor = "173 80% 40%";
 
 const ImageResizeTool = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -86,6 +91,21 @@ const ImageResizeTool = () => {
     if (file) handleFile(file);
   };
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
   const handleWidthChange = (newWidth: number) => {
     setWidth(newWidth);
     if (maintainRatio && originalSize) {
@@ -148,6 +168,38 @@ const ImageResizeTool = () => {
       categoryPath="/category/image"
     >
       <div className="space-y-8">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.15)`, boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)` }}
+            >
+              <Maximize2 className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Precise Image Resizing</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Resize images to exact dimensions with presets for social media platforms.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Upload Area */}
         {!image && (
           <ImageUploadZone
@@ -166,7 +218,7 @@ const ImageResizeTool = () => {
 
         {/* Image Loaded */}
         {image && (
-          <div className="space-y-6">
+          <motion.div variants={scaleIn} initial="hidden" animate="visible" className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <ImageIcon className="h-5 w-5 text-muted-foreground" />
@@ -177,29 +229,51 @@ const ImageResizeTool = () => {
                   </span>
                 )}
               </div>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={reset}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
                 title="Clear image and reset resize settings"
               >
                 <X className="h-5 w-5" />
-              </button>
+              </motion.button>
             </div>
 
             {/* Preview */}
-            <div className="flex justify-center rounded-xl border border-border bg-muted/30 p-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative overflow-hidden flex justify-center rounded-xl border border-border bg-muted/30 p-4 shadow-lg"
+            >
+              <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: "200%" }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear", repeatDelay: 1 }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              />
               {preview && (
                 <img
                   src={preview}
                   alt="Preview"
-                  className="max-h-64 max-w-full rounded-lg object-contain"
+                  className="max-h-64 max-w-full rounded-lg object-contain relative z-10"
                 />
               )}
-            </div>
+            </motion.div>
 
             {/* Size Controls */}
-            <div className="rounded-xl border border-border bg-card p-6">
-              <h3 className="mb-4 font-semibold">Resize Options</h3>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+            >
+              <h3 className="mb-4 font-semibold flex items-center gap-2">
+                <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
+                  <Settings className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+                </motion.div>
+                Resize Options
+              </h3>
               
               <div className="mb-4 flex items-center gap-6">
                 <div className="flex-1">
@@ -236,15 +310,28 @@ const ImageResizeTool = () => {
                 />
                 <span className="text-sm">Maintain aspect ratio</span>
               </label>
-            </div>
+            </motion.div>
 
             {/* Presets */}
-            <div className="rounded-xl border border-border bg-card p-6">
-              <h3 className="mb-4 font-semibold">Quick Presets</h3>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-lg"
+            >
+              <h3 className="mb-4 font-semibold flex items-center gap-2">
+                <Sparkles className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+                Quick Presets
+              </h3>
               <div className="flex flex-wrap gap-2">
-                {presets.map((preset) => (
-                  <button
+                {presets.map((preset, index) => (
+                  <motion.button
                     key={preset.label}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.05 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => {
                       setWidth(preset.w);
                       setHeight(preset.h);
@@ -255,21 +342,30 @@ const ImageResizeTool = () => {
                     title={`Apply ${preset.label} preset dimensions`}
                   >
                     {preset.label} ({preset.w}×{preset.h})
-                  </button>
+                  </motion.button>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Actions */}
-            <div className="flex gap-4">
-              <button onClick={resize} className="btn-primary flex-1" title="Resize image to specified dimensions">
-                <Maximize2 className="h-5 w-5" />
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex gap-4">
+              <button
+                onClick={resize} 
+                className="btn-primary flex-1"
+                style={{ background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)` }}
+                title="Resize image to specified dimensions"
+              >
+                <Maximize2 className="h-5 w-5 mr-2" />
                 Resize Image
               </button>
-            </div>
+            </motion.div>
 
             {resizedUrl && (
-              <div className="flex justify-center mt-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex justify-center mt-6"
+              >
                 <EnhancedDownload
                   data={resizedUrl}
                   fileName={`resized-${width}x${height}.png`}
@@ -279,9 +375,9 @@ const ImageResizeTool = () => {
                   fileSize={image ? `${(image.size / 1024).toFixed(1)} KB` : 'Unknown size'}
                   dimensions={{ width, height }}
                 />
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         )}
       </div>
     </ToolLayout>

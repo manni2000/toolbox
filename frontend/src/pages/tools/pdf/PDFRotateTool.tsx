@@ -1,10 +1,15 @@
 import { useState, useRef } from "react";
-import { Upload, RotateCw, FileText, X } from "lucide-react";
+import { Upload, RotateCw, FileText, X, Sparkles, RotateCcw } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument, degrees } from "pdf-lib";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+
+const categoryColor = "0 70% 50%";
 
 const PDFRotateTool = () => {
   const [file, setFile] = useState<File | null>(null);

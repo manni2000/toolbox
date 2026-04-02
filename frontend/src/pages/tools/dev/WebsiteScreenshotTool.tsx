@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Camera, AlertCircle, Globe } from "lucide-react";
+import { Camera, AlertCircle, Globe} from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 const WebsiteScreenshotTool = () => {
   const [url, setUrl] = useState("");
@@ -29,14 +31,16 @@ const WebsiteScreenshotTool = () => {
         </div>
 
         <div className="rounded-xl border border-border bg-card p-6">
-          <label className="mb-3 block text-sm font-medium">Website URL</label>
+          <label htmlFor="website-url" className="mb-3 block text-sm font-medium">Website URL</label>
           <div className="relative">
             <Globe className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
             <input
+              id="website-url"
               type="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com"
+              title="Website URL"
               className="input-field w-full pl-12"
             />
           </div>
@@ -44,16 +48,16 @@ const WebsiteScreenshotTool = () => {
 
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="rounded-lg bg-muted/50 p-4">
-            <label className="mb-2 block text-sm font-medium">Width</label>
-            <input type="number" defaultValue={1920} className="input-field w-full" disabled />
+            <label htmlFor="screenshot-width" className="mb-2 block text-sm font-medium">Width</label>
+            <input id="screenshot-width" type="number" defaultValue={1920} title="Screenshot width" className="input-field w-full" disabled />
           </div>
           <div className="rounded-lg bg-muted/50 p-4">
-            <label className="mb-2 block text-sm font-medium">Height</label>
-            <input type="number" defaultValue={1080} className="input-field w-full" disabled />
+            <label htmlFor="screenshot-height" className="mb-2 block text-sm font-medium">Height</label>
+            <input id="screenshot-height" type="number" defaultValue={1080} title="Screenshot height" className="input-field w-full" disabled />
           </div>
           <div className="rounded-lg bg-muted/50 p-4">
-            <label className="mb-2 block text-sm font-medium">Format</label>
-            <select className="input-field w-full" disabled>
+            <label htmlFor="screenshot-format" className="mb-2 block text-sm font-medium">Format</label>
+            <select id="screenshot-format" title="Screenshot format" className="input-field w-full" disabled>
               <option>PNG</option>
               <option>JPEG</option>
               <option>WebP</option>

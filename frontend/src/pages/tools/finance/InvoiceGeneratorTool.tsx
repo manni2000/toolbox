@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Copy, Check, FileText, Download, Plus, Trash2, CheckCircle, Calculator, DollarSign } from 'lucide-react';
+import { Copy, Check, FileText, Download, Plus, Trash2, CheckCircle, Calculator, DollarSign, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "35 85% 55%";
 
 interface InvoiceItem {
   description: string;
@@ -184,8 +188,9 @@ export default function InvoiceGeneratorTool() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="block text-sm font-medium mb-2">Invoice Number *</label>
+                <label htmlFor="invoice-number" className="block text-sm font-medium mb-2">Invoice Number *</label>
                 <input
+                  id="invoice-number"
                   type="text"
                   value={invoiceData.invoice_number}
                   onChange={(e) => setInvoiceData(prev => ({ ...prev, invoice_number: e.target.value }))}
@@ -194,8 +199,9 @@ export default function InvoiceGeneratorTool() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium mb-2">Date</label>
+                <label htmlFor="invoice-date" className="block text-sm font-medium mb-2">Date</label>
                 <input
+                  id="invoice-date"
                   type="date"
                   value={invoiceData.date}
                   onChange={(e) => setInvoiceData(prev => ({ ...prev, date: e.target.value }))}
@@ -203,8 +209,9 @@ export default function InvoiceGeneratorTool() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium mb-2">Due Date</label>
+                <label htmlFor="invoice-due-date" className="block text-sm font-medium mb-2">Due Date</label>
                 <input
+                  id="invoice-due-date"
                   type="date"
                   value={invoiceData.due_date}
                   onChange={(e) => setInvoiceData(prev => ({ ...prev, due_date: e.target.value }))}
@@ -215,8 +222,9 @@ export default function InvoiceGeneratorTool() {
             
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="block text-sm font-medium mb-2">Client Name *</label>
+                <label htmlFor="client-name" className="block text-sm font-medium mb-2">Client Name *</label>
                 <input
+                  id="client-name"
                   type="text"
                   value={invoiceData.client_name}
                   onChange={(e) => setInvoiceData(prev => ({ ...prev, client_name: e.target.value }))}
@@ -225,8 +233,9 @@ export default function InvoiceGeneratorTool() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium mb-2">Client Email *</label>
+                <label htmlFor="client-email" className="block text-sm font-medium mb-2">Client Email *</label>
                 <input
+                  id="client-email"
                   type="email"
                   value={invoiceData.client_email}
                   onChange={(e) => setInvoiceData(prev => ({ ...prev, client_email: e.target.value }))}
@@ -235,8 +244,9 @@ export default function InvoiceGeneratorTool() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium mb-2">Client Phone</label>
+                <label htmlFor="client-phone" className="block text-sm font-medium mb-2">Client Phone</label>
                 <input
+                  id="client-phone"
                   type="tel"
                   value={invoiceData.client_phone}
                   onChange={(e) => setInvoiceData(prev => ({ ...prev, client_phone: e.target.value }))}
@@ -249,8 +259,9 @@ export default function InvoiceGeneratorTool() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 md:mt-6">
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Client Address</label>
+              <label htmlFor="client-address" className="block text-sm font-medium mb-2">Client Address</label>
               <textarea
+                id="client-address"
                 value={invoiceData.client_address}
                 onChange={(e) => setInvoiceData(prev => ({ ...prev, client_address: e.target.value }))}
                 placeholder="123 Main St, City, State 12345"
@@ -258,18 +269,21 @@ export default function InvoiceGeneratorTool() {
               />
             </div>
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Tax Rate (%)</label>
+              <label htmlFor="tax-rate" className="block text-sm font-medium mb-2">Tax Rate (%)</label>
               <input
+                id="tax-rate"
                 type="number"
                 value={invoiceData.tax_rate}
                 onChange={(e) => setInvoiceData(prev => ({ ...prev, tax_rate: e.target.value }))}
-                placeholder=""
+                placeholder="0"
+                aria-label="Tax Rate (%)"
                 className="input-tool w-full"
               />
             </div>
             <div className="space-y-2">
-              <label className="block text-sm font-medium mb-2">Currency</label>
+              <label htmlFor="currency" className="block text-sm font-medium mb-2">Currency</label>
               <select
+                id="currency"
                 value={invoiceData.currency}
                 onChange={(e) => setInvoiceData(prev => ({ ...prev, currency: e.target.value }))}
                 className="input-tool w-full"
@@ -309,6 +323,7 @@ export default function InvoiceGeneratorTool() {
                 <input
                   type="text"
                   placeholder="Description"
+                  aria-label="Item description"
                   value={newItem.description}
                   onChange={(e) => setNewItem(prev => ({ ...prev, description: e.target.value }))}
                   className="input-tool w-full"
@@ -317,6 +332,7 @@ export default function InvoiceGeneratorTool() {
               <input
                 type="number"
                 placeholder="Qty"
+                aria-label="Item quantity"
                 value={newItem.quantity}
                 onChange={(e) => setNewItem(prev => ({ ...prev, quantity: e.target.value }))}
                 className="input-tool w-full"
@@ -325,6 +341,7 @@ export default function InvoiceGeneratorTool() {
                 type="number"
                 step="0.01"
                 placeholder="Price"
+                aria-label="Item unit price"
                 value={newItem.unit_price || ''}
                 onChange={(e) => setNewItem(prev => ({ ...prev, unit_price: parseFloat(e.target.value) || 0 }))}
                 className="input-tool w-full"
@@ -333,12 +350,14 @@ export default function InvoiceGeneratorTool() {
                 type="number"
                 step="0.01"
                 placeholder="Discount %"
+                aria-label="Item discount percentage"
                 value={newItem.discount || ''}
                 onChange={(e) => setNewItem(prev => ({ ...prev, discount: parseFloat(e.target.value) || 0 }))}
                 className="input-tool w-full"
               />
             </div>
-            <button 
+            <button
+              type="button"
               onClick={addItem} 
               className="btn-primary w-full flex items-center justify-center gap-2"
             >
@@ -370,8 +389,11 @@ export default function InvoiceGeneratorTool() {
                       )}
                     </div>
                     <button
+                      type="button"
                       onClick={() => removeItem(index)}
                       className="btn-secondary p-2 self-start sm:self-center flex-shrink-0"
+                      aria-label={`Remove item ${index + 1}`}
+                      title={`Remove item ${index + 1}`}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -406,7 +428,8 @@ export default function InvoiceGeneratorTool() {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <button 
+          <button
+            type="button"
             onClick={generateInvoice} 
             disabled={loading || !invoiceData.invoice_number || !invoiceData.client_name || !invoiceData.client_email || invoiceData.items.length === 0}
             className="btn-primary flex-1 flex items-center justify-center gap-2 min-h-[48px]"
@@ -415,6 +438,7 @@ export default function InvoiceGeneratorTool() {
             {loading ? 'Opening...' : 'Preview PDF Invoice'}
           </button>
           <button
+            type="button"
             onClick={handleCopy}
             className="btn-secondary flex items-center justify-center gap-2 min-h-[48px]"
             disabled={invoiceData.items.length === 0}

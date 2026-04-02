@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Download, Database, RefreshCw, FileText, AlertCircle, Code } from "lucide-react";
+import { Copy, Check, Download, Database, RefreshCw, FileText, AlertCircle, Code, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 const SQLQueryBeautifierTool = () => {
   const [sqlInput, setSqlInput] = useState('');
@@ -200,8 +204,10 @@ const SQLQueryBeautifierTool = () => {
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Indent Size</label>
+                <label htmlFor="indent-size" className="block text-sm font-medium mb-2">Indent Size</label>
                 <select
+                  id="indent-size"
+                  title="Indent Size"
                   value={indentSize}
                   onChange={(e) => setIndentSize(parseInt(e.target.value))}
                   className="w-full rounded-lg bg-muted px-4 py-2 text-sm"
@@ -255,12 +261,18 @@ const SQLQueryBeautifierTool = () => {
               <h3 className="font-semibold">Formatted SQL</h3>
               <div className="flex gap-2">
                 <button
+                  type="button"
+                  title="Copy formatted SQL"
+                  aria-label="Copy formatted SQL"
                   onClick={() => handleCopy("sql", formattedSQL)}
                   className="text-muted-foreground hover:text-foreground"
                 >
                   {copied === "sql" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </button>
                 <button
+                  type="button"
+                  title="Download formatted SQL"
+                  aria-label="Download formatted SQL"
                   onClick={downloadSQL}
                   className="text-muted-foreground hover:text-foreground"
                 >

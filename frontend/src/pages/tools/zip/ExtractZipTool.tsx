@@ -1,10 +1,14 @@
 import { useState, useCallback } from "react";
-import { FolderOpen, Upload, File, Archive } from "lucide-react";
+import { FolderOpen, Upload, File, Archive, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+
+const categoryColor = "45 80% 50%";
 
 interface ExtractedFile {
   name: string;
@@ -139,6 +143,8 @@ const ExtractZipTool = () => {
               type="file"
               accept=".zip"
               onChange={handleFileSelect}
+              title="Upload ZIP file"
+              aria-label="Upload ZIP file"
               className="absolute inset-0 cursor-pointer opacity-0"
             />
           </div>

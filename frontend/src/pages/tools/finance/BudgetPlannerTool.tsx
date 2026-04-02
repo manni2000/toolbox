@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Copy, Check, Calculator, Wallet, Target, TrendingUp, AlertCircle, Trash2, Plus } from 'lucide-react';
+import { Copy, Check, Calculator, Wallet, Target, TrendingUp, AlertCircle, Trash2, Plus, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 interface Expense {
   category: string;
@@ -202,6 +206,7 @@ export default function BudgetPlannerTool() {
                 className="input-tool w-32"
               />
               <button
+                type="button"
                 onClick={addExpense}
                 className="btn-primary flex items-center gap-2"
               >
@@ -219,8 +224,11 @@ export default function BudgetPlannerTool() {
                     <div className="flex items-center gap-2">
                       <span className="text-green-600 font-semibold">{formatCurrency(expense.amount)}</span>
                       <button
+                        type="button"
                         onClick={() => removeExpense(index)}
                         className="text-red-500 hover:text-red-700 p-1"
+                        aria-label={`Remove ${expense.category} expense`}
+                        title={`Remove ${expense.category} expense`}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -233,7 +241,8 @@ export default function BudgetPlannerTool() {
         </div>
 
         {/* Analyze Button */}
-        <button 
+        <button
+          type="button"
           onClick={analyzeBudget} 
           disabled={!income || expenses.length === 0 || loading}
           className="btn-primary w-full flex items-center justify-center gap-2"
@@ -318,6 +327,7 @@ export default function BudgetPlannerTool() {
             {/* Action Buttons */}
             <div className="flex justify-end gap-2">
               <button
+                type="button"
                 onClick={handleCopy}
                 className="btn-secondary flex items-center gap-2"
               >

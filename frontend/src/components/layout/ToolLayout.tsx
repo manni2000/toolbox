@@ -17,7 +17,7 @@ const ToolLayout = ({ title, description, category, categoryPath, children }: To
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1" role="main">
         {/* Breadcrumb */}
         <div className="border-b border-border bg-muted/30">
           <div className="container py-4">

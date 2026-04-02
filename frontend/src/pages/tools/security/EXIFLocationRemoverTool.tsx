@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Copy, Check, Upload, Image, CheckCircle, AlertTriangle, Download } from 'lucide-react';
+import { Copy, Check, Upload, Image, CheckCircle, AlertTriangle, Download, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "0 80% 55%";
 
 interface ExifResult {
   success: boolean;
@@ -105,7 +109,7 @@ export default function EXIFLocationRemoverTool() {
               )}
             </div>
 
-            <button 
+            <button
               onClick={removeExifData} 
               disabled={!selectedFile || loading}
               className="btn-primary w-full flex items-center justify-center gap-2"

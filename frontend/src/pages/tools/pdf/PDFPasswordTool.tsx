@@ -1,10 +1,15 @@
 import { useState, useRef } from "react";
-import { Upload, Lock, Download, FileText, X, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Upload, Lock, Download, FileText, X, Eye, EyeOff, Loader2, Sparkles, Shield } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+
+const categoryColor = "0 70% 50%";
 
 const PDFPasswordTool = () => {
   const [file, setFile] = useState<File | null>(null);

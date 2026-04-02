@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Copy, Check, Upload, FileText, CheckCircle, XCircle, AlertTriangle, Hash } from 'lucide-react';
+import { Copy, Check, Upload, FileText, CheckCircle, XCircle, AlertTriangle, Hash, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "0 80% 55%";
 
 interface FileHash {
   sha256: string;
@@ -140,7 +144,7 @@ export default function FileHashComparisonTool() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={compareFiles} 
             disabled={!file1 || !file2 || loading}
             className="btn-primary w-full flex items-center justify-center gap-2 mt-4"

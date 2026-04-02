@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Copy, Check, Lock, Unlock, Eye, EyeOff, Shield, Key, FileText } from 'lucide-react';
+import { Copy, Check, Lock, Unlock, Eye, EyeOff, Shield, Key, FileText, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "0 80% 55%";
 
 interface EncryptionResult {
   encrypted_note: string;

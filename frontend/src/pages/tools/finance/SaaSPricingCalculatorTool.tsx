@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Copy, Check, Calculator, DollarSign, Users, Zap, AlertCircle } from 'lucide-react';
+import { Copy, Check, Calculator, DollarSign, Users, Zap, AlertCircle, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 interface SaaSResult {
   monthly_price: number;
@@ -185,7 +189,7 @@ export default function SaaSPricingCalculatorTool() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={calculatePricing} 
             disabled={!basePrice || !expectedCustomers || !cac || loading}
             className="btn-primary w-full flex items-center justify-center gap-2 mt-4"

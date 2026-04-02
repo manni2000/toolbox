@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Calculator, TrendingUp } from "lucide-react";
+import { Copy, Check, Calculator, TrendingUp, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "145 70% 45%";
 
 const CompoundInterestTool = () => {
   const [principal, setPrincipal] = useState("");
@@ -108,6 +112,7 @@ const CompoundInterestTool = () => {
                 value={timeUnit}
                 onChange={(e) => setTimeUnit(e.target.value as "years" | "months")}
                 className="input-tool w-28"
+                aria-label="Time unit selection"
               >
                 <option value="years">Years</option>
                 <option value="months">Months</option>

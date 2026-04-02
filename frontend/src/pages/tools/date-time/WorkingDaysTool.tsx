@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "220 80% 55%";
 
 const WorkingDaysTool = () => {
   const [startDate, setStartDate] = useState("");
@@ -52,8 +56,9 @@ const WorkingDaysTool = () => {
       <div className="space-y-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm font-medium">Start Date</label>
+            <label htmlFor="start-date" className="mb-2 block text-sm font-medium">Start Date</label>
             <input
+              id="start-date"
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
@@ -61,8 +66,9 @@ const WorkingDaysTool = () => {
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-medium">End Date</label>
+            <label htmlFor="end-date" className="mb-2 block text-sm font-medium">End Date</label>
             <input
+              id="end-date"
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
@@ -71,8 +77,10 @@ const WorkingDaysTool = () => {
           </div>
         </div>
 
-        <label className="flex cursor-pointer items-center gap-3">
+        <label htmlFor="exclude-weekends" className="flex cursor-pointer items-center gap-3">
           <input
+            id="exclude-weekends"
+            aria-label="Exclude weekends"
             type="checkbox"
             checked={excludeWeekends}
             onChange={(e) => setExcludeWeekends(e.target.checked)}

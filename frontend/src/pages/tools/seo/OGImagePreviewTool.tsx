@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Image, Download, Globe, Share2, Eye, Settings } from "lucide-react";
+import { Copy, Check, Image, Download, Globe, Share2, Eye, Settings, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "25 90% 50%";
 
 interface OGData {
   title: string;
@@ -201,8 +205,10 @@ const OGImagePreviewTool = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Type</label>
+                <label htmlFor="og-type" className="block text-sm font-medium mb-2">Type</label>
                 <select
+                  id="og-type"
+                  title="Type"
                   value={ogData.type}
                   onChange={(e) => setOgData({...ogData, type: e.target.value})}
                   className="w-full rounded-lg bg-muted px-4 py-3"
@@ -215,8 +221,10 @@ const OGImagePreviewTool = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2">Locale</label>
+                <label htmlFor="og-locale" className="block text-sm font-medium mb-2">Locale</label>
                 <select
+                  id="og-locale"
+                  title="Locale"
                   value={ogData.locale}
                   onChange={(e) => setOgData({...ogData, locale: e.target.value})}
                   className="w-full rounded-lg bg-muted px-4 py-3"
@@ -251,6 +259,7 @@ const OGImagePreviewTool = () => {
             <h3 className="font-semibold">Social Media Preview</h3>
             <div className="flex gap-2">
               <button
+                type="button"
                 onClick={() => setPreviewSize('facebook')}
                 className={`px-3 py-1 text-sm rounded ${
                   previewSize === 'facebook' 
@@ -261,6 +270,7 @@ const OGImagePreviewTool = () => {
                 Facebook
               </button>
               <button
+                type="button"
                 onClick={() => setPreviewSize('twitter')}
                 className={`px-3 py-1 text-sm rounded ${
                   previewSize === 'twitter' 
@@ -271,6 +281,7 @@ const OGImagePreviewTool = () => {
                 Twitter
               </button>
               <button
+                type="button"
                 onClick={() => setPreviewSize('linkedin')}
                 className={`px-3 py-1 text-sm rounded ${
                   previewSize === 'linkedin' 
@@ -337,12 +348,18 @@ const OGImagePreviewTool = () => {
             <h3 className="font-semibold">Generated Meta Tags</h3>
             <div className="flex gap-2">
               <button
+                type="button"
+                title="Copy generated meta tags"
+                aria-label="Copy generated meta tags"
                 onClick={() => handleCopy("tags", generateOGTags())}
                 className="text-muted-foreground hover:text-foreground"
               >
                 {copied === "tags" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
               </button>
               <button
+                type="button"
+                title="Download generated meta tags"
+                aria-label="Download generated meta tags"
                 onClick={downloadOGTags}
                 className="text-muted-foreground hover:text-foreground"
               >

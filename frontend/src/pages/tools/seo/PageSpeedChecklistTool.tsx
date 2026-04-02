@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, FileText, Download, Zap, Gauge, AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import { Copy, Check, FileText, Download, Zap, Gauge, AlertCircle, CheckCircle, XCircle, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "25 90% 50%";
 
 interface ChecklistItem {
   id: string;
@@ -384,6 +388,7 @@ Generated: ${new Date().toLocaleDateString()}
                       {categoryCompleted}/{categoryTotal}
                     </span>
                     <button
+                      type="button"
                       onClick={() => toggleCategory(category)}
                       className="text-xs bg-primary/10 text-primary px-2 py-1 rounded hover:bg-primary/20"
                     >
@@ -401,7 +406,10 @@ Generated: ${new Date().toLocaleDateString()}
                       }`}
                     >
                       <button
+                        type="button"
                         onClick={() => toggleItem(item.id)}
+                        aria-label={`${item.checked ? 'Uncheck' : 'Check'} ${item.title}`}
+                        title={`${item.checked ? 'Uncheck' : 'Check'} ${item.title}`}
                         className={`mt-1 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
                           item.checked
                             ? 'border-green-500 bg-green-500'
@@ -433,6 +441,7 @@ Generated: ${new Date().toLocaleDateString()}
 
         {/* Generate Button */}
         <button
+          type="button"
           onClick={generateChecklist}
           className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
         >
@@ -447,13 +456,19 @@ Generated: ${new Date().toLocaleDateString()}
               <h3 className="font-semibold">Generated Checklist</h3>
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={() => handleCopy("checklist", generatedChecklist)}
+                  aria-label="Copy generated checklist"
+                  title="Copy generated checklist"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   {copied === "checklist" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </button>
                 <button
+                  type="button"
                   onClick={downloadChecklist}
+                  aria-label="Download generated checklist"
+                  title="Download generated checklist"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   <Download className="h-4 w-4" />

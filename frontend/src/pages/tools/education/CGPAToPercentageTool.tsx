@@ -2,8 +2,12 @@ import { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Calculator, TrendingUp, RotateCcw } from "lucide-react";
+import { Calculator, TrendingUp, RotateCcw, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
+
+const categoryColor = "145 70% 45%";
 
 const CGPAToPercentageTool = () => {
   const [cgpa, setCgpa] = useState("");
@@ -100,8 +104,10 @@ const CGPAToPercentageTool = () => {
 
           {/* Scale Selection */}
           <div>
-            <label className="mb-2 block text-sm font-medium">Grading Scale</label>
+            <label htmlFor="grading-scale" className="mb-2 block text-sm font-medium">Grading Scale</label>
             <select
+              id="grading-scale"
+              title="Grading Scale"
               value={scale}
               onChange={(e) => setScale(e.target.value)}
               className="w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary"

@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Copy, Check, Code, Download, RefreshCw, Zap, FileText, AlertCircle } from "lucide-react";
+import { Copy, Check, Code, Download, RefreshCw, Zap, AlertCircle } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "210 80% 55%";
 
 interface APIResponse {
   method: string;
@@ -354,12 +356,18 @@ Date: ${new Date().toUTCString()}
               <h3 className="font-semibold">Formatted Response</h3>
               <div className="flex gap-2">
                 <button
+                  type="button"
+                  aria-label={copied === "formatted" ? "Copied formatted response" : "Copy formatted response"}
+                  title={copied === "formatted" ? "Copied formatted response" : "Copy formatted response"}
                   onClick={() => handleCopy("formatted", response.formatted)}
                   className="text-muted-foreground hover:text-foreground"
                 >
                   {copied === "formatted" ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </button>
                 <button
+                  type="button"
+                  aria-label="Download formatted response"
+                  title="Download formatted response"
                   onClick={downloadFormatted}
                   className="text-muted-foreground hover:text-foreground"
                 >

@@ -1,10 +1,15 @@
 import { useState, useRef } from "react";
-import { Music2, Upload, X, Loader2 } from "lucide-react";
+import { Music2, Upload, X, Loader2, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
+
+const categoryColor = "290 80% 55%";
 
 const AudioConverterTool = () => {
   const [file, setFile] = useState<File | null>(null);

@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { Wifi, Activity, Loader2, Globe } from "lucide-react";
+import { Wifi, Activity, Loader2, Globe, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
+
+const categoryColor = "200 85% 50%";
 
 interface PingResult {
   sequence: number;

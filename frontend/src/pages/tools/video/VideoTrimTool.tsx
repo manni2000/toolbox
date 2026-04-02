@@ -1,10 +1,15 @@
 import { useState, useRef } from "react";
-import { Scissors, X, Loader2, Video } from "lucide-react";
+import { Scissors, X, Loader2, Video, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
+import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { VideoUploadZone } from "@/components/ui/video-upload-zone";
+
+const categoryColor = "350 80% 55%";
 
 const VideoTrimTool = () => {
   const [file, setFile] = useState<File | null>(null);

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Copy, Check, Calculator, TrendingUp, Target, AlertCircle } from 'lucide-react';
+import { Copy, Check, Calculator, TrendingUp, Target, AlertCircle, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 interface CAGRResult {
   initial_value: number;
@@ -172,7 +176,7 @@ export default function StockCAGRCalculatorTool() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={calculateCAGR} 
             disabled={!initialValue || !finalValue || !years || loading}
             className="btn-primary w-full flex items-center justify-center gap-2 mt-4"

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Copy, Check, Calculator, DollarSign, FileText, TrendingUp, AlertCircle } from 'lucide-react';
+import { Copy, Check, Calculator, DollarSign, FileText, TrendingUp, AlertCircle, Sparkles } from 'lucide-react';
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 interface SalaryBreakupResult {
   ctc: number;
@@ -166,7 +170,7 @@ export default function SalaryBreakupGeneratorTool() {
               <p className="text-xs text-muted-foreground mt-1">Cost to Company per year</p>
             </div>
 
-            <button 
+            <button
               onClick={generateBreakup} 
               disabled={!ctc || loading}
               className="btn-primary w-full"

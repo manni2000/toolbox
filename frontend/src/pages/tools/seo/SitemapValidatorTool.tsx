@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, FileText, Upload, Download, Globe, AlertCircle, CheckCircle, XCircle, Loader } from "lucide-react";
+import { Copy, Check, FileText, Upload, Download, Globe, AlertCircle, CheckCircle, XCircle, Loader, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "25 90% 50%";
 
 interface SitemapIssue {
   type: 'error' | 'warning' | 'info';
@@ -333,6 +337,9 @@ const SitemapValidatorTool = () => {
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Validation Results</h3>
               <button
+                type="button"
+                title="Download validation report"
+                aria-label="Download validation report"
                 onClick={downloadReport}
                 className="text-muted-foreground hover:text-foreground"
               >

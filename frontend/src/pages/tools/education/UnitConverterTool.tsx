@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { ArrowUpDown, Copy, Check } from "lucide-react";
+import { ArrowUpDown, Copy, Check, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "145 70% 45%";
 
 type Category = "length" | "weight" | "temperature" | "area" | "volume" | "speed";
 
@@ -120,8 +124,10 @@ const UnitConverterTool = () => {
             {/* From */}
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-medium">From</label>
+                <label htmlFor="from-unit" className="mb-2 block text-sm font-medium">From</label>
                 <select
+                  id="from-unit"
+                  title="From unit"
                   value={fromUnit}
                   onChange={(e) => setFromUnit(Number(e.target.value))}
                   className="input-tool"
@@ -146,6 +152,8 @@ const UnitConverterTool = () => {
             {/* Swap Button */}
             <div className="flex justify-center">
               <button
+                type="button"
+                title="Swap units"
                 onClick={swap}
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-muted/80"
               >
@@ -156,8 +164,10 @@ const UnitConverterTool = () => {
             {/* To */}
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-medium">To</label>
+                <label htmlFor="to-unit" className="mb-2 block text-sm font-medium">To</label>
                 <select
+                  id="to-unit"
+                  title="To unit"
                   value={toUnit}
                   onChange={(e) => setToUnit(Number(e.target.value))}
                   className="input-tool"

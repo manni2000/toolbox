@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Calculator } from "lucide-react";
+import { Copy, Check, Calculator, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 const EMICalculatorTool = () => {
   const [principal, setPrincipal] = useState("");
@@ -98,6 +102,8 @@ const EMICalculatorTool = () => {
               <select
                 value={tenureType}
                 onChange={(e) => setTenureType(e.target.value as "months" | "years")}
+                title="Loan tenure unit"
+                aria-label="Loan tenure unit"
                 className="input-tool w-28"
               >
                 <option value="years">Years</option>

@@ -1,10 +1,14 @@
 import { useState, useCallback } from "react";
-import { Upload, Archive, X, File } from "lucide-react";
+import { Upload, Archive, X, File, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+
+const categoryColor = "45 80% 50%";
 
 const CreateZipTool = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -83,6 +87,8 @@ const CreateZipTool = () => {
             type="file"
             multiple
             onChange={handleFileSelect}
+            aria-label="Select files to include in ZIP"
+            title="Select files to include in ZIP"
             className="absolute inset-0 cursor-pointer opacity-0"
           />
         </div>
@@ -95,6 +101,7 @@ const CreateZipTool = () => {
                 {files.length} file{files.length !== 1 ? "s" : ""} ({formatSize(totalSize)})
               </h3>
               <button
+                type="button"
                 onClick={() => setFiles([])}
                 className="text-sm text-muted-foreground hover:text-foreground"
               >
@@ -118,7 +125,10 @@ const CreateZipTool = () => {
                     </div>
                   </div>
                   <button
+                    type="button"
                     onClick={() => removeFile(index)}
+                    aria-label={`Remove ${file.name}`}
+                    title={`Remove ${file.name}`}
                     className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
                   >
                     <X className="h-4 w-4" />
@@ -144,6 +154,7 @@ const CreateZipTool = () => {
 
             {/* Create Button */}
             <button
+              type="button"
               onClick={createZip}
               disabled={isCreating || files.length === 0}
               className="btn-primary w-full"

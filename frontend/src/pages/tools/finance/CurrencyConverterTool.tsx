@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
-import { ArrowRightLeft, RefreshCw, TrendingUp, AlertCircle } from "lucide-react";
+import { ArrowRightLeft, RefreshCw, TrendingUp, AlertCircle, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "35 85% 55%";
 
 interface ExchangeRate {
   rate: number;
@@ -140,6 +144,7 @@ const CurrencyConverterTool = () => {
               )}
             </div>
             <button
+              type="button"
               onClick={fetchExchangeRates}
               disabled={isLoading}
               className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-1.5 text-sm hover:bg-secondary/80 disabled:opacity-50"
@@ -174,9 +179,10 @@ const CurrencyConverterTool = () => {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
               {/* From */}
               <div className="flex-1">
-                <label className="mb-2 block text-sm font-medium">Amount</label>
+                <label htmlFor="amount" className="mb-2 block text-sm font-medium">Amount</label>
                 <div className="flex gap-2">
                   <input
+                    id="amount"
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
@@ -184,6 +190,8 @@ const CurrencyConverterTool = () => {
                     className="input-tool flex-1"
                   />
                   <select
+                    aria-label="From currency"
+                    title="From currency"
                     value={fromCurrency}
                     onChange={(e) => setFromCurrency(e.target.value)}
                     className="input-tool w-24"
@@ -199,7 +207,10 @@ const CurrencyConverterTool = () => {
 
               {/* Swap Button */}
               <button
+                type="button"
                 onClick={swapCurrencies}
+                aria-label="Swap currencies"
+                title="Swap currencies"
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-secondary transition-colors hover:bg-secondary/80 sm:mb-0"
               >
                 <ArrowRightLeft className="h-4 w-4" />
@@ -207,18 +218,22 @@ const CurrencyConverterTool = () => {
 
               {/* To */}
               <div className="flex-1">
-                <label className="mb-2 block text-sm font-medium">Converted To</label>
+                <label htmlFor="converted-amount" className="mb-2 block text-sm font-medium">Converted To</label>
                 <div className="flex gap-2">
                   <input
+                    id="converted-amount"
                     type="text"
                     value={convertedAmount.toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
                     readOnly
+                    aria-label="Converted amount"
                     className="input-tool flex-1 bg-muted"
                   />
                   <select
+                    aria-label="To currency"
+                    title="To currency"
                     value={toCurrency}
                     onChange={(e) => setToCurrency(e.target.value)}
                     className="input-tool w-24"
@@ -276,6 +291,7 @@ const CurrencyConverterTool = () => {
                 .slice(0, 8)
                 .map((code) => (
                   <button
+                    type="button"
                     key={code}
                     onClick={() => setToCurrency(code)}
                     className={`rounded-lg border p-3 text-left transition-all hover:border-primary/50 ${

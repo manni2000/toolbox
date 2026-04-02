@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Plus, Trash2, ExternalLink, Download, Eye, GripVertical } from "lucide-react";
+import { Plus, Trash2, ExternalLink, Download, Eye, GripVertical, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+
+const categoryColor = "330 80% 55%";
 
 interface LinkItem {
   id: string;
@@ -152,6 +156,7 @@ const LinkInBioTool = () => {
               <div className="grid grid-cols-3 gap-2">
                 {themes.map((t) => (
                   <button
+                    type="button"
                     key={t.id}
                     onClick={() => setTheme(t.id)}
                     className={`rounded-lg p-3 text-sm font-medium transition-all ${
@@ -190,9 +195,12 @@ const LinkInBioTool = () => {
                       />
                     </div>
                     <button
+                      type="button"
                       onClick={() => removeLink(link.id)}
                       className="mt-2 rounded-lg p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                       disabled={links.length === 1}
+                      aria-label="Remove link"
+                      title="Remove link"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -200,6 +208,7 @@ const LinkInBioTool = () => {
                 ))}
               </div>
               <button
+                type="button"
                 onClick={addLink}
                 className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border py-3 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary"
               >
@@ -211,13 +220,14 @@ const LinkInBioTool = () => {
             {/* Actions */}
             <div className="flex gap-3">
               <button
+                type="button"
                 onClick={() => setShowPreview(!showPreview)}
                 className="btn-secondary flex-1 lg:hidden"
               >
                 <Eye className="h-5 w-5" />
                 {showPreview ? "Hide Preview" : "Show Preview"}
               </button>
-              <button onClick={downloadHTML} className="btn-primary flex-1">
+              <button type="button" onClick={downloadHTML} className="btn-primary flex-1">
                 <Download className="h-5 w-5" />
                 Download HTML
               </button>

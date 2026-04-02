@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Calendar, Gift } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 
+const categoryColor = "220 80% 55%";
+
 const AgeCalculatorTool = () => {
   const [birthDate, setBirthDate] = useState("");
   const [targetDate, setTargetDate] = useState(
@@ -91,12 +93,13 @@ const AgeCalculatorTool = () => {
         {/* Input Section */}
         <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-xs sm:text-sm font-medium">
+            <label htmlFor="birth-date" className="mb-2 block text-xs sm:text-sm font-medium">
               Date of Birth
             </label>
             <div className="relative">
               <Calendar className="absolute left-3 sm:left-4 top-1/2 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
               <input
+                id="birth-date"
                 type="date"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
@@ -105,12 +108,13 @@ const AgeCalculatorTool = () => {
             </div>
           </div>
           <div>
-            <label className="mb-2 block text-xs sm:text-sm font-medium">
+            <label htmlFor="target-date" className="mb-2 block text-xs sm:text-sm font-medium">
               Target Date
             </label>
             <div className="relative">
               <Calendar className="absolute left-3 sm:left-4 top-1/2 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-muted-foreground" />
               <input
+                id="target-date"
                 type="date"
                 value={targetDate}
                 onChange={(e) => setTargetDate(e.target.value)}
