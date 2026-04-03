@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { Mic, Upload, Languages, FileText, Loader2, Sparkles } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Mic, Upload, Languages, FileText, Loader2, Sparkles, MicOff, Play, StopCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
@@ -19,11 +19,14 @@ const SpeechToTextTool = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [transcription, setTranscription] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const [language, setLanguage] = useState("en-US");
   const [isDragging, setIsDragging] = useState(false);
   const [txtUrl, setTxtUrl] = useState<string | null>(null);
   const [srtUrl, setSrtUrl] = useState<string | null>(null);
+  const [supportsRecording, setSupportsRecording] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const recognitionRef = useRef<any>(null);
   const { toast } = useToast();
 
   const languages = [
@@ -41,6 +44,12 @@ const SpeechToTextTool = () => {
     { code: "ar-SA", name: "Arabic" },
     { code: "ru-RU", name: "Russian" },
   ];
+
+  useEffect(() => {
+    // Check for Web Speech API support
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    setSupportsRecording(!!SpeechRecognition);
+  }, []);
 
   const handleFile = (file: File) => {
     if (!file.type.startsWith("audio/")) {
@@ -77,58 +86,86 @@ const SpeechToTextTool = () => {
     setIsDragging(true);
   };
 
-  const transcribe = async () => {
-    if (!audioFile) return;
-
-    // Check for Web Speech API support
+  const startRecording = () => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     
     if (!SpeechRecognition) {
       toast({
         title: "Not Supported",
-        description: "Speech recognition requires a backend API. This is a demo showing the interface.",
+        description: "Your browser doesn't support speech recognition. Try Chrome or Edge.",
         variant: "destructive",
       });
-      
-      // Demo mode - show sample transcription
-      setIsProcessing(true);
-      setTimeout(() => {
-        setTranscription(
-          "This is a demo transcription. For full speech-to-text functionality, " +
-          "a backend service with speech recognition (like Google Cloud Speech-to-Text, " +
-          "AWS Transcribe, or OpenAI Whisper) is required.\n\n" +
-          "The uploaded audio file would be processed server-side to extract accurate text."
-        );
-        setIsProcessing(false);
-      }, 2000);
       return;
     }
 
-    setIsProcessing(true);
-    try {
-      // For browsers that support it, we can use the Web Speech API
-      // However, it typically requires live microphone input
+    const recognition = new SpeechRecognition();
+    recognition.lang = language;
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      setIsRecording(true);
       toast({
-        title: "Processing",
-        description: "Transcribing audio file...",
+        title: "Recording Started",
+        description: "Speak into your microphone...",
       });
-      
-      // Simulated response for demo
-      setTimeout(() => {
-        setTranscription(
-          "Speech-to-text transcription would appear here.\n\n" +
-          "For production use, integrate with a backend API service."
-        );
-        setIsProcessing(false);
-      }, 2000);
-    } catch (error) {
+    };
+
+    recognition.onresult = (event: any) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + ' ';
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+
+      if (finalTranscript) {
+        setTranscription(prev => prev + finalTranscript);
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error('Speech recognition error:', event.error);
+      setIsRecording(false);
       toast({
         title: "Error",
-        description: "Failed to transcribe audio",
+        description: `Recognition error: ${event.error}`,
         variant: "destructive",
       });
-      setIsProcessing(false);
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  };
+
+  const stopRecording = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsRecording(false);
+      toast({
+        title: "Recording Stopped",
+        description: "Transcription complete",
+      });
     }
+  };
+
+  const transcribe = async () => {
+    if (!audioFile) return;
+
+    toast({
+      title: "File Upload Not Supported",
+      description: "For audio file transcription, use the microphone recording feature or integrate with a cloud service like Google Cloud Speech-to-Text.",
+      variant: "destructive",
+    });
   };
 
   const exportAsTXT = () => {
@@ -136,6 +173,12 @@ const SpeechToTextTool = () => {
     const blob = new Blob([transcription], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     setTxtUrl(url);
+    
+    // Auto download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'transcription.txt';
+    a.click();
   };
 
   const exportAsSRT = () => {
@@ -154,6 +197,12 @@ const SpeechToTextTool = () => {
     const blob = new Blob([srtContent], { type: "text/srt" });
     const url = URL.createObjectURL(blob);
     setSrtUrl(url);
+    
+    // Auto download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'transcription.srt';
+    a.click();
   };
 
   const formatSRTTime = (seconds: number) => {
@@ -166,6 +215,8 @@ const SpeechToTextTool = () => {
   const reset = () => {
     setAudioFile(null);
     setTranscription("");
+    setTxtUrl(null);
+    setSrtUrl(null);
     if (inputRef.current) inputRef.current.value = "";
   };
 
@@ -198,6 +249,60 @@ const SpeechToTextTool = () => {
             </div>
           </div>
         </Card>
+
+        {/* Recording Button */}
+        {supportsRecording && (
+          <Card className="p-6 bg-gradient-to-r from-primary/5 to-primary/10">
+            <div className="flex flex-col items-center gap-4">
+              <h3 className="font-semibold text-lg">Live Speech Recognition</h3>
+              <p className="text-sm text-muted-foreground text-center">
+                Record your speech directly using your microphone
+              </p>
+              {!isRecording ? (
+                <Button
+                  onClick={startRecording}
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
+                  <Mic className="h-5 w-5 mr-2" />
+                  Start Recording
+                </Button>
+              ) : (
+                <div className="flex flex-col items-center gap-3 w-full">
+                  <div className="flex items-center gap-2 text-red-500 animate-pulse">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <span className="font-medium">Recording...</span>
+                  </div>
+                  <Button
+                    onClick={stopRecording}
+                    variant="destructive"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                  >
+                    <StopCircle className="h-5 w-5 mr-2" />
+                    Stop Recording
+                  </Button>
+                </div>
+              )}
+            </div>
+          </Card>
+        )}
+
+        {!supportsRecording && (
+          <Card className="p-4 bg-amber-500/10 border-amber-500/30">
+            <div className="flex items-start gap-3">
+              <MicOff className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-amber-600 dark:text-amber-400 mb-1">
+                  Speech Recognition Not Supported
+                </h4>
+                <p className="text-sm text-muted-foreground">
+                  Your browser doesn't support live speech recognition. Please use Chrome, Edge, or Safari for this feature.
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
 
         {/* Upload Area */}
         <AudioUploadZone
@@ -307,9 +412,9 @@ const SpeechToTextTool = () => {
         {/* Info Notice */}
         <Card className="p-4 bg-muted/50">
           <p className="text-sm text-muted-foreground">
-            <strong>Note:</strong> Full speech-to-text transcription requires a backend service. 
-            This demo shows the interface and export functionality. For production use, 
-            integrate with services like Google Cloud Speech-to-Text, AWS Transcribe, or OpenAI Whisper.
+            <strong>How it works:</strong> This tool uses the Web Speech API for live microphone recording 
+            (supported in Chrome, Edge, and Safari). For audio file transcription, a backend service 
+            like Google Cloud Speech-to-Text, AWS Transcribe, or OpenAI Whisper would be required.
           </p>
         </Card>
       </div>

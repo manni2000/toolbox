@@ -14,7 +14,7 @@ interface URLReputation {
   color: string;
   factors: string[];
   domain_age_days: number;
-  recommendations: [];
+  recommendations: string[];
 }
 
 export default function URLReputationCheckerTool() {
@@ -22,13 +22,17 @@ export default function URLReputationCheckerTool() {
   const [result, setResult] = useState<URLReputation | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const checkReputation = async () => {
     if (!url.trim()) return;
 
     setLoading(true);
+    setError(null);
+    setResult(null);
+    
     try {
-      const response = await fetch(`${API_URLS.BASE_URL}/api/security/url-reputation/`, {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/security/url-reputation`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,12 +40,16 @@ export default function URLReputationCheckerTool() {
         body: JSON.stringify({ url }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setResult(data);
+      const data = await response.json();
+      
+      if (response.ok && data.success && data.result) {
+        setResult(data.result);
+      } else {
+        setError(data.error || 'Failed to check URL reputation');
       }
-    } catch (error) {
-      console.error('Error checking URL reputation:', error);
+    } catch (err) {
+      console.error('Error checking URL reputation:', err);
+      setError('Network error. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -128,6 +136,16 @@ export default function URLReputationCheckerTool() {
             </button>
           </div>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4">
+            <div className="flex items-center gap-3">
+              <XCircle className="h-5 w-5 text-red-500" />
+              <p className="text-red-600 dark:text-red-400">{error}</p>
+            </div>
+          </div>
+        )}
 
         {/* Results Section */}
         {result && (

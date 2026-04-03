@@ -643,7 +643,7 @@ router.post('/url-shortener', async (req, res) => {
   }
 });
 
-// Website Screenshot (placeholder - would need puppeteer)
+// Website Screenshot - Mock Implementation (Real screenshots would need Puppeteer/Playwright)
 router.post('/website-screenshot', async (req, res) => {
   try {
     const { url, width = 1920, height = 1080, format = 'png' } = req.body;
@@ -652,15 +652,35 @@ router.post('/website-screenshot', async (req, res) => {
       return res.status(400).json({ error: 'URL is required' });
     }
 
-    // This is a placeholder implementation
+    // Validate URL format
+    try {
+      new URL(url);
+    } catch (e) {
+      return res.status(400).json({ error: 'Invalid URL format' });
+    }
+
+    // Generate a placeholder screenshot (1x1 transparent PNG in base64)
+    // In production, use Puppeteer or Playwright for real screenshots
+    const placeholderPng = Buffer.from([
+      0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
+      0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
+      0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4, 0x89, 0x00, 0x00, 0x00,
+      0x0D, 0x49, 0x44, 0x41, 0x54, 0x78, 0xDA, 0x63, 0xF8, 0x0F, 0x00, 0x00,
+      0x01, 0x01, 0x00, 0x01, 0x18, 0xDD, 0x8D, 0xB4, 0x00, 0x00, 0x00, 0x00,
+      0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82
+    ]);
+
+    const base64Image = placeholderPng.toString('base64');
+    const mimeType = format === 'jpeg' || format === 'jpg' ? 'image/jpeg' : 'image/png';
+
     const screenshotInfo = {
       url,
-      width,
-      height,
+      width: parseInt(width),
+      height: parseInt(height),
       format,
-      screenshot: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      screenshot: `data:${mimeType};base64,${base64Image}`,
       timestamp: new Date().toISOString(),
-      note: 'This is a placeholder. Implement with real screenshot service using puppeteer.'
+      note: 'Placeholder screenshot. For real screenshots, integrate Puppeteer or Playwright on your server.'
     };
 
     res.json({
@@ -668,7 +688,10 @@ router.post('/website-screenshot', async (req, res) => {
       result: screenshotInfo
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Screenshot error:', error.message);
+    res.status(500).json({ 
+      error: 'Failed to capture screenshot. The website may be unreachable or blocking screenshots.' 
+    });
   }
 });
 

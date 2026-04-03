@@ -19,14 +19,14 @@ interface OGData {
 
 const OGImagePreviewTool = () => {
   const [ogData, setOgData] = useState<OGData>({
-    title: "Your Amazing Page Title",
-    description: "This is a compelling description that will appear when your content is shared on social media platforms like Facebook, Twitter, and LinkedIn.",
-    url: "https://yoursite.com/page",
-    siteName: "Your Website",
-    image: "https://via.placeholder.com/1200x630/4f46e5/ffffff?text=OG+Image+Preview",
+    title: "",
+    description: "",
+    url: "",
+    siteName: "",
+    image: "",
     type: "website",
     locale: "en_US",
-    author: "Your Name"
+    author: ""
   });
 
   const [previewSize, setPreviewSize] = useState<'facebook' | 'twitter' | 'linkedin'>('facebook');
@@ -254,10 +254,10 @@ const OGImagePreviewTool = () => {
         </div>
 
         {/* Preview Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <h3 className="font-semibold">Social Media Preview</h3>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
                 type="button"
                 onClick={() => setPreviewSize('facebook')}
@@ -296,39 +296,47 @@ const OGImagePreviewTool = () => {
 
           <div className="flex justify-center">
             <div 
-              className="border border-gray-300 rounded-lg overflow-hidden bg-white"
-              style={{ width: `${dimensions.width}px`, height: `${dimensions.height}px` }}
+              className="border border-gray-300 rounded-lg overflow-hidden bg-white w-full max-w-[500px]"
+              style={{ aspectRatio: `${dimensions.width}/${dimensions.height}` }}
             >
               {/* Preview Header */}
               <div className="bg-gray-50 border-b border-gray-200 p-2">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-blue-600 rounded-sm"></div>
-                  <span className="text-xs text-gray-600">facebook.com</span>
+                  <div className="w-4 h-4 bg-blue-600 rounded-sm flex-shrink-0"></div>
+                  <span className="text-xs text-gray-600 truncate">
+                    {previewSize === 'facebook' ? 'facebook.com' : previewSize === 'twitter' ? 'twitter.com' : 'linkedin.com'}
+                  </span>
                 </div>
               </div>
 
               {/* Preview Content */}
               <div className="p-3">
                 <div className="flex gap-3">
-                  <img
-                    src={ogData.image}
-                    alt="OG Preview"
-                    className="w-20 h-20 object-cover rounded"
-                    onError={(e) => {
-                      e.currentTarget.src = "https://via.placeholder.com/80x80/e0e0e0/666666?text=Image";
-                    }}
-                  />
+                  {ogData.image ? (
+                    <img
+                      src={ogData.image}
+                      alt="OG Preview"
+                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded flex-shrink-0"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://via.placeholder.com/80x80/e0e0e0/666666?text=Image";
+                      }}
+                    />
+                  ) : (
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 rounded flex-shrink-0 flex items-center justify-center">
+                      <Image className="h-6 w-6 text-gray-400" />
+                    </div>
+                  )}
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-sm text-gray-900 truncate">
-                      {ogData.title}
+                    <h4 className="font-semibold text-xs sm:text-sm text-gray-900 truncate">
+                      {ogData.title || "Your page title"}
                     </h4>
                     <p className="text-xs text-gray-600 line-clamp-2 mt-1">
-                      {ogData.description}
+                      {ogData.description || "Your page description will appear here..."}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <Globe className="h-3 w-3 text-gray-500" />
+                      <Globe className="h-3 w-3 text-gray-500 flex-shrink-0" />
                       <span className="text-xs text-gray-500 truncate">
-                        {ogData.url}
+                        {ogData.url || "yoursite.com"}
                       </span>
                     </div>
                   </div>

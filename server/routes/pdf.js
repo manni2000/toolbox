@@ -679,19 +679,51 @@ router.post('/unlock', upload.single('pdf'), async (req, res) => {
       return res.status(400).json({ error: 'Password is required to unlock PDF' });
     }
 
-    // This is a placeholder implementation
-    const unlockInfo = {
-      originalFile: req.file.originalname,
-      success: true,
-      note: 'PDF unlocking is not implemented in this demo. Please integrate with a PDF library.'
-    };
+    const pdfBuffer = req.file.buffer;
+    
+    try {
+      // Try to load the PDF with the provided password
+      const pdfDoc = await PDFDocument.load(pdfBuffer, {
+        password: password,
+        ignoreEncryption: false
+      });
 
-    res.json({
-      success: true,
-      result: unlockInfo
-    });
+      // Create a new PDF without encryption
+      const unlockedPdfDoc = await PDFDocument.create();
+      const pages = await unlockedPdfDoc.copyPages(pdfDoc, pdfDoc.getPageIndices());
+      pages.forEach(page => unlockedPdfDoc.addPage(page));
+
+      // Save the unlocked PDF
+      const unlockedPdfBytes = await unlockedPdfDoc.save();
+      
+      // Generate filename
+      const originalName = req.file.originalname.replace('.pdf', '');
+      const filename = `${originalName}_unlocked.pdf`;
+
+      res.set({
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Content-Length': unlockedPdfBytes.length
+      });
+      
+      res.send(Buffer.from(unlockedPdfBytes));
+    } catch (decryptError) {
+      // Check if it's a password error
+      if (decryptError.message && decryptError.message.includes('password')) {
+        return res.status(401).json({ 
+          error: 'Incorrect password. Please provide the correct password to unlock this PDF.' 
+        });
+      }
+      // Check if PDF is not encrypted
+      if (decryptError.message && decryptError.message.includes('not encrypted')) {
+        return res.status(400).json({ 
+          error: 'This PDF is not password protected.' 
+        });
+      }
+      throw decryptError;
+    }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message || 'Failed to unlock PDF' });
   }
 });
 

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Upload, Unlock, FileText, X, Key, Sparkles } from "lucide-react";
+import { Upload, Unlock, FileText, X, Key, Sparkles, AlertCircle, Download, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
@@ -14,11 +14,17 @@ const PDFUnlockTool = () => {
   const [file, setFile] = useState<File | null>(null);
   const [password, setPassword] = useState("");
   const [isDragging, setIsDragging] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [unlockedPdf, setUnlockedPdf] = useState<Blob | null>(null);
+  const [unlockedFileName, setUnlockedFileName] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (f: File) => {
     if (f.type !== "application/pdf") return;
     setFile(f);
+    setError(null);
+    setUnlockedPdf(null);
   };
 
   const handleDragEnter = (e: React.DragEvent) => {
@@ -41,9 +47,59 @@ const PDFUnlockTool = () => {
     if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
   };
 
+  const handleUnlock = async () => {
+    if (!file || !password) return;
+    
+    setIsLoading(true);
+    setError(null);
+    setUnlockedPdf(null);
+    
+    try {
+      const formData = new FormData();
+      formData.append('pdf', file);
+      formData.append('password', password);
+      
+      const response = await fetch(API_URLS.PDF_UNLOCK, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (response.ok) {
+        const blob = await response.blob();
+        const originalName = file.name.replace('.pdf', '');
+        setUnlockedFileName(`${originalName}_unlocked.pdf`);
+        setUnlockedPdf(blob);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to unlock PDF');
+      }
+    } catch (err) {
+      console.error('Error unlocking PDF:', err);
+      setError('Network error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDownload = () => {
+    if (!unlockedPdf) return;
+    
+    const url = URL.createObjectURL(unlockedPdf);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = unlockedFileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const reset = () => {
     setFile(null);
     setPassword("");
+    setError(null);
+    setUnlockedPdf(null);
+    setUnlockedFileName("");
   };
 
   return (
@@ -54,20 +110,6 @@ const PDFUnlockTool = () => {
       categoryPath="/category/pdf"
     >
       <div className="space-y-6">
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5">
-          <div className="flex gap-4">
-            <Unlock className="h-5 w-5 shrink-0 text-amber-500" />
-            <div>
-              <h4 className="font-semibold text-amber-600 dark:text-amber-400">
-                Backend Required
-              </h4>
-              <p className="mt-1 text-sm text-muted-foreground">
-                PDF decryption requires server-side processing. Enable Lovable Cloud to unlock your PDFs.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {!file && (
           <PDFUploadZone
             isDragging={isDragging}
@@ -82,7 +124,7 @@ const PDFUnlockTool = () => {
           />
         )}
 
-        {file && (
+        {file && !unlockedPdf && (
           <div className="space-y-6">
             <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
               <div className="flex items-center gap-3">
@@ -111,17 +153,62 @@ const PDFUnlockTool = () => {
               </p>
             </div>
 
-            <button
-              disabled
-              className="btn-primary w-full cursor-not-allowed opacity-50"
-            >
-              <Unlock className="h-5 w-5" />
-              Unlock PDF
-            </button>
+            {error && (
+              <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4">
+                <div className="flex items-center gap-3">
+                  <AlertCircle className="h-5 w-5 text-red-500" />
+                  <p className="text-red-600 dark:text-red-400">{error}</p>
+                </div>
+              </div>
+            )}
 
-            <p className="text-center text-sm text-muted-foreground">
-              Enable backend integration for PDF decryption
-            </p>
+            <button
+              onClick={handleUnlock}
+              disabled={!password || isLoading}
+              className="btn-primary w-full flex items-center justify-center gap-2"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Unlocking...
+                </>
+              ) : (
+                <>
+                  <Unlock className="h-5 w-5" />
+                  Unlock PDF
+                </>
+              )}
+            </button>
+          </div>
+        )}
+
+        {unlockedPdf && (
+          <div className="space-y-6">
+            <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-6 text-center">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <Unlock className="h-8 w-8 text-green-500" />
+                <h3 className="text-xl font-semibold text-green-600 dark:text-green-400">
+                  PDF Unlocked Successfully!
+                </h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Your PDF has been unlocked and is ready for download.
+              </p>
+              <button
+                onClick={handleDownload}
+                className="btn-primary flex items-center justify-center gap-2 mx-auto"
+              >
+                <Download className="h-5 w-5" />
+                Download Unlocked PDF
+              </button>
+            </div>
+
+            <button
+              onClick={reset}
+              className="btn-secondary w-full"
+            >
+              Unlock Another PDF
+            </button>
           </div>
         )}
 

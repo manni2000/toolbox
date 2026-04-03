@@ -26,31 +26,40 @@ const APIResponseFormatterTool = () => {
   const [formatType, setFormatType] = useState<'json' | 'xml' | 'html' | 'text'>('json');
   const [copied, setCopied] = useState<string | null>(null);
 
-  const formatResponse = () => {
+  const formatResponse = (bodyToFormat?: string, typeToFormat?: 'json' | 'xml' | 'html' | 'text') => {
+    const bodyContent = bodyToFormat !== undefined ? bodyToFormat : response.body;
+    const formatTypeToUse = typeToFormat || formatType;
+    
+    if (!bodyContent) {
+      setResponse(prev => ({ ...prev, formatted: '' }));
+      return;
+    }
+    
     try {
       let formatted = '';
       
-      switch (formatType) {
+      switch (formatTypeToUse) {
         case 'json':
-          if (response.body) {
-            const parsed = JSON.parse(response.body);
-            formatted = JSON.stringify(parsed, null, 2);
-          }
+          const parsed = JSON.parse(bodyContent);
+          formatted = JSON.stringify(parsed, null, 2);
           break;
         case 'xml':
-          formatted = formatXML(response.body);
+          formatted = formatXML(bodyContent);
           break;
         case 'html':
-          formatted = formatHTML(response.body);
+          formatted = formatHTML(bodyContent);
           break;
         case 'text':
-          formatted = response.body;
+          formatted = bodyContent;
           break;
       }
       
-      setResponse({ ...response, formatted });
+      setResponse(prev => ({ ...prev, formatted }));
     } catch (error) {
-      setResponse({ ...response, formatted: `Error: ${error instanceof Error ? error.message : 'Invalid format'}` });
+      setResponse(prev => ({ 
+        ...prev, 
+        formatted: `Error: ${error instanceof Error ? error.message : 'Invalid format'}` 
+      }));
     }
   };
 
@@ -108,6 +117,10 @@ const APIResponseFormatterTool = () => {
   };
 
   const parseRawResponse = () => {
+    if (!rawResponse.trim()) {
+      return;
+    }
+    
     try {
       const lines = rawResponse.split('\n');
       const newResponse: APIResponse = {
@@ -119,45 +132,60 @@ const APIResponseFormatterTool = () => {
         formatted: ''
       };
       
-      let currentSection = '';
-      let bodyStarted = false;
+      let inHeaders = true;
+      let bodyLines: string[] = [];
       
-      lines.forEach(line => {
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
         const trimmedLine = line.trim();
         
-        if (trimmedLine.startsWith('HTTP/')) {
+        // Parse status line
+        if (i === 0 && trimmedLine.startsWith('HTTP/')) {
           const parts = trimmedLine.split(' ');
           newResponse.status = parseInt(parts[1]) || 200;
-        } else if (trimmedLine.includes(':') && !bodyStarted) {
-          const [key, ...valueParts] = trimmedLine.split(':');
-          const value = valueParts.join(':').trim();
-          
-          if (key.toLowerCase() === 'content-type') {
-            newResponse.headers[key] = value;
-          } else if (key.toLowerCase() === 'content-length') {
-            newResponse.headers[key] = value;
-          } else if (key.toLowerCase() === 'date') {
-            newResponse.headers[key] = value;
-          }
-        } else if (trimmedLine === '' && currentSection === 'headers') {
-          currentSection = 'body';
-          bodyStarted = true;
-        } else if (bodyStarted) {
-          newResponse.body += (newResponse.body ? '\n' : '') + line;
+          continue;
         }
-      });
+        
+        // Empty line marks end of headers
+        if (trimmedLine === '' && inHeaders) {
+          inHeaders = false;
+          continue;
+        }
+        
+        // Parse headers
+        if (inHeaders && trimmedLine.includes(':')) {
+          const colonIndex = trimmedLine.indexOf(':');
+          const key = trimmedLine.substring(0, colonIndex).trim();
+          const value = trimmedLine.substring(colonIndex + 1).trim();
+          newResponse.headers[key.toLowerCase()] = value;
+        }
+        
+        // Collect body lines
+        if (!inHeaders) {
+          bodyLines.push(line);
+        }
+      }
+      
+      newResponse.body = bodyLines.join('\n').trim();
       
       setResponse(newResponse);
-      formatResponse();
+      
+      // Format the body after parsing
+      if (newResponse.body) {
+        formatResponse(newResponse.body, formatType);
+      }
     } catch (error) {
-      setResponse({
+      // If parsing fails, treat the entire input as the body
+      const newResponse: APIResponse = {
         method: 'GET',
         url: '',
         status: 200,
         headers: {},
         body: rawResponse,
-        formatted: 'Error parsing response'
-      });
+        formatted: ''
+      };
+      setResponse(newResponse);
+      formatResponse(rawResponse, formatType);
     }
   };
 
@@ -193,10 +221,36 @@ Date: ${new Date().toUTCString()}
     "email": "john@example.com",
     "created_at": "2024-01-15T10:30:00Z"
   },
-  "message": "User retrieved successfully"`;
+  "message": "User retrieved successfully"
+}`;
     
     setRawResponse(exampleResponse);
-    parseRawResponse();
+    
+    // Parse the example response directly
+    const newResponse: APIResponse = {
+      method: 'GET',
+      url: '',
+      status: 200,
+      headers: {
+        'content-type': 'application/json',
+        'content-length': '156',
+        'date': new Date().toUTCString()
+      },
+      body: `{
+  "status": "success",
+  "data": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "created_at": "2024-01-15T10:30:00Z"
+  },
+  "message": "User retrieved successfully"
+}`,
+      formatted: ''
+    };
+    
+    setResponse(newResponse);
+    formatResponse(newResponse.body, 'json');
   };
 
   return (
@@ -264,7 +318,7 @@ Date: ${new Date().toUTCString()}
               <label className="block text-sm font-medium mb-2">Format Type</label>
               <div className="grid grid-cols-4 gap-3">
                 <button
-                  onClick={() => { setFormatType('json'); formatResponse(); }}
+                  onClick={() => { setFormatType('json'); formatResponse(response.body, 'json'); }}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                     formatType === 'json'
                       ? 'bg-primary text-primary-foreground'
@@ -274,7 +328,7 @@ Date: ${new Date().toUTCString()}
                   JSON
                 </button>
                 <button
-                  onClick={() => { setFormatType('xml'); formatResponse(); }}
+                  onClick={() => { setFormatType('xml'); formatResponse(response.body, 'xml'); }}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                     formatType === 'xml'
                       ? 'bg-primary text-primary-foreground'
@@ -284,7 +338,7 @@ Date: ${new Date().toUTCString()}
                   XML
                 </button>
                 <button
-                  onClick={() => { setFormatType('html'); formatResponse(); }}
+                  onClick={() => { setFormatType('html'); formatResponse(response.body, 'html'); }}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                     formatType === 'html'
                       ? 'bg-primary text-primary-foreground'
@@ -294,7 +348,7 @@ Date: ${new Date().toUTCString()}
                   HTML
                 </button>
                 <button
-                  onClick={() => { setFormatType('text'); formatResponse(); }}
+                  onClick={() => { setFormatType('text'); formatResponse(response.body, 'text'); }}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                     formatType === 'text'
                       ? 'bg-primary text-primary-foreground'
@@ -307,7 +361,7 @@ Date: ${new Date().toUTCString()}
             </div>
 
             <button
-              onClick={formatResponse}
+              onClick={() => formatResponse()}
               className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
             >
               <RefreshCw className="inline h-4 w-4 mr-2" />

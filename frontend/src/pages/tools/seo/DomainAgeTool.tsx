@@ -3,6 +3,7 @@ import { Copy, Check, Calendar, Search, Download, Globe, Clock, AlertCircle, Spa
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { API_URLS } from "@/lib/api-complete";
 
 const categoryColor = "25 90% 50%";
 
@@ -24,54 +25,44 @@ const DomainAgeTool = () => {
   const [copied, setCopied] = useState<string | null>(null);
 
   const checkDomainAge = async (domain: string): Promise<DomainInfo> => {
-    // This is a mock implementation since we can't actually make DNS queries from the browser
-    // In a real implementation, you'd need a backend API to query WHOIS data
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const mockData: { [key: string]: DomainInfo } = {
-          'google.com': {
-            domain: 'google.com',
-            creationDate: '1997-09-15',
-            expirationDate: '2028-09-14',
-            age: 27,
-            daysUntilExpiration: 1800,
-            registrar: 'MarkMonitor Inc.',
-            status: 'valid'
-          },
-          'facebook.com': {
-            domain: 'facebook.com',
-            creationDate: '1997-03-29',
-            expirationDate: '2025-03-28',
-            age: 27,
-            daysUntilExpiration: 400,
-            registrar: 'RegistrarSafe, LLC',
-            status: 'valid'
-          },
-          'amazon.com': {
-            domain: 'amazon.com',
-            creationDate: '1994-10-31',
-            expirationDate: '2024-10-30',
-            age: 30,
-            daysUntilExpiration: 200,
-            registrar: 'Amazon Registrar, Inc.',
-            status: 'valid'
-          }
-        };
+    try {
+      const response = await fetch(`${API_URLS.BASE_URL}/api/seo/domain-age`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ domain: domain.trim() }),
+      });
 
-        const cleanDomain = domain.toLowerCase().trim();
-        const result = mockData[cleanDomain] || {
-          domain: cleanDomain,
-          creationDate: '2020-01-01',
-          expirationDate: '2025-01-01',
-          age: Math.floor(Math.random() * 20) + 1,
-          daysUntilExpiration: Math.floor(Math.random() * 365) + 1,
-          registrar: 'Mock Registrar',
-          status: 'valid'
+      const data = await response.json();
+      
+      if (response.ok && data.success && data.result) {
+        return data.result;
+      } else {
+        return {
+          domain: domain,
+          creationDate: '',
+          expirationDate: '',
+          age: 0,
+          daysUntilExpiration: 0,
+          registrar: '',
+          status: 'error',
+          error: data.error || 'Failed to check domain'
         };
-
-        resolve(result);
-      }, 1000);
-    });
+      }
+    } catch (error) {
+      console.error('Error checking domain:', error);
+      return {
+        domain: domain,
+        creationDate: '',
+        expirationDate: '',
+        age: 0,
+        daysUntilExpiration: 0,
+        registrar: '',
+        status: 'error',
+        error: 'Network error'
+      };
+    }
   };
 
   const checkDomains = async () => {
