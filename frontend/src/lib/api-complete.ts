@@ -8,6 +8,13 @@ const API_BASE_URL = isProduction
 export const API_URLS = {
   BASE_URL: API_BASE_URL,
   
+  // Blog endpoints
+  BLOG_LIST: `${API_BASE_URL}/api/blog`,
+  BLOG_SEARCH: `${API_BASE_URL}/api/blog/search`,
+  BLOG_CATEGORIES: `${API_BASE_URL}/api/blog/categories`,
+  BLOG_POST: (slug: string) => `${API_BASE_URL}/api/blog/${slug}`,
+  BLOG_CATEGORY: (category: string) => `${API_BASE_URL}/api/blog/category/${category}`,
+  
   // PDF endpoints
   HTML_TO_PDF: `${API_BASE_URL}/api/pdf/html-to-pdf`,
   PDF_TO_IMAGE: `${API_BASE_URL}/api/pdf/to-image`,

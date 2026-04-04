@@ -20,6 +20,19 @@
     <priority>0.9</priority>
   </url>
 
+  <!-- Blog Section -->
+  <url>
+    <loc>https://dailytools247.com/blogs</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url><loc>https://dailytools247.com/blogs/top-25-free-online-tools-2026</loc><lastmod>2024-12-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dailytools247.com/blogs/best-free-image-converter-compressor-tools</loc><lastmod>2024-12-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dailytools247.com/blogs/powerful-online-developer-tools-no-install</loc><lastmod>2024-12-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dailytools247.com/blogs/how-to-convert-pdf-to-word-online-free</loc><lastmod>2024-12-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dailytools247.com/blogs/free-online-tools-replace-expensive-software-2026</loc><lastmod>2024-12-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
   <!-- Category Pages -->
   <url><loc>https://dailytools247.com/category/pdf</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://dailytools247.com/category/image</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
@@ -169,6 +182,12 @@
   <url><loc>https://dailytools247.com/stock-cagr-calculator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://dailytools247.com/budget-planner</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://dailytools247.com/salary-breakup-generator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://dailytools247.com/mutual-fund-calculator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://dailytools247.com/lump-sum-calculator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://dailytools247.com/recurring-deposit-calculator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dailytools247.com/inflation-calculator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dailytools247.com/roi-calculator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dailytools247.com/sip-calculator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
 
   <!-- ZIP Tools -->
   <url><loc>https://dailytools247.com/create-zip</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -186,7 +205,7 @@
   <url><loc>https://dailytools247.com/meme-generator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
 
   <!-- SEO Tools -->
-  <url><loc>https://dailytools247.com/meta-title-description</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://dailytools247.com/meta-title-description</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://dailytools247.com/keyword-density</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://dailytools247.com/robots-txt</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://dailytools247.com/sitemap-validator</loc><lastmod>2024-12-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>

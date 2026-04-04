@@ -405,6 +405,30 @@ export const api = {
 
   calculateAge: (birthDate: string, currentDate?: string) => {
     return apiClient.post(API_URLS.AGE_CALCULATOR, { birthDate, currentDate });
+  },
+
+  // Blog operations
+  getBlogPosts: (page: number = 1, limit: number = 10, category?: string, featured?: boolean) => {
+    let url = `${API_URLS.BLOG_LIST}?page=${page}&limit=${limit}`;
+    if (category) url += `&category=${encodeURIComponent(category)}`;
+    if (featured !== undefined) url += `&featured=${featured}`;
+    return apiClient.get(url);
+  },
+
+  getBlogPost: (slug: string) => {
+    return apiClient.get(API_URLS.BLOG_POST(slug));
+  },
+
+  searchBlog: (query: string) => {
+    return apiClient.get(`${API_URLS.BLOG_SEARCH}?q=${encodeURIComponent(query)}`);
+  },
+
+  getBlogCategories: () => {
+    return apiClient.get(API_URLS.BLOG_CATEGORIES);
+  },
+
+  getBlogByCategory: (category: string, page: number = 1, limit: number = 10) => {
+    return apiClient.get(`${API_URLS.BLOG_CATEGORY(category)}?page=${page}&limit=${limit}`);
   }
 };
 

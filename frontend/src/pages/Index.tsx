@@ -6,6 +6,7 @@ import PopularTools from "@/components/home/PopularTools";
 import TrustSection from "@/components/home/TrustSection";
 import HowItWorks from "@/components/home/HowItWorks";
 import ContactSection from "@/components/home/ContactSection";
+import BlogHighlights from "@/components/home/BlogHighlights";
 
 const Index = () => {
   return (
@@ -15,6 +16,7 @@ const Index = () => {
         <HeroSection />
         <PopularTools />
         <CategoryGrid />
+        <BlogHighlights />
         <HowItWorks />
         <TrustSection />
         <ContactSection />

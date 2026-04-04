@@ -105,6 +105,7 @@ const Header = () => {
             </div>
 
             <NavLink to="/categories" active={isActive("/categories")}>All Tools</NavLink>
+            <NavLink to="/blogs" active={location.pathname.startsWith("/blogs")}>Blogs</NavLink>
           </nav>
 
           {/* CTA Button */}
@@ -150,6 +151,7 @@ const Header = () => {
                   <div className="container flex flex-col gap-1 py-4">
                     <MobileNavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</MobileNavLink>
                     <MobileNavLink to="/categories" onClick={() => setIsMenuOpen(false)}>All Tools</MobileNavLink>
+                    <MobileNavLink to="/blogs" onClick={() => setIsMenuOpen(false)}>Blogs</MobileNavLink>
                   </div>
                 </div>
                 

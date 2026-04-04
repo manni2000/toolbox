@@ -123,6 +123,8 @@ const Footer = () => {
     { name: "Salary Breakup Generator", path: "/salary-breakup-generator" },
     { name: "Budget Planner", path: "/budget-planner" },
     { name: "Stock CAGR Calculator", path: "/stock-cagr-calculator" },
+    { name: "Mutual Fund Calculator", path: "/mutual-fund-calculator" },
+    { name: "Lump Sum Calculator", path: "/lump-sum-calculator" },
   ];
 
   const devTools = [
@@ -162,6 +164,18 @@ const Footer = () => {
     { name: "Date Difference", path: "/date-difference" },
     { name: "Working Days Calculator", path: "/working-days-calculator" },
     { name: "Countdown Timer", path: "/countdown-timer" },
+  ];
+
+  const textTools = [
+    { name: "Word Counter", path: "/word-counter" },
+    { name: "Case Converter", path: "/case-converter" },
+    { name: "Color Converter", path: "/color-converter" },
+    { name: "Remove Spaces", path: "/remove-spaces" },
+    { name: "Line Sorter", path: "/line-sorter" },
+    { name: "Duplicate Remover", path: "/duplicate-remover" },
+    { name: "Markdown to HTML", path: "/markdown-html" },
+    { name: "Text Summarizer", path: "/text-summarizer" },
+    { name: "Text Diff Checker", path: "/text-diff" },
   ];
 
   const socialMediaTools = [
@@ -317,6 +331,20 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* Text Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Text Tools</h4>
+            <ul className="space-y-2">
+              {textTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Video Tools */}
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">Video Tools</h4>
@@ -427,6 +455,9 @@ const Footer = () => {
           <div className="flex items-center gap-4">
             <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground">
               About
+            </Link>
+            <Link to="/blogs" className="text-sm text-muted-foreground hover:text-foreground">
+              Blogs
             </Link>
             <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
               Privacy

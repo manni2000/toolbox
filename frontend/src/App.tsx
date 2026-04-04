@@ -12,6 +12,8 @@ import CategoriesPage from "./pages/CategoriesPage";
 import About from "./pages/About";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import BlogListPage from "./pages/blog/BlogListPage";
+import BlogPostPage from "./pages/blog/BlogPostPage";
 
 // Image Tools
 import QRGeneratorTool from "./pages/tools/image/QRGeneratorTool";
@@ -194,6 +196,8 @@ const AnimatedRoutes = () => {
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/blogs" element={<BlogListPage />} />
+        <Route path="/blogs/:slug" element={<BlogPostPage />} />
           
           {/* Image Tools - SEO friendly routes */}
           <Route path="/qr-code-generator" element={<QRGeneratorTool />} />

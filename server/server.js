@@ -110,6 +110,7 @@ app.get('/', (req, res) => {
 });
 
 // API Routes
+app.use('/api/blog', require('./routes/blog'));
 app.use('/api/audio', require('./routes/audio'));
 app.use('/api/date-time', require('./routes/date-time'));
 app.use('/api/dev', require('./routes/dev'));
@@ -132,6 +133,7 @@ app.get('/', (req, res) => {
     message: 'ToolBox API is running',
     version: '1.0.0',
     endpoints: [
+      '/api/blog/',
       '/api/audio/',
       '/api/date-time/',
       '/api/dev/',
@@ -157,6 +159,7 @@ app.get('/api', (req, res) => {
     message: 'ToolBox API is running',
     version: '1.0.0',
     endpoints: [
+      '/api/blog/',
       '/api/audio/',
       '/api/date-time/',
       '/api/dev/',

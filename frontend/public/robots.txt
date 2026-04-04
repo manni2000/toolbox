@@ -9,6 +9,10 @@ Allow: /
 Allow: /category/
 Allow: /categories
 
+# Blog Content
+Allow: /blogs
+Allow: /blogs/
+
 # PDF Tools
 Allow: /pdf-merge
 Allow: /pdf-split
