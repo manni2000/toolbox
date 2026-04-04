@@ -150,6 +150,8 @@ import FreelancerRateCalculatorTool from "./pages/tools/finance/FreelancerRateCa
 import SalaryBreakupGeneratorTool from "./pages/tools/finance/SalaryBreakupGeneratorTool";
 import BudgetPlannerTool from "./pages/tools/finance/BudgetPlannerTool";
 import StockCAGRCalculatorTool from "./pages/tools/finance/StockCAGRCalculatorTool";
+import MutualFundCalculatorTool from "./pages/tools/finance/MutualFundCalculatorTool";
+import LumpsumCalculatorTool from "./pages/tools/finance/LumpsumCalculatorTool";
 
 // SEO Tools
 import MetaTitleDescriptionTool from "./pages/tools/seo/MetaTitleDescriptionTool";
@@ -328,6 +330,8 @@ const AnimatedRoutes = () => {
           <Route path="/salary-breakup-generator" element={<SalaryBreakupGeneratorTool />} />
           <Route path="/budget-planner" element={<BudgetPlannerTool />} />
           <Route path="/stock-cagr-calculator" element={<StockCAGRCalculatorTool />} />
+          <Route path="/mutual-fund-calculator" element={<MutualFundCalculatorTool />} />
+          <Route path="/lumpsum-calculator" element={<LumpsumCalculatorTool />} />
           
           {/* SEO Tools */}
           <Route path="/meta-title-description-generator" element={<MetaTitleDescriptionTool />} />
