@@ -262,6 +262,8 @@ export const toolCategories: ToolCategory[] = [
       { id: "profit-margin", name: "Profit Margin Calculator", description: "Calculate gross margin, net margin, and markup", path: "/profit-margin-calculator", isAvailable: true },
       { id: "freelancer-rate", name: "Freelancer Rate Calculator", description: "Calculate optimal freelance rates", path: "/freelancer-rate-calculator", isAvailable: true },
       { id: "stock-cagr", name: "Stock CAGR Calculator", description: "Calculate compound annual growth rate", path: "/stock-cagr-calculator", isAvailable: true },
+      { id: "mutual-fund-calculator", name: "Mutual Fund Calculator", description: "Calculate mutual fund returns with SIP and lumpsum", path: "/mutual-fund-calculator", isAvailable: true },
+      { id: "lumpsum-calculator", name: "Lumpsum Calculator", description: "Calculate lumpsum investment returns", path: "/lumpsum-calculator", isAvailable: true },
       { id: "budget-planner", name: "Budget Planner", description: "Create and analyze monthly budget", path: "/budget-planner", isAvailable: true },
       { id: "salary-breakup", name: "Salary Breakup Generator", description: "Generate detailed salary breakup", path: "/salary-breakup-generator", isAvailable: true },
     ],
