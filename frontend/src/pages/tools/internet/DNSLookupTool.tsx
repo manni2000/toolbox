@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Server, Search, Loader2, Sparkles } from "lucide-react";
+import { Server, Search, Loader2, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -92,11 +92,46 @@ const DNSLookupTool = () => {
     >
       <div className="space-y-6">
 
+        {/* Animated Hero Header */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.15)`, boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)` }}
+            >
+              <Server className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">DNS Lookup</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Query DNS records such as A, MX, TXT, NS, and more for any domain.</p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Input Section */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
 
           <div className="flex items-center gap-2 mb-4">
-            <Server className="h-5 w-5 text-primary" />
+            <Server className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             <h3 className="text-base font-semibold">
               Domain DNS Lookup
             </h3>
@@ -160,13 +195,16 @@ const DNSLookupTool = () => {
 
           </div>
 
-        </div>
+        </motion.div>
 
         {/* Lookup Button */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={handleLookup}
           disabled={loading || !domain}
-          className="btn-primary w-full flex items-center justify-center gap-2"
+          style={{ background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)` }}
+          className="w-full flex items-center justify-center gap-2 rounded-lg py-3 px-4 font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
         >
           {loading ? (
             <>
@@ -179,17 +217,22 @@ const DNSLookupTool = () => {
               Lookup DNS Records
             </>
           )}
-        </button>
+        </motion.button>
 
         {/* Results */}
         {result && (
-          <div className="space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-4"
+          >
 
             <h3 className="text-lg font-semibold">
               DNS Records for {result.domain}
             </h3>
 
-            <div className="rounded-xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500">
 
               <div className="space-y-3 font-mono text-sm">
 
@@ -238,35 +281,43 @@ const DNSLookupTool = () => {
               </div>
             )}
 
-          </div>
+          </motion.div>
         )}
 
         {/* Empty State */}
         {!result && (
-          <div className="rounded-xl border border-border bg-card p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
 
-            <h3 className="mb-4 font-semibold">
-              Example DNS Records
-            </h3>
+            <div className="flex items-center gap-2 mb-4">
+              <Settings className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+              <h3 className="font-semibold">
+                Example DNS Records
+              </h3>
+            </div>
 
             <div className="space-y-3 font-mono text-sm">
 
               <div className="rounded-lg bg-muted/40 p-3">
-                <span className="text-primary">A</span>
+                <span style={{ color: `hsl(${categoryColor})` }}>A</span>
                 <span className="ml-4 text-muted-foreground">
                   93.184.216.34
                 </span>
               </div>
 
               <div className="rounded-lg bg-muted/40 p-3">
-                <span className="text-primary">MX</span>
+                <span style={{ color: `hsl(${categoryColor})` }}>MX</span>
                 <span className="ml-4 text-muted-foreground">
                   10 mail.example.com
                 </span>
               </div>
 
               <div className="rounded-lg bg-muted/40 p-3">
-                <span className="text-primary">NS</span>
+                <span style={{ color: `hsl(${categoryColor})` }}>NS</span>
                 <span className="ml-4 text-muted-foreground">
                   ns1.example.com
                 </span>
@@ -274,7 +325,7 @@ const DNSLookupTool = () => {
 
             </div>
 
-          </div>
+          </motion.div>
         )}
 
       </div>

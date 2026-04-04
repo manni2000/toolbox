@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Globe, AlertCircle, Server, Sparkles, Copy, Check, Download, Loader2, RefreshCw } from "lucide-react";
+import { Globe, AlertCircle, Server, Sparkles, Copy, Check, Download, Loader2, RefreshCw, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -111,8 +111,55 @@ const HTTPHeaderTool = () => {
       categoryPath="/category/dev"
     >
       <div className="space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Globe className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">HTTP Header Checker</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Check HTTP response headers from any URL and analyze security headers
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* URL Input */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <label className="mb-3 block text-sm font-medium">Enter URL</label>
           <div className="relative">
             <Globe className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
@@ -125,13 +172,18 @@ const HTTPHeaderTool = () => {
               className="input-field w-full pl-12"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Check Button */}
-        <button
+        <motion.button
           onClick={checkHeaders}
           disabled={!url.trim() || isLoading}
-          className="btn-primary w-full flex items-center justify-center gap-2"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full flex items-center justify-center gap-2 rounded-lg px-4 py-3 font-medium text-white transition-colors disabled:opacity-50"
+          style={{
+            background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+          }}
         >
           {isLoading ? (
             <>
@@ -144,7 +196,7 @@ const HTTPHeaderTool = () => {
               Check Headers
             </>
           )}
-        </button>
+        </motion.button>
 
         {/* Error */}
         {error && (
@@ -158,7 +210,12 @@ const HTTPHeaderTool = () => {
 
         {/* Results */}
         {result && (
-          <div className="space-y-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="space-y-4"
+          >
             {/* Status Code */}
             <div className={`rounded-xl border p-4 ${getStatusColor(result.status)}`}>
               <div className="flex items-center justify-between">
@@ -200,7 +257,12 @@ const HTTPHeaderTool = () => {
 
             {/* Important Headers */}
             {Object.keys(result.headers).some(h => importantHeaders.includes(h.toLowerCase())) && (
-              <div className="rounded-xl border border-border bg-card p-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+              >
                 <h3 className="mb-4 font-semibold flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-primary" />
                   Important Security Headers
@@ -215,11 +277,16 @@ const HTTPHeaderTool = () => {
                       </div>
                     ))}
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* All Headers */}
-            <div className="rounded-xl border border-border bg-card p-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+            >
               <h3 className="mb-4 font-semibold">All Response Headers</h3>
               <div className="space-y-2 font-mono text-sm max-h-96 overflow-y-auto">
                 {Object.entries(result.headers).map(([key, value]) => (
@@ -229,11 +296,19 @@ const HTTPHeaderTool = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Security Tips */}
-            <div className="rounded-xl border border-border bg-muted/30 p-6">
-              <h4 className="font-semibold mb-4">Security Header Best Practices</h4>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="rounded-xl border border-border bg-muted/30 p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+            >
+              <h4 className="font-semibold mb-4 flex items-center gap-2">
+                <AlertCircle className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+                Security Header Best Practices
+              </h4>
               <div className="grid gap-4 sm:grid-cols-2 text-sm">
                 <div>
                   <h5 className="font-medium text-foreground mb-2">✅ Recommended Headers</h5>
@@ -254,8 +329,8 @@ const HTTPHeaderTool = () => {
                   </ul>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
       </div>
     </ToolLayout>

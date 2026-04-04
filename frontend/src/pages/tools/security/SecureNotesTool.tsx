@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, Lock, Unlock, Eye, EyeOff, Shield, Key, FileText, Sparkles } from 'lucide-react';
+import { Copy, Check, Lock, Unlock, Eye, EyeOff, Shield, Key, FileText, Sparkles, Settings } from 'lucide-react';
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";

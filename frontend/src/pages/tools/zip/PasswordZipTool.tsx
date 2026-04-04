@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Lock, Upload, X, Loader2, FileText, Sparkles } from "lucide-react";
+import { Lock, Upload, X, Loader2, FileText, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
-const categoryColor = "45 80% 50%";
+const categoryColor = "280 70% 55%";
 
 const PasswordZipTool = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -127,31 +127,75 @@ const PasswordZipTool = () => {
       categoryPath="/category/zip"
     >
       <div className="space-y-6">
-        {/* Upload Area */}
-        <div
-          onDrop={handleDrop}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-          onDragLeave={() => setIsDragging(false)}
-          onClick={() => inputRef.current?.click()}
-          className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""} p-6 sm:p-8`}
+        {/* Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
         >
-          <Upload className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
-          <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop files here</p>
-          <p className="text-xs sm:text-sm text-muted-foreground">Select multiple files to create password-protected ZIP</p>
-          <input
-            ref={inputRef}
-            type="file"
-            multiple
-            onChange={(e) => handleFiles(e.target.files)}
-            className="hidden"
-            aria-label="Upload files to create password-protected ZIP"
-            title="Upload files"
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
           />
-        </div>
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.15)`, boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)` }}
+            >
+              <Lock className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Password-Protected ZIP</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Create encrypted ZIP archives with strong password protection</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Upload Area */}
+        <motion.div
+          variants={scaleIn}
+          initial="hidden"
+          animate="visible"
+          className="rounded-2xl border border-border bg-card/50 p-6 shadow-lg"
+          style={{ boxShadow: `0 4px 20px hsl(${categoryColor} / 0.1)` }}
+        >
+          <div
+            onDrop={handleDrop}
+            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={() => setIsDragging(false)}
+            onClick={() => inputRef.current?.click()}
+            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""} p-6 sm:p-8`}
+          >
+            <Upload className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg font-medium">Drop files here</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">Select multiple files to create password-protected ZIP</p>
+            <input
+              ref={inputRef}
+              type="file"
+              multiple
+              onChange={(e) => handleFiles(e.target.files)}
+              className="hidden"
+              aria-label="Upload files to create password-protected ZIP"
+              title="Upload files"
+            />
+          </div>
+        </motion.div>
 
         {/* File List */}
         {files.length > 0 && (
-          <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
+            className="rounded-2xl border border-border bg-card/50 p-4 sm:p-6 shadow-lg"
+            style={{ boxShadow: `0 4px 20px hsl(${categoryColor} / 0.1)` }}
+          >
             <h3 className="mb-3 sm:mb-4 font-semibold text-sm sm:text-base">Files to ZIP ({files.length})</h3>
             <div className="space-y-2">
               {files.map((file, index) => (
@@ -159,7 +203,7 @@ const PasswordZipTool = () => {
                   key={index}
                   className="flex items-center gap-2 sm:gap-3 rounded-lg bg-muted/50 p-2 sm:p-3"
                 >
-                  <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+                  <FileText className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
                   <span className="flex-1 truncate text-xs sm:text-sm">{file.name}</span>
                   <span className="text-xs text-muted-foreground flex-shrink-0">
                     {(file.size / 1024).toFixed(1)} KB
@@ -176,55 +220,66 @@ const PasswordZipTool = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Password Fields */}
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-2 block text-xs sm:text-sm font-medium">Password</label>
-            <input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-tool text-sm sm:text-base"
-            />
+        <motion.div
+          variants={scaleIn}
+          initial="hidden"
+          animate="visible"
+          className="rounded-2xl border border-border bg-card/50 p-4 sm:p-6 shadow-lg"
+          style={{ boxShadow: `0 4px 20px hsl(${categoryColor} / 0.1)` }}
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="mb-2 block text-xs sm:text-sm font-medium">Password</label>
+              <input
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input-tool text-sm sm:text-base"
+              />
+            </div>
+            <div>
+              <label className="mb-2 block text-xs sm:text-sm font-medium">Confirm Password</label>
+              <input
+                type="password"
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="input-tool text-sm sm:text-base"
+              />
+            </div>
           </div>
-          <div>
-            <label className="mb-2 block text-xs sm:text-sm font-medium">Confirm Password</label>
-            <input
-              type="password"
-              placeholder="Confirm password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="input-tool text-sm sm:text-base"
-            />
-          </div>
-        </div>
 
-        {/* Encryption Method */}
-        <div>
-          <label htmlFor="encryption-method" className="mb-2 block text-xs sm:text-sm font-medium">Encryption Method</label>
-          <select
-            id="encryption-method"
-            title="Encryption Method"
-            value={encryptionMethod}
-            onChange={(e) => setEncryptionMethod(e.target.value)}
-            className="input-tool text-sm sm:text-base"
-          >
-            <option value="aes256">AES-256 (Strongest)</option>
-            <option value="aes128">AES-128</option>
-            <option value="standard">Standard ZIP</option>
-          </select>
-        </div>
+          {/* Encryption Method */}
+          <div className="mt-4">
+            <label htmlFor="encryption-method" className="mb-2 block text-xs sm:text-sm font-medium">Encryption Method</label>
+            <select
+              id="encryption-method"
+              title="Encryption Method"
+              value={encryptionMethod}
+              onChange={(e) => setEncryptionMethod(e.target.value)}
+              className="input-tool text-sm sm:text-base"
+            >
+              <option value="aes256">AES-256 (Strongest)</option>
+              <option value="aes128">AES-128</option>
+              <option value="standard">Standard ZIP</option>
+            </select>
+          </div>
+        </motion.div>
 
         {/* Create Button */}
-        <button
+        <motion.button
           type="button"
           onClick={createPasswordZip}
           disabled={isProcessing || files.length === 0}
-          className="btn-primary w-full text-sm sm:text-base py-3 sm:py-4"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full rounded-xl py-3 sm:py-4 font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
+          style={{ background: `linear-gradient(135deg, hsl(${categoryColor}), hsl(${categoryColor} / 0.8))` }}
         >
           {isProcessing ? (
             <>
@@ -237,17 +292,23 @@ const PasswordZipTool = () => {
               Create Protected ZIP
             </>
           )}
-        </button>
+        </motion.button>
 
         {/* Download Section */}
         {zipData && (
-          <div ref={downloadSectionRef} className="space-y-4">
+          <motion.div
+            ref={downloadSectionRef}
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
+            className="space-y-4"
+          >
             <h3 className="text-lg font-medium text-center">Protected ZIP Created</h3>
-            <div className="rounded-xl border border-border bg-card overflow-hidden">
+            <div className="rounded-2xl border border-border bg-card/50 overflow-hidden shadow-lg" style={{ boxShadow: `0 4px 20px hsl(${categoryColor} / 0.1)` }}>
               <div className="p-6">
                 <div className="mb-4 flex justify-center">
-                  <div className="w-32 h-32 bg-muted/30 rounded-lg flex items-center justify-center">
-                    <FileText className="h-16 w-16 text-muted-foreground" />
+                  <div className="w-32 h-32 rounded-lg flex items-center justify-center" style={{ backgroundColor: `hsl(${categoryColor} / 0.1)` }}>
+                    <FileText className="h-16 w-16" style={{ color: `hsl(${categoryColor})` }} />
                   </div>
                 </div>
                 <div className="text-center mb-4">
@@ -269,27 +330,61 @@ const PasswordZipTool = () => {
                   })()}
                 />
                 
-                <button
+                <motion.button
                   type="button"
-                  onClick={reset} 
+                  onClick={reset}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 w-full mt-4"
                 >
                   <X className="h-5 w-5" />
                   Create Another
-                </button>
+                </motion.button>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Security Note */}
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4"
+        >
           <h4 className="font-semibold text-amber-600 dark:text-amber-400">Security Note</h4>
           <p className="mt-1 text-sm text-muted-foreground">
             Your password is only used to encrypt the ZIP file and is never stored or transmitted to our servers.
             Keep your password safe as it cannot be recovered.
           </p>
-        </div>
+        </motion.div>
+
+        {/* Tips Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="rounded-2xl border border-border bg-card/50 p-6"
+        >
+          <h3 className="mb-4 flex items-center gap-2 font-semibold">
+            <Sparkles className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+            Tips
+          </h3>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li className="flex items-start gap-2">
+              <Settings className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
+              Use AES-256 for maximum security
+            </li>
+            <li className="flex items-start gap-2">
+              <Settings className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
+              Choose a strong password with at least 6 characters
+            </li>
+            <li className="flex items-start gap-2">
+              <Settings className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
+              Your files never leave your device unencrypted
+            </li>
+          </ul>
+        </motion.div>
       </div>
     </ToolLayout>
   );

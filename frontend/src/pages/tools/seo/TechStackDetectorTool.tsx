@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Search, Download, Globe, Code, Database, Server, Palette, Sparkles } from "lucide-react";
+import { Copy, Check, Search, Download, Globe, Code, Database, Server, Palette, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -176,23 +176,55 @@ const TechStackDetectorTool = () => {
       categoryPath="/category/seo"
     >
       <div className="mx-auto max-w-4xl space-y-6">
-        {/* Header Info */}
-        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-              <Code className="h-6 w-6 text-primary" />
-            </div>
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Code className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">Tech Stack Detector</h3>
-              <p className="text-sm text-muted-foreground">
-                Analyze websites to discover the technology stack and tools
+              <h2 className="text-2xl font-bold">Tech Stack Detector</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Analyze websites to discover the technology stack and tools.
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Input Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Website URL</label>
@@ -208,11 +240,16 @@ const TechStackDetectorTool = () => {
               </p>
             </div>
 
-            <button
+            <motion.button
               type="button"
               onClick={detectTechStack}
               disabled={isScanning || !url.trim()}
-              className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full rounded-lg px-4 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-white"
+              style={{
+                background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+              }}
             >
               {isScanning ? (
                 <>
@@ -225,13 +262,18 @@ const TechStackDetectorTool = () => {
                   Detect Tech Stack
                 </>
               )}
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Results */}
         {techStack && (
-          <div className="space-y-6">
+          <motion.div 
+            variants={scaleIn}
+            initial="hidden"
+            animate="visible"
+            className="space-y-6"
+          >
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">Technology Stack Analysis</h3>
               <div className="flex gap-2">
@@ -257,7 +299,11 @@ const TechStackDetectorTool = () => {
             </div>
 
             {/* Summary */}
-            <div className="rounded-xl border border-border bg-card p-6">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+            >
               <div className="flex items-center gap-3 mb-4">
                 <Globe className="h-5 w-5 text-primary" />
                 <h4 className="font-semibold">{techStack.url}</h4>
@@ -319,12 +365,18 @@ const TechStackDetectorTool = () => {
                   </div>
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {/* Detailed Breakdown */}
             {techCategories.length > 0 ? (
-              techCategories.map(([category, technologies]) => (
-                <div key={category} className="rounded-xl border border-border bg-card p-6">
+              techCategories.map(([category, technologies], index) => (
+                <motion.div 
+                  key={category} 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+                >
                   <div className="flex items-center gap-2 mb-4">
                     {getTechIcon(category)}
                     <h4 className="font-semibold capitalize">{category}</h4>
@@ -358,20 +410,25 @@ const TechStackDetectorTool = () => {
                       );
                     })}
                   </div>
-                </div>
+                </motion.div>
               ))
             ) : (
               <div className="rounded-xl border border-dashed border-border bg-card p-6 text-sm text-muted-foreground">
                 No detected technologies were returned for this website.
               </div>
             )}
-          </div>
+          </motion.div>
         )}
 
         {/* Tips */}
-        <div className="rounded-xl border border-border bg-muted/30 p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-muted/30 p-6 shadow-lg"
+        >
           <h4 className="font-semibold mb-4 flex items-center gap-2">
-            <Code className="h-5 w-5" />
+            <Code className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             Enhanced Tech Stack Analysis
           </h4>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -414,7 +471,7 @@ const TechStackDetectorTool = () => {
               </div>
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, QrCode, AlertTriangle, Shield, CheckCircle, XCircle, Sparkles } from 'lucide-react';
+import { Copy, Check, QrCode, AlertTriangle, Shield, CheckCircle, XCircle, Sparkles, Settings } from 'lucide-react';
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";

@@ -85,7 +85,7 @@ const EXIFViewerTool = () => {
     setFileName("");
   };
 
-  const InfoCard = ({ icon: Icon, title, children }: { icon: any; title: string; children: React.ReactNode }) => (
+  const InfoCard = ({ icon: Icon, title, children }: { icon: React.ComponentType<{ className?: string }>; title: string; children: React.ReactNode }) => (
     <div className="rounded-xl border border-border bg-card p-5">
       <div className="mb-3 flex items-center gap-2 text-primary">
         <Icon className="h-5 w-5" />

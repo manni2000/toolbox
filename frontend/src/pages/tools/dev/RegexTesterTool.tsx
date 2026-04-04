@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Code, AlertCircle, CheckCircle, Sparkles } from "lucide-react";
+import { Copy, Check, Code, AlertCircle, CheckCircle, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -91,8 +91,55 @@ const RegexTesterTool = () => {
       categoryPath="/category/dev"
     >
       <div className="space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Code className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Regex Tester</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Test regular expressions with live matching and highlight results
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Pattern Input */}
-        <div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="mb-2 flex items-center justify-between">
             <label htmlFor="regex-pattern" className="text-sm font-medium">Regular Expression</label>
             <button
@@ -137,10 +184,15 @@ const RegexTesterTool = () => {
               className="input-tool w-16 font-mono text-center"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Flags */}
-        <div className="flex flex-wrap gap-2">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="flex flex-wrap gap-2"
+        >
           {flagOptions.map((opt) => (
             <button
               key={opt.value}
@@ -154,24 +206,37 @@ const RegexTesterTool = () => {
               {opt.label}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Status */}
         {error && (
-          <div className="flex items-center gap-2 rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex items-center gap-2 rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive"
+          >
             <AlertCircle className="h-5 w-5" />
             <span>{error}</span>
-          </div>
+          </motion.div>
         )}
         {pattern && !error && (
-          <div className="flex items-center gap-2 rounded-lg bg-accent px-4 py-3 text-sm text-accent-foreground">
-            <CheckCircle className="h-5 w-5" />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex items-center gap-2 rounded-lg bg-accent px-4 py-3 text-sm text-accent-foreground"
+          >
+            <CheckCircle className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             <span>{matches.length} match{matches.length !== 1 ? "es" : ""} found</span>
-          </div>
+          </motion.div>
         )}
 
         {/* Test String */}
-        <div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <label className="mb-2 block text-sm font-medium">Test String</label>
           <textarea
             value={testString}
@@ -179,26 +244,36 @@ const RegexTesterTool = () => {
             placeholder="Enter text to test against..."
             className="input-tool min-h-[150px] font-mono text-sm"
           />
-        </div>
+        </motion.div>
 
         {/* Highlighted Result */}
         {testString && pattern && !error && (
-          <div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <label className="mb-2 block text-sm font-medium">Highlighted Matches</label>
             <div
-              className="rounded-lg border border-border bg-card p-4 font-mono text-sm whitespace-pre-wrap"
+              className="rounded-lg border border-border bg-muted/50 p-4 font-mono text-sm whitespace-pre-wrap"
               dangerouslySetInnerHTML={{ __html: getHighlightedText() }}
             />
-          </div>
+          </motion.div>
         )}
 
         {/* Match Details */}
         {matches.length > 0 && (
-          <div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <label className="mb-2 block text-sm font-medium">Match Details</label>
             <div className="space-y-2">
               {matches.map((m, i) => (
-                <div key={i} className="rounded-lg border border-border bg-card p-3 font-mono text-sm">
+                <div key={i} className="rounded-lg border border-border bg-muted/50 p-3 font-mono text-sm">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Match {i + 1}:</span>
                     <span className="text-xs text-muted-foreground">Index: {m.index}</span>
@@ -212,7 +287,7 @@ const RegexTesterTool = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </ToolLayout>

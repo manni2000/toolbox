@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Shield, Check, X, AlertTriangle, Sparkles } from "lucide-react";
+import { Shield, Check, X, AlertTriangle, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -78,8 +78,55 @@ const PasswordStrengthTool = () => {
       categoryPath="/category/security"
     >
       <div className="mx-auto max-w-xl space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Shield className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Password Strength Checker</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Analyze how strong your password is with detailed security checks
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Input */}
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <label className="mb-2 block text-sm font-medium">Enter Password</label>
           <input
             type="text"
@@ -88,12 +135,17 @@ const PasswordStrengthTool = () => {
             placeholder="Enter password to analyze..."
             className="input-tool font-mono"
           />
-        </div>
+        </motion.div>
 
         {result && (
-          <div className="space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-6"
+          >
             {/* Strength Meter */}
-            <div className="rounded-xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500">
               <div className="text-center">
                 <Shield className={`mx-auto h-16 w-16 ${result.strength.color}`} />
                 <h3 className={`mt-4 text-2xl font-bold ${result.strength.color}`}>
@@ -114,7 +166,7 @@ const PasswordStrengthTool = () => {
             </div>
 
             {/* Checks */}
-            <div className="space-y-2">
+            <div className="space-y-2 rounded-xl border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500">
               <h4 className="text-sm font-semibold text-muted-foreground">Security Checks</h4>
               <CheckItem passed={result.checks.length8} label="At least 8 characters" />
               <CheckItem passed={result.checks.length12} label="At least 12 characters" />
@@ -126,16 +178,21 @@ const PasswordStrengthTool = () => {
               <CheckItem passed={result.checks.noSequential} label="No sequential patterns (123, abc)" />
               <CheckItem passed={result.checks.noCommon} label="Not a common password" />
             </div>
-          </div>
+          </motion.div>
         )}
 
         {!password && (
-          <div className="rounded-lg border border-dashed border-border bg-muted/30 p-8 text-center">
-            <Shield className="mx-auto h-12 w-12 text-muted-foreground" />
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-lg border border-dashed border-border bg-muted/30 p-8 text-center"
+          >
+            <Shield className="mx-auto h-12 w-12" style={{ color: `hsl(${categoryColor} / 0.5)` }} />
             <p className="mt-4 text-muted-foreground">
               Enter a password above to check its strength
             </p>
-          </div>
+          </motion.div>
         )}
       </div>
     </ToolLayout>

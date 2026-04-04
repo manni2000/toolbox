@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Palette, Sparkles } from "lucide-react";
+import { Copy, Check, Palette, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -108,14 +108,64 @@ const ColorConverterTool = () => {
       categoryPath="/category/text"
     >
       <div className="mx-auto max-w-xl space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Palette className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Color Converter</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Convert between HEX, RGB, and HSL color formats with live preview
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Color Preview */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
           className="h-32 w-full rounded-xl border border-border shadow-lg"
           style={{ backgroundColor: hex }}
         />
 
         {/* Color Picker */}
-        <div className="flex justify-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="flex justify-center"
+        >
           <input
             type="color"
             value={hex}
@@ -124,10 +174,15 @@ const ColorConverterTool = () => {
             title="Choose color"
             className="h-14 w-32 cursor-pointer rounded-lg border border-border"
           />
-        </div>
+        </motion.div>
 
         {/* HEX */}
-        <div className="rounded-lg border border-border bg-card p-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-lg border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="flex items-center justify-between">
             <label htmlFor="hex-input" className="text-sm font-medium">HEX</label>
             <button
@@ -144,10 +199,15 @@ const ColorConverterTool = () => {
             onChange={(e) => updateFromHex(e.target.value)}
             className="mt-2 w-full rounded-lg bg-muted px-4 py-3 font-mono uppercase"
           />
-        </div>
+        </motion.div>
 
         {/* RGB */}
-        <div className="rounded-lg border border-border bg-card p-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="rounded-lg border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium">RGB</label>
             <button
@@ -198,10 +258,15 @@ const ColorConverterTool = () => {
           <p className="mt-2 text-center font-mono text-sm text-muted-foreground">
             rgb({rgb.r}, {rgb.g}, {rgb.b})
           </p>
-        </div>
+        </motion.div>
 
         {/* HSL */}
-        <div className="rounded-lg border border-border bg-card p-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-lg border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium">HSL</label>
             <button
@@ -252,7 +317,7 @@ const ColorConverterTool = () => {
           <p className="mt-2 text-center font-mono text-sm text-muted-foreground">
             hsl({hsl.h}, {hsl.s}%, {hsl.l}%)
           </p>
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

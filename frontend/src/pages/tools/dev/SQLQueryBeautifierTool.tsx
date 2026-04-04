@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Download, Database, RefreshCw, FileText, AlertCircle, Code, Sparkles } from "lucide-react";
+import { Copy, Check, Download, Database, RefreshCw, FileText, AlertCircle, Code, Sparkles, Settings, Lightbulb } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -148,23 +148,55 @@ const SQLQueryBeautifierTool = () => {
       categoryPath="/category/dev"
     >
       <div className="mx-auto max-w-4xl space-y-6">
-        {/* Header Info */}
-        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-              <Database className="h-6 w-6 text-primary" />
-            </div>
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Database className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">SQL Query Beautifier</h3>
-              <p className="text-sm text-muted-foreground">
-                Format and beautify SQL queries for better readability
+              <h2 className="text-2xl font-bold">SQL Query Beautifier</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Format and beautify SQL queries with customizable indentation and keyword formatting
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Input Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">SQL Query</label>
@@ -181,14 +213,19 @@ const SQLQueryBeautifierTool = () => {
             </div>
 
             <div className="flex gap-3">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={beautifySQL}
                 disabled={!sqlInput.trim()}
-                className="flex-1 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                }}
               >
                 <RefreshCw className="inline h-4 w-4 mr-2" />
                 Beautify SQL
-              </button>
+              </motion.button>
               <button
                 onClick={loadExample}
                 className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 transition-colors"
@@ -197,10 +234,15 @@ const SQLQueryBeautifierTool = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Formatting Options */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -235,14 +277,19 @@ const SQLQueryBeautifierTool = () => {
             </div>
 
             <div className="flex gap-3">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={beautifySQL}
                 disabled={!sqlInput.trim()}
-                className="rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                }}
               >
                 <RefreshCw className="inline h-4 w-4 mr-2" />
                 Reformat
-              </button>
+              </motion.button>
               <button
                 onClick={minifySQL}
                 disabled={!formattedSQL.trim()}
@@ -252,11 +299,16 @@ const SQLQueryBeautifierTool = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Formatted Output */}
         {formattedSQL && (
-          <div className="rounded-xl border border-border bg-card p-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Formatted SQL</h3>
               <div className="flex gap-2">
@@ -286,13 +338,18 @@ const SQLQueryBeautifierTool = () => {
                 {formattedSQL}
               </pre>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Tips */}
-        <div className="rounded-xl border border-border bg-muted/30 p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="rounded-xl border border-border bg-muted/30 p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <h4 className="font-semibold mb-4 flex items-center gap-2">
-            <AlertCircle className="h-5 w-5" />
+            <Lightbulb className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             SQL Formatting Tips
           </h4>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -315,7 +372,7 @@ const SQLQueryBeautifierTool = () => {
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

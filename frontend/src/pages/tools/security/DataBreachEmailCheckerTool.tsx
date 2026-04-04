@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, Mail, AlertTriangle, Shield, CheckCircle, Calendar, Sparkles } from 'lucide-react';
+import { Copy, Check, Mail, AlertTriangle, Shield, CheckCircle, Calendar, Sparkles, Settings } from 'lucide-react';
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -78,8 +78,55 @@ export default function DataBreachEmailCheckerTool() {
       categoryPath="/category/security"
     >
       <div className="mx-auto max-w-4xl space-y-8">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Shield className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Data Breach Email Checker</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Check if your email has been exposed in known data breaches
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Input Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <h3 className="text-lg font-semibold mb-4">Email Analysis</h3>
           <div className="space-y-4">
             <div className="space-y-2">
@@ -94,20 +141,30 @@ export default function DataBreachEmailCheckerTool() {
               <p className="text-xs text-muted-foreground">Enter the email address to check for breaches</p>
             </div>
 
-            <button
+            <motion.button
               onClick={checkBreaches} 
               disabled={!email.trim() || !email.includes('@') || loading}
-              className="btn-primary w-full flex items-center justify-center gap-2"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="btn-primary w-full flex items-center justify-center gap-2 text-white"
+              style={{
+                background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+              }}
             >
               <Shield className="h-4 w-4" />
               {loading ? 'Checking...' : 'Check Breaches'}
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Results Section */}
         {result && (
-          <div className="space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-6"
+          >
             {/* Breach Summary */}
             <div className={`rounded-xl border p-6 ${getBreachSeverity(result.breaches_found).color}`}>
               <div className="flex items-center justify-between">
@@ -148,7 +205,7 @@ export default function DataBreachEmailCheckerTool() {
 
             {/* Breach Details */}
             {result.breaches.length > 0 && (
-              <div className="rounded-xl border border-border bg-card p-6">
+              <div className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500">
                 <h3 className="text-lg font-semibold mb-4">Breach Details</h3>
                 <div className="space-y-3">
                   {result.breaches.map((breach, index) => (
@@ -176,22 +233,27 @@ export default function DataBreachEmailCheckerTool() {
             )}
 
             {/* Recommendations */}
-            <div className="rounded-xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500">
               <h3 className="text-lg font-semibold mb-4">Security Recommendations</h3>
               <div className="space-y-2">
                 {result.recommendations.map((rec, index) => (
                   <div key={index} className="flex items-start gap-3 p-3 bg-muted rounded-lg">
-                    <Shield className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <Shield className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
                     <p className="text-sm">{rec}</p>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Information Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <h3 className="text-lg font-semibold mb-4">Data Breach Guide</h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
@@ -229,13 +291,13 @@ export default function DataBreachEmailCheckerTool() {
           </div>
 
           <div className="mt-4 flex items-start gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-            <Shield className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+            <Shield className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
             <div className="text-sm">
               <strong>Note:</strong> This tool checks against known breach databases. 
               Always take immediate action if your email appears in any breach, even if it's old.
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

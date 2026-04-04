@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Palette, RefreshCw, Download, Sparkles, Eye, Droplets, Zap, Sun, Moon, Flower, Mountain } from "lucide-react";
+import { Copy, Check, Palette, RefreshCw, Download, Sparkles, Eye, Droplets, Zap, Sun, Moon, Flower, Mountain, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -102,7 +102,7 @@ const ColorPalettesTool = () => {
     const colors: Color[] = [];
 
     switch (paletteType) {
-      case "monochromatic":
+      case "monochromatic": {
         const lightnessValues = Array.from({ length: colorCount }, (_, i) => 
           90 - (i * (70 / (colorCount - 1)))
         );
@@ -111,8 +111,9 @@ const ColorPalettesTool = () => {
           colors.push(createColor(rgbToHex(rgb.r, rgb.g, rgb.b)));
         });
         break;
+      }
 
-      case "analogous":
+      case "analogous": {
         const hueStep = 30 / (colorCount - 1);
         for (let i = 0; i < colorCount; i++) {
           let hue = baseHsl.h - 15 + (i * hueStep * 2);
@@ -122,8 +123,9 @@ const ColorPalettesTool = () => {
           colors.push(createColor(rgbToHex(rgb.r, rgb.g, rgb.b)));
         }
         break;
+      }
 
-      case "complementary":
+      case "complementary": {
         colors.push(createColor(baseColor));
         
         let complementHue = baseHsl.h + 180;
@@ -141,8 +143,9 @@ const ColorPalettesTool = () => {
           if (colors.length < colorCount) colors.push(createColor(rgbToHex(darkerRgb.r, darkerRgb.g, darkerRgb.b)));
         }
         break;
+      }
 
-      case "triadic":
+      case "triadic": {
         const triadicHues = [0, 120, 240];
         triadicHues.forEach(offset => {
           let hue = baseHsl.h + offset;
@@ -163,8 +166,9 @@ const ColorPalettesTool = () => {
           });
         }
         break;
+      }
 
-      case "tetradic":
+      case "tetradic": {
         const tetradicHues = [0, 90, 180, 270];
         tetradicHues.forEach(offset => {
           let hue = baseHsl.h + offset;
@@ -174,8 +178,9 @@ const ColorPalettesTool = () => {
           colors.push(createColor(rgbToHex(rgb.r, rgb.g, rgb.b)));
         });
         break;
+      }
 
-      case "split-complementary":
+      case "split-complementary": {
         colors.push(createColor(baseColor));
         
         let splitComplementHue = baseHsl.h + 180;
@@ -197,6 +202,7 @@ const ColorPalettesTool = () => {
           if (colors.length < colorCount) colors.push(createColor(rgbToHex(lighterRgb.r, lighterRgb.g, lighterRgb.b)));
         }
         break;
+      }
     }
 
     setGeneratedPalette(colors);
@@ -512,23 +518,55 @@ const ColorPalettesTool = () => {
       categoryPath="/category/dev"
     >
       <div className="mx-auto max-w-6xl space-y-8">
-        {/* Header Info */}
-        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-              <Palette className="h-6 w-6 text-primary" />
-            </div>
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Palette className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">Professional Color Palettes</h3>
-              <p className="text-sm text-muted-foreground">
-                Generate harmonious color combinations using color theory principles
+              <h2 className="text-2xl font-bold">Color Palettes Generator</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Generate beautiful color palettes using professional color theory principles
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Color Input */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center gap-2">
               <Droplets className="h-5 w-5 text-primary" />
@@ -561,13 +599,18 @@ const ColorPalettesTool = () => {
               {copied === "base" ? <Check className="h-5 w-5 text-primary" /> : <Copy className="h-5 w-5" />}
             </button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Palette Generation Options */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
+              <Sparkles className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
               <label className="font-medium">Generate Palette</label>
             </div>
             <div className="flex items-center gap-2">
@@ -654,13 +697,18 @@ const ColorPalettesTool = () => {
               Split Complementary
             </button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Preset Palettes */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Eye className="h-5 w-5 text-primary" />
+              <Eye className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
               <label className="font-medium">Professional Presets</label>
             </div>
             <div className="text-sm text-muted-foreground">
@@ -697,11 +745,16 @@ const ColorPalettesTool = () => {
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Generated Palette Display */}
         {displayColors.length > 0 && (
-          <div className="rounded-xl border border-border bg-card p-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="font-semibold text-lg">
@@ -711,13 +764,18 @@ const ColorPalettesTool = () => {
                   <p className="text-sm text-muted-foreground mt-1">{selectedPalette.description}</p>
                 )}
               </div>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={exportPalette}
-                className="flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90"
+                className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white"
+                style={{
+                  background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                }}
               >
                 <Download className="h-4 w-4" />
                 Export JSON
-              </button>
+              </motion.button>
             </div>
             
             <div className="space-y-4">
@@ -759,7 +817,7 @@ const ColorPalettesTool = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </ToolLayout>

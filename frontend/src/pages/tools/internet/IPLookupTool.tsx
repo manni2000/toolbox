@@ -7,6 +7,7 @@ import {
   Loader2,
   Search,
   Sparkles,
+  Settings,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
@@ -107,10 +108,46 @@ const IPLookupTool = () => {
     >
       <div className="space-y-6">
 
+        {/* Animated Hero Header */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.15)`, boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)` }}
+            >
+              <Globe className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">IP Address Lookup</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Find geographic location, ISP, and other information for any IP address.</p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Your IP */}
-        <div className="rounded-xl border border-primary bg-primary/10 p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          style={{ borderColor: `hsl(${categoryColor} / 0.3)`, backgroundColor: `hsl(${categoryColor} / 0.1)` }}
+        >
           <div className="flex items-center gap-3">
-            <Wifi className="h-6 w-6 text-primary" />
+            <Wifi className="h-6 w-6" style={{ color: `hsl(${categoryColor})` }} />
             <div>
               <p className="text-sm text-muted-foreground">
                 Your IP Address
@@ -120,13 +157,18 @@ const IPLookupTool = () => {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Input Section */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
 
           <div className="flex items-center gap-2 mb-4">
-            <Globe className="h-5 w-5 text-primary" />
+            <Globe className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             <h3 className="text-base font-semibold">
               IP Address Lookup
             </h3>
@@ -156,10 +198,13 @@ const IPLookupTool = () => {
               Use My IP
             </button>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={handleLookup}
               disabled={loading}
-              className="btn-primary flex items-center gap-2"
+              style={{ background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)` }}
+              className="flex items-center gap-2 rounded-lg py-3 px-4 font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               {loading ? (
                 <>
@@ -172,7 +217,7 @@ const IPLookupTool = () => {
                   Lookup
                 </>
               )}
-            </button>
+            </motion.button>
 
           </div>
 
@@ -197,11 +242,16 @@ const IPLookupTool = () => {
 
           </div>
 
-        </div>
+        </motion.div>
 
         {/* Results */}
         {result && (
-          <div className="space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-4"
+          >
 
             <h3 className="text-lg font-semibold">
               Lookup Results
@@ -210,39 +260,39 @@ const IPLookupTool = () => {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
               <ResultCard
-                icon={<MapPin className="h-5 w-5 text-primary" />}
+                icon={<MapPin className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />}
                 title="Location"
                 value={`${result.city}, ${result.region}`}
                 sub={result.country}
               />
 
               <ResultCard
-                icon={<Server className="h-5 w-5 text-primary" />}
+                icon={<Server className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />}
                 title="ISP"
                 value={result.isp}
               />
 
               <ResultCard
-                icon={<Globe className="h-5 w-5 text-primary" />}
+                icon={<Globe className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />}
                 title="Country"
                 value={`${result.country} (${result.countryCode})`}
               />
 
               <ResultCard
-                icon={<Wifi className="h-5 w-5 text-primary" />}
+                icon={<Wifi className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />}
                 title="IP Address"
                 value={result.ip}
                 mono
               />
 
               <ResultCard
-                icon={<Globe className="h-5 w-5 text-primary" />}
+                icon={<Globe className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />}
                 title="Timezone"
                 value={result.timezone}
               />
 
               <ResultCard
-                icon={<Server className="h-5 w-5 text-primary" />}
+                icon={<Server className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />}
                 title="Organization"
                 value={result.org}
               />
@@ -260,14 +310,20 @@ const IPLookupTool = () => {
               </div>
             )}
 
-          </div>
+          </motion.div>
         )}
 
         {/* Empty State */}
         {!result && (
-          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
+            <Settings className="h-5 w-5 mx-auto mb-2" style={{ color: `hsl(${categoryColor})` }} />
             Enter an IP address above to view location and network details.
-          </div>
+          </motion.div>
         )}
 
       </div>
@@ -288,7 +344,11 @@ const ResultCard = ({
   sub?: string;
   mono?: boolean;
 }) => (
-  <div className="rounded-xl border border-border bg-card p-5">
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="rounded-xl border border-border bg-card p-5 shadow-lg hover:shadow-xl transition-shadow duration-500"
+  >
     <div className="mb-2">{icon}</div>
     <p className="text-sm text-muted-foreground">{title}</p>
     <p className={`font-medium ${mono ? "font-mono" : ""}`}>
@@ -297,7 +357,7 @@ const ResultCard = ({
     {sub && (
       <p className="text-sm text-muted-foreground">{sub}</p>
     )}
-  </div>
+  </motion.div>
 );
 
 export default IPLookupTool;

@@ -15,6 +15,40 @@ import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 
 const categoryColor = "290 80% 55%";
 
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+  message?: string;
+}
+
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  abort(): void;
+  onstart: (() => void) | null;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+  onend: (() => void) | null;
+}
+
+interface SpeechRecognitionConstructor {
+  new(): SpeechRecognition;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: SpeechRecognitionConstructor;
+    webkitSpeechRecognition: SpeechRecognitionConstructor;
+  }
+}
+
 const SpeechToTextTool = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [transcription, setTranscription] = useState("");
@@ -26,7 +60,7 @@ const SpeechToTextTool = () => {
   const [srtUrl, setSrtUrl] = useState<string | null>(null);
   const [supportsRecording, setSupportsRecording] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const { toast } = useToast();
 
   const languages = [
@@ -47,7 +81,7 @@ const SpeechToTextTool = () => {
 
   useEffect(() => {
     // Check for Web Speech API support
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     setSupportsRecording(!!SpeechRecognition);
   }, []);
 
@@ -87,7 +121,7 @@ const SpeechToTextTool = () => {
   };
 
   const startRecording = () => {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
     if (!SpeechRecognition) {
       toast({
@@ -111,7 +145,7 @@ const SpeechToTextTool = () => {
       });
     };
 
-    recognition.onresult = (event: any) => {
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
       let interimTranscript = '';
       let finalTranscript = '';
 
@@ -129,12 +163,12 @@ const SpeechToTextTool = () => {
       }
     };
 
-    recognition.onerror = (event: any) => {
-      console.error('Speech recognition error:', event.error);
+    recognition.onerror = (error: SpeechRecognitionErrorEvent) => {
+      console.error('Speech recognition error:', error.error);
       setIsRecording(false);
       toast({
         title: "Error",
-        description: `Recognition error: ${event.error}`,
+        description: `Recognition error: ${error.error}`,
         variant: "destructive",
       });
     };

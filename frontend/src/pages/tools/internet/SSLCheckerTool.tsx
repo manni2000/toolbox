@@ -4,7 +4,8 @@ import {
   Lock,
   Loader2,
   Search,
-  Sparkles
+  Sparkles,
+  Settings
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
@@ -105,12 +106,47 @@ const SSLCheckerTool = () => {
     >
       <div className="space-y-6">
 
+        {/* Animated Hero Header */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.15)`, boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)` }}
+            >
+              <Shield className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">SSL Certificate Checker</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Verify SSL certificate validity, issuer, and expiry date for any domain.</p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Input Section */}
 
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
 
           <div className="flex items-center gap-2 mb-4">
-            <Lock className="h-5 w-5 text-primary" />
+            <Lock className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             <h3 className="text-base font-semibold">
               SSL Certificate Check
             </h3>
@@ -135,10 +171,13 @@ const SSLCheckerTool = () => {
 
             </div>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={handleCheck}
               disabled={loading}
-              className="btn-primary flex items-center gap-2"
+              style={{ background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)` }}
+              className="flex items-center gap-2 rounded-lg py-3 px-4 font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
 
               {loading ? (
@@ -153,7 +192,7 @@ const SSLCheckerTool = () => {
                 </>
               )}
 
-            </button>
+            </motion.button>
 
           </div>
 
@@ -181,18 +220,25 @@ const SSLCheckerTool = () => {
 
           </div>
 
-        </div>
+        </motion.div>
 
         {/* Results */}
 
         {result && (
 
-          <div className="space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-4"
+          >
 
             {/* Certificate Status */}
 
-            <div
-              className={`rounded-xl border p-6 ${
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className={`rounded-xl border p-6 shadow-lg hover:shadow-xl transition-shadow duration-500 ${
                 result.valid
                   ? "border-green-500/30 bg-green-500/10"
                   : "border-red-500/30 bg-red-500/10"
@@ -231,7 +277,7 @@ const SSLCheckerTool = () => {
 
               </div>
 
-            </div>
+            </motion.div>
 
             {/* Details Grid */}
 
@@ -290,7 +336,7 @@ const SSLCheckerTool = () => {
               </div>
             )}
 
-          </div>
+          </motion.div>
 
         )}
 
@@ -298,9 +344,15 @@ const SSLCheckerTool = () => {
 
         {!result && (
 
-          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
+            <Settings className="h-5 w-5 mx-auto mb-2" style={{ color: `hsl(${categoryColor})` }} />
             Enter a domain above to check SSL certificate details.
-          </div>
+          </motion.div>
 
         )}
 
@@ -322,7 +374,11 @@ const ResultCard = ({
   small?: boolean;
 }) => (
 
-  <div className="rounded-xl border border-border bg-card p-5">
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="rounded-xl border border-border bg-card p-5 shadow-lg hover:shadow-xl transition-shadow duration-500"
+  >
 
     <p className="text-sm text-muted-foreground">
       {title}
@@ -336,7 +392,7 @@ const ResultCard = ({
       {value}
     </p>
 
-  </div>
+  </motion.div>
 
 );
 

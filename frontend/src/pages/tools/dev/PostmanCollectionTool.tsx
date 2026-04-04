@@ -1,10 +1,17 @@
 import { useState } from "react";
-import { Copy, Check, Download, FileText, Plus, Trash2, AlertCircle, Code, Send, Sparkles } from "lucide-react";
+import { Copy, Check, Download, FileText, Plus, Trash2, AlertCircle, Code, Send, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 
 const categoryColor = "210 80% 55%";
+
+interface PostmanRequestBody {
+  mode: 'raw' | 'formdata' | 'urlencoded';
+  raw?: string;
+  formdata?: Array<{ key: string; value: string; type: string; }>;
+  urlencoded?: Array<{ key: string; value: string; }>;
+}
 
 interface PostmanRequest {
   id: string;
@@ -12,14 +19,32 @@ interface PostmanRequest {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
   url: string;
   headers: { [key: string]: string };
-  body?: {
-    mode: 'raw' | 'formdata' | 'urlencoded';
-    raw?: string;
-    formdata?: Array<{ key: string; value: string; type: string; }>;
-    urlencoded?: Array<{ key: string; value: string; }>;
-  };
+  body?: PostmanRequestBody;
   description?: string;
   tests?: string;
+}
+
+interface PostmanCollectionItem {
+  name: string;
+  request: {
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
+    header: Array<{ key: string; value: string; type: string; }>;
+    url: {
+      raw: string;
+      host: string;
+      path: string[];
+      protocol: string;
+    };
+    body?: PostmanRequestBody;
+    description?: string;
+  };
+  response: never[];
+  event?: Array<{
+    listen: 'test';
+    script: {
+      exec: string[];
+    };
+  }>;
 }
 
 interface PostmanCollection {
@@ -28,7 +53,7 @@ interface PostmanCollection {
     description?: string;
     schema: string;
   };
-  item: PostmanRequest[];
+  item: PostmanCollectionItem[];
 }
 
 const PostmanCollectionTool = () => {
@@ -70,7 +95,7 @@ const PostmanCollectionTool = () => {
     setRequests(requests.filter(r => r.id !== id));
   };
 
-  const updateRequest = (id: string, field: keyof PostmanRequest, value: any) => {
+  const updateRequest = (id: string, field: keyof PostmanRequest, value: string | PostmanRequestBody | undefined) => {
     setRequests(requests.map(r => 
       r.id === id ? { ...r, [field]: value } : r
     ));
@@ -143,7 +168,7 @@ const PostmanCollectionTool = () => {
             exec: request.tests.split('\n')
           }
         }] : []
-      })) as any
+      }))
     };
 
     setGeneratedCollection(JSON.stringify(collection, null, 2));
@@ -255,23 +280,55 @@ const PostmanCollectionTool = () => {
       categoryPath="/category/dev"
     >
       <div className="mx-auto max-w-4xl space-y-6">
-        {/* Header Info */}
-        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-              <Send className="h-6 w-6 text-primary" />
-            </div>
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Send className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">Postman Collection Generator</h3>
-              <p className="text-sm text-muted-foreground">
+              <h2 className="text-2xl font-bold">Postman Collection Generator</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
                 Create Postman collections for API testing and documentation
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Collection Info */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Collection Name</label>
@@ -294,7 +351,7 @@ const PostmanCollectionTool = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Requests */}
         <div className="space-y-4">
@@ -308,19 +365,30 @@ const PostmanCollectionTool = () => {
               >
                 Load Example
               </button>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 type="button"
                 onClick={addRequest}
-                className="flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90"
+                className="flex items-center gap-2 rounded-lg text-white px-4 py-2 text-sm font-medium"
+                style={{
+                  background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                }}
               >
                 <Plus className="h-4 w-4" />
                 Add Request
-              </button>
+              </motion.button>
             </div>
           </div>
 
-          {requests.map((request) => (
-            <div key={request.id} className="rounded-xl border border-border bg-card p-6">
+          {requests.map((request, index) => (
+            <motion.div 
+              key={request.id} 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + index * 0.05 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <span className={`px-3 py-1 rounded text-xs font-medium ${getMethodColor(request.method)}`}>
@@ -445,23 +513,33 @@ const PostmanCollectionTool = () => {
                   />
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Generate Button */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           type="button"
           onClick={generateCollection}
-          className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
+          className="w-full rounded-lg text-white px-4 py-3 font-medium transition-colors"
+          style={{
+            background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+          }}
         >
           <Code className="inline h-4 w-4 mr-2" />
           Generate Collection
-        </button>
+        </motion.button>
 
         {/* Generated Collection */}
         {generatedCollection && (
-          <div className="rounded-xl border border-border bg-card p-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Generated Collection</h3>
               <div className="flex gap-2">
@@ -489,13 +567,18 @@ const PostmanCollectionTool = () => {
                 {generatedCollection}
               </pre>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Tips */}
-        <div className="rounded-xl border border-border bg-muted/30 p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="rounded-xl border border-border bg-muted/30 p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <h4 className="font-semibold mb-4 flex items-center gap-2">
-            <AlertCircle className="h-5 w-5" />
+            <AlertCircle className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             Postman Collection Tips
           </h4>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -518,7 +601,7 @@ const PostmanCollectionTool = () => {
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

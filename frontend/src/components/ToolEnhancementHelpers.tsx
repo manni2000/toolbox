@@ -98,8 +98,7 @@ export const EnhancedButton: React.FC<{
   disabled?: boolean;
   variant?: "primary" | "outline";
   className?: string;
-  [key: string]: any;
-}> = ({ 
+} & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ 
   children, 
   onClick, 
   categoryColor, 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Link, Unlink, Sparkles } from "lucide-react";
+import { Copy, Check, Link, Unlink, Sparkles, Settings, Lightbulb } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -49,8 +49,55 @@ const URLEncoderTool = () => {
       categoryPath="/category/dev"
     >
       <div className="mx-auto max-w-2xl space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Link className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">URL Encoder/Decoder</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Encode or decode URLs and query parameters for web development
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Mode Toggle */}
-        <div className="flex justify-center gap-2">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex justify-center gap-2"
+        >
           <button
             onClick={() => { setMode("encode"); setOutput(""); setError(""); }}
             className={`flex items-center gap-2 rounded-lg px-6 py-3 font-medium transition-all ${
@@ -73,10 +120,15 @@ const URLEncoderTool = () => {
             <Unlink className="h-4 w-4" />
             Decode
           </button>
-        </div>
+        </motion.div>
 
         {/* Input */}
-        <div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <label className="mb-2 block text-sm font-medium">
             {mode === "encode" ? "Text to Encode" : "URL to Decode"}
           </label>
@@ -86,19 +138,38 @@ const URLEncoderTool = () => {
             placeholder={mode === "encode" ? "Hello World! Special chars: #&=" : "Hello%20World%21"}
             className="input-tool min-h-[120px] font-mono text-sm"
           />
-        </div>
+        </motion.div>
 
-        <button onClick={convert} className="btn-primary w-full">
+        <motion.button 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={convert} 
+          className="w-full rounded-lg py-3 font-medium text-white"
+          style={{
+            background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+          }}
+        >
           {mode === "encode" ? "Encode URL" : "Decode URL"}
-        </button>
+        </motion.button>
 
         {error && (
-          <p className="text-center text-sm text-destructive">{error}</p>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center text-sm text-destructive"
+          >
+            {error}
+          </motion.p>
         )}
 
         {/* Output */}
         {output && (
-          <div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <div className="mb-2 flex items-center justify-between">
               <label className="text-sm font-medium">Result</label>
               <button
@@ -107,7 +178,7 @@ const URLEncoderTool = () => {
               >
                 {copied ? (
                   <>
-                    <Check className="h-4 w-4 text-primary" />
+                    <Check className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
                     Copied!
                   </>
                 ) : (
@@ -121,8 +192,26 @@ const URLEncoderTool = () => {
             <div className="rounded-lg border border-border bg-muted/50 p-4 font-mono text-sm break-all">
               {output}
             </div>
-          </div>
+          </motion.div>
         )}
+
+        {/* Tips Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="rounded-xl border border-border bg-muted/30 p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <h4 className="font-semibold mb-3 flex items-center gap-2">
+            <Lightbulb className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+            URL Encoding Tips
+          </h4>
+          <ul className="text-sm text-muted-foreground space-y-2">
+            <li>• Special characters like spaces become %20</li>
+            <li>• Use encoding for query parameters with special characters</li>
+            <li>• Decoding converts %XX sequences back to characters</li>
+          </ul>
+        </motion.div>
       </div>
     </ToolLayout>
   );

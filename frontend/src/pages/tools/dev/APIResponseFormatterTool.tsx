@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Copy, Check, Code, Download, RefreshCw, Zap, AlertCircle } from "lucide-react";
+import { Copy, Check, Code, Download, RefreshCw, Zap, AlertCircle, Settings } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 
 const categoryColor = "210 80% 55%";
@@ -39,16 +41,19 @@ const APIResponseFormatterTool = () => {
       let formatted = '';
       
       switch (formatTypeToUse) {
-        case 'json':
+        case 'json': {
           const parsed = JSON.parse(bodyContent);
           formatted = JSON.stringify(parsed, null, 2);
           break;
-        case 'xml':
+        }
+        case 'xml': {
           formatted = formatXML(bodyContent);
           break;
-        case 'html':
+        }
+        case 'html': {
           formatted = formatHTML(bodyContent);
           break;
+        }
         case 'text':
           formatted = bodyContent;
           break;
@@ -133,7 +138,7 @@ const APIResponseFormatterTool = () => {
       };
       
       let inHeaders = true;
-      let bodyLines: string[] = [];
+      const bodyLines: string[] = [];
       
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
@@ -261,23 +266,55 @@ Date: ${new Date().toUTCString()}
       categoryPath="/category/dev"
     >
       <div className="mx-auto max-w-4xl space-y-6">
-        {/* Header Info */}
-        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-              <Code className="h-6 w-6 text-primary" />
-            </div>
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Code className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">API Response Formatter</h3>
-              <p className="text-sm text-muted-foreground">
-                Format and beautify API responses for better readability
+              <h2 className="text-2xl font-bold">API Response Formatter</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Format and beautify API responses in JSON, XML, HTML, and plain text for better readability
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Input Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Raw API Response</label>
@@ -294,13 +331,18 @@ Date: ${new Date().toUTCString()}
             </div>
 
             <div className="flex gap-3">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={parseRawResponse}
-                className="flex-1 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
+                className="flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors text-white"
+                style={{
+                  background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                }}
               >
                 <Zap className="inline h-4 w-4 mr-2" />
                 Parse Response
-              </button>
+              </motion.button>
               <button
                 onClick={loadExample}
                 className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 transition-colors"
@@ -309,10 +351,15 @@ Date: ${new Date().toUTCString()}
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Format Options */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Format Type</label>
@@ -360,19 +407,29 @@ Date: ${new Date().toUTCString()}
               </div>
             </div>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => formatResponse()}
-              className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
+              className="w-full rounded-lg px-4 py-3 font-medium transition-colors text-white"
+              style={{
+                background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+              }}
             >
               <RefreshCw className="inline h-4 w-4 mr-2" />
               Format Response
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Response Info */}
         {response.status && (
-          <div className="rounded-xl border border-border bg-card p-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <h3 className="font-semibold mb-4">Response Information</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="text-center p-4 bg-muted rounded-lg">
@@ -400,12 +457,17 @@ Date: ${new Date().toUTCString()}
                 <div className="text-sm text-muted-foreground">Format Type</div>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Formatted Output */}
         {response.formatted && (
-          <div className="rounded-xl border border-border bg-card p-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Formatted Response</h3>
               <div className="flex gap-2">
@@ -435,13 +497,18 @@ Date: ${new Date().toUTCString()}
                 {response.formatted}
               </pre>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Tips */}
-        <div className="rounded-xl border border-border bg-muted/30 p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-muted/30 p-6 shadow-lg"
+        >
           <h4 className="font-semibold mb-4 flex items-center gap-2">
-            <AlertCircle className="h-5 w-5" />
+            <AlertCircle className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             API Response Formatting Tips
           </h4>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -464,7 +531,7 @@ Date: ${new Date().toUTCString()}
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

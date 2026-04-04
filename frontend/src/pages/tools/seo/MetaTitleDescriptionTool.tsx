@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, FileText, Search, Zap, Globe, Target, BarChart3, Sparkles } from "lucide-react";
+import { Copy, Check, FileText, Search, Zap, Globe, Target, BarChart3, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -74,24 +74,65 @@ const MetaTitleDescriptionTool = () => {
       categoryPath="/category/seo"
     >
       <div className="mx-auto max-w-4xl space-y-6">
-        {/* Header Info */}
-        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-              <FileText className="h-6 w-6 text-primary" />
-            </div>
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <FileText className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">SEO Meta Tags Generator</h3>
-              <p className="text-sm text-muted-foreground">
-                Create perfect meta titles and descriptions that rank higher in search results
+              <h2 className="text-2xl font-bold">SEO Meta Tags Generator</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Create perfect meta titles and descriptions that rank higher in search results.
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Input Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-2">
+              <motion.div
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              >
+                <Settings className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+              </motion.div>
+              <h3 className="font-semibold">Meta Tag Options</h3>
+            </div>
             <div>
               <label className="block text-sm font-medium mb-2">Page Title</label>
               <input
@@ -125,22 +166,36 @@ const MetaTitleDescriptionTool = () => {
               />
             </div>
 
-            <button
+            <motion.button
               onClick={generateMetaTags}
-              className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full rounded-lg px-4 py-3 font-medium transition-colors text-white"
+              style={{
+                background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+              }}
             >
               <Zap className="inline h-4 w-4 mr-2" />
               Generate Meta Tags
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Results Section */}
         {(generatedTitle || generatedDescription) && (
-          <div className="space-y-6">
+          <motion.div 
+            variants={scaleIn}
+            initial="hidden"
+            animate="visible"
+            className="space-y-6"
+          >
             {/* Generated Title */}
             {generatedTitle && (
-              <div className="rounded-xl border border-border bg-card p-6">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <Target className="h-5 w-5 text-primary" />
@@ -179,12 +234,17 @@ const MetaTitleDescriptionTool = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* Generated Description */}
             {generatedDescription && (
-              <div className="rounded-xl border border-border bg-card p-6">
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <FileText className="h-5 w-5 text-primary" />
@@ -223,11 +283,16 @@ const MetaTitleDescriptionTool = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* HTML Output */}
-            <div className="rounded-xl border border-border bg-card p-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <Globe className="h-5 w-5 text-primary" />
@@ -253,14 +318,19 @@ const MetaTitleDescriptionTool = () => {
                   {generatedDescription && `<meta name="description" content="${generatedDescription}">`}
                 </pre>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
 
         {/* SEO Tips */}
-        <div className="rounded-xl border border-border bg-muted/30 p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-muted/30 p-6 shadow-lg"
+        >
           <h4 className="font-semibold mb-4 flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
+            <BarChart3 className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             SEO Best Practices
           </h4>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -283,7 +353,7 @@ const MetaTitleDescriptionTool = () => {
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

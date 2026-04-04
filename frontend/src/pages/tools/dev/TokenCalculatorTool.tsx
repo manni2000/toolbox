@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Hash, Type, Sparkles } from "lucide-react";
+import { Copy, Check, Hash, Type, Sparkles, Settings, Calculator, Lightbulb } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -77,8 +77,55 @@ const TokenCalculatorTool = () => {
       categoryPath="/category/dev"
     >
       <div className="mx-auto max-w-3xl space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Calculator className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Token Calculator</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Estimate token count for LLM APIs with cost estimation
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Model Selection */}
-        <div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <label className="mb-2 block text-sm font-medium">Model</label>
           <div className="grid grid-cols-3 gap-2">
             {models.map((m) => (
@@ -98,10 +145,15 @@ const TokenCalculatorTool = () => {
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Text Input */}
-        <div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <label className="mb-2 block text-sm font-medium">Text</label>
           <textarea
             value={text}
@@ -110,12 +162,17 @@ const TokenCalculatorTool = () => {
             rows={8}
             className="input-tool resize-none font-mono text-sm"
           />
-        </div>
+        </motion.div>
 
         {/* Stats Grid */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        >
           <StatCard
-            icon={<Hash className="h-5 w-5" />}
+            icon={<Hash className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />}
             label="Tokens"
             value={`~${stats.tokens.toLocaleString()}`}
             highlight
@@ -133,11 +190,16 @@ const TokenCalculatorTool = () => {
             label="No Spaces"
             value={stats.charsNoSpaces.toLocaleString()}
           />
-        </div>
+        </motion.div>
 
         {/* Cost Estimate */}
         {stats.tokens > 0 && (
-          <div className="rounded-lg border border-border bg-card p-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="rounded-lg border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium">Estimated Cost (Input)</p>
@@ -145,20 +207,22 @@ const TokenCalculatorTool = () => {
                   Based on typical API pricing
                 </p>
               </div>
-              <p className="text-xl font-bold text-primary">${estimateCost()}</p>
+              <p className="text-xl font-bold" style={{ color: `hsl(${categoryColor})` }}>${estimateCost()}</p>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Copy Button */}
         {stats.tokens > 0 && (
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={handleCopy}
             className="mx-auto flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             {copied ? (
               <>
-                <Check className="h-4 w-4 text-primary" />
+                <Check className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
                 Copied!
               </>
             ) : (
@@ -167,18 +231,26 @@ const TokenCalculatorTool = () => {
                 Copy stats
               </>
             )}
-          </button>
+          </motion.button>
         )}
 
         {/* Info */}
-        <div className="rounded-lg border border-border bg-muted/50 p-4">
-          <p className="text-sm font-medium">⚠️ Estimation Note</p>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-lg border border-border bg-muted/50 p-4 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <p className="text-sm font-medium flex items-center gap-2">
+            <Lightbulb className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
+            Estimation Note
+          </p>
           <p className="mt-1 text-sm text-muted-foreground">
             Token counts are approximations (~4 characters per token for English). 
             Actual counts vary by model and text content. For precise counts, use 
             the official tokenizer (e.g., tiktoken for OpenAI).
           </p>
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

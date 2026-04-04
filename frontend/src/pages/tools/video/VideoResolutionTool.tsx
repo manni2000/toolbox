@@ -104,7 +104,7 @@ const VideoResolutionTool = () => {
       { delay: 15000, message: "Finalizing video output..." },
     ];
 
-    let stageTimeouts: NodeJS.Timeout[] = [];
+    const stageTimeouts: NodeJS.Timeout[] = [];
     
     progressStages.forEach((stage, index) => {
       const timeout = setTimeout(() => {
@@ -148,8 +148,8 @@ const VideoResolutionTool = () => {
       } else {
         throw new Error(result.error || 'Failed to process file');
       }
-    } catch (error: any) {
-      if (error.name === 'AbortError') {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name === 'AbortError') {
         // User cancelled, don't show error
         return;
       }

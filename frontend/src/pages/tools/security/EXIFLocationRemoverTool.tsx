@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, Upload, Image, CheckCircle, AlertTriangle, Download, Sparkles } from 'lucide-react';
+import { Copy, Check, Upload, Image, CheckCircle, AlertTriangle, Download, Sparkles, Settings } from 'lucide-react';
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -76,8 +76,55 @@ export default function EXIFLocationRemoverTool() {
       categoryPath="/category/security"
     >
       <div className="mx-auto max-w-4xl space-y-8">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Image className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">EXIF Location Remover</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Remove GPS location data from images to protect your privacy
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Input Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <h3 className="text-lg font-semibold mb-4">Image Selection</h3>
           <div className="space-y-4">
             <div className="space-y-2">
@@ -109,20 +156,30 @@ export default function EXIFLocationRemoverTool() {
               )}
             </div>
 
-            <button
+            <motion.button
               onClick={removeExifData} 
               disabled={!selectedFile || loading}
-              className="btn-primary w-full flex items-center justify-center gap-2"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="btn-primary w-full flex items-center justify-center gap-2 text-white"
+              style={{
+                background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+              }}
             >
               <Image className="h-4 w-4" />
               {loading ? 'Removing...' : 'Remove EXIF Data'}
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Results Section */}
         {result && (
-          <div className="space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-6"
+          >
             {/* Removal Summary */}
             <div className={`rounded-xl border p-6 ${result.success ? 'text-green-600 bg-green-50 border-green-200' : 'text-red-600 bg-red-50 border-red-200'}`}>
               <div className="flex items-center justify-between">
@@ -158,26 +215,36 @@ export default function EXIFLocationRemoverTool() {
 
             {/* Image Result */}
             {result.success && (
-              <div className="rounded-xl border border-border bg-card p-6">
+              <div className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500">
                 <h3 className="text-lg font-semibold mb-4">Processed Image</h3>
                 <div className="space-y-4">
                   <img src={result.image_data} alt="Processed" className="rounded-lg shadow-md max-h-60 mx-auto" />
-                  <a
+                  <motion.a
                     href={result.image_data}
                     download="processed-image.jpg"
-                    className="btn-primary flex items-center justify-center gap-2"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="btn-primary flex items-center justify-center gap-2 text-white"
+                    style={{
+                      background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                    }}
                   >
                     <Download className="h-4 w-4" />
                     Download Image
-                  </a>
+                  </motion.a>
                 </div>
               </div>
             )}
-          </div>
+          </motion.div>
         )}
 
         {/* Information Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <h3 className="text-lg font-semibold mb-4">EXIF Data Removal Guide</h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
@@ -215,13 +282,13 @@ export default function EXIFLocationRemoverTool() {
           </div>
 
           <div className="mt-4 flex items-start gap-3 p-3 bg-orange-50 rounded-lg border border-orange-200">
-            <AlertTriangle className="h-4 w-4 text-orange-500 mt-0.5 flex-shrink-0" />
+            <AlertTriangle className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
             <div className="text-sm">
               <strong>Important:</strong> Removing EXIF data helps protect your privacy. 
               Always verify that sensitive information is removed before sharing images.
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

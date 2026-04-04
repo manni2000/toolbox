@@ -97,7 +97,7 @@ const PDFSplitTool = () => {
       return;
     }
 
-    let pagesToCopy: number[] = [];
+    const pagesToCopy: number[] = [];
 
     if (splitMode === "range") {
       if (startPage < 1 || startPage > pageCount || endPage < startPage || endPage > pageCount) {

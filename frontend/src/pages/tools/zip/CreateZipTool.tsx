@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Upload, Archive, X, File, Sparkles } from "lucide-react";
+import { Upload, Archive, X, File, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import JSZip from "jszip";
@@ -8,7 +8,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
-const categoryColor = "45 80% 50%";
+const categoryColor = "280 70% 55%";
 
 const CreateZipTool = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -73,29 +73,73 @@ const CreateZipTool = () => {
       categoryPath="/category/zip"
     >
       <div className="space-y-6">
-        {/* Upload Area */}
-        <div
-          onDrop={handleDrop}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-          onDragLeave={() => setIsDragging(false)}
-          className={`file-drop ${isDragging ? "drag-over" : ""}`}
+        {/* Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
         >
-          <Upload className="h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium">Drop files here</p>
-          <p className="text-sm text-muted-foreground">or click to browse</p>
-          <input
-            type="file"
-            multiple
-            onChange={handleFileSelect}
-            aria-label="Select files to include in ZIP"
-            title="Select files to include in ZIP"
-            className="absolute inset-0 cursor-pointer opacity-0"
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
           />
-        </div>
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.15)`, boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)` }}
+            >
+              <Archive className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Create ZIP</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Create ZIP archives from multiple files quickly and easily</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Upload Area */}
+        <motion.div
+          variants={scaleIn}
+          initial="hidden"
+          animate="visible"
+          className="rounded-2xl border border-border bg-card/50 p-6 shadow-lg"
+          style={{ boxShadow: `0 4px 20px hsl(${categoryColor} / 0.1)` }}
+        >
+          <div
+            onDrop={handleDrop}
+            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={() => setIsDragging(false)}
+            className={`file-drop ${isDragging ? "drag-over" : ""}`}
+          >
+            <Upload className="h-12 w-12 text-muted-foreground" />
+            <p className="mt-4 text-lg font-medium">Drop files here</p>
+            <p className="text-sm text-muted-foreground">or click to browse</p>
+            <input
+              type="file"
+              multiple
+              onChange={handleFileSelect}
+              aria-label="Select files to include in ZIP"
+              title="Select files to include in ZIP"
+              className="absolute inset-0 cursor-pointer opacity-0"
+            />
+          </div>
+        </motion.div>
 
         {/* File List */}
         {files.length > 0 && (
-          <div className="space-y-4">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
+            className="space-y-4 rounded-2xl border border-border bg-card/50 p-6 shadow-lg"
+            style={{ boxShadow: `0 4px 20px hsl(${categoryColor} / 0.1)` }}
+          >
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">
                 {files.length} file{files.length !== 1 ? "s" : ""} ({formatSize(totalSize)})
@@ -116,7 +160,7 @@ const CreateZipTool = () => {
                   className="flex items-center justify-between rounded-lg border border-border bg-card p-3"
                 >
                   <div className="flex items-center gap-3">
-                    <File className="h-5 w-5 text-muted-foreground" />
+                    <File className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
                     <div>
                       <p className="text-sm font-medium">{file.name}</p>
                       <p className="text-xs text-muted-foreground">
@@ -153,11 +197,14 @@ const CreateZipTool = () => {
             </div>
 
             {/* Create Button */}
-            <button
+            <motion.button
               type="button"
               onClick={createZip}
               disabled={isCreating || files.length === 0}
-              className="btn-primary w-full"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full rounded-xl py-3 font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              style={{ background: `linear-gradient(135deg, hsl(${categoryColor}), hsl(${categoryColor} / 0.8))` }}
             >
               {isCreating ? (
                 "Creating..."
@@ -167,7 +214,7 @@ const CreateZipTool = () => {
                   Create ZIP
                 </>
               )}
-            </button>
+            </motion.button>
 
             {zipUrl && (
               <div className="flex justify-center mt-6">
@@ -184,8 +231,35 @@ const CreateZipTool = () => {
                 />
               </div>
             )}
-          </div>
+          </motion.div>
         )}
+
+        {/* Tips Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="rounded-2xl border border-border bg-card/50 p-6"
+        >
+          <h3 className="mb-4 flex items-center gap-2 font-semibold">
+            <Sparkles className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+            Tips
+          </h3>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li className="flex items-start gap-2">
+              <Settings className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
+              Drag and drop multiple files at once
+            </li>
+            <li className="flex items-start gap-2">
+              <Settings className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
+              All processing happens in your browser
+            </li>
+            <li className="flex items-start gap-2">
+              <Settings className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: `hsl(${categoryColor})` }} />
+              Your files never leave your device
+            </li>
+          </ul>
+        </motion.div>
       </div>
     </ToolLayout>
   );

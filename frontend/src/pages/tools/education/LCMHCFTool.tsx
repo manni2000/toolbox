@@ -2,7 +2,7 @@ import { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Calculator, Plus, RotateCcw, Hash, Sparkles } from "lucide-react";
+import { Calculator, Plus, RotateCcw, Hash, Sparkles, Target, Trash2, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
@@ -118,125 +118,259 @@ const LCMHCFTool = () => {
       category="Education Tools"
       categoryPath="/category/education"
     >
-      <Card className="mx-auto max-w-2xl p-6">
-        <div className="space-y-6">
-          {/* Number Inputs */}
-          <div>
-            <label className="mb-2 block text-sm font-medium">Enter Numbers</label>
-            <div className="space-y-2">
-              {numbers.map((number, index) => (
-                <div key={index} className="flex gap-2">
-                  <input
-                    type="number"
-                    value={number}
-                    onChange={(e) => updateNumber(index, e.target.value)}
-                    placeholder={`Number ${index + 1}`}
-                    className="flex-1 px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                  {numbers.length > 2 && (
-                    <Button
-                      onClick={() => removeNumberInput(index)}
-                      variant="outline"
-                      size="sm"
-                    >
-                      ×
-                    </Button>
-                  )}
-                </div>
-              ))}
+      <div className="mx-auto max-w-4xl space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Hash className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">LCM HCF Calculator</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) of multiple numbers with step-by-step solutions
+              </p>
             </div>
-            
-            <Button
-              onClick={addNumberInput}
-              variant="outline"
-              className="w-full"
-              disabled={numbers.length >= 10}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add More Numbers
-            </Button>
           </div>
+        </motion.div>
 
-          {/* Calculate Buttons */}
-          <div className="grid grid-cols-2 gap-4">
-            <Button
-              onClick={calculate}
-              disabled={numbers.filter(n => n).length < 2}
-              className="w-full"
-            >
-              <Calculator className="h-4 w-4 mr-2" />
-              Calculate LCM & HCF
-            </Button>
-            <Button
-              onClick={reset}
-              variant="outline"
-              className="w-full"
-            >
-              <RotateCcw className="h-4 w-4 mr-2" />
-              Reset
-            </Button>
+        {/* Input Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium mb-4">Enter Numbers</label>
+              <div className="space-y-3">
+                {numbers.map((number, index) => (
+                  <motion.div 
+                    key={index} 
+                    className="flex gap-3"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.05 * index }}
+                  >
+                    <div className="relative flex-1">
+                      <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <input
+                        type="number"
+                        value={number}
+                        onChange={(e) => updateNumber(index, e.target.value)}
+                        placeholder={`Number ${index + 1}`}
+                        className="w-full rounded-lg bg-muted pl-10 pr-4 py-3 text-lg font-medium"
+                      />
+                    </div>
+                    {numbers.length > 2 && (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => removeNumberInput(index)}
+                        className="rounded-lg bg-red-100 p-3 text-red-600 hover:bg-red-200 transition-colors"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </motion.button>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+              
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={addNumberInput}
+                className="w-full mt-4 rounded-lg bg-muted px-4 py-3 font-medium hover:bg-muted/80 transition-colors"
+                disabled={numbers.length >= 10}
+              >
+                <Plus className="inline h-4 w-4 mr-2" />
+                Add More Numbers
+              </motion.button>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={calculate}
+                disabled={numbers.filter(n => n).length < 2}
+                className="rounded-lg text-white px-4 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                }}
+              >
+                <Calculator className="inline h-4 w-4 mr-2" />
+                Calculate LCM & HCF
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={reset}
+                className="rounded-lg bg-muted px-4 py-3 font-medium hover:bg-muted/80 transition-colors"
+              >
+                <RotateCcw className="inline h-4 w-4 mr-2" />
+                Reset
+              </motion.button>
+            </div>
           </div>
+        </motion.div>
 
-          {/* Results */}
-          {(lcm !== null || hcf !== null) && (
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg bg-blue-50 border border-blue-200 p-4">
-                <div className="text-center">
-                  <div className="text-sm font-medium text-blue-800 mb-1">LCM</div>
-                  <div className="text-2xl font-bold text-blue-600">
+        {/* Enhanced Results Section */}
+        {(lcm !== null || hcf !== null) && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-6"
+          >
+            <div className="grid gap-6 sm:grid-cols-2">
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-blue-50 to-blue-100 p-6 shadow-lg"
+              >
+                <motion.div
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.1, 0.2, 0.1],
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute inset-0 bg-gradient-to-r from-blue-200 to-blue-300"
+                />
+                <div className="relative text-center">
+                  <div className="flex items-center justify-center gap-2 text-sm font-medium text-blue-800 mb-2">
+                    <BookOpen className="h-4 w-4" />
+                    LCM
+                  </div>
+                  <div className="text-4xl font-bold text-blue-600">
                     {lcm?.toLocaleString()}
                   </div>
-                  <div className="text-xs text-blue-600 mt-1">
+                  <div className="text-sm text-blue-600 mt-2">
                     Least Common Multiple
                   </div>
                 </div>
-              </div>
+              </motion.div>
               
-              <div className="rounded-lg bg-green-50 border border-green-200 p-4">
-                <div className="text-center">
-                  <div className="text-sm font-medium text-green-800 mb-1">HCF / GCD</div>
-                  <div className="text-2xl font-bold text-green-600">
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-green-50 to-green-100 p-6 shadow-lg"
+              >
+                <motion.div
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.1, 0.2, 0.1],
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute inset-0 bg-gradient-to-r from-green-200 to-green-300"
+                />
+                <div className="relative text-center">
+                  <div className="flex items-center justify-center gap-2 text-sm font-medium text-green-800 mb-2">
+                    <Hash className="h-4 w-4" />
+                    HCF / GCD
+                  </div>
+                  <div className="text-4xl font-bold text-green-600">
                     {hcf?.toLocaleString()}
                   </div>
-                  <div className="text-xs text-green-600 mt-1">
+                  <div className="text-sm text-green-600 mt-2">
                     Highest Common Factor
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Enhanced GCD Steps */}
+        {gcdSteps.length > 0 && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-xl border border-border bg-gradient-to-r from-gray-50 to-gray-100 p-6"
+          >
+            <div className="flex items-start gap-3">
+              <div className="h-10 w-10 rounded-lg bg-gray-200 flex items-center justify-center">
+                <Hash className="h-5 w-5 text-gray-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-medium text-gray-900 mb-3">GCD Calculation Steps</h3>
+                <div className="bg-white/50 rounded-lg p-4">
+                  <div className="space-y-2">
+                    {gcdSteps.map((step, index) => (
+                      <motion.div 
+                        key={index} 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.05 * index }}
+                        className="text-sm font-mono text-gray-700"
+                      >
+                        {step}
+                      </motion.div>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
-          )}
+          </motion.div>
+        )}
 
-          {/* GCD Steps */}
-          {gcdSteps.length > 0 && (
-            <div className="rounded-lg bg-gray-50 border border-gray-200 p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Hash className="h-4 w-4 text-gray-600" />
-                <h3 className="text-sm font-medium text-gray-800">GCD Calculation Steps</h3>
+        {/* Enhanced Info Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="rounded-xl border border-border bg-gradient-to-r from-blue-50 to-purple-50 p-6"
+        >
+          <div className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
+              <BookOpen className="h-5 w-5 text-blue-600" />
+            </div>
+            <div className="flex-1 text-sm">
+              <p className="font-medium text-blue-900 mb-3">Key Concepts</p>
+              <div className="space-y-2 text-blue-700">
+                <p><strong>LCM (Least Common Multiple):</strong> The smallest positive integer that is divisible by all given numbers.</p>
+                <p><strong>HCF/GCD (Highest Common Factor):</strong> The largest positive integer that divides each of the integers.</p>
+                <p><strong>Formula:</strong> LCM(a,b) = |a × b| / GCD(a,b)</p>
               </div>
-              <div className="space-y-1">
-                {gcdSteps.map((step, index) => (
-                  <div key={index} className="text-xs font-mono text-gray-700">
-                    {step}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Info Section */}
-          <div className="text-xs text-muted-foreground space-y-2">
-            <div>
-              <strong>LCM (Least Common Multiple):</strong> The smallest positive integer that is divisible by all given numbers.
-            </div>
-            <div>
-              <strong>HCF/GCD (Highest Common Factor/Greatest Common Divisor):</strong> The largest positive integer that divides each of the integers.
-            </div>
-            <div>
-              <strong>Formula:</strong> LCM(a,b) = |a × b| / GCD(a,b)
             </div>
           </div>
-        </div>
-      </Card>
+        </motion.div>
+      </div>
     </ToolLayout>
   );
 };

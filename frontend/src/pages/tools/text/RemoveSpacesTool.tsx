@@ -12,7 +12,7 @@ const RemoveSpacesTool = () => {
   const [copied, setCopied] = useState(false);
 
   const removeSpaces = () => {
-    let result = input
+    const result = input
       .replace(/[ \t]+/g, " ") // Multiple spaces/tabs to single space
       .replace(/^ +/gm, "") // Leading spaces on each line
       .replace(/ +$/gm, "") // Trailing spaces on each line

@@ -11,6 +11,13 @@ import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 
 const categoryColor = "0 70% 50%";
 
+interface ConversionResult {
+  success: boolean;
+  file?: string;
+  error?: string;
+  filename?: string;
+}
+
 const PDFPasswordTool = () => {
   const [file, setFile] = useState<File | null>(null);
   const [password, setPassword] = useState("");
@@ -19,7 +26,7 @@ const PDFPasswordTool = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [protectedFile, setProtectedFile] = useState<string | null>(null);
-  const [conversionResult, setConversionResult] = useState<any>(null);
+  const [conversionResult, setConversionResult] = useState<ConversionResult | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const downloadSectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, RefreshCw, Shield, Eye, EyeOff, Sparkles } from "lucide-react";
+import { Copy, Check, RefreshCw, Shield, Eye, EyeOff, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -85,8 +85,55 @@ const PasswordGeneratorTool = () => {
       categoryPath="/category/security"
     >
       <div className="mx-auto max-w-2xl space-y-8">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Shield className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Password Generator</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Generate secure random passwords with customizable options
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Password Display */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -125,10 +172,15 @@ const PasswordGeneratorTool = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Options */}
-        <div className="space-y-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="space-y-6"
+        >
           <div>
             <div className="mb-2 flex justify-between">
               <label htmlFor="password-length" className="text-sm font-medium">Length</label>
@@ -173,12 +225,20 @@ const PasswordGeneratorTool = () => {
             checked={excludeAmbiguous}
             onChange={setExcludeAmbiguous}
           />
-        </div>
+        </motion.div>
 
-        <button onClick={generatePassword} className="btn-primary w-full">
+        <motion.button 
+          onClick={generatePassword} 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="btn-primary w-full flex items-center justify-center gap-2 text-white"
+          style={{
+            background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+          }}
+        >
           <RefreshCw className="h-5 w-5" />
           Generate Password
-        </button>
+        </motion.button>
       </div>
     </ToolLayout>
   );

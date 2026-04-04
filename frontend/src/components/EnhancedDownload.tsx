@@ -222,7 +222,7 @@ export const downloadText = (text: string, filename: string, mimeType = 'text/pl
 /**
  * Utility for downloading JSON
  */
-export const downloadJSON = (data: any, filename: string) => {
+export const downloadJSON = (data: Record<string, unknown>, filename: string) => {
   const json = JSON.stringify(data, null, 2);
   downloadText(json, filename, 'application/json');
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, RefreshCw, Key, Sparkles } from "lucide-react";
+import { Copy, Check, RefreshCw, Key, Sparkles, Settings } from "lucide-react";
 import { v4 as uuidv4, v1 as uuidv1 } from "uuid";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";

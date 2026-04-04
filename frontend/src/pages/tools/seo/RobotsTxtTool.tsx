@@ -174,66 +174,106 @@ const RobotsTxtTool = () => {
       categoryPath="/category/seo"
     >
       <div className="mx-auto max-w-4xl space-y-6">
-        {/* Header Info */}
-        <div className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-              <Shield className="h-6 w-6 text-primary" />
-            </div>
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Shield className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">Robots.txt Generator</h3>
-              <p className="text-sm text-muted-foreground">
-                Create professional robots.txt files to control search engine access
+              <h2 className="text-2xl font-bold">Robots.txt Generator</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Create professional robots.txt files to control search engine access.
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Presets */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="flex items-center gap-2 mb-4">
-            <Settings className="h-5 w-5 text-primary" />
+            <Sparkles className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             <h3 className="font-semibold">Quick Presets</h3>
           </div>
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => loadPreset("basic")}
-              className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
-            >
-              Basic Website
-            </button>
-            <button
-              type="button"
-              onClick={() => loadPreset("blog")}
-              className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
-            >
-              WordPress Blog
-            </button>
-            <button
-              type="button"
-              onClick={() => loadPreset("ecommerce")}
-              className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
-            >
-              E-commerce
-            </button>
+          <div className="flex flex-wrap gap-3">
+            {[
+              { id: 'basic', label: 'Basic Website' },
+              { id: 'blog', label: 'WordPress Blog' },
+              { id: 'ecommerce', label: 'E-commerce' }
+            ].map((preset, index) => (
+              <motion.button
+                key={preset.id}
+                type="button"
+                onClick={() => loadPreset(preset.id)}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="rounded-lg bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 transition-colors"
+              >
+                {preset.label}
+              </motion.button>
+            ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Rules Configuration */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Globe className="h-5 w-5 text-primary" />
+              <Globe className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
               <h3 className="font-semibold">Crawler Rules</h3>
             </div>
-            <button
+            <motion.button
               type="button"
               onClick={addRule}
-              className="rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="rounded-lg px-4 py-2 text-sm font-medium text-white"
+              style={{
+                background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+              }}
             >
               Add Rule
-            </button>
+            </motion.button>
           </div>
 
           <div className="space-y-4">
@@ -338,11 +378,24 @@ const RobotsTxtTool = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Additional Settings */}
-        <div className="rounded-xl border border-border bg-card p-6">
-          <h3 className="font-semibold mb-4">Additional Settings</h3>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <h3 className="font-semibold mb-4 flex items-center gap-2">
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            >
+              <Settings className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            Additional Settings
+          </h3>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Sitemap URL (Optional)</label>
@@ -365,21 +418,31 @@ const RobotsTxtTool = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Generate Button */}
-        <button
+        <motion.button
           type="button"
           onClick={generateRobotsTxt}
-          className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium hover:bg-primary/90 transition-colors"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full rounded-lg px-4 py-3 font-medium transition-colors text-white"
+          style={{
+            background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+          }}
         >
           <FileText className="inline h-4 w-4 mr-2" />
           Generate robots.txt
-        </button>
+        </motion.button>
 
         {/* Generated Output */}
         {generatedRobots && (
-          <div className="rounded-xl border border-border bg-card p-6">
+          <motion.div 
+            variants={scaleIn}
+            initial="hidden"
+            animate="visible"
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Generated robots.txt</h3>
               <div className="flex gap-2">
@@ -409,13 +472,18 @@ const RobotsTxtTool = () => {
                 {generatedRobots}
               </pre>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Tips */}
-        <div className="rounded-xl border border-border bg-muted/30 p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-muted/30 p-6 shadow-lg"
+        >
           <h4 className="font-semibold mb-4 flex items-center gap-2">
-            <AlertCircle className="h-5 w-5" />
+            <AlertCircle className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
             Robots.txt Best Practices
           </h4>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -438,7 +506,7 @@ const RobotsTxtTool = () => {
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </ToolLayout>
   );

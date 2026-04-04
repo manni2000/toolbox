@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowUpDown, Copy, Check, Sparkles } from "lucide-react";
+import { ArrowUpDown, Copy, Check, Sparkles, Target, Calculator, RefreshCw } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -96,109 +96,202 @@ const UnitConverterTool = () => {
   return (
     <ToolLayout
       title="Unit Converter"
-      description="Convert length, weight, temperature and more"
+      description="Convert length, weight, temperature and more with precision"
       category="Education Tools"
       categoryPath="/category/education"
     >
-      <div className="mx-auto max-w-2xl space-y-6">
-        {/* Category Selection */}
-        <div className="flex flex-wrap justify-center gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => { setCategory(cat.id); setFromUnit(0); setToUnit(1); }}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
-                category === cat.id
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-              }`}
+      <div className="mx-auto max-w-4xl space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
             >
-              {cat.label}
-            </button>
-          ))}
-        </div>
+              <RefreshCw className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Unit Converter</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Convert length, weight, temperature and more with precision and ease
+              </p>
+            </div>
+          </div>
+        </motion.div>
 
-        {/* Converter */}
-        <div className="rounded-xl border border-border bg-card p-6">
-          <div className="grid gap-4">
-            {/* From */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="from-unit" className="mb-2 block text-sm font-medium">From</label>
-                <select
-                  id="from-unit"
-                  title="From unit"
-                  value={fromUnit}
-                  onChange={(e) => setFromUnit(Number(e.target.value))}
-                  className="input-tool"
-                >
-                  {currentUnits.map((unit, i) => (
-                    <option key={i} value={i}>{unit.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="mb-2 block text-sm font-medium">Value</label>
-                <input
-                  type="number"
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  placeholder="Enter value..."
-                  className="input-tool"
-                />
+        {/* Category Selection */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <label className="block text-sm font-medium mb-4">Select Category</label>
+          <div className="grid grid-cols-3 gap-3">
+            {categories.map((cat) => (
+              <motion.button
+                key={cat.id}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => { setCategory(cat.id); setFromUnit(0); setToUnit(1); }}
+                className={`rounded-lg px-4 py-3 text-sm font-medium transition-all ${
+                  category === cat.id
+                    ? "text-white shadow-lg"
+                    : "bg-muted hover:bg-muted/80"
+                }`}
+                style={{
+                  background:
+                    category === cat.id
+                      ? `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`
+                      : undefined,
+                }}
+              >
+                {cat.label}
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Enhanced Converter */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <div className="space-y-6">
+            {/* From Section */}
+            <div>
+              <label className="block text-sm font-medium mb-4">From</label>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="relative">
+                  <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <select
+                    value={fromUnit}
+                    onChange={(e) => setFromUnit(Number(e.target.value))}
+                    className="w-full rounded-lg bg-muted pl-10 pr-4 py-3 appearance-none"
+                  >
+                    {currentUnits.map((unit, i) => (
+                      <option key={i} value={i}>{unit.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="relative">
+                  <Calculator className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <input
+                    type="number"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    placeholder="Enter value..."
+                    className="w-full rounded-lg bg-muted pl-10 pr-4 py-3 text-lg font-medium"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Swap Button */}
             <div className="flex justify-center">
-              <button
-                type="button"
-                title="Swap units"
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 180 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={swap}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-muted/80"
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-muted to-muted/80 text-muted-foreground transition-all hover:shadow-lg"
+                style={{
+                  background: `linear-gradient(135deg, hsl(${categoryColor} / 0.1) 0%, hsl(${categoryColor} / 0.2) 100%)`,
+                }}
               >
-                <ArrowUpDown className="h-5 w-5" />
-              </button>
+                <ArrowUpDown className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+              </motion.button>
             </div>
 
-            {/* To */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="to-unit" className="mb-2 block text-sm font-medium">To</label>
-                <select
-                  id="to-unit"
-                  title="To unit"
-                  value={toUnit}
-                  onChange={(e) => setToUnit(Number(e.target.value))}
-                  className="input-tool"
-                >
-                  {currentUnits.map((unit, i) => (
-                    <option key={i} value={i}>{unit.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="mb-2 block text-sm font-medium">Result</label>
+            {/* To Section */}
+            <div>
+              <label className="block text-sm font-medium mb-4">To</label>
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div className="relative">
+                  <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <select
+                    value={toUnit}
+                    onChange={(e) => setToUnit(Number(e.target.value))}
+                    className="w-full rounded-lg bg-muted pl-10 pr-4 py-3 appearance-none"
+                  >
+                    {currentUnits.map((unit, i) => (
+                      <option key={i} value={i}>{unit.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground">
+                    {result ? <Check className="h-4 w-4 text-green-600" /> : <Target className="h-4 w-4" />}
+                  </div>
                   <input
                     type="text"
                     value={result}
                     readOnly
                     placeholder="Result..."
-                    className="input-tool pr-12"
+                    className="w-full rounded-lg bg-muted pl-10 pr-12 py-3 text-lg font-medium"
                   />
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                     onClick={handleCopy}
                     disabled={!result}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-muted-foreground hover:text-foreground disabled:opacity-50"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-muted/50 p-2 text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50 transition-all"
                   >
                     {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
+
+        {/* Conversion Info */}
+        {result && value && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-xl border border-border bg-gradient-to-r from-blue-50 to-purple-50 p-6"
+          >
+            <div className="flex items-start gap-3">
+              <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                <Calculator className="h-5 w-5 text-blue-600" />
+              </div>
+              <div className="flex-1 text-sm">
+                <p className="font-medium text-blue-900 mb-2">Conversion Result</p>
+                <p className="text-blue-700">
+                  <span className="font-semibold">{value}</span> {currentUnits[fromUnit].name} = 
+                  <span className="font-semibold"> {result}</span> {currentUnits[toUnit].name}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
     </ToolLayout>
   );

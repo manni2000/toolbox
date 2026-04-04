@@ -2,7 +2,7 @@ import { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Calculator, TrendingUp, RotateCcw, Sparkles } from "lucide-react";
+import { Calculator, TrendingUp, RotateCcw, Sparkles, Award, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
@@ -80,85 +80,131 @@ const CGPAToPercentageTool = () => {
 
   return (
     <ToolLayout
-      title="CGPA to Percentage Calculator"
-      description="Convert your CGPA to percentage with different grading scales"
+      title="CGPA to Percentage Converter"
+      description="Convert CGPA to percentage and determine grades"
       category="Education Tools"
       categoryPath="/category/education"
     >
-      <Card className="mx-auto max-w-md p-6">
-        <div className="space-y-6">
-          {/* CGPA Input */}
-          <div>
-            <label className="mb-2 block text-sm font-medium">CGPA</label>
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              max="10"
-              value={cgpa}
-              onChange={(e) => setCgpa(e.target.value)}
-              placeholder="Enter your CGPA (e.g., 8.5)"
-              className="w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-
-          {/* Scale Selection */}
-          <div>
-            <label htmlFor="grading-scale" className="mb-2 block text-sm font-medium">Grading Scale</label>
-            <select
-              id="grading-scale"
-              title="Grading Scale"
-              value={scale}
-              onChange={(e) => setScale(e.target.value)}
-              className="w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+      <div className="mx-auto max-w-4xl space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
             >
-              <option value="10">10.0 Scale (Most Common)</option>
-              <option value="5">5.0 Scale</option>
-              <option value="4">4.0 Scale (GPA)</option>
-              <option value="custom">Custom Scale</option>
-            </select>
-          </div>
-
-          {/* Custom Scale Input */}
-          {scale === "custom" && (
+              <Calculator className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
             <div>
-              <label className="mb-2 block text-sm font-medium">Custom Scale Maximum</label>
+              <h2 className="text-2xl font-bold">CGPA to Percentage Converter</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Convert your CGPA to percentage and determine your grade instantly
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Input Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <div className="grid gap-6 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium mb-2">CGPA Value</label>
               <input
                 type="number"
-                step="0.1"
-                min="1"
-                max="20"
-                value={scale === "custom" ? "" : scale}
-                onChange={(e) => setScale(e.target.value)}
-                placeholder="Enter scale maximum (e.g., 8.0)"
-                className="w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                value={cgpa}
+                onChange={(e) => setCgpa(e.target.value)}
+                placeholder="Enter your CGPA (e.g., 8.5)"
+                step="0.01"
+                min="0"
+                max="10"
+                className="w-full rounded-lg bg-muted px-4 py-3 text-lg font-medium"
               />
             </div>
-          )}
+            <div>
+              <label className="block text-sm font-medium mb-2">CGPA Scale</label>
+              <select
+                value={scale}
+                onChange={(e) => setScale(e.target.value)}
+                className="w-full rounded-lg bg-muted px-4 py-3"
+              >
+                <option value="10">10.0 Scale</option>
+                <option value="5">5.0 Scale</option>
+                <option value="4">4.0 Scale</option>
+                <option value="custom">Custom Scale</option>
+              </select>
+            </div>
+            {scale === "custom" && (
+              <div>
+                <label className="block text-sm font-medium mb-2">Custom Scale Value</label>
+                <input
+                  type="number"
+                  value={scale !== "custom" ? scale : ""}
+                  onChange={(e) => setScale(e.target.value)}
+                  placeholder="Enter scale value"
+                  min="1"
+                  max="20"
+                  className="w-full rounded-lg bg-muted px-4 py-3"
+                />
+              </div>
+            )}
+          </div>
 
-          {/* Calculate Button */}
-          <Button
-            onClick={calculatePercentage}
-            disabled={!cgpa}
-            className="w-full"
-          >
-            <Calculator className="h-4 w-4 mr-2" />
-            Calculate Percentage
-          </Button>
-
-          {/* Reset Button */}
-          <Button
-            onClick={reset}
-            variant="outline"
-            className="w-full"
-          >
-            <RotateCcw className="h-4 w-4 mr-2" />
-            Reset
-          </Button>
+          <div className="mt-6 flex gap-3">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={calculatePercentage}
+              className="flex items-center gap-2 rounded-lg text-white px-6 py-3 font-medium transition-colors"
+              style={{
+                background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+              }}
+            >
+              <TrendingUp className="h-4 w-4" />
+              Convert
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={reset}
+              className="flex items-center gap-2 rounded-lg bg-muted px-6 py-3 font-medium hover:bg-muted/80"
+            >
+              <RotateCcw className="h-4 w-4" />
+              Reset
+            </motion.button>
+          </div>
 
           {/* Results */}
           {percentage !== null && (
-            <div className="rounded-lg bg-primary/10 border border-primary/20 p-4">
+            <div className="mt-6 rounded-lg bg-primary/10 border border-primary/20 p-4">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">Percentage:</span>
@@ -183,7 +229,7 @@ const CGPAToPercentageTool = () => {
           )}
 
           {/* Info Section */}
-          <div className="text-xs text-muted-foreground space-y-2">
+          <div className="mt-6 text-xs text-muted-foreground space-y-2">
             <div className="flex items-start gap-2">
               <TrendingUp className="h-4 w-4 mt-0.5 flex-shrink-0" />
               <div>
@@ -196,8 +242,8 @@ const CGPAToPercentageTool = () => {
               </div>
             </div>
           </div>
-        </div>
-      </Card>
+        </motion.div>
+      </div>
     </ToolLayout>
   );
 };

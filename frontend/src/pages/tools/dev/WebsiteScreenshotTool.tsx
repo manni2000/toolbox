@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Camera, AlertCircle, Globe, Download, Loader2, RefreshCw, Monitor, Smartphone, Tablet } from "lucide-react";
+import { Camera, AlertCircle, Globe, Download, Loader2, RefreshCw, Monitor, Smartphone, Tablet, Settings, Lightbulb } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 
@@ -96,8 +98,55 @@ const WebsiteScreenshotTool = () => {
       categoryPath="/category/dev"
     >
       <div className="space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Camera className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Website Screenshot Tool</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Capture screenshots of any website with customizable dimensions
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* URL Input */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <label htmlFor="website-url" className="mb-3 block text-sm font-medium">Website URL</label>
           <div className="relative">
             <Globe className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
@@ -111,10 +160,15 @@ const WebsiteScreenshotTool = () => {
               className="input-field w-full pl-12"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Presets */}
-        <div className="rounded-xl border border-border bg-card p-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
           <label className="mb-3 block text-sm font-medium">Device Presets</label>
           <div className="grid gap-3 sm:grid-cols-3">
             {presets.map((preset) => (
@@ -123,20 +177,28 @@ const WebsiteScreenshotTool = () => {
                 onClick={() => applyPreset(preset)}
                 className={`flex items-center justify-center gap-2 rounded-lg p-3 transition-colors ${
                   width === preset.width && height === preset.height
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'text-white'
                     : 'bg-muted hover:bg-muted/80'
                 }`}
+                style={width === preset.width && height === preset.height ? {
+                  background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                } : {}}
               >
                 <preset.icon className="h-4 w-4" />
                 <span className="text-sm font-medium">{preset.name}</span>
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Custom Size */}
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-lg border border-border bg-card p-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid gap-4 sm:grid-cols-3"
+        >
+          <div className="rounded-lg border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500">
             <label htmlFor="screenshot-width" className="mb-2 block text-sm font-medium">Width</label>
             <input
               id="screenshot-width"
@@ -147,7 +209,7 @@ const WebsiteScreenshotTool = () => {
               className="input-field w-full"
             />
           </div>
-          <div className="rounded-lg border border-border bg-card p-4">
+          <div className="rounded-lg border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500">
             <label htmlFor="screenshot-height" className="mb-2 block text-sm font-medium">Height</label>
             <input
               id="screenshot-height"
@@ -158,7 +220,7 @@ const WebsiteScreenshotTool = () => {
               className="input-field w-full"
             />
           </div>
-          <div className="rounded-lg border border-border bg-card p-4">
+          <div className="rounded-lg border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500">
             <label htmlFor="screenshot-format" className="mb-2 block text-sm font-medium">Format</label>
             <select
               id="screenshot-format"
@@ -171,13 +233,18 @@ const WebsiteScreenshotTool = () => {
               <option value="jpeg">JPEG</option>
             </select>
           </div>
-        </div>
+        </motion.div>
 
         {/* Capture Button */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={captureScreenshot}
           disabled={!url.trim() || isLoading}
-          className="btn-primary w-full flex items-center justify-center gap-2"
+          className="w-full flex items-center justify-center gap-2 rounded-lg py-3 font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{
+            background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+          }}
         >
           {isLoading ? (
             <>
@@ -190,22 +257,31 @@ const WebsiteScreenshotTool = () => {
               Capture Screenshot
             </>
           )}
-        </button>
+        </motion.button>
 
         {/* Error */}
         {error && (
-          <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="rounded-xl border border-red-500/30 bg-red-500/10 p-4"
+          >
             <div className="flex items-center gap-3">
               <AlertCircle className="h-5 w-5 text-red-500" />
               <p className="text-red-600 dark:text-red-400">{error}</p>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Result */}
         {result && (
-          <div className="space-y-4">
-            <div className="rounded-xl border border-border bg-card overflow-hidden">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="space-y-4"
+          >
+            <div className="rounded-xl border border-border bg-card overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-500">
               <div className="p-4 border-b border-border flex items-center justify-between">
                 <div className="text-sm text-muted-foreground">
                   {result.width}x{result.height} • {result.format.toUpperCase()}
@@ -218,13 +294,18 @@ const WebsiteScreenshotTool = () => {
                     <RefreshCw className="h-4 w-4" />
                     Refresh
                   </button>
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={handleDownload}
-                    className="btn-primary flex items-center gap-2 text-sm"
+                    className="flex items-center gap-2 text-sm rounded-lg px-3 py-1.5 text-white"
+                    style={{
+                      background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+                    }}
                   >
                     <Download className="h-4 w-4" />
                     Download
-                  </button>
+                  </motion.button>
                 </div>
               </div>
               <div className="p-4 bg-muted/30">
@@ -235,18 +316,41 @@ const WebsiteScreenshotTool = () => {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Empty State */}
         {!result && !isLoading && !error && (
-          <div className="rounded-xl border border-border bg-muted/30 p-8 text-center">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-xl border border-border bg-muted/30 p-8 text-center"
+          >
             <Camera className="mx-auto h-16 w-16 text-muted-foreground/50" />
             <p className="mt-4 text-muted-foreground">
               Screenshot preview will appear here
             </p>
-          </div>
+          </motion.div>
         )}
+
+        {/* Tips Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="rounded-xl border border-border bg-muted/30 p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <h4 className="font-semibold mb-3 flex items-center gap-2">
+            <Lightbulb className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+            Screenshot Tips
+          </h4>
+          <ul className="text-sm text-muted-foreground space-y-2">
+            <li>• Use device presets for common viewport sizes</li>
+            <li>• PNG format preserves transparency, JPEG is smaller</li>
+            <li>• Full URLs with https:// are recommended</li>
+          </ul>
+        </motion.div>
       </div>
     </ToolLayout>
   );

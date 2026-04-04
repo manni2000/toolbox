@@ -130,30 +130,93 @@ const CurrencyConverterTool = () => {
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-2xl space-y-6">
-        {/* Status Bar */}
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium">Live Exchange Rates</span>
-              {lastUpdated && (
-                <span className="text-xs text-muted-foreground">
-                  Updated: {lastUpdated}
-                </span>
-              )}
+      <div className="mx-auto max-w-4xl space-y-6">
+        {/* Enhanced Hero Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+          />
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <RefreshCw className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Currency Converter</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Convert between currencies with real-time exchange rates and live market data
+              </p>
             </div>
-            <button
-              type="button"
+          </div>
+        </motion.div>
+
+        {/* Enhanced Status Bar */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-border bg-card p-4 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 1, 0.5],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center"
+              >
+                <TrendingUp className="h-4 w-4 text-green-600" />
+              </motion.div>
+              <div>
+                <span className="text-sm font-medium">Live Exchange Rates</span>
+                {lastUpdated && (
+                  <span className="text-xs text-muted-foreground ml-2">
+                    Updated: {lastUpdated}
+                  </span>
+                )}
+              </div>
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={fetchExchangeRates}
               disabled={isLoading}
-              className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-1.5 text-sm hover:bg-secondary/80 disabled:opacity-50"
+              className="flex items-center gap-2 rounded-lg bg-muted px-3 py-1.5 text-sm hover:bg-muted/80 disabled:opacity-50 transition-colors"
             >
               <RefreshCw className={`h-3 w-3 ${isLoading ? 'animate-spin' : ''}`} />
               Refresh
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Error State */}
         {error && (

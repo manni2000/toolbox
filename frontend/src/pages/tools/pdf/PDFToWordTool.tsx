@@ -12,11 +12,18 @@ import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 
 const categoryColor = "0 70% 50%";
 
+interface ConversionResult {
+  success: boolean;
+  file?: string;
+  error?: string;
+  filename?: string;
+}
+
 const PDFToWordTool = () => {
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [docxData, setDocxData] = useState<string | null>(null);
-  const [conversionResult, setConversionResult] = useState<any>(null);
+  const [conversionResult, setConversionResult] = useState<ConversionResult | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
