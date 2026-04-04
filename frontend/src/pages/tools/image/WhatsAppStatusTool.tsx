@@ -249,14 +249,35 @@ const WhatsAppStatusTool = () => {
           </div>
         </motion.div>
 
-        {/* Background Section */}
-        <div className="grid gap-6 lg:grid-cols-2">
+        {/* Enhanced Background Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="grid gap-6 lg:grid-cols-2"
+        >
           {/* Image Upload */}
-          <div className="space-y-4">
-            <h3 className="flex items-center gap-2 text-lg font-semibold">
-              <ImageIcon className="h-5 w-5" />
-              Background Image
-            </h3>
+          <motion.div 
+            whileHover={{ scale: 1.01 }}
+            className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <div className="flex items-center gap-3">
+              <motion.div
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [0.8, 1, 0.8],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center"
+              >
+                <ImageIcon className="h-5 w-5 text-blue-600" />
+              </motion.div>
+              <h3 className="text-lg font-semibold">Background Image</h3>
+            </div>
             <ImageUploadZone
               isDragging={isDragging}
               onDragEnter={handleDragEnter}
@@ -270,70 +291,120 @@ const WhatsAppStatusTool = () => {
               subtitle="Optimized for WhatsApp Status (1080×1920) - Optional"
             />
             {image && (
-              <div className="relative inline-block">
-                <img src={image} alt="Background" className="max-h-40 rounded-lg object-contain" />
-                <button
-                  type="button"
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="relative inline-block"
+              >
+                <img src={image} alt="Background" className="max-h-40 rounded-lg object-contain shadow-md" />
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={(e) => { e.stopPropagation(); setImage(null); }}
-                  className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-white hover:bg-destructive/80 transition-colors"
+                  className="absolute -right-2 -top-2 rounded-full bg-red-500 p-1.5 text-white hover:bg-red-600 transition-colors shadow-lg"
                   title="Remove background image"
                 >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
+                  <X className="h-3 w-3" />
+                </motion.button>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
 
           {/* Background Color */}
-          <div className="space-y-4">
-            <h3 className="flex items-center gap-2 text-lg font-semibold">
-              <Palette className="h-5 w-5" />
-              Background Color
-            </h3>
+          <motion.div 
+            whileHover={{ scale: 1.01 }}
+            className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <div className="flex items-center gap-3">
+              <motion.div
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [0.8, 1, 0.8],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="h-10 w-10 rounded-lg bg-purple-100 flex items-center justify-center"
+              >
+                <Palette className="h-5 w-5 text-purple-600" />
+              </motion.div>
+              <h3 className="text-lg font-semibold">Background Color</h3>
+            </div>
             <div className="space-y-3">
               <div className="grid grid-cols-3 gap-2">
-                {presetBackgrounds.map((preset) => (
-                  <button
+                {presetBackgrounds.map((preset, index) => (
+                  <motion.button
                     key={preset.name}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.05 * index }}
                     onClick={() => setBackgroundColor(preset.color)}
                     className={`rounded-lg border-2 p-3 text-xs font-medium transition-all ${
                       backgroundColor === preset.color
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border hover:border-primary/50"
+                        ? "border-primary bg-primary/10 text-primary shadow-lg"
+                        : "border-border hover:border-primary/50 hover:shadow-md"
                     }`}
                   >
                     {preset.name}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
               <div className="flex gap-2">
-                <input
-                  type="color"
-                  value={backgroundColor.startsWith("linear") ? "#1a1a1a" : backgroundColor}
-                  onChange={(e) => setBackgroundColor(e.target.value)}
-                  className="h-10 w-14 cursor-pointer rounded-lg border-0"
-                  title="Choose background color"
-                  placeholder="Background color"
-                  aria-label="Background color picker"
-                />
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative"
+                >
+                  <input
+                    type="color"
+                    value={backgroundColor.startsWith("linear") ? "#1a1a1a" : backgroundColor}
+                    onChange={(e) => setBackgroundColor(e.target.value)}
+                    className="h-10 w-14 cursor-pointer rounded-lg border-0 shadow-md"
+                    title="Choose background color"
+                    placeholder="Background color"
+                    aria-label="Background color picker"
+                  />
+                </motion.div>
                 <input
                   type="text"
                   value={backgroundColor}
                   onChange={(e) => setBackgroundColor(e.target.value)}
-                  className="input-field flex-1"
+                  className="flex-1 rounded-lg bg-muted px-3 py-2 text-sm font-medium"
                   placeholder="#1a1a1a"
                   title="Background color value (hex or gradient)"
                   aria-label="Background color value"
                 />
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* Text Section */}
-        <div className="rounded-xl border border-border bg-card p-6">
-          <div className="mb-6 flex items-center gap-2">
-            <Type className="h-5 w-5" />
+        {/* Enhanced Text Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <div className="mb-6 flex items-center gap-3">
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.8, 1, 0.8],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center"
+            >
+              <Type className="h-5 w-5 text-green-600" />
+            </motion.div>
             <h3 className="text-lg font-semibold">Text Overlay</h3>
           </div>
 
@@ -345,71 +416,76 @@ const WhatsAppStatusTool = () => {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Enter your status text... (Use Enter for multiple lines)"
-                className="input-field h-24 w-full resize-none"
+                className="w-full rounded-lg bg-muted px-4 py-3 h-24 resize-none text-sm font-medium"
               />
             </div>
 
-            {/* Text Controls */}
+            {/* Enhanced Text Controls */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {/* Position */}
               <div>
                 <label className="mb-2 block text-sm font-medium">Position</label>
-                <select
-                  value={textPosition}
-                  onChange={(e) => setTextPosition(e.target.value as "top" | "center" | "bottom")}
-                  className="input-field w-full"
-                  aria-label="Text position"
-                  title="Select text position on status"
-                >
-                  <option value="top">Top</option>
-                  <option value="center">Center</option>
-                  <option value="bottom">Bottom</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={textPosition}
+                    onChange={(e) => setTextPosition(e.target.value as "top" | "center" | "bottom")}
+                    className="w-full rounded-lg bg-muted px-3 py-2 appearance-none text-sm font-medium"
+                    aria-label="Text position"
+                    title="Select text position on status"
+                  >
+                    <option value="top">Top</option>
+                    <option value="center">Center</option>
+                    <option value="bottom">Bottom</option>
+                  </select>
+                </div>
               </div>
 
               {/* Alignment */}
               <div>
                 <label className="mb-2 block text-sm font-medium">Alignment</label>
                 <div className="flex gap-1">
-                  <button
-                    type="button"
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setTextAlign("left")}
                     title="Align text to the left"
                     className={`flex-1 rounded-lg border p-2 transition-colors ${
                       textAlign === "left"
-                        ? "border-primary bg-primary/10 text-primary"
+                        ? "border-primary bg-primary/10 text-primary shadow-md"
                         : "border-border hover:border-primary/50"
                     }`}
                     aria-label="Align text left"
                   >
                     <AlignLeft className="h-4 w-4 mx-auto" />
-                  </button>
-                  <button
-                    type="button"
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setTextAlign("center")}
                     title="Align text center"
                     className={`flex-1 rounded-lg border p-2 transition-colors ${
                       textAlign === "center"
-                        ? "border-primary bg-primary/10 text-primary"
+                        ? "border-primary bg-primary/10 text-primary shadow-md"
                         : "border-border hover:border-primary/50"
                     }`}
                     aria-label="Align text center"
                   >
                     <AlignCenter className="h-4 w-4 mx-auto" />
-                  </button>
-                  <button
-                    type="button"
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setTextAlign("right")}
                     title="Align text right"
                     className={`flex-1 rounded-lg border p-2 transition-colors ${
                       textAlign === "right"
-                        ? "border-primary bg-primary/10 text-primary"
+                        ? "border-primary bg-primary/10 text-primary shadow-md"
                         : "border-border hover:border-primary/50"
                     }`}
                     aria-label="Align text right"
                   >
                     <AlignRight className="h-4 w-4 mx-auto" />
-                  </button>
+                  </motion.button>
                 </div>
               </div>
 
@@ -420,7 +496,7 @@ const WhatsAppStatusTool = () => {
                   type="number"
                   value={fontSize}
                   onChange={(e) => setFontSize(parseInt(e.target.value) || 48)}
-                  className="input-field w-full"
+                  className="w-full rounded-lg bg-muted px-3 py-2 text-sm font-medium"
                   min={16}
                   max={120}
                   title="Set font size for status text"
@@ -430,31 +506,38 @@ const WhatsAppStatusTool = () => {
               {/* Text Shadow */}
               <div>
                 <label className="mb-2 block text-sm font-medium">Text Shadow</label>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => setTextShadow(!textShadow)}
                   className={`w-full rounded-lg border p-2 text-sm font-medium transition-colors ${
                     textShadow
-                      ? "border-primary bg-primary/10 text-primary"
+                      ? "border-primary bg-primary/10 text-primary shadow-md"
                       : "border-border hover:border-primary/50"
                   }`}
                   title="Toggle text shadow effect"
                 >
                   {textShadow ? "Enabled" : "Disabled"}
-                </button>
+                </motion.button>
               </div>
             </div>
 
-            {/* Text Color */}
+            {/* Enhanced Text Color */}
             <div>
               <label className="mb-2 block text-sm font-medium">Text Color</label>
               <div className="flex gap-2">
                 <div className="flex gap-1">
-                  {presetColors.map((color) => (
-                    <button
+                  {presetColors.map((color, index) => (
+                    <motion.button
                       key={color}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.05 * index }}
                       onClick={() => setTextColor(color)}
-                      className={`h-8 w-8 rounded-lg border-2 transition-all ${
-                        textColor === color ? "border-primary" : "border-border"
+                      className={`h-8 w-8 rounded-lg border-2 transition-all shadow-sm hover:shadow-md ${
+                        textColor === color ? "border-primary ring-2 ring-primary/30" : "border-border"
                       }`}
                       style={{ backgroundColor: color }}
                       title={`Select color ${color}`}
@@ -462,19 +545,25 @@ const WhatsAppStatusTool = () => {
                     />
                   ))}
                 </div>
-                <input
-                  type="color"
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
-                  className="h-8 w-12 cursor-pointer rounded-lg border-0"
-                  title="Choose text color"
-                  aria-label="Text color picker"
-                />
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative"
+                >
+                  <input
+                    type="color"
+                    value={textColor}
+                    onChange={(e) => setTextColor(e.target.value)}
+                    className="h-8 w-12 cursor-pointer rounded-lg border-0 shadow-md"
+                    title="Choose text color"
+                    aria-label="Text color picker"
+                  />
+                </motion.div>
                 <input
                   type="text"
                   value={textColor}
                   onChange={(e) => setTextColor(e.target.value)}
-                  className="input-field flex-1"
+                  className="flex-1 rounded-lg bg-muted px-3 py-2 text-sm font-medium"
                   placeholder="#ffffff"
                   title="Enter hex color code for text"
                   aria-label="Text color value"
@@ -482,24 +571,40 @@ const WhatsAppStatusTool = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Actions */}
-        <div className="flex gap-4">
-          <button
+        {/* Enhanced Actions */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex gap-4"
+        >
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={generate} 
             disabled={isGenerating}
-            className="btn-primary flex-1 disabled:opacity-50"
+            className="flex-1 rounded-lg text-white px-6 py-3 font-medium transition-colors disabled:opacity-50 shadow-lg hover:shadow-xl"
+            style={{
+              background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
+            }}
             title="Generate WhatsApp status"
           >
-            <Sparkles className={`h-5 w-5 ${isGenerating ? 'animate-pulse' : ''}`} />
+            <Sparkles className={`inline h-5 w-5 mr-2 ${isGenerating ? 'animate-pulse' : ''}`} />
             {isGenerating ? "Generating..." : "Generate Status"}
-          </button>
-          <button onClick={reset} className="btn-secondary" title="Reset all settings">
-            <X className="h-5 w-5" />
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={reset} 
+            className="rounded-lg bg-muted px-6 py-3 font-medium transition-colors hover:bg-muted/80 shadow-md hover:shadow-lg"
+            title="Reset all settings"
+          >
+            <X className="inline h-5 w-5 mr-2" />
             Reset
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
         {/* Result Preview and Download */}
         {resultUrl && (
