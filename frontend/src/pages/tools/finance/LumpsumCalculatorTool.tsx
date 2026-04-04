@@ -1,21 +1,47 @@
 import { useState } from "react";
-import { Calculator, TrendingUp, Target, Calendar, Percent, IndianRupee, Sparkles } from "lucide-react";
+import { Calculator, TrendingUp, Target, Calendar, Percent, IndianRupee, Sparkles, PiggyBank, BadgeIndianRupee, Landmark } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { PresetOption, PresetButtonGroup } from "@/components/ui/preset-button-group";
+import { InteractiveSlider } from "@/components/ui/interactive-slider";
+import { FormulaCard } from "@/components/ui/formula-card";
+import { FinanceChart, generateGrowthData } from "@/components/ui/finance-chart";
+import { EnhancedDownload, downloadJSON, downloadText } from "@/components/EnhancedDownload";
 
 const categoryColor = "35 85% 55%";
 
+const formatIndianCurrency = (value: number) => {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+};
+
 const LumpsumCalculatorTool = () => {
-  const [principalAmount, setPrincipalAmount] = useState("");
-  const [expectedReturn, setExpectedReturn] = useState("12");
-  const [timePeriod, setTimePeriod] = useState("10");
+  const [principalAmount, setPrincipalAmount] = useState(100000);
+  const [expectedReturn, setExpectedReturn] = useState(12);
+  const [timePeriod, setTimePeriod] = useState(10);
   const [copied, setCopied] = useState(false);
 
+  const presets: PresetOption[] = [
+    { label: "Starter", value: { amount: 100000, rate: 10, years: 5 }, icon: PiggyBank, description: "5 years" },
+    { label: "Balanced", value: { amount: 500000, rate: 12, years: 10 }, icon: BadgeIndianRupee, description: "10 years" },
+    { label: "Long Term", value: { amount: 1000000, rate: 14, years: 15 }, icon: Landmark, description: "15 years" },
+  ];
+
+  const handlePresetSelect = (value: { amount: number; rate: number; years: number }) => {
+    setPrincipalAmount(value.amount);
+    setExpectedReturn(value.rate);
+    setTimePeriod(value.years);
+  };
+
   const calculate = () => {
-    const principal = parseFloat(principalAmount);
-    const annualReturn = parseFloat(expectedReturn) / 100;
-    const years = parseFloat(timePeriod);
+    const principal = principalAmount;
+    const annualReturn = expectedReturn / 100;
+    const years = timePeriod;
     
     if (isNaN(principal) || isNaN(annualReturn) || isNaN(years)) return null;
 
@@ -33,13 +59,39 @@ const LumpsumCalculatorTool = () => {
   };
 
   const result = calculate();
+  const chartData = result ? generateGrowthData(principalAmount, expectedReturn, timePeriod) : [];
 
   const handleCopy = async () => {
     if (!result) return;
-    const text = `Principal Amount: ₹${result.principal.toFixed(2)}\nTotal Returns: ₹${result.totalReturns.toFixed(2)}\nFuture Value: ₹${result.futureValue.toFixed(2)}\nWealth Gain: ${result.wealthGain.toFixed(2)}%`;
+    const text = `Principal Amount: ${formatIndianCurrency(result.principal)}\nTotal Returns: ${formatIndianCurrency(result.totalReturns)}\nFuture Value: ${formatIndianCurrency(result.futureValue)}\nWealth Gain: ${result.wealthGain.toFixed(2)}%`;
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownloadPDF = () => {
+    if (!result) return;
+    const text = `Lumpsum Calculator Results\n\nInvestment Details:\nPrincipal: ₹${principalAmount.toLocaleString()}\nExpected Return: ${expectedReturn}% per annum\nTime Period: ${timePeriod} years\n\nResults:\nFuture Value: ₹${Math.round(result.futureValue).toLocaleString()}\nTotal Returns: ₹${Math.round(result.totalReturns).toLocaleString()}\nWealth Gain: ${result.wealthGain.toFixed(2)}%\n\nCalculated on ${new Date().toLocaleDateString()}`;
+    downloadText(text, `lumpsum-calculation-${Date.now()}.txt`, "text/plain");
+  };
+
+  const handleDownloadJSON = () => {
+    if (!result) return;
+    const data = {
+      calculationType: "Lumpsum Calculator",
+      inputs: {
+        principalAmount,
+        expectedReturn: `${expectedReturn}% p.a.`,
+        timePeriod: `${timePeriod} years`,
+      },
+      results: {
+        futureValue: result.futureValue,
+        totalReturns: result.totalReturns,
+        wealthGain: result.wealthGain,
+      },
+      calculatedAt: new Date().toISOString(),
+    };
+    downloadJSON(data, `lumpsum-calculation-${Date.now()}.json`);
   };
 
   return (
@@ -92,55 +144,72 @@ const LumpsumCalculatorTool = () => {
           </div>
         </motion.div>
 
-        {/* Input Section */}
+        {/* Input Section with Sliders and Presets */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          className="space-y-6"
         >
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium mb-2">Principal Amount</label>
-              <div className="relative">
-                <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input
-                  type="number"
-                  value={principalAmount}
-                  onChange={(e) => setPrincipalAmount(e.target.value)}
-                  placeholder="e.g., 100000"
-                  className="w-full rounded-lg bg-muted pl-10 pr-4 py-3 text-lg font-medium"
-                />
-              </div>
-            </div>
+          {/* Preset Scenarios */}
+          <div className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500">
+            <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+              <Sparkles className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
+              Quick Scenarios
+            </h3>
+            <PresetButtonGroup
+              options={presets}
+              onSelect={handlePresetSelect}
+              categoryColor={categoryColor}
+              columns={3}
+              variant="compact"
+            />
+          </div>
 
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div>
-                <label className="block text-sm font-medium mb-2">Expected Annual Return</label>
-                <div className="relative">
-                  <Percent className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input
-                    type="number"
-                    value={expectedReturn}
-                    onChange={(e) => setExpectedReturn(e.target.value)}
-                    placeholder="e.g., 12"
-                    className="w-full rounded-lg bg-muted pl-10 pr-4 py-3"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Time Period (Years)</label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input
-                    type="number"
-                    value={timePeriod}
-                    onChange={(e) => setTimePeriod(e.target.value)}
-                    placeholder="e.g., 10"
-                    className="w-full rounded-lg bg-muted pl-10 pr-4 py-3"
-                  />
-                </div>
-              </div>
+          {/* Interactive Sliders */}
+          <div className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500">
+            <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
+              <Calculator className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
+              Investment Parameters
+            </h3>
+            
+            <div className="space-y-6">
+              <InteractiveSlider
+                label="Principal Amount"
+                value={principalAmount}
+                onChange={setPrincipalAmount}
+                min={10000}
+                max={10000000}
+                step={10000}
+                prefix="₹"
+                categoryColor={categoryColor}
+                formatValue={(val) => `₹${val.toLocaleString()}`}
+                description="Initial investment amount"
+              />
+
+              <InteractiveSlider
+                label="Expected Annual Return"
+                value={expectedReturn}
+                onChange={setExpectedReturn}
+                min={1}
+                max={30}
+                step={0.5}
+                suffix="%"
+                categoryColor={categoryColor}
+                description="Expected annual rate of return"
+              />
+
+              <InteractiveSlider
+                label="Time Period"
+                value={timePeriod}
+                onChange={setTimePeriod}
+                min={1}
+                max={30}
+                step={1}
+                suffix=" years"
+                categoryColor={categoryColor}
+                description="Investment duration"
+              />
             </div>
           </div>
         </motion.div>
@@ -173,7 +242,7 @@ const LumpsumCalculatorTool = () => {
                   Future Value
                 </div>
                 <p className="text-5xl font-bold" style={{ color: `hsl(${categoryColor})` }}>
-                  ₹{result.futureValue.toFixed(2)}
+                  {formatIndianCurrency(result.futureValue)}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
                   After {timePeriod} years with {expectedReturn}% annual return
@@ -194,7 +263,7 @@ const LumpsumCalculatorTool = () => {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Principal Amount</p>
                     <p className="text-2xl font-bold text-blue-600">
-                      ₹{result.principal.toFixed(2)}
+                      {formatIndianCurrency(result.principal)}
                     </p>
                   </div>
                 </div>
@@ -211,7 +280,7 @@ const LumpsumCalculatorTool = () => {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Total Returns</p>
                     <p className="text-2xl font-bold text-green-600">
-                      ₹{result.totalReturns.toFixed(2)}
+                      {formatIndianCurrency(result.totalReturns)}
                     </p>
                   </div>
                 </div>
@@ -236,7 +305,7 @@ const LumpsumCalculatorTool = () => {
             </div>
 
             {/* Copy Button */}
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-3">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -255,39 +324,56 @@ const LumpsumCalculatorTool = () => {
                   </>
                 )}
               </motion.button>
+
+              <EnhancedDownload
+                options={[
+                  { label: 'Download Report', format: 'txt', action: handleDownloadPDF },
+                  { label: 'Export Data', format: 'json', action: handleDownloadJSON },
+                ]}
+                primaryLabel="Download"
+                showCopy={false}
+                variant="default"
+              />
             </div>
+
+            {/* Growth Visualization Chart */}
+            {chartData.length > 0 && (
+              <FinanceChart
+                data={chartData}
+                type="area"
+                title="Investment Growth Over Time"
+                description={`Growth projection at ${expectedReturn}% annual return`}
+                dataKey="lumpsum"
+                xAxisKey="name"
+                categoryColor={categoryColor}
+                height={300}
+                formatValue={(val) => `₹${(val / 1000).toFixed(0)}K`}
+              />
+            )}
           </motion.div>
         )}
 
         {/* Enhanced Formula Info */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="rounded-xl border border-border bg-gradient-to-r from-blue-50 to-purple-50 p-6"
-        >
-          <div className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
-              <Calculator className="h-5 w-5 text-blue-600" />
-            </div>
-            <div className="flex-1">
-              <p className="font-medium text-blue-900 mb-2">Lumpsum Formula Used:</p>
-              <p className="font-mono text-sm text-blue-800 bg-white/50 rounded px-3 py-2 mb-3">
-                FV = P × (1 + r)^n
-              </p>
-              <div className="text-xs text-blue-700 space-y-1">
-                <p><strong>Where:</strong></p>
-                <p>• FV = Future Value</p>
-                <p>• P = Principal Amount (initial investment)</p>
-                <p>• r = Annual rate of interest (as decimal)</p>
-                <p>• n = Number of years</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        <FormulaCard
+          title="Lumpsum Investment Formula"
+          formula="FV = P × (1 + r)ⁿ"
+          variables={[
+            { symbol: 'FV', description: 'Future Value of investment', example: '₹1,00,000' },
+            { symbol: 'P', description: 'Principal Amount (initial investment)', example: '₹50,000' },
+            { symbol: 'r', description: 'Annual rate of interest (as decimal)', example: '0.12 for 12%' },
+            { symbol: 'n', description: 'Number of years', example: '10 years' },
+          ]}
+          example={{
+            description: 'Invest ₹1,00,000 at 12% annual return for 10 years',
+            calculation: 'FV = 1,00,000 × (1 + 0.12)¹⁰ = 1,00,000 × 3.1058',
+            result: '₹3,10,585',
+          }}
+          categoryColor={categoryColor}
+          defaultExpanded={false}
+        />
 
         {/* Enhanced Empty State */}
-        {!principalAmount && (
+        {principalAmount <= 0 && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -311,7 +397,7 @@ const LumpsumCalculatorTool = () => {
               Start Your Investment Journey
             </h3>
             <p className="text-sm text-muted-foreground">
-              Enter your lumpsum investment amount to see the power of compounding
+              Adjust the principal amount slider to see the power of compounding
             </p>
           </motion.div>
         )}

@@ -198,7 +198,6 @@ export const toolCategories: ToolCategory[] = [
       { id: "lorem-generator", name: "Lorem Ipsum Generator", description: "Generate placeholder text", path: "/lorem-ipsum-generator", isAvailable: true },
       { id: "cron-generator", name: "Cron Expression Generator", description: "Build cron schedule expressions", path: "/cron-generator", isAvailable: true },
       { id: "http-header", name: "HTTP Header Checker", description: "Check HTTP response headers", path: "/http-header-checker", isAvailable: true },
-      { id: "website-screenshot", name: "Website Screenshot", description: "Capture website screenshots", path: "/website-screenshot", isAvailable: true },
       { id: "token-calculator", name: "Token Calculator", description: "Estimate token count for LLM APIs", path: "/token-calculator", isAvailable: true },
       { id: "color-palettes", name: "Color Palettes Generator", description: "Generate beautiful color palettes for design projects", path: "/color-palettes", isAvailable: true },
       { id: "api-response-formatter", name: "API Response Formatter", description: "Format and beautify API responses", path: "/api-response-formatter", isAvailable: true },
@@ -223,6 +222,7 @@ export const toolCategories: ToolCategory[] = [
       { id: "dns-lookup", name: "DNS Lookup", description: "Query DNS records for domains", path: "/dns-lookup", isAvailable: true },
       { id: "ssl-checker", name: "SSL Certificate Checker", description: "Check SSL validity and expiry", path: "/ssl-checker", isAvailable: true },
       { id: "website-ping", name: "Website Ping Test", description: "Test website availability", path: "/website-ping", isAvailable: true },
+      { id: "website-screenshot", name: "Website Screenshot", description: "Capture full-page website screenshots", path: "/website-screenshot", isAvailable: true },
     ],
   },
   {

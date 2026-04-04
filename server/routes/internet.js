@@ -166,7 +166,6 @@ router.post('/dns-lookup', async (req, res) => {
             records = [];
           }
           break;
-          
         case 'SOA':
           try {
             const soaRecords = await dns.resolveSoa(domain);
@@ -643,10 +642,12 @@ router.post('/url-shortener', async (req, res) => {
   }
 });
 
-// Website Screenshot - Mock Implementation (Real screenshots would need Puppeteer/Playwright)
+// Website Screenshot - Real Implementation using Playwright
 router.post('/website-screenshot', async (req, res) => {
+  let browser = null;
+  
   try {
-    const { url, width = 1920, height = 1080, format = 'png' } = req.body;
+    const { url, width = 1920, height = 1080, format = 'png', waitMs = 5000 } = req.body;
     
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
@@ -659,28 +660,197 @@ router.post('/website-screenshot', async (req, res) => {
       return res.status(400).json({ error: 'Invalid URL format' });
     }
 
-    // Generate a placeholder screenshot (1x1 transparent PNG in base64)
-    // In production, use Puppeteer or Playwright for real screenshots
-    const placeholderPng = Buffer.from([
-      0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
-      0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
-      0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4, 0x89, 0x00, 0x00, 0x00,
-      0x0D, 0x49, 0x44, 0x41, 0x54, 0x78, 0xDA, 0x63, 0xF8, 0x0F, 0x00, 0x00,
-      0x01, 0x01, 0x00, 0x01, 0x18, 0xDD, 0x8D, 0xB4, 0x00, 0x00, 0x00, 0x00,
-      0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82
-    ]);
+    // Validate dimensions
+    const viewportWidth = Math.min(Math.max(parseInt(width), 320), 3840);
+    const viewportHeight = Math.min(Math.max(parseInt(height), 240), 2160);
 
-    const base64Image = placeholderPng.toString('base64');
+    // Lazy load playwright to avoid initialization on server start
+    const { chromium } = require('playwright');
+    
+    // Launch browser with options for better compatibility
+    browser = await chromium.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--disable-gpu'
+      ]
+    });
+
+    const context = await browser.newContext({
+      viewport: { width: viewportWidth, height: viewportHeight },
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    });
+
+    const page = await context.newPage();
+    
+    // Set timeout for page load
+    await page.goto(url, { 
+      waitUntil: 'networkidle',
+      timeout: 30000 
+    });
+
+    // Wait for visible content, then trigger scroll-based animations/lazy sections.
+    await page.waitForFunction(() => {
+      const body = document.body;
+      if (!body || body.children.length === 0) {
+        return false;
+      }
+
+      const hasVisibleText = Array.from(document.querySelectorAll('h1,h2,h3,p,span,li,a,button'))
+        .some((el) => {
+          const style = window.getComputedStyle(el);
+          const rect = el.getBoundingClientRect();
+          const text = (el.textContent || '').trim();
+          return (
+            text.length > 0 &&
+            rect.width > 0 &&
+            rect.height > 0 &&
+            style.display !== 'none' &&
+            style.visibility !== 'hidden' &&
+            style.opacity !== '0'
+          );
+        });
+
+      const hasVisibleMedia = Array.from(document.querySelectorAll('img,svg,canvas,video'))
+        .some((el) => {
+          const style = window.getComputedStyle(el);
+          const rect = el.getBoundingClientRect();
+          return (
+            rect.width > 0 &&
+            rect.height > 0 &&
+            style.display !== 'none' &&
+            style.visibility !== 'hidden' &&
+            style.opacity !== '0'
+          );
+        });
+
+      return hasVisibleText || hasVisibleMedia;
+    }, { timeout: 15000 });
+
+    // Disable most CSS animation timing so elements are captured in a stable state.
+    await page.addStyleTag({
+      content: `
+        *, *::before, *::after {
+          animation-duration: 0s !important;
+          animation-delay: 0s !important;
+          transition-duration: 0s !important;
+          transition-delay: 0s !important;
+          scroll-behavior: auto !important;
+        }
+        html, body {
+          scroll-behavior: auto !important;
+        }
+      `
+    });
+
+    await page.evaluate(async () => {
+      const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      // Force lazy images to start loading immediately.
+      document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
+        img.setAttribute('loading', 'eager');
+      });
+
+      let previousHeight = 0;
+      for (let pass = 0; pass < 4; pass++) {
+        const maxScroll = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        const step = Math.max(window.innerHeight * 0.75, 260);
+
+        for (let y = 0; y <= maxScroll; y += step) {
+          window.scrollTo(0, y);
+          await sleep(180);
+        }
+
+        await sleep(300);
+
+        const currentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        if (pass > 0 && Math.abs(currentHeight - previousHeight) < 50) {
+          break;
+        }
+        previousHeight = currentHeight;
+      }
+
+      // Ensure animations/reveal-on-scroll content is visible for stitched fullPage capture.
+      const allElements = Array.from(document.querySelectorAll('*'));
+      for (const el of allElements) {
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) {
+          continue;
+        }
+
+        if (style.opacity === '0') {
+          el.style.opacity = '1';
+        }
+        if (style.visibility === 'hidden') {
+          el.style.visibility = 'visible';
+        }
+        if (style.transform && style.transform !== 'none') {
+          el.style.transform = 'none';
+        }
+        if (style.filter && style.filter !== 'none') {
+          el.style.filter = 'none';
+        }
+      }
+
+      // Wait for image/font rendering to settle before final screenshot.
+      await Promise.allSettled(Array.from(document.images).map((img) => {
+        if (img.complete) {
+          return Promise.resolve();
+        }
+
+        return new Promise((resolve) => {
+          const done = () => resolve();
+          img.addEventListener('load', done, { once: true });
+          img.addEventListener('error', done, { once: true });
+          setTimeout(done, 2000);
+        });
+      }));
+
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (e) {
+          // Ignore font loading failures and continue with capture.
+        }
+      }
+
+      window.scrollTo(0, 0);
+      await sleep(250);
+    });
+
+    const extraWait = Math.min(Math.max(parseInt(waitMs, 10) || 0, 0), 30000);
+    if (extraWait > 0) {
+      await page.waitForTimeout(extraWait);
+    }
+
+    // Final settle window to reduce partially rendered frames.
+    await page.waitForTimeout(1000);
+
+    // Take screenshot - fullPage: true captures entire scrollable page
+    const screenshotBuffer = await page.screenshot({
+      type: format === 'jpeg' || format === 'jpg' ? 'jpeg' : 'png',
+      fullPage: true,
+      quality: format === 'jpeg' || format === 'jpg' ? 85 : undefined
+    });
+
+    // Convert to base64
+    const base64Image = screenshotBuffer.toString('base64');
     const mimeType = format === 'jpeg' || format === 'jpg' ? 'image/jpeg' : 'image/png';
+
+    await browser.close();
+    browser = null;
 
     const screenshotInfo = {
       url,
-      width: parseInt(width),
-      height: parseInt(height),
+      width: viewportWidth,
+      height: viewportHeight,
       format,
       screenshot: `data:${mimeType};base64,${base64Image}`,
-      timestamp: new Date().toISOString(),
-      note: 'Placeholder screenshot. For real screenshots, integrate Puppeteer or Playwright on your server.'
+      timestamp: new Date().toISOString()
     };
 
     res.json({
@@ -689,8 +859,18 @@ router.post('/website-screenshot', async (req, res) => {
     });
   } catch (error) {
     console.error('Screenshot error:', error.message);
+    
+    // Clean up browser if still open
+    if (browser) {
+      try {
+        await browser.close();
+      } catch (e) {
+        console.error('Error closing browser:', e.message);
+      }
+    }
+    
     res.status(500).json({ 
-      error: 'Failed to capture screenshot. The website may be unreachable or blocking screenshots.' 
+      error: `Failed to capture screenshot: ${error.message}` 
     });
   }
 });

@@ -33,7 +33,7 @@ const CategoryPage = () => {
       "finance": ["invoice-generator", "gst-calculator", "emi-calculator", "currency-converter"],
       "dev": ["json-formatter", "regex-tester", "jwt-decoder", "url-encoder"],
       "education": ["scientific-calculator", "percentage-calc", "unit-converter", "compound-interest"],
-      "internet": ["ip-lookup", "dns-lookup", "ssl-checker", "website-ping"],
+      "internet": ["ip-lookup", "dns-lookup", "ssl-checker", "website-ping", "website-screenshot"],
       "seo": ["meta-title-description", "keyword-density", "robots-txt", "page-seo"],
       "social": ["hashtag-generator", "bio-generator", "caption-formatter", "meme-generator"],
       "zip": ["create-zip", "extract-zip", "password-zip", "compression-zip"],

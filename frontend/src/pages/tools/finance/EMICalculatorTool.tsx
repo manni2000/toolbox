@@ -1,32 +1,52 @@
 import { useState } from "react";
-import { Copy, Check, Calculator, Sparkles, TrendingUp, IndianRupee, Calendar, Percent } from "lucide-react";
+import { Copy, Check, Calculator, Sparkles, TrendingUp, IndianRupee, Calendar, Percent, Home, Car, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { PresetOption, PresetButtonGroup } from "@/components/ui/preset-button-group";
+import { InteractiveSlider } from "@/components/ui/interactive-slider";
+import { FormulaCard } from "@/components/ui/formula-card";
+import { FinanceChart, generateEMIData, generatePieData } from "@/components/ui/finance-chart";
+import { EnhancedDownload, downloadText, downloadJSON } from "@/components/EnhancedDownload";
 
 const categoryColor = "35 85% 55%";
 
+const formatIndianCurrency = (value: number) => {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+};
+
 const EMICalculatorTool = () => {
-  const [principal, setPrincipal] = useState("");
-  const [rate, setRate] = useState("");
-  const [tenure, setTenure] = useState("");
+  const [principal, setPrincipal] = useState(2500000);
+  const [rate, setRate] = useState(8.5);
+  const [tenure, setTenure] = useState(10);
   const [tenureType, setTenureType] = useState<"months" | "years">("years");
-  const [result, setResult] = useState<{
-    emi: number;
-    totalInterest: number;
-    totalPayment: number;
-  } | null>(null);
   const [copied, setCopied] = useState(false);
 
+  // Preset loan scenarios
+  const presets: PresetOption[] = [
+    { label: "Home Loan", value: { amount: 2500000, rate: 8.5, years: 20 }, icon: Home, description: "20 years" },
+    { label: "Car Loan", value: { amount: 800000, rate: 9.5, years: 5 }, icon: Car, description: "5 years" },
+    { label: "Personal Loan", value: { amount: 300000, rate: 11.5, years: 3 }, icon: User, description: "3 years" },
+  ];
+
+  const handlePresetSelect = (value: { amount: number; rate: number; years: number }) => {
+    setPrincipal(value.amount);
+    setRate(value.rate);
+    setTenure(value.years);
+    setTenureType("years");
+  };
+
   const calculate = () => {
-    const P = parseFloat(principal);
-    const R = parseFloat(rate) / 12 / 100; // Monthly rate
-    let N = parseFloat(tenure);
+    const P = principal;
+    const R = rate / 12 / 100; // Monthly rate
+    let N = tenure;
     
-    if (isNaN(P) || isNaN(R) || isNaN(N) || P <= 0 || R <= 0 || N <= 0) {
-      setResult(null);
-      return;
-    }
+    if (P <= 0 || R <= 0 || N <= 0) return null;
 
     if (tenureType === "years") {
       N = N * 12;
@@ -37,19 +57,52 @@ const EMICalculatorTool = () => {
     const totalPayment = emi * N;
     const totalInterest = totalPayment - P;
 
-    setResult({
+    return {
       emi: Math.round(emi),
       totalInterest: Math.round(totalInterest),
       totalPayment: Math.round(totalPayment),
-    });
+    };
   };
+
+  const result = calculate();
+  const months = tenureType === "years" ? tenure * 12 : tenure;
+  const chartData = result ? generateEMIData(principal, rate / 12 / 100, months) : [];
+  const pieData = result ? generatePieData([
+    { label: "Principal", value: principal },
+    { label: "Interest", value: result.totalInterest },
+  ]) : [];
 
   const handleCopy = async () => {
     if (!result) return;
-    const text = `EMI: ₹${result.emi.toLocaleString()}\nTotal Interest: ₹${result.totalInterest.toLocaleString()}\nTotal Payment: ₹${result.totalPayment.toLocaleString()}`;
+    const text = `EMI: ${formatIndianCurrency(result.emi)}\nTotal Interest: ${formatIndianCurrency(result.totalInterest)}\nTotal Payment: ${formatIndianCurrency(result.totalPayment)}`;
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownload = () => {
+    if (!result) return;
+    const text = `EMI Calculator Results\n\nLoan Details:\nPrincipal: ₹${principal.toLocaleString()}\nInterest Rate: ${rate}% per annum\nTenure: ${tenure} ${tenureType}\n\nCalculated EMI:\nMonthly Payment: ₹${result.emi.toLocaleString()}\nTotal Interest: ₹${result.totalInterest.toLocaleString()}\nTotal Payment: ₹${result.totalPayment.toLocaleString()}\n\nCalculated on ${new Date().toLocaleDateString()}`;
+    downloadText(text, `emi-calculation-${Date.now()}.txt`, 'text/plain');
+  };
+
+  const handleDownloadJSON = () => {
+    if (!result) return;
+    const data = {
+      calculationType: 'EMI Calculator',
+      inputs: {
+        principal,
+        interestRate: rate + '% p.a.',
+        tenure: tenure + ' ' + tenureType,
+      },
+      results: {
+        monthlyEMI: result.emi,
+        totalInterest: result.totalInterest,
+        totalPayment: result.totalPayment,
+      },
+      calculatedAt: new Date().toISOString(),
+    };
+    downloadJSON(data, `emi-calculation-${Date.now()}.json`);
   };
 
   return (
@@ -102,78 +155,112 @@ const EMICalculatorTool = () => {
           </div>
         </motion.div>
 
-        {/* Input Section */}
+        {/* Preset Loan Scenarios */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
         >
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium mb-2">Loan Amount</label>
-              <div className="relative">
-                <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input
-                  type="number"
-                  value={principal}
-                  onChange={(e) => setPrincipal(e.target.value)}
-                  placeholder="e.g., 1000000"
-                  className="w-full rounded-lg bg-muted pl-10 pr-4 py-3 text-lg font-medium"
-                />
-              </div>
-            </div>
+          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+            <Sparkles className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
+            Quick Loan Types
+          </h3>
+          <PresetButtonGroup
+            options={presets}
+            onSelect={handlePresetSelect}
+            categoryColor={categoryColor}
+            columns={3}
+            variant="default"
+          />
+        </motion.div>
+
+        {/* Interactive Sliders */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+        >
+          <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
+            <Calculator className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
+            Loan Parameters
+          </h3>
+          
+          <div className="space-y-6">
+            <InteractiveSlider
+              label="Loan Amount"
+              value={principal}
+              onChange={setPrincipal}
+              min={100000}
+              max={10000000}
+              step={50000}
+              prefix="₹"
+              categoryColor={categoryColor}
+              formatValue={(val) => `₹${(val / 100000).toFixed(1)}L`}
+              description="Principal loan amount"
+            />
+
+            <InteractiveSlider
+              label="Interest Rate (per annum)"
+              value={rate}
+              onChange={setRate}
+              min={5}
+              max={20}
+              step={0.1}
+              suffix="% p.a."
+              categoryColor={categoryColor}
+              description="Annual interest rate"
+            />
+
             <div>
-              <label className="block text-sm font-medium mb-2">Interest Rate</label>
-              <div className="relative">
-                <Percent className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input
-                  type="number"
-                  step="0.1"
-                  value={rate}
-                  onChange={(e) => setRate(e.target.value)}
-                  placeholder="e.g., 8.5"
-                  className="w-full rounded-lg bg-muted pl-10 pr-4 py-3"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">Loan Tenure</label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input
-                  type="number"
-                  value={tenure}
-                  onChange={(e) => setTenure(e.target.value)}
-                  placeholder="e.g., 5"
-                  className="w-full rounded-lg bg-muted pl-10 pr-4 py-3"
-                />
-                <select
-                  value={tenureType}
-                  onChange={(e) => setTenureType(e.target.value as "months" | "years")}
-                  title="Loan tenure unit"
-                  aria-label="Loan tenure unit"
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent text-sm text-muted-foreground"
+              <InteractiveSlider
+                label="Loan Tenure"
+                value={tenure}
+                onChange={setTenure}
+                min={1}
+                max={tenureType === "years" ? 30 : 360}
+                step={1}
+                suffix={` ${tenureType}`}
+                categoryColor={categoryColor}
+                description="Loan repayment period"
+              />
+              <div className="mt-3 flex items-center gap-3">
+                <button
+                  onClick={() => setTenureType("years")}
+                  className={`flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                    tenureType === "years"
+                      ? "text-white shadow-md"
+                      : "bg-muted hover:bg-muted/80"
+                  }`}
+                  style={{
+                    background:
+                      tenureType === "years"
+                        ? `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`
+                        : undefined,
+                  }}
                 >
-                  <option value="years">Years</option>
-                  <option value="months">Months</option>
-                </select>
+                  Years
+                </button>
+                <button
+                  onClick={() => setTenureType("months")}
+                  className={`flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                    tenureType === "months"
+                      ? "text-white shadow-md"
+                      : "bg-muted hover:bg-muted/80"
+                  }`}
+                  style={{
+                    background:
+                      tenureType === "months"
+                        ? `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`
+                        : undefined,
+                  }}
+                >
+                  Months
+                </button>
               </div>
             </div>
           </div>
-
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={calculate}
-            className="w-full mt-6 rounded-lg text-white px-4 py-3 font-medium transition-colors"
-            style={{
-              background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
-            }}
-          >
-            <Calculator className="inline h-4 w-4 mr-2" />
-            Calculate EMI
-          </motion.button>
         </motion.div>
 
         {/* Results Section */}
@@ -201,10 +288,10 @@ const EMICalculatorTool = () => {
               <div className="relative">
                 <p className="text-sm font-medium text-muted-foreground mb-2">Monthly EMI</p>
                 <p className="text-5xl font-bold" style={{ color: `hsl(${categoryColor})` }}>
-                  ₹{result.emi.toLocaleString()}
+                  {formatIndianCurrency(result.emi)}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  For {tenure} {tenureType === "years" ? "years" : "months"}
+                  For {tenure} {tenureType}
                 </p>
               </div>
             </div>
@@ -222,7 +309,7 @@ const EMICalculatorTool = () => {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Total Interest</p>
                     <p className="text-2xl font-bold text-orange-600">
-                      ₹{result.totalInterest.toLocaleString()}
+                      {formatIndianCurrency(result.totalInterest)}
                     </p>
                   </div>
                 </div>
@@ -239,15 +326,15 @@ const EMICalculatorTool = () => {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Total Payment</p>
                     <p className="text-2xl font-bold text-green-600">
-                      ₹{result.totalPayment.toLocaleString()}
+                      {formatIndianCurrency(result.totalPayment)}
                     </p>
                   </div>
                 </div>
               </motion.div>
             </div>
 
-            {/* Copy Button */}
-            <div className="flex justify-center">
+            {/* Actions */}
+            <div className="flex justify-center gap-3">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -257,7 +344,7 @@ const EMICalculatorTool = () => {
                 {copied ? (
                   <>
                     <Check className="h-4 w-4 text-primary" />
-                    Copied to clipboard!
+                    Copied!
                   </>
                 ) : (
                   <>
@@ -266,9 +353,69 @@ const EMICalculatorTool = () => {
                   </>
                 )}
               </motion.button>
+
+              <EnhancedDownload
+                options={[
+                  { label: 'Download Report', format: 'txt', action: handleDownload },
+                  { label: 'Export Data', format: 'json', action: handleDownloadJSON },
+                ]}
+                primaryLabel="Download"
+                showCopy={false}
+                variant="default"
+              />
             </div>
+
+            {/* Payment Breakdown Charts */}
+            {chartData.length > 0 && (
+              <div className="grid gap-4 lg:grid-cols-2">
+                <FinanceChart
+                  data={chartData.slice(0, Math.min(chartData.length, 12))}
+                  type="bar"
+                  title="Payment Breakdown"
+                  description="Principal vs Interest (First 12 months)"
+                  dataKey="interest"
+                  xAxisKey="name"
+                  categoryColor={categoryColor}
+                  height={250}
+                  formatValue={(val) => `₹${(val / 1000).toFixed(0)}K`}
+                  additionalLines={[
+                    { dataKey: 'principal', color: 'hsl(145 70% 45%)', name: 'Principal' }
+                  ]}
+                />
+
+                <FinanceChart
+                  data={pieData}
+                  type="pie"
+                  title="Total Cost Distribution"
+                  description="Principal vs Total Interest"
+                  dataKey="value"
+                  categoryColor={categoryColor}
+                  height={250}
+                  formatValue={(val) => `₹${(val / 100000).toFixed(1)}L`}
+                />
+              </div>
+            )}
           </motion.div>
         )}
+
+        {/* Formula Card */}
+        <FormulaCard
+          title="EMI Calculation Formula"
+          formula="EMI = P × r × (1 + r)ⁿ / ((1 + r)ⁿ - 1)"
+          variables={[
+            { symbol: 'EMI', description: 'Equated Monthly Installment', example: '₹21,246' },
+            { symbol: 'P', description: 'Principal loan amount', example: '₹25,00,000' },
+            { symbol: 'r', description: 'Monthly interest rate (annual rate / 12 / 100)', example: '0.00708 for 8.5% p.a.' },
+            { symbol: 'n', description: 'Total number of monthly installments', example: '240 months' },
+          ]}
+          example={{
+            description: 'Loan of ₹25,00,000 at 8.5% for 20 years',
+            calculation: 'r = 8.5 / 12 / 100 = 0.00708\nn = 20 × 12 = 240\nEMI = 25,00,000 × 0.00708 × (1.00708)²⁴⁰ / ((1.00708)²⁴⁰ - 1)',
+            result: '₹21,246 per month',
+          }}
+          categoryColor={categoryColor}
+          defaultExpanded={false}
+        />
       </div>
     </ToolLayout>
   );

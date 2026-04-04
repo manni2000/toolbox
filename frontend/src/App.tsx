@@ -102,7 +102,7 @@ import LoremGeneratorTool from "./pages/tools/dev/LoremGeneratorTool";
 import JWTDecoderTool from "./pages/tools/dev/JWTDecoderTool";
 import CronGeneratorTool from "./pages/tools/dev/CronGeneratorTool";
 import HTTPHeaderTool from "./pages/tools/dev/HTTPHeaderTool";
-import WebsiteScreenshotTool from "./pages/tools/dev/WebsiteScreenshotTool";
+import WebsiteScreenshotTool from "./pages/tools/internet/WebsiteScreenshotTool";
 import TokenCalculatorTool from "./pages/tools/dev/TokenCalculatorTool";
 import ColorPalettesTool from "./pages/tools/dev/ColorPalettesTool";
 
@@ -284,7 +284,6 @@ const AnimatedRoutes = () => {
           <Route path="/jwt-decoder" element={<JWTDecoderTool />} />
           <Route path="/cron-generator" element={<CronGeneratorTool />} />
           <Route path="/http-header-checker" element={<HTTPHeaderTool />} />
-          <Route path="/website-screenshot" element={<WebsiteScreenshotTool />} />
           <Route path="/token-calculator" element={<TokenCalculatorTool />} />
           <Route path="/color-palettes" element={<ColorPalettesTool />} />
           <Route path="/api-response-formatter" element={<APIResponseFormatterTool />} />
@@ -303,6 +302,7 @@ const AnimatedRoutes = () => {
           <Route path="/dns-lookup" element={<DNSLookupTool />} />
           <Route path="/ssl-checker" element={<SSLCheckerTool />} />
           <Route path="/website-ping" element={<WebsitePingTool />} />
+          <Route path="/website-screenshot" element={<WebsiteScreenshotTool />} />
           
           {/* Education Tools */}
           <Route path="/scientific-calculator" element={<ScientificCalculatorTool />} />

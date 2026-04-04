@@ -3,6 +3,7 @@ import { Copy, Check, Receipt, Sparkles, Calculator, Target, TrendingUp, IndianR
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { formatIndianCurrency } from "@/lib/number-formatting";
 
 const categoryColor = "35 85% 55%";
 
@@ -37,7 +38,7 @@ const GSTCalculatorTool = () => {
 
   const handleCopy = async () => {
     if (!result) return;
-    const text = `Base Amount: ₹${result.base.toFixed(2)}\nGST (${gstRate}%): ₹${result.gst.toFixed(2)}\nCGST (${parseFloat(gstRate)/2}%): ₹${result.cgst.toFixed(2)}\nSGST (${parseFloat(gstRate)/2}%): ₹${result.sgst.toFixed(2)}\nTotal: ₹${result.total.toFixed(2)}`;
+    const text = `Base Amount: ${formatIndianCurrency(result.base)}\nGST (${gstRate}%): ${formatIndianCurrency(result.gst)}\nCGST (${parseFloat(gstRate)/2}%): ${formatIndianCurrency(result.cgst)}\nSGST (${parseFloat(gstRate)/2}%): ${formatIndianCurrency(result.sgst)}\nTotal: ${formatIndianCurrency(result.total)}`;
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -226,7 +227,7 @@ const GSTCalculatorTool = () => {
                   Total Amount
                 </div>
                 <p className="text-5xl font-bold" style={{ color: `hsl(${categoryColor})` }}>
-                  ₹{result.total.toFixed(2)}
+                  {formatIndianCurrency(result.total)}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
                   Including GST at {gstRate}%
@@ -247,7 +248,7 @@ const GSTCalculatorTool = () => {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Base Amount</p>
                     <p className="text-2xl font-bold text-blue-600">
-                      ₹{result.base.toFixed(2)}
+                      {formatIndianCurrency(result.base)}
                     </p>
                   </div>
                 </div>
@@ -264,7 +265,7 @@ const GSTCalculatorTool = () => {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Total GST ({gstRate}%)</p>
                     <p className="text-2xl font-bold text-green-600">
-                      ₹{result.gst.toFixed(2)}
+                      {formatIndianCurrency(result.gst)}
                     </p>
                   </div>
                 </div>
@@ -277,13 +278,13 @@ const GSTCalculatorTool = () => {
                 <div className="text-center">
                   <p className="text-sm font-medium text-orange-800 mb-2">CGST ({parseFloat(gstRate)/2}%)</p>
                   <p className="text-2xl font-bold text-orange-600">
-                    ₹{result.cgst.toFixed(2)}
+                    {formatIndianCurrency(result.cgst)}
                   </p>
                 </div>
                 <div className="text-center">
                   <p className="text-sm font-medium text-yellow-800 mb-2">SGST ({parseFloat(gstRate)/2}%)</p>
                   <p className="text-2xl font-bold text-yellow-600">
-                    ₹{result.sgst.toFixed(2)}
+                    {formatIndianCurrency(result.sgst)}
                   </p>
                 </div>
               </div>

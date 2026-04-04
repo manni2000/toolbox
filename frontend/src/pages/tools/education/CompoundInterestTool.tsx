@@ -3,6 +3,8 @@ import { Copy, Check, Calculator, TrendingUp, Sparkles, DollarSign, Calendar, Pe
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { FormulaCard } from "@/components/ui/formula-card";
+import { ComparisonCard } from "@/components/ui/comparison-card";
 
 const categoryColor = "145 70% 45%";
 
@@ -310,6 +312,53 @@ const CompoundInterestTool = () => {
               </motion.button>
             </div>
           </motion.div>
+        )}
+
+        {/* Formula Card Section */}
+        <FormulaCard
+          title="Compound Interest Formula"
+          formula="A = P(1 + r/n)^(nt)"
+          variables={[
+            { symbol: 'A', description: 'Final amount (principal + interest)', example: '$11,268.25' },
+            { symbol: 'P', description: 'Principal amount (initial investment)', example: '$10,000' },
+            { symbol: 'r', description: 'Annual interest rate (as decimal)', example: '0.05 for 5%' },
+            { symbol: 'n', description: 'Number of times interest is compounded per year', example: '12 for monthly' },
+            { symbol: 't', description: 'Time in years', example: '2 years' },
+          ]}
+          example={{
+            description: 'Invest $10,000 at 5% compounded monthly for 2 years',
+            calculation: 'A = 10000(1 + 0.05/12)^(12×2) = 10000(1.00417)^24',
+            result: '$11,048.96',
+          }}
+          categoryColor={categoryColor}
+          defaultExpanded={false}
+        />
+
+        {/* Comparison: Different Compounding Frequencies */}
+        {result && (
+          <ComparisonCard
+            title="Impact of Compounding Frequency"
+            subtitle={`For ${principal} at ${rate}% for ${time} ${timeUnit}`}
+            items={frequencies.map(freq => {
+              const P = parseFloat(principal);
+              const r = parseFloat(rate) / 100;
+              const n = parseFloat(freq.value);
+              let t = parseFloat(time);
+              if (timeUnit === "months") t = t / 12;
+              
+              const amount = P * Math.pow(1 + r / n, n * t);
+              const interest = amount - P;
+              
+              return {
+                label: freq.label,
+                value: `$${amount.toFixed(2)}`,
+                icon: freq.value === frequency ? TrendingUp : undefined,
+                highlighted: freq.value === frequency,
+                description: `Interest: $${interest.toFixed(2)}`,
+              };
+            })}
+            categoryColor={categoryColor}
+          />
         )}
 
         {/* Enhanced Formula Info */}

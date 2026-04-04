@@ -49,6 +49,7 @@
     "pdf-parse": "^1.1.1",
     "pdf-to-png-converter": "^3.14.0",
     "pdfjs-dist": "^5.4.624",
+    "playwright": "^1.59.1",
     "qrcode": "^1.5.4",
     "sharp": "^0.32.6",
     "uuid": "^9.0.1",

@@ -6,6 +6,15 @@ import ToolLayout from "@/components/layout/ToolLayout";
 
 const categoryColor = "35 85% 55%";
 
+const formatIndianCurrency = (value: number) => {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+};
+
 const MutualFundCalculatorTool = () => {
   const [monthlyInvestment, setMonthlyInvestment] = useState("");
   const [expectedReturn, setExpectedReturn] = useState("12");
@@ -39,7 +48,7 @@ const MutualFundCalculatorTool = () => {
 
   const handleCopy = async () => {
     if (!result) return;
-    const text = `Monthly Investment: ₹${result.totalInvestment.toFixed(2)}\nTotal Returns: ₹${result.totalReturns.toFixed(2)}\nFuture Value: ₹${result.futureValue.toFixed(2)}\nWealth Gain: ${result.wealthGain.toFixed(2)}%`;
+    const text = `Monthly Investment: ${formatIndianCurrency(result.totalInvestment)}\nTotal Returns: ${formatIndianCurrency(result.totalReturns)}\nFuture Value: ${formatIndianCurrency(result.futureValue)}\nWealth Gain: ${result.wealthGain.toFixed(2)}%`;
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -176,7 +185,7 @@ const MutualFundCalculatorTool = () => {
                   Future Value
                 </div>
                 <p className="text-5xl font-bold" style={{ color: `hsl(${categoryColor})` }}>
-                  ₹{result.futureValue.toFixed(2)}
+                  {formatIndianCurrency(result.futureValue)}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
                   After {timePeriod} years with {expectedReturn}% annual return
@@ -197,7 +206,7 @@ const MutualFundCalculatorTool = () => {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Total Investment</p>
                     <p className="text-2xl font-bold text-blue-600">
-                      ₹{result.totalInvestment.toFixed(2)}
+                      {formatIndianCurrency(result.totalInvestment)}
                     </p>
                   </div>
                 </div>
@@ -214,7 +223,7 @@ const MutualFundCalculatorTool = () => {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Total Returns</p>
                     <p className="text-2xl font-bold text-green-600">
-                      ₹{result.totalReturns.toFixed(2)}
+                      {formatIndianCurrency(result.totalReturns)}
                     </p>
                   </div>
                 </div>

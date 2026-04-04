@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ArrowUpDown, Copy, Check, Sparkles, Target, Calculator, RefreshCw } from "lucide-react";
+import { ArrowUpDown, Copy, Check, Sparkles, Target, Calculator, RefreshCw, Ruler, Weight, Thermometer, SquareIcon, Droplet, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { PresetButtonGroup, PresetOption } from "@/components/ui/preset-button-group";
 
 const categoryColor = "145 70% 45%";
 
@@ -70,6 +71,43 @@ const UnitConverterTool = () => {
   const [copied, setCopied] = useState(false);
 
   const currentUnits = units[category];
+
+  // Common conversion presets
+  const commonConversions: Record<Category, PresetOption[]> = {
+    length: [
+      { label: "Km → Miles", value: { from: 1, to: 4 }, icon: Ruler, description: "Distance" },
+      { label: "Feet → Meters", value: { from: 6, to: 0 }, icon: Ruler, description: "Height" },
+      { label: "Inch → Cm", value: { from: 7, to: 2 }, icon: Ruler, description: "Small measure" },
+    ],
+    weight: [
+      { label: "Kg → Lbs", value: { from: 0, to: 3 }, icon: Weight, description: "Body weight" },
+      { label: "Lbs → Kg", value: { from: 3, to: 0 }, icon: Weight, description: "Body weight" },
+      { label: "g → oz", value: { from: 1, to: 4 }, icon: Weight, description: "Recipe" },
+    ],
+    temperature: [
+      { label: "°C → °F", value: { from: 0, to: 1 }, icon: Thermometer, description: "Weather" },
+      { label: "°F → °C", value: { from: 1, to: 0 }, icon: Thermometer, description: "Weather" },
+      { label: "K → °C", value: { from: 2, to: 0 }, icon: Thermometer, description: "Science" },
+    ],
+    area: [
+      { label: "m² → ft²", value: { from: 0, to: 4 }, icon: SquareIcon, description: "Property" },
+      { label: "Hectare → Acre", value: { from: 2, to: 3 }, icon: SquareIcon, description: "Land" },
+    ],
+    volume: [
+      { label: "L → Gallon", value: { from: 0, to: 2 }, icon: Droplet, description: "Fuel" },
+      { label: "mL → L", value: { from: 1, to: 0 }, icon: Droplet, description: "Liquid" },
+    ],
+    speed: [
+      { label: "km/h → mph", value: { from: 1, to: 2 }, icon: Zap, description: "Speed limit" },
+      { label: "mph → km/h", value: { from: 2, to: 1 }, icon: Zap, description: "Speed limit" },
+      { label: "m/s → km/h", value: { from: 0, to: 1 }, icon: Zap, description: "Physics" },
+    ],
+  };
+
+  const handlePresetSelect = (preset: { from: number; to: number }) => {
+    setFromUnit(preset.from);
+    setToUnit(preset.to);
+  };
 
   const convert = (): string => {
     const num = parseFloat(value);
@@ -175,6 +213,28 @@ const UnitConverterTool = () => {
             ))}
           </div>
         </motion.div>
+
+        {/* Quick Conversions Presets */}
+        {commonConversions[category] && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-shadow duration-500"
+          >
+            <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+              <Sparkles className="h-4 w-4" style={{ color: `hsl(${categoryColor})` }} />
+              Common Conversions
+            </h3>
+            <PresetButtonGroup
+              options={commonConversions[category]}
+              onSelect={handlePresetSelect}
+              categoryColor={categoryColor}
+              columns={3}
+              variant="compact"
+            />
+          </motion.div>
+        )}
 
         {/* Enhanced Converter */}
         <motion.div 
