@@ -77,7 +77,7 @@ export const scaleIn: Variants = createVariant({
 });
 
 // Card hover animation
-export const cardHover = {
+export const cardHover: Variants = {
   rest: {
     scale: 1,
     y: 0,
@@ -134,7 +134,7 @@ export const iconRotate = {
 };
 
 // Icon scale on hover
-export const iconScale = {
+export const iconScale: Variants = {
   rest: { scale: 1 },
   hover: {
     scale: 1.15,
