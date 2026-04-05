@@ -15,13 +15,14 @@ import {
   CheckCircle2,
   BarChart3
 } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { toolCategories, getAllTools } from "@/data/toolCategories";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SEOHelmet from "@/components/SEOHelmet";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type SortOption = "alphabetical" | "most-tools" | "default";
 
@@ -30,7 +31,14 @@ const CategoriesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("default");
   const [showFilters, setShowFilters] = useState(false);
+  const isMobile = useIsMobile();
   const totalTools = getAllTools().length;
+
+  useEffect(() => {
+    if (isMobile && viewMode !== "list") {
+      setViewMode("list");
+    }
+  }, [isMobile, viewMode]);
 
   // Filter and sort categories
   const filteredCategories = useMemo(() => {
@@ -67,7 +75,7 @@ const CategoriesPage = () => {
       <Header />
       <main className="flex-1 overflow-x-hidden">
         {/* Enhanced Header Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-primary/3">
+        <section className="relative overflow-hidden border-b border-border/60 bg-gradient-to-br from-primary/10 via-background to-primary/5">
           {/* Background Elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -left-1/4 -top-1/4 h-[400px] w-[400px] rounded-full bg-primary/5 blur-3xl" />
@@ -92,7 +100,7 @@ const CategoriesPage = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center max-w-4xl mx-auto"
+              className="mx-auto max-w-4xl rounded-2xl border border-border/70 bg-background/70 p-4 text-center shadow-sm backdrop-blur-sm sm:p-6 md:p-8"
             >
               {/* Badge */}
               <motion.div
@@ -128,21 +136,33 @@ const CategoriesPage = () => {
                 Browse {totalTools}+ professional tools across {toolCategories.length} categories
               </motion.p>
 
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs sm:text-sm">
+                  {toolCategories.length} Categories
+                </Badge>
+                <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs sm:text-sm">
+                  {totalTools}+ Tools
+                </Badge>
+                <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs sm:text-sm">
+                  No Signup Required
+                </Badge>
+              </div>
+
               {/* Search & Filter Bar */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="mt-6 sm:mt-8 max-w-2xl mx-auto"
+                className="mt-6 sm:mt-8 mx-auto max-w-2xl"
               >
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+                  <Search className="pointer-events-none absolute left-3.5 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-muted-foreground sm:h-5 sm:w-5" />
                   <Input
                     type="text"
                     placeholder="Search categories or tools..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-20 h-11 sm:h-12 text-sm sm:text-base bg-background/80 backdrop-blur-sm border-2 focus:border-primary transition-all"
+                    className="h-11 border-2 bg-background/90 pl-11 pr-20 text-sm shadow-sm backdrop-blur-sm transition-all focus:border-primary sm:h-12 sm:text-base"
                   />
                   {searchQuery && (
                     <button
@@ -229,7 +249,7 @@ const CategoriesPage = () => {
                   </span>
                 </div>
                 
-                <div className="flex gap-1.5 sm:gap-2">
+                <div className="hidden gap-1.5 sm:gap-2 md:flex">
                   <button
                     onClick={() => setViewMode("grid")}
                     className={`flex items-center gap-1.5 sm:gap-2 rounded-lg px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium transition-all active:scale-[0.95] ${
