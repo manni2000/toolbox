@@ -523,7 +523,7 @@ const APIDocs = () => {
                     placeholder="your@email.com"
                     value={lookupEmail}
                     onChange={(e) => setLookupEmail(e.target.value)}
-                    className="bg-slate-900/50 border-slate-700 text-sm h-10 sm:h-11"
+                    className="bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-400 text-sm h-10 sm:h-11"
                   />
                   <Button onClick={lookupKeys} className="h-10 sm:h-11 sm:px-6">Lookup</Button>
                 </div>
