@@ -459,6 +459,9 @@ const Footer = () => {
             <Link to="/blogs" className="text-sm text-muted-foreground hover:text-foreground">
               Blogs
             </Link>
+            <Link to="/api-docs" className="text-sm text-muted-foreground hover:text-foreground">
+              API for Developers
+            </Link>
             <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
               Privacy
             </Link>

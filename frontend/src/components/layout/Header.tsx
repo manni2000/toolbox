@@ -106,6 +106,12 @@ const Header = () => {
 
             <NavLink to="/categories" active={isActive("/categories")}>All Tools</NavLink>
             <NavLink to="/blogs" active={location.pathname.startsWith("/blogs")}>Blogs</NavLink>
+            <NavLink to="/api-docs" active={isActive("/api-docs")}>
+              <span className="flex items-center gap-1.5">
+                API
+                <span className="rounded bg-primary/20 px-1.5 py-0.5 text-[10px] font-bold text-primary">NEW</span>
+              </span>
+            </NavLink>
           </nav>
 
           {/* CTA Button */}
@@ -152,6 +158,12 @@ const Header = () => {
                     <MobileNavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</MobileNavLink>
                     <MobileNavLink to="/categories" onClick={() => setIsMenuOpen(false)}>All Tools</MobileNavLink>
                     <MobileNavLink to="/blogs" onClick={() => setIsMenuOpen(false)}>Blogs</MobileNavLink>
+                    <MobileNavLink to="/api-docs" onClick={() => setIsMenuOpen(false)}>
+                      <span className="flex items-center gap-2">
+                        API for Developers
+                        <span className="rounded bg-primary/20 px-1.5 py-0.5 text-[10px] font-bold text-primary">NEW</span>
+                      </span>
+                    </MobileNavLink>
                   </div>
                 </div>
                 

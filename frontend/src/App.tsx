@@ -14,6 +14,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import BlogListPage from "./pages/blog/BlogListPage";
 import BlogPostPage from "./pages/blog/BlogPostPage";
+import APIDocs from "./pages/APIDocs";
 
 // Image Tools
 import QRGeneratorTool from "./pages/tools/image/QRGeneratorTool";
@@ -198,6 +199,8 @@ const AnimatedRoutes = () => {
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/blogs" element={<BlogListPage />} />
         <Route path="/blogs/:slug" element={<BlogPostPage />} />
+        <Route path="/api-docs" element={<APIDocs />} />
+        <Route path="/developers" element={<APIDocs />} />
           
           {/* Image Tools - SEO friendly routes */}
           <Route path="/qr-code-generator" element={<QRGeneratorTool />} />

@@ -35,6 +35,7 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
       'http://localhost:8080', 
       'http://localhost:3000', 
       'http://localhost:5000',
+      'http://localhost:5173',
       'https://toolbox-backend-jet.vercel.app',
       'https://dailytools247.vercel.app'
     ];
@@ -43,7 +44,7 @@ app.use(cors({
   origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'],
   preflightContinue: false,
   optionsSuccessStatus: 204
 }));
@@ -110,6 +111,7 @@ app.get('/', (req, res) => {
 });
 
 // API Routes
+app.use('/api/v1', require('./routes/api-v1'));
 app.use('/api/blog', require('./routes/blog'));
 app.use('/api/audio', require('./routes/audio'));
 app.use('/api/date-time', require('./routes/date-time'));
@@ -158,7 +160,13 @@ app.get('/api', (req, res) => {
     status: 'Node.js server running 🚀',
     message: 'ToolBox API is running',
     version: '1.0.0',
+    publicApi: {
+      docs: '/api/v1/docs',
+      description: 'Public API for developers - 100 free requests/day',
+      generateKey: 'POST /api/v1/keys/generate'
+    },
     endpoints: [
+      '/api/v1/ (Public Developer API)',
       '/api/blog/',
       '/api/audio/',
       '/api/date-time/',

@@ -15,12 +15,13 @@ export default defineConfig(({ mode }) => ({
       strict: false,
     },
     proxy: {
-      '/api': {
+      '/api/v1': {
         target: 'http://127.0.0.1:5000',
         changeOrigin: true,
         secure: false,
       },
     },
+    historyApiFallback: true,
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
@@ -34,4 +35,8 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: ['react', 'react-dom'],
   },
+  preview: {
+    port: 8080,
+    host: "::",
+  }
 }));
