@@ -5,6 +5,122 @@ const router = express.Router();
 // This mirrors the frontend BlogPost interface for consistency
 const blogPostsData = [
   {
+    slug: "top-free-seo-tools-online-for-bloggers",
+    title: "Top Free SEO Tools Online for Bloggers (Meta Tags, Sitemap, Keyword Tools & More)",
+    description: "Improve your blog visibility with free SEO tools for meta tags, sitemap checks, keyword research, page analysis, and more.",
+    keywords: "free seo tools online, meta title description tool, sitemap validator, keyword density checker, page seo analyzer",
+    publishedDate: "2026-04-05",
+    readTime: "8 min read",
+      image: "/blog-image/6.png",
+    category: "SEO Tools",
+    featured: false,
+    author: "Dailytools247 Team",
+    sections: [
+      {
+        heading: "Why Bloggers Need a Free SEO Stack",
+        paragraphs: [
+          "Blog posts compete on clarity, metadata, and crawlability. A good SEO stack helps you improve all three before publishing.",
+          "Using free browser tools keeps optimization fast, especially when you are publishing regularly and need a repeatable process.",
+          "The right workflow can save time while also reducing mistakes in titles, descriptions, and technical checks.",
+        ],
+      },
+      {
+        heading: "The Core SEO Tools Every Blogger Should Use",
+        paragraphs: [
+          "Start with Meta Title & Description Generator to sharpen the snippet searchers see first.",
+          "Then use Keyword Density Checker and Page SEO Analyzer to review on-page focus and spot weak sections before publication.",
+          "For technical basics, validate your sitemap and generate or review robots.txt settings so search engines can crawl the right pages.",
+        ],
+        links: [
+          { label: "Meta Title & Description Generator", path: "/meta-title-description-generator" },
+          { label: "Keyword Density Checker", path: "/keyword-density-checker" },
+          { label: "Page SEO Analyzer", path: "/page-seo-analyzer" },
+          { label: "Sitemap Validator", path: "/sitemap-validator" },
+          { label: "Robots.txt Generator", path: "/robots-txt-generator" },
+        ],
+      },
+      {
+        heading: "A Simple SEO Workflow for Every New Post",
+        paragraphs: [
+          "Write the article, then finalize the title and description based on the main search intent.",
+          "Check keyword balance and page-level SEO signals before you hit publish.",
+          "Finish with sitemap and robots.txt checks so your content is easier to discover and index.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Do I need paid SEO software to rank blog posts?",
+        answer: "No. Free tools can cover most publishing tasks, especially for metadata and on-page checks.",
+      },
+      {
+        question: "What should I optimize first on a blog post?",
+        answer: "Start with the title, meta description, and on-page keyword placement, then validate technical basics.",
+      },
+      {
+        question: "Why check sitemap and robots.txt files?",
+        answer: "They help search engines discover the right URLs and avoid indexing mistakes.",
+      },
+    ],
+  },
+  {
+    slug: "top-free-text-security-tools-online",
+    title: "Top Free Text & Security Tools Online (Password Generator, Word Counter, Hash Tools)",
+    description: "Handle text cleanup and basic security checks with free tools like password generator, word counter, and hash generator.",
+    keywords: "text tools online, security tools online, password generator, word counter, hash generator, free online tools",
+    publishedDate: "2026-04-05",
+    readTime: "6 min read",
+    image: "/blog-image/8.png",
+    category: "Security Tools",
+    featured: false,
+    author: "Dailytools247 Team",
+    sections: [
+      {
+        heading: "Why Text and Security Tools Still Matter",
+        paragraphs: [
+          "Even small tasks like counting words or generating a password become important when you work across content, product, and security workflows.",
+          "Free online utilities make those tasks faster and easier to standardize, especially when you need quick results without opening desktop software.",
+          "A focused stack also helps teams avoid weak passwords, repeated text cleanup, and manual hash checks.",
+        ],
+      },
+      {
+        heading: "The Best Free Tools for Everyday Work",
+        paragraphs: [
+          "Use Word Counter for drafts, blog posts, and SEO content reviews when you need a quick length check.",
+          "Use Password Generator to create strong credentials, then verify outputs with Hash Generator when you need checksums or simple integrity workflows.",
+          "Together, these tools cover both text production and security hygiene in one lightweight browser stack.",
+        ],
+        links: [
+          { label: "Password Generator", path: "/password-generator" },
+          { label: "Word Counter", path: "/word-counter" },
+          { label: "Hash Generator", path: "/hash-generator" },
+        ],
+      },
+      {
+        heading: "Practical Use Cases for Teams and Solo Users",
+        paragraphs: [
+          "Writers can check article length before submitting drafts or updating metadata.",
+          "Admins and developers can generate secure passwords and basic hashes during setup or QA tasks.",
+          "When combined, these tools reduce repetitive steps and keep your workflow consistent across devices.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Can I use these tools without installing anything?",
+        answer: "Yes. They are browser-based and designed for quick access on desktop and mobile.",
+      },
+      {
+        question: "Is the password generator secure enough for daily use?",
+        answer: "It is suitable for strong everyday passwords, though enterprise policies may require additional controls.",
+      },
+      {
+        question: "When should I use a hash generator?",
+        answer: "Use it when you need a checksum or a basic integrity check for a file or text value.",
+      },
+    ],
+  },
+  {
     slug: "top-25-free-online-tools-2026",
     title: "Top 25 Free Online Tools You Must Use in 2026 (Save Hours Daily)",
     description: "Discover the 25 best free online tools in 2026 to save time on PDFs, image editing, development, SEO, and productivity tasks.",
@@ -301,6 +417,32 @@ const blogPostsData = [
   },
 ];
 
+const categoryOrder = [
+  "PDF Tools",
+  "Image Tools",
+  "Productivity",
+  "SEO Tools",
+  "Developer Tools",
+  "Security Tools",
+  "Text Tools",
+  "Savings",
+];
+
+const sortBlogPosts = (posts) =>
+  [...posts].sort((left, right) => {
+    const leftCategoryIndex = categoryOrder.indexOf(left.category);
+    const rightCategoryIndex = categoryOrder.indexOf(right.category);
+
+    const normalizedLeftCategoryIndex = leftCategoryIndex === -1 ? categoryOrder.length : leftCategoryIndex;
+    const normalizedRightCategoryIndex = rightCategoryIndex === -1 ? categoryOrder.length : rightCategoryIndex;
+
+    if (normalizedLeftCategoryIndex !== normalizedRightCategoryIndex) {
+      return normalizedLeftCategoryIndex - normalizedRightCategoryIndex;
+    }
+
+    return new Date(right.publishedDate) - new Date(left.publishedDate);
+  });
+
 // GET /api/blog - List all blog posts with pagination & filtering
 router.get('/', (req, res) => {
   try {
@@ -322,8 +464,8 @@ router.get('/', (req, res) => {
       filteredPosts = filteredPosts.filter(post => post.featured === true);
     }
 
-    // Sort by published date (newest first)
-    filteredPosts.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate));
+    // Sort by the blog display order: PDF -> Image -> Productivity -> SEO -> Developer -> Security -> Text -> Savings
+    filteredPosts = sortBlogPosts(filteredPosts);
 
     // Pagination
     const startIndex = (pageNum - 1) * limitNum;

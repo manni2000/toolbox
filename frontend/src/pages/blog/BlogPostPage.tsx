@@ -31,6 +31,15 @@ const BlogPostPage = () => {
           const sameCategoryPosts = allOtherPosts.filter((item) => item.category === response.result.post.category);
           const otherCategoryPosts = allOtherPosts.filter((item) => item.category !== response.result.post.category);
           setRelatedPosts([...sameCategoryPosts, ...otherCategoryPosts]);
+        } else {
+          const localPost = getBlogPostBySlug(slug);
+          if (localPost) {
+            setPost(localPost);
+            const allOtherPosts = blogPosts.filter((item) => item.slug !== slug);
+            const sameCategoryPosts = allOtherPosts.filter((item) => item.category === localPost.category);
+            const otherCategoryPosts = allOtherPosts.filter((item) => item.category !== localPost.category);
+            setRelatedPosts([...sameCategoryPosts, ...otherCategoryPosts]);
+          }
         }
       } catch (error) {
         console.warn('Failed to fetch blog post from API, using local data:', error);
@@ -126,11 +135,11 @@ const BlogPostPage = () => {
       </Helmet>
       <Header />
       <main className="flex-1">
-        <section className="border-b border-border bg-gradient-to-b from-primary/10 via-background to-background py-10 md:py-14">
+        <section className="border-b border-border bg-gradient-to-b from-primary/10 via-background to-background py-8 sm:py-10 md:py-14">
           <div className="container">
             <Link
               to="/blogs"
-              className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-primary"
+              className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-primary sm:mb-6"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to all blogs
@@ -138,13 +147,13 @@ const BlogPostPage = () => {
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              className="grid gap-8 md:grid-cols-[1.2fr_1fr] md:items-end"
+              className="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] xl:items-end"
             >
-              <div>
+              <div className="min-w-0">
                 <p className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
                   {post.category}
                 </p>
-                <h1 className="mt-4 text-3xl font-bold leading-tight md:text-5xl">{post.title}</h1>
+                <h1 className="mt-4 text-3xl font-bold leading-tight text-balance sm:text-4xl md:text-5xl">{post.title}</h1>
                 <p className="mt-4 text-base text-muted-foreground md:text-lg">{post.description}</p>
                 <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-1.5">
@@ -161,7 +170,7 @@ const BlogPostPage = () => {
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="h-full min-h-[240px] w-full object-cover"
+                  className="aspect-[16/10] w-full object-cover xl:h-full"
                   loading="lazy"
                   onError={(event) => {
                     const target = event.currentTarget;
@@ -174,8 +183,8 @@ const BlogPostPage = () => {
         </section>
 
         <article className="py-10 md:py-14">
-          <div className="container grid gap-10 lg:grid-cols-[1fr_290px]">
-            <div className="space-y-10">
+          <div className="container grid gap-8 xl:grid-cols-[minmax(0,1fr)_280px]">
+            <div className="min-w-0 space-y-8">
               {post.sections.map((section, sectionIndex) => (
                 <Fragment key={section.heading}>
                   <motion.section
@@ -183,7 +192,7 @@ const BlogPostPage = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: sectionIndex * 0.05 }}
-                    className="rounded-2xl border border-border bg-card p-6 md:p-8"
+                    className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8"
                   >
                     <h2 className="text-2xl font-bold">{section.heading}</h2>
                     <div className="mt-4 space-y-4 text-muted-foreground">
@@ -215,7 +224,7 @@ const BlogPostPage = () => {
 
               {enhancement && (
                 <>
-                  <section className="rounded-2xl border border-border bg-card p-6 md:p-8">
+                  <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8">
                     <h2 className="text-2xl font-bold">{enhancement.deepDiveHeading}</h2>
                     <div className="mt-4 space-y-4 text-muted-foreground">
                       {enhancement.deepDiveParagraphs.map((paragraph) => (
@@ -236,7 +245,7 @@ const BlogPostPage = () => {
                     </div>
                   </section>
 
-                  <section className="rounded-2xl border border-border bg-card p-6 md:p-8">
+                  <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8">
                     <h2 className="text-2xl font-bold">{enhancement.howToHeading}</h2>
                     <ol className="mt-4 space-y-3 text-muted-foreground">
                       {enhancement.howToSteps.map((step, index) => (
@@ -250,7 +259,7 @@ const BlogPostPage = () => {
                     </ol>
                   </section>
 
-                  <section className="rounded-2xl border border-border bg-card p-6 md:p-8">
+                  <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8">
                     <h2 className="text-2xl font-bold">{enhancement.useCasesHeading}</h2>
                     <div className="mt-4 grid gap-3 sm:grid-cols-2">
                       {enhancement.useCases.map((item) => (
@@ -261,10 +270,10 @@ const BlogPostPage = () => {
                     </div>
                   </section>
 
-                  <section className="rounded-2xl border border-border bg-card p-6 md:p-8">
+                  <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8">
                     <h2 className="text-2xl font-bold">{enhancement.comparisonHeading}</h2>
                     <div className="mt-4 overflow-x-auto">
-                      <table className="w-full min-w-[560px] border-collapse text-sm">
+                      <table className="w-full min-w-[560px] border-collapse text-sm sm:min-w-[640px]">
                         <thead>
                           <tr className="border-b border-border text-left text-foreground">
                             <th className="py-2 pr-3 font-semibold">Tool</th>
@@ -289,7 +298,7 @@ const BlogPostPage = () => {
                 </>
               )}
 
-              <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6 md:p-8">
+              <section className="rounded-2xl border border-primary/20 bg-primary/5 p-5 sm:p-6 md:p-8">
                 <h2 className="text-2xl font-bold">Take Action Now</h2>
                 <p className="mt-3 text-muted-foreground">
                   Move from reading to results. Start with the most relevant tool and complete your task in minutes.
@@ -310,7 +319,7 @@ const BlogPostPage = () => {
                 </div>
               </section>
 
-              <section className="rounded-2xl border border-border bg-card p-6 md:p-8">
+              <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8">
                 <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
                 <div className="mt-5 divide-y divide-border">
                   {faqs.map((faq) => (
@@ -326,14 +335,14 @@ const BlogPostPage = () => {
 
               {/* Related Articles Section - Full Width */}
               {relatedPosts.length > 0 && (
-                <section className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-background p-6 md:p-8">
+                <section className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-background p-5 sm:p-6 md:p-8">
                   <div className="mb-6">
                     <h2 className="text-2xl font-bold">Related Articles</h2>
                     <p className="mt-2 text-sm text-muted-foreground">
                       Continue exploring our guides and tutorials
                     </p>
                   </div>
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                     {relatedPosts.map((article) => (
                       <motion.div
                         key={article.slug}
@@ -346,11 +355,11 @@ const BlogPostPage = () => {
                           to={`/blogs/${article.slug}`}
                           className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-lg"
                         >
-                          <div className="relative h-40 overflow-hidden bg-muted">
+                          <div className="relative overflow-hidden bg-muted">
                             <img
                               src={article.image}
                               alt={article.title}
-                              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-105"
                               loading="lazy"
                               onError={(event) => {
                                 const target = event.currentTarget;
@@ -398,7 +407,7 @@ const BlogPostPage = () => {
               )}
             </div>
 
-            <aside className="space-y-6 lg:sticky lg:top-28 lg:h-fit">
+            <aside className="space-y-6 xl:sticky xl:top-28 xl:h-fit">
               <div className="rounded-2xl border border-primary/30 bg-primary/10 p-5">
                 <h3 className="text-base font-semibold">Sticky Action</h3>
                 <p className="mt-2 text-sm text-muted-foreground">

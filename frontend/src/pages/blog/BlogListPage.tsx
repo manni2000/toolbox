@@ -8,16 +8,53 @@ import SEOHelmet from "@/components/SEOHelmet";
 import { blogPosts } from "@/data/blogPosts";
 import { api } from "@/lib/api-client";
 
+const categoryOrder = [
+  "PDF Tools",
+  "Image Tools",
+  "Productivity",
+  "SEO Tools",
+  "Developer Tools",
+  "Security Tools",
+  "Text Tools",
+  "Savings",
+];
+
+const sortBlogPosts = (posts: typeof blogPosts) => {
+  return [...posts].sort((left, right) => {
+    const leftCategoryIndex = categoryOrder.indexOf(left.category);
+    const rightCategoryIndex = categoryOrder.indexOf(right.category);
+
+    const normalizedLeftCategoryIndex = leftCategoryIndex === -1 ? categoryOrder.length : leftCategoryIndex;
+    const normalizedRightCategoryIndex = rightCategoryIndex === -1 ? categoryOrder.length : rightCategoryIndex;
+
+    if (normalizedLeftCategoryIndex !== normalizedRightCategoryIndex) {
+      return normalizedLeftCategoryIndex - normalizedRightCategoryIndex;
+    }
+
+    return new Date(right.publishedDate).getTime() - new Date(left.publishedDate).getTime();
+  });
+};
+
 const BlogListPage = () => {
-  const [posts, setPosts] = useState(blogPosts);
+  const [posts, setPosts] = useState(() => sortBlogPosts(blogPosts));
   const [loading, setLoading] = useState(true);
+
+  const mergeBlogPosts = (apiPosts: typeof blogPosts) => {
+    const merged = new Map(blogPosts.map((post) => [post.slug, post] as const));
+
+    apiPosts.forEach((post) => {
+      merged.set(post.slug, post);
+    });
+
+    return sortBlogPosts(Array.from(merged.values()));
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await api.getBlogPosts(1, 100);
         if (response.success && response.result.posts) {
-          setPosts(response.result.posts);
+          setPosts(mergeBlogPosts(response.result.posts));
         }
       } catch (error) {
         console.warn('Failed to fetch blog posts from API, using local data:', error);
@@ -43,7 +80,7 @@ const BlogListPage = () => {
       />
       <Header />
       <main className="flex-1">
-        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-primary/10 via-background to-sky-500/5 py-16 md:py-24">
+        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-primary/10 via-background to-sky-500/5 py-12 sm:py-14 md:py-24">
           <div className="absolute inset-0">
             <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
             <div className="absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-sky-500/10 blur-3xl" />
@@ -74,11 +111,11 @@ const BlogListPage = () => {
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="rounded-3xl border border-border bg-card p-6 shadow-lg md:p-10"
+              className="rounded-3xl border border-border bg-card p-5 shadow-lg sm:p-6 md:p-10"
             >
               <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-primary">Featured</p>
-              <div className="grid gap-6 md:grid-cols-[1.25fr_1fr] md:items-center">
-                <div>
+              <div className="grid gap-6 md:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] md:items-center">
+                <div className="min-w-0">
                   <h2 className="text-2xl font-bold md:text-3xl">{featuredPost.title}</h2>
                   <p className="mt-4 text-muted-foreground">{featuredPost.description}</p>
                   <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
@@ -103,7 +140,7 @@ const BlogListPage = () => {
                   <img
                     src={featuredPost.image}
                     alt={featuredPost.title}
-                    className="h-full min-h-[220px] w-full object-cover"
+                    className="aspect-[16/10] w-full object-cover md:h-full"
                     loading="lazy"
                     onError={(event) => {
                       const target = event.currentTarget;
@@ -114,7 +151,7 @@ const BlogListPage = () => {
               </div>
             </motion.div>
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {otherPosts.map((post, index) => (
                 <motion.article
                   key={post.slug}
@@ -128,7 +165,7 @@ const BlogListPage = () => {
                     <img
                       src={post.image}
                       alt={post.title}
-                      className="h-52 w-full object-cover"
+                      className="aspect-[16/10] w-full object-cover"
                       loading="lazy"
                       onError={(event) => {
                         const target = event.currentTarget;
