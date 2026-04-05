@@ -58,19 +58,29 @@ const HTMLToPDFTool = () => {
     if (!file) return;
 
     setIsProcessing(true);
-    const formData = new FormData();
-    formData.append('file', file);
 
     try {
+      const htmlContent = await file.text();
+
       const response = await fetch(`${API_URLS.HTML_TO_PDF}`, {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          html: htmlContent,
+          options: {
+            format: 'A4',
+            orientation: 'portrait',
+            margin: '1cm',
+          },
+        }),
       });
 
       const result = await response.json();
 
       if (result.success) {
-        setResultData(result.data || result.result || result.file || result.image || result.pdf || result.video);
+        setResultData(result.file || result.pdf || result.data || JSON.stringify(result.result, null, 2));
         toast({
           title: "Success!",
           description: "HTML to PDF completed successfully",

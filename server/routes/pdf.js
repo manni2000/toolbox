@@ -6,16 +6,15 @@ const fs = require('fs');
 const os = require('os');
 const { PDFDocument, StandardFonts } = require('pdf-lib');
 
-// Configure pdf-lib for serverless environments to avoid font loading issues
 if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
-  // Set up error handling for font loading
+  console.log('Configuring pdf-lib for serverless environment...');
+  
   const originalWarn = console.warn;
   console.warn = function(...args) {
-    // Suppress pdf-lib font loading warnings
     if (args[0] && typeof args[0] === 'string' && 
         (args[0].includes('Unable to load font data') || 
          args[0].includes('fetchStandardFontData'))) {
-      return; // Suppress the warning
+      return;
     }
     originalWarn.apply(console, args);
   };
@@ -35,12 +34,11 @@ if (!global.performance) {
   };
 }
 
-// Configure multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ 
   storage: storage,
   limits: {
-    fileSize: 50 * 1024 * 1024 // 50MB limit
+    fileSize: 50 * 1024 * 1024 
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /pdf/;
@@ -55,7 +53,6 @@ const upload = multer({
   }
 });
 
-// Helper functions - Define before use
 function escapeHtml(text) {
   if (!text) return '';
   const map = {
@@ -89,34 +86,31 @@ function degreesToRadians(degrees) {
   return degrees * (Math.PI / 180);
 }
 
-// Helper function to convert PDF using pdf-to-png-converter
 async function convertPdfWithPngConverter(pdfBuffer, baseFilename, format = 'png') {
+  console.log('Attempting PDF conversion with pdf-to-png-converter...');
+
   const isProduction = process.env.NODE_ENV === 'production' || 
                        process.env.VERCEL === '1' || 
                        process.env.VERCEL_ENV === 'production';
 
   try {
-    // In production/serverless, use direct pdfjs-dist with worker disabled
     if (isProduction) {
       return await convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format);
     }
 
-    // In development, use pdf-to-png-converter
     const pdfToPng = require('pdf-to-png-converter');
     const results = await pdfToPng.pdfToPng(pdfBuffer, {
-      viewportScale: 2.0,            // HD quality scale (2x for sharp images)
-      returnPageContent: true        // ensure we get the buffer
+      viewportScale: 2.0,            
+      returnPageContent: true       
     });
 
     if (!results || results.length === 0) {
       throw new Error('pdf-to-png-converter returned no results');
     }
 
-    // Process the results - pdf-to-png-converter returns { pageNumber, name, content (Buffer), path, width, height, rotation }
     const processedImages = results.map((result, index) => {
       const base64 = result.content ? result.content.toString('base64') : '';
       const pageNum = result.pageNumber || (index + 1);
-      // Use clean filename: baseFilename.png for single page, or baseFilename_2.png, baseFilename_3.png for multiple pages
       const name = pageNum === 1 ? `${baseFilename}.png` : `${baseFilename}_${pageNum}.png`;
       return {
         page: pageNum,
@@ -131,27 +125,24 @@ async function convertPdfWithPngConverter(pdfBuffer, baseFilename, format = 'png
 
     return processedImages;
   } catch (error) {
+    console.error('pdf-to-png-converter conversion failed:', error);
     throw error;
   }
 }
 
-// Serverless-friendly PDF conversion using pdfjs-dist directly with worker disabled
 async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png') {
+  console.log('Using direct pdfjs-dist conversion (serverless mode)...');
+  
   try {
-    // Import pdfjs-dist and configure for serverless
     const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
     
-    // Set workerSrc to the actual file path - required for fake worker mode in serverless
-    // __dirname in routes folder is /var/task/server/routes, so go up to server/ then to node_modules
     const workerPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.mjs');
     const standardFontDataPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'standard_fonts') + '/';
     const cMapPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'cmaps') + '/';
     
-    // Use file:// URL format for ESM import
     const { pathToFileURL } = require('url');
     pdfjsLib.GlobalWorkerOptions.workerSrc = pathToFileURL(workerPath).href;
     
-    // Load the PDF document with aggressive speed optimizations
     const loadingTask = pdfjsLib.getDocument({
       data: new Uint8Array(pdfBuffer),
       disableFontFace: true,
@@ -159,8 +150,8 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
       isEvalSupported: false,
       disableAutoFetch: true,
       disableStream: true,
-      disableRange: true,      // Disable range requests for speed
-      disableCreateObjectURL: true, // Disable object URLs for speed
+      disableRange: true,      
+      disableCreateObjectURL: true, 
       standardFontDataUrl: pathToFileURL(standardFontDataPath).href,
       cMapUrl: pathToFileURL(cMapPath).href,
       cMapPacked: true,
@@ -169,19 +160,16 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
     const pdfDocument = await loadingTask.promise;
     const numPages = pdfDocument.numPages;
     
-    // Limit pages for faster conversion - process max 20 pages for speed
     const maxPages = Math.min(numPages, 20);
+    console.log(`PDF has ${numPages} pages, converting first ${maxPages} for speed...`);
     
     const processedImages = [];
     
-    // Import canvas library
     const { createCanvas } = require('@napi-rs/canvas');
     
-    // Use higher scale for HD quality (2.0 = 2x resolution for sharp images)
     const scale = 2.0;
     
-    // Process pages in batches with controlled concurrency for maximum speed
-    const BATCH_SIZE = 6; // Process 6 pages simultaneously
+    const BATCH_SIZE = 6; 
     
     for (let i = 0; i < maxPages; i += BATCH_SIZE) {
       const batch = [];
@@ -191,17 +179,14 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
           pdfDocument.getPage(pageNum).then(async (page) => {
             const viewport = page.getViewport({ scale });
             
-            // Create smaller canvas for speed
             const canvas = createCanvas(Math.floor(viewport.width), Math.floor(viewport.height));
             const context = canvas.getContext('2d');
             
-            // Render the page with timeout for speed
             const renderPromise = page.render({
               canvasContext: context,
               viewport: viewport,
             }).promise;
             
-            // Add 3-second timeout per page
             const timeoutPromise = new Promise((_, reject) => 
               setTimeout(() => reject(new Error('Page render timeout')), 3000)
             );
@@ -209,7 +194,7 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
             try {
               await Promise.race([renderPromise, timeoutPromise]);
             } catch (error) {
-              // Create a simple placeholder if render fails
+              console.warn(`Page ${pageNum} render failed, using placeholder:`, error.message);
               context.fillStyle = '#f0f0f0';
               context.fillRect(0, 0, viewport.width, viewport.height);
               context.fillStyle = '#666';
@@ -218,11 +203,9 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
               context.fillText(`Page ${pageNum}`, viewport.width/2, viewport.height/2);
             }
             
-            // Use PNG for lossless HD quality output
             const imageBuffer = canvas.toBuffer('image/png');
             const base64 = imageBuffer.toString('base64');
             
-            // Use clean filename: baseFilename.png for page 1, baseFilename_2.png for others
             const name = pageNum === 1 ? `${baseFilename}.png` : `${baseFilename}_${pageNum}.png`;
             
             const result = {
@@ -245,39 +228,35 @@ async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png'
       processedImages.push(...batchResults);
     }
     
-    // Sort by page number
     processedImages.sort((a, b) => a.page - b.page);
     
     await pdfDocument.cleanup();
     
+    console.log(`Successfully converted ${processedImages.length} pages`);
     return processedImages;
     
   } catch (error) {
+    console.error('Direct pdfjs-dist conversion failed:', error);
     throw error;
   }
 }
 
-// PDF Merge
 router.post('/merge', upload.array('pdfs', 10), async (req, res) => {
   try {
     if (!req.files || req.files.length < 2) {
       return res.status(400).json({ error: 'At least 2 PDF files are required' });
     }
 
-    // Use the first file's name as the base filename
     const baseFilename = req.files[0].originalname.replace(/\.pdf$/i, '');
 
-    // Create a new PDF document
     const mergedPdf = await PDFDocument.create();
     
-    // Process each uploaded PDF
     for (const file of req.files) {
       const pdfDoc = await PDFDocument.load(file.buffer);
       const pages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
       pages.forEach(page => mergedPdf.addPage(page));
     }
 
-    // Save the merged PDF
     const mergedPdfBytes = await mergedPdf.save();
     const mergedPdfBase64 = Buffer.from(mergedPdfBytes).toString('base64');
     
@@ -297,11 +276,11 @@ router.post('/merge', upload.array('pdfs', 10), async (req, res) => {
       filename: `${baseFilename}.pdf`
     });
   } catch (error) {
+    console.error('PDF merge error:', error);
     res.status(500).json({ error: error.message || 'Failed to merge PDFs' });
   }
 });
 
-// PDF Split
 router.post('/split', upload.single('pdf'), async (req, res) => {
   try {
     if (!req.file) {
@@ -311,7 +290,6 @@ router.post('/split', upload.single('pdf'), async (req, res) => {
     const { splitType = 'single' } = req.body;
     const baseFilename = req.file.originalname.replace(/\.pdf$/i, '');
 
-    // Load the original PDF
     const originalPdf = await PDFDocument.load(req.file.buffer);
     const totalPages = originalPdf.getPageCount();
     
@@ -381,6 +359,7 @@ router.post('/split', upload.single('pdf'), async (req, res) => {
       files: splitFiles
     });
   } catch (error) {
+    console.error('PDF split error:', error);
     res.status(500).json({ error: error.message || 'Failed to split PDF' });
   }
 });
@@ -403,6 +382,13 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
                         !process.env.NODE_ENV; // Default to production if not set
     
     const baseFilename = path.parse(req.file.originalname).name;
+    
+    console.log('Environment check:', { 
+      NODE_ENV: process.env.NODE_ENV, 
+      VERCEL: process.env.VERCEL,
+      VERCEL_ENV: process.env.VERCEL_ENV,
+      isProduction 
+    });
 
     // Try PDF conversion even in production to get detailed error info
     let conversionAttempted = false;
@@ -410,11 +396,17 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     let conversionResult = null;
 
     if (isProduction) {
+      console.log('Attempting PDF conversion in production environment for debugging...');
+      
       // Try pdf-to-png-converter first (serverless-friendly with @napi-rs/canvas)
       try {
+        console.log('Trying pdf-to-png-converter...');
+        
         const images = await convertPdfWithPngConverter(req.file.buffer, baseFilename, 'png');
         
         if (images && images.length > 0) {
+          console.log('PDF conversion succeeded with pdf-to-png-converter!');
+          
           // Images are already processed by convertPdfWithPngConverter
           conversionResult = images;
           
@@ -424,11 +416,20 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
         }
       } catch (error) {
         conversionError = error;
+        console.error('pdf-to-png-converter failed:', {
+          message: error.message,
+          stack: error.stack,
+          name: error.name,
+          code: error.code
+        });
+        
         // Continue with fallback
       }
     }
 
     if (isProduction && !conversionAttempted) {
+      console.log('PDF conversion disabled in production - using fallback due to known issues');
+      
       // Return PDF as base64 in production since image conversion has worker issues
       const pdfBase64 = req.file.buffer.toString('base64');
       return res.json({
@@ -512,6 +513,8 @@ router.post('/to-image', upload.single('pdf'), async (req, res) => {
     });
 
   } catch (error) {
+    console.error('PDF conversion error:', error);
+
     // Fallback: return PDF as base64 if conversion fails
     try {
       const pdfBase64 = req.file.buffer.toString('base64');
@@ -646,22 +649,24 @@ router.post('/password', upload.single('pdf'), async (req, res) => {
 
       // Convert to base64 for frontend
       const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+      const filename = req.file.originalname.replace('.pdf', '_protected.pdf');
 
       res.json({
         success: true,
         result: {
           originalFile: req.file.originalname,
-          outputFile: req.file.originalname,
+          outputFile: filename,
           action: 'protect',
           passwordProtected: true
         },
         file: `data:application/pdf;base64,${pdfBase64}`,
-        filename: req.file.originalname
+        filename: filename
       });
     } else {
       res.status(400).json({ error: 'Only password protection is supported' });
     }
   } catch (error) {
+    console.error('PDF password protection error:', error);
     res.status(500).json({ error: error.message || 'Failed to process PDF' });
   }
 });
@@ -679,51 +684,19 @@ router.post('/unlock', upload.single('pdf'), async (req, res) => {
       return res.status(400).json({ error: 'Password is required to unlock PDF' });
     }
 
-    const pdfBuffer = req.file.buffer;
-    
-    try {
-      // Try to load the PDF with the provided password
-      const pdfDoc = await PDFDocument.load(pdfBuffer, {
-        password: password,
-        ignoreEncryption: false
-      });
+    // This is a placeholder implementation
+    const unlockInfo = {
+      originalFile: req.file.originalname,
+      success: true,
+      note: 'PDF unlocking is not implemented in this demo. Please integrate with a PDF library.'
+    };
 
-      // Create a new PDF without encryption
-      const unlockedPdfDoc = await PDFDocument.create();
-      const pages = await unlockedPdfDoc.copyPages(pdfDoc, pdfDoc.getPageIndices());
-      pages.forEach(page => unlockedPdfDoc.addPage(page));
-
-      // Save the unlocked PDF
-      const unlockedPdfBytes = await unlockedPdfDoc.save();
-      
-      // Generate filename
-      const originalName = req.file.originalname.replace('.pdf', '');
-      const filename = `${originalName}_unlocked.pdf`;
-
-      res.set({
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${filename}"`,
-        'Content-Length': unlockedPdfBytes.length
-      });
-      
-      res.send(Buffer.from(unlockedPdfBytes));
-    } catch (decryptError) {
-      // Check if it's a password error
-      if (decryptError.message && decryptError.message.includes('password')) {
-        return res.status(401).json({ 
-          error: 'Incorrect password. Please provide the correct password to unlock this PDF.' 
-        });
-      }
-      // Check if PDF is not encrypted
-      if (decryptError.message && decryptError.message.includes('not encrypted')) {
-        return res.status(400).json({ 
-          error: 'This PDF is not password protected.' 
-        });
-      }
-      throw decryptError;
-    }
+    res.json({
+      success: true,
+      result: unlockInfo
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message || 'Failed to unlock PDF' });
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -785,6 +758,7 @@ router.post('/remove-pages', upload.single('pdf'), async (req, res) => {
       filename: req.file.originalname
     });
   } catch (error) {
+    console.error('PDF page removal error:', error);
     res.status(500).json({ error: error.message || 'Failed to remove pages' });
   }
 });
@@ -845,6 +819,7 @@ router.post('/rotate', upload.single('pdf'), async (req, res) => {
       filename: req.file.originalname
     });
   } catch (error) {
+    console.error('PDF rotation error:', error);
     res.status(500).json({ error: error.message || 'Failed to rotate PDF' });
   }
 });
@@ -871,7 +846,7 @@ router.post('/to-word', upload.single('pdf'), async (req, res) => {
       success: true,
       result: conversionInfo,
       file: `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${pdfBase64}`,
-      filename: req.file.originalname.replace(/\.pdf$/i, '.docx')
+      filename: req.file.originalname.replace('.pdf', '.docx')
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -979,22 +954,112 @@ router.post('/html-to-pdf', async (req, res) => {
       return res.status(400).json({ error: 'HTML content or URL is required' });
     }
 
-    // This is a placeholder implementation
-    // In a real implementation, you would use puppeteer or similar
-    const conversionInfo = {
-      input: html ? 'HTML content' : url,
-      outputFile: 'converted.pdf',
-      options: {
-        format: options.format || 'A4',
-        orientation: options.orientation || 'portrait',
-        margin: options.margin || '1cm'
-      },
-      note: 'HTML to PDF conversion is not implemented in this demo. Please integrate with puppeteer or similar.'
-    };
+    const pdfDoc = await PDFDocument.create();
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const pageWidth = 595.28; // A4 width in points
+    const pageHeight = 841.89; // A4 height in points
+    const margin = 48;
+    const lineHeight = 16;
+    const fontSize = 11;
+    const maxLineWidth = pageWidth - margin * 2;
+
+    // Convert HTML into readable plain text for a reliable fallback PDF output.
+    const sourceText = html
+      ? String(html)
+          .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+          .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+          .replace(/<\s*br\s*\/?>/gi, '\n')
+          .replace(/<\s*\/p\s*>/gi, '\n\n')
+          .replace(/<\s*\/div\s*>/gi, '\n')
+          .replace(/<[^>]*>/g, ' ')
+          .replace(/&nbsp;/g, ' ')
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'")
+      : `Source URL: ${String(url)}`;
+
+    const normalizedText = sourceText
+      .replace(/\r\n/g, '\n')
+      .replace(/\t/g, ' ')
+      .replace(/[ ]{2,}/g, ' ')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+
+    const lines = [];
+    normalizedText.split('\n').forEach((paragraph) => {
+      const trimmed = paragraph.trim();
+      if (!trimmed) {
+        lines.push('');
+        return;
+      }
+
+      const words = trimmed.split(' ');
+      let currentLine = '';
+
+      words.forEach((word) => {
+        const nextLine = currentLine ? `${currentLine} ${word}` : word;
+        const width = font.widthOfTextAtSize(nextLine, fontSize);
+
+        if (width <= maxLineWidth) {
+          currentLine = nextLine;
+        } else {
+          if (currentLine) lines.push(currentLine);
+          currentLine = word;
+        }
+      });
+
+      if (currentLine) lines.push(currentLine);
+    });
+
+    let page = pdfDoc.addPage([pageWidth, pageHeight]);
+    let cursorY = pageHeight - margin;
+
+    page.drawText('HTML to PDF Conversion', {
+      x: margin,
+      y: cursorY,
+      size: 14,
+      font,
+    });
+    cursorY -= lineHeight * 1.8;
+
+    const printableLines = lines.length > 0 ? lines : ['(No readable text extracted from HTML)'];
+
+    printableLines.forEach((line) => {
+      if (cursorY < margin) {
+        page = pdfDoc.addPage([pageWidth, pageHeight]);
+        cursorY = pageHeight - margin;
+      }
+
+      page.drawText(line, {
+        x: margin,
+        y: cursorY,
+        size: fontSize,
+        font,
+      });
+
+      cursorY -= lineHeight;
+    });
+
+    const pdfBytes = await pdfDoc.save();
+    const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+    const filename = 'converted.pdf';
 
     res.json({
       success: true,
-      result: conversionInfo
+      result: {
+        input: html ? 'HTML content' : url,
+        outputFile: filename,
+        options: {
+          format: options.format || 'A4',
+          orientation: options.orientation || 'portrait',
+          margin: options.margin || '1cm'
+        },
+        pages: pdfDoc.getPageCount()
+      },
+      file: `data:application/pdf;base64,${pdfBase64}`,
+      filename
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
