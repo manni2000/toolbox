@@ -945,8 +945,9 @@ router.post('/powerpoint-to-pdf', upload.single('ppt'), async (req, res) => {
   }
 });
 
-// HTML to PDF
+// HTML to PDF - Using Playwright for proper rendering with CSS, images, and fonts
 router.post('/html-to-pdf', async (req, res) => {
+  let browser = null;
   try {
     const { html, url, options = {} } = req.body;
 
@@ -954,96 +955,65 @@ router.post('/html-to-pdf', async (req, res) => {
       return res.status(400).json({ error: 'HTML content or URL is required' });
     }
 
-    const pdfDoc = await PDFDocument.create();
-    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const pageWidth = 595.28; // A4 width in points
-    const pageHeight = 841.89; // A4 height in points
-    const margin = 48;
-    const lineHeight = 16;
-    const fontSize = 11;
-    const maxLineWidth = pageWidth - margin * 2;
+    // Import playwright dynamically
+    const { chromium } = require('playwright');
+    
+    // Launch browser
+    browser = await chromium.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    
+    const page = await browser.newPage();
+    
+    // Set viewport for consistent rendering
+    await page.setViewportSize({
+      width: 1200,
+      height: 800
+    });
 
-    // Convert HTML into readable plain text for a reliable fallback PDF output.
-    const sourceText = html
-      ? String(html)
-          .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-          .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-          .replace(/<\s*br\s*\/?>/gi, '\n')
-          .replace(/<\s*\/p\s*>/gi, '\n\n')
-          .replace(/<\s*\/div\s*>/gi, '\n')
-          .replace(/<[^>]*>/g, ' ')
-          .replace(/&nbsp;/g, ' ')
-          .replace(/&amp;/g, '&')
-          .replace(/&lt;/g, '<')
-          .replace(/&gt;/g, '>')
-          .replace(/&quot;/g, '"')
-          .replace(/&#39;/g, "'")
-      : `Source URL: ${String(url)}`;
-
-    const normalizedText = sourceText
-      .replace(/\r\n/g, '\n')
-      .replace(/\t/g, ' ')
-      .replace(/[ ]{2,}/g, ' ')
-      .replace(/\n{3,}/g, '\n\n')
-      .trim();
-
-    const lines = [];
-    normalizedText.split('\n').forEach((paragraph) => {
-      const trimmed = paragraph.trim();
-      if (!trimmed) {
-        lines.push('');
-        return;
-      }
-
-      const words = trimmed.split(' ');
-      let currentLine = '';
-
-      words.forEach((word) => {
-        const nextLine = currentLine ? `${currentLine} ${word}` : word;
-        const width = font.widthOfTextAtSize(nextLine, fontSize);
-
-        if (width <= maxLineWidth) {
-          currentLine = nextLine;
-        } else {
-          if (currentLine) lines.push(currentLine);
-          currentLine = word;
-        }
+    if (url) {
+      // Navigate to URL
+      await page.goto(url, { 
+        waitUntil: 'networkidle',
+        timeout: 30000 
       });
-
-      if (currentLine) lines.push(currentLine);
-    });
-
-    let page = pdfDoc.addPage([pageWidth, pageHeight]);
-    let cursorY = pageHeight - margin;
-
-    page.drawText('HTML to PDF Conversion', {
-      x: margin,
-      y: cursorY,
-      size: 14,
-      font,
-    });
-    cursorY -= lineHeight * 1.8;
-
-    const printableLines = lines.length > 0 ? lines : ['(No readable text extracted from HTML)'];
-
-    printableLines.forEach((line) => {
-      if (cursorY < margin) {
-        page = pdfDoc.addPage([pageWidth, pageHeight]);
-        cursorY = pageHeight - margin;
-      }
-
-      page.drawText(line, {
-        x: margin,
-        y: cursorY,
-        size: fontSize,
-        font,
+    } else {
+      // Set HTML content directly
+      await page.setContent(html, { 
+        waitUntil: 'networkidle',
+        timeout: 30000 
       });
+    }
 
-      cursorY -= lineHeight;
+    // Wait a bit for any lazy-loaded content
+    await page.waitForTimeout(1000);
+
+    // Parse margin option
+    let marginValue = options.margin || '1cm';
+    if (typeof marginValue === 'string') {
+      marginValue = {
+        top: marginValue,
+        right: marginValue,
+        bottom: marginValue,
+        left: marginValue
+      };
+    }
+
+    // Generate PDF with proper styling
+    const pdfBuffer = await page.pdf({
+      format: options.format || 'A4',
+      landscape: options.orientation === 'landscape',
+      margin: marginValue,
+      printBackground: true, // Important: preserve background colors and images
+      preferCSSPageSize: false,
+      scale: options.scale || 1
     });
 
-    const pdfBytes = await pdfDoc.save();
-    const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+    await browser.close();
+    browser = null;
+
+    const pdfBase64 = pdfBuffer.toString('base64');
     const filename = 'converted.pdf';
 
     res.json({
@@ -1056,12 +1026,16 @@ router.post('/html-to-pdf', async (req, res) => {
           orientation: options.orientation || 'portrait',
           margin: options.margin || '1cm'
         },
-        pages: pdfDoc.getPageCount()
+        method: 'playwright-chromium'
       },
       file: `data:application/pdf;base64,${pdfBase64}`,
       filename
     });
   } catch (error) {
+    if (browser) {
+      await browser.close().catch(() => {});
+    }
+    console.error('HTML to PDF error:', error);
     res.status(500).json({ error: error.message });
   }
 });
