@@ -7,6 +7,7 @@ import TrustSection from "@/components/home/TrustSection";
 import HowItWorks from "@/components/home/HowItWorks";
 import ContactSection from "@/components/home/ContactSection";
 import BlogHighlights from "@/components/home/BlogHighlights";
+import FAQSection from "@/components/home/FAQSection";
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
         <CategoryGrid />
         <BlogHighlights />
         <HowItWorks />
+        <FAQSection />
         <TrustSection />
         <ContactSection />
       </main>
