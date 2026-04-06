@@ -22,7 +22,6 @@ const VideoResolutionTool = () => {
   const [processingStage, setProcessingStage] = useState("");
   const [processingStartTime, setProcessingStartTime] = useState<number | null>(null);
   const [abortController, setAbortController] = useState<AbortController | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const downloadSectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -185,7 +184,7 @@ const VideoResolutionTool = () => {
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              onClick={() => inputRef.current?.click()}
+              onClick={() => {}}
               onFileSelect={handleFile}
               multiple={false}
               title="Drop video file here or click to browse"
@@ -194,15 +193,6 @@ const VideoResolutionTool = () => {
             <label htmlFor="video-input" className="sr-only">
               Upload video file
             </label>
-            <input
-              id="video-input"
-              ref={inputRef}
-              type="file"
-              accept="video/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-              title="Select a video file to upload"
-            />
           </>
         )}
 

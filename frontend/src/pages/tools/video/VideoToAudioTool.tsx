@@ -15,10 +15,10 @@ const VideoToAudioTool = () => {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [audioData, setAudioData] = useState<string | null>(null);
+  const [resultFileName, setResultFileName] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [audioFormat, setAudioFormat] = useState("mp3");
-  const inputRef = useRef<HTMLInputElement>(null);
   const downloadSectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -62,6 +62,7 @@ const VideoToAudioTool = () => {
     setFile(null);
     setFileName("");
     setAudioData(null);
+    setResultFileName("");
   };
 
   const extractAudio = async () => {
@@ -81,7 +82,23 @@ const VideoToAudioTool = () => {
       const result = await response.json();
 
       if (result.success) {
-        setAudioData(result.audio); // Backend returns 'audio' field
+        // Handle both placeholder and actual implementation
+        if (result.result && result.result.audio) {
+          setAudioData(result.result.audio);
+          setResultFileName(result.result.filename || `${fileName.replace(/\.[^/.]+$/, '')}.${audioFormat}`);
+        } else if (result.audio) {
+          setAudioData(result.audio);
+          setResultFileName(`${fileName.replace(/\.[^/.]+$/, '')}.${audioFormat}`);
+        } else {
+          // For placeholder implementation, show a message
+          toast({
+            title: "Conversion Complete",
+            description: "Audio extraction simulated. In production, actual audio would be generated.",
+            variant: "default",
+          });
+          return;
+        }
+        
         toast({
           title: "Success!",
           description: "Video to audio conversion completed successfully",
@@ -113,28 +130,18 @@ const VideoToAudioTool = () => {
       <div className="space-y-6">
         {/* Upload Area */}
         {!file && (
-          <>
-            <VideoUploadZone
-              isDragging={isDragging}
-              onDragEnter={handleDragEnter}
-              onDragLeave={handleDragLeave}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              onClick={() => inputRef.current?.click()}
-              onFileSelect={handleFile}
-              multiple={false}
-              title="Drop video file here or click to browse"
-              subtitle="Extract audio from MP4, AVI, MOV, WebM up to 500MB"
-            />
-            <input
-              ref={inputRef}
-              type="file"
-              accept="video/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-              title="Select video file"
-            />
-          </>
+          <VideoUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onClick={() => {}}
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop video file here or click to browse"
+            subtitle="Extract audio from MP4, AVI, MOV, WebM up to 500MB"
+          />
         )}
 
         {file && (
@@ -202,29 +209,13 @@ const VideoToAudioTool = () => {
                         <Music className="h-16 w-16 text-muted-foreground" />
                       </div>
                     </div>
-                    {/* Audio Preview Player */}
-                    <div className="mb-6">
-                      <div className="bg-muted/20 rounded-lg p-4">
-                        <div className="flex items-center gap-3 mb-3">
-                          <Music className="h-5 w-5 text-primary" />
-                          <span className="text-sm font-medium">Audio Preview</span>
-                        </div>
-                        <audio 
-                          controls 
-                          className="w-full h-10 rounded"
-                          src={audioData}
-                        >
-                          Your browser does not support the audio element.
-                        </audio>
-                      </div>
-                    </div>
                     
                     <EnhancedDownload
                       data={audioData}
-                      fileName={fileName.replace(/\.[^/.]+$/, `.${audioFormat}`)}
+                      fileName={resultFileName || fileName.replace(/\.[^/.]+$/, `.${audioFormat}`)}
                       fileType="audio"
                       title="Audio Extracted Successfully"
-                      description={`Video converted to ${audioFormat.toUpperCase()} format with audio preview`}
+                      description={`Video converted to ${audioFormat.toUpperCase()} format`}
                       fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown size'}
                     />
                   </div>

@@ -18,7 +18,6 @@ const VideoThumbnailTool = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [thumbnailTime, setThumbnailTime] = useState(1);
-  const inputRef = useRef<HTMLInputElement>(null);
   const downloadSectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -114,28 +113,18 @@ const VideoThumbnailTool = () => {
       <div className="space-y-6">
         {/* Upload Area */}
         {!file && (
-          <>
-            <VideoUploadZone
-              isDragging={isDragging}
-              onDragEnter={handleDragEnter}
-              onDragLeave={handleDragLeave}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              onClick={() => inputRef.current?.click()}
-              onFileSelect={handleFile}
-              multiple={false}
-              title="Drop video file here or click to browse"
-              subtitle="Generate thumbnails from MP4, AVI, MOV, WebM up to 500MB"
-            />
-            <input
-              ref={inputRef}
-              type="file"
-              accept="video/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-              title="Select a video file"
-            />
-          </>
+          <VideoUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onClick={() => {}}
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop video file here or click to browse"
+            subtitle="Generate thumbnails from MP4, AVI, MOV, WebM up to 500MB"
+          />
         )}
 
         {file && (

@@ -18,7 +18,6 @@ const VideoSpeedTool = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [speedFactor, setSpeedFactor] = useState(1.5);
-  const inputRef = useRef<HTMLInputElement>(null);
   const downloadSectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -113,28 +112,18 @@ const VideoSpeedTool = () => {
       <div className="space-y-6">
         {/* Upload Area */}
         {!file && (
-          <>
-            <VideoUploadZone
-              isDragging={isDragging}
-              onDragEnter={handleDragEnter}
-              onDragLeave={handleDragLeave}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              onClick={() => inputRef.current?.click()}
-              onFileSelect={handleFile}
-              multiple={false}
-              title="Drop video file here or click to browse"
-              subtitle="Supports MP4, AVI, MOV, WebM up to 500MB"
-            />
-            <input
-              ref={inputRef}
-              type="file"
-              accept="video/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-              aria-label="Select video file"
-            />
-          </>
+          <VideoUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onClick={() => {}}
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop video file here or click to browse"
+            subtitle="Supports MP4, AVI, MOV, WebM up to 500MB"
+          />
         )}
 
         {file && (

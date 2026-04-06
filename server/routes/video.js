@@ -13,7 +13,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ 
   storage: storage,
   limits: {
-    fileSize: 200 * 1024 * 1024 // 200MB limit
+    fileSize: 500 * 1024 * 1024 // 500MB limit
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /mp4|avi|mov|wmv|flv|webm|mkv|3gp/;
@@ -128,20 +128,69 @@ router.post('/to-audio', upload.single('video'), async (req, res) => {
       });
     }
 
-    // For now, we'll return a placeholder since ffmpeg requires file input
-    // In a production environment, you'd want to use a streaming approach
-    // or a different library that supports buffer-to-buffer conversion
-    
-    res.json({
-      success: true,
-      result: {
-        audio: null,
-        filename: `${baseFilename}.${format}`,
-        format,
-        originalVideo: req.file.originalname,
-        note: 'Audio extraction requires file processing. This is a placeholder implementation.'
+    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
+    const tempOutputPath = path.join(__dirname, '../temp', `audio_${Date.now()}.${format}`);
+
+    // Ensure temp directory exists
+    const tempDir = path.dirname(tempInputPath);
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    const command = ffmpeg(tempInputPath);
+
+    // Set audio codec based on format
+    if (format === 'mp3') {
+      command.audioCodec('libmp3lame');
+      if (quality === 'high') {
+        command.audioBitrate('320k');
+      } else if (quality === 'low') {
+        command.audioBitrate('128k');
+      } else {
+        command.audioBitrate('192k');
       }
-    });
+    } else if (format === 'wav') {
+      command.audioCodec('pcm_s16le');
+    } else if (format === 'aac') {
+      command.audioCodec('aac');
+      command.audioBitrate('256k');
+    } else if (format === 'ogg') {
+      command.audioCodec('libvorbis');
+      command.audioBitrate('192k');
+    }
+
+    command
+      .on('end', () => {
+        try {
+          const outputBuffer = fs.readFileSync(tempOutputPath);
+          const audioBase64 = outputBuffer.toString('base64');
+          
+          cleanupTempFile(tempInputPath);
+          cleanupTempFile(tempOutputPath);
+
+          res.json({
+            success: true,
+            result: {
+              audio: `data:audio/${format};base64,${audioBase64}`,
+              filename: `${baseFilename}.${format}`,
+              format,
+              originalVideo: req.file.originalname,
+              originalSize: req.file.size,
+              convertedSize: outputBuffer.length
+            }
+          });
+        } catch (error) {
+          cleanupTempFile(tempInputPath);
+          cleanupTempFile(tempOutputPath);
+          res.status(500).json({ error: 'Error processing video file' });
+        }
+      })
+      .on('error', (err) => {
+        cleanupTempFile(tempInputPath);
+        cleanupTempFile(tempOutputPath);
+        res.status(500).json({ error: 'Audio extraction failed: ' + err.message });
+      })
+      .save(tempOutputPath);
 
   } catch (error) {
     res.status(500).json({ error: error.message });

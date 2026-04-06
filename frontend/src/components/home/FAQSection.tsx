@@ -121,24 +121,7 @@ const FAQSection = () => {
           ))}
         </motion.div>
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="text-center mt-12"
-        >
-          <p className="text-muted-foreground mb-4">
-            Still have questions?
-          </p>
-          <a
-            href="/contact"
-            className="inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground px-6 py-3 font-semibold hover:bg-primary/90 transition-colors duration-200"
-          >
-            Contact Support
-          </a>
-        </motion.div>
-      </div>
+              </div>
     </section>
   );
 };
