@@ -21,7 +21,7 @@ const Header = () => {
         Skip to main content
       </a>
       
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/95 backdrop-blur-sm shadow-sm">
         <div className="container">
         <div className="flex h-20 items-center justify-between sm:h-20 lg:h-20">
           {/* Logo */}

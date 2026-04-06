@@ -79,7 +79,7 @@ const BlogListPage = () => {
         canonical="https://dailytools247.com/blogs"
       />
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 pt-20">
         <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-primary/10 via-background to-sky-500/5 py-12 sm:py-14 md:py-24">
           <div className="absolute inset-0">
             <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
@@ -111,11 +111,11 @@ const BlogListPage = () => {
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="rounded-3xl border border-border bg-card p-5 shadow-lg sm:p-6 md:p-10"
+              className="rounded-3xl border border-border bg-gradient-to-br from-primary/5 via-card to-primary/3 p-5 shadow-lg sm:p-6 md:p-10"
             >
               <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-primary">Featured</p>
-              <div className="grid gap-6 md:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] md:items-center">
-                <div className="min-w-0">
+              <div className="grid gap-6 grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] md:items-center">
+                <div className="order-2 md:order-1 min-w-0">
                   <h2 className="text-2xl font-bold md:text-3xl">{featuredPost.title}</h2>
                   <p className="mt-4 text-muted-foreground">{featuredPost.description}</p>
                   <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
@@ -136,7 +136,7 @@ const BlogListPage = () => {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
-                <div className="overflow-hidden rounded-2xl border border-border">
+                <div className="order-1 md:order-2 overflow-hidden rounded-2xl border border-border">
                   <img
                     src={featuredPost.image}
                     alt={featuredPost.title}

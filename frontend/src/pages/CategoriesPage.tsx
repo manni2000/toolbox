@@ -73,7 +73,7 @@ const CategoriesPage = () => {
         canonical="https://dailytools247.com/categories"
       />
       <Header />
-      <main className="flex-1 overflow-x-hidden">
+      <main className="flex-1 overflow-x-hidden pt-20">
         {/* Enhanced Header Section */}
         <section className="relative overflow-hidden border-b border-border/60 bg-gradient-to-br from-primary/10 via-background to-primary/5">
           {/* Background Elements */}

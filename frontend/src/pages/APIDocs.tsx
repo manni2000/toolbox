@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { toast } from "sonner";
 import { Copy, Key, Code2, Zap, Shield, Clock, ChevronDown, ChevronRight, Eye, EyeOff, ExternalLink, Terminal, Rocket, Sparkles, ArrowRight, CheckCircle } from "lucide-react";
-import APIPlayground from "@/components/APIPlayground";
+import APIPlayground from "../components/APIPlayground";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "https://toolbox-backend-jet.vercel.app");
 
@@ -57,6 +57,7 @@ interface ApiKey {
   tier: string;
   dailyLimit: number;
   createdAt: string;
+  usage?: number;
 }
 
 const APIDocs = () => {
@@ -179,7 +180,7 @@ const APIDocs = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <Header />
-      <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+      <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8 pt-28">
         {/* Hero Section */}
         <div className="text-center mb-8 sm:mb-12 px-2 relative">
           {/* Background gradient effect */}
@@ -780,26 +781,47 @@ const APIDocs = () => {
                               <Copy className="h-3 w-3" />
                             </Button>
                           </div>
+                          {/* API key usage info */}
+                          {typeof key.usage === "number" && (
+                            <div className="flex flex-wrap gap-2 mb-2">
+                              <span className="text-[11px] sm:text-xs font-medium px-2 py-1 rounded bg-blue-100 text-blue-900 border border-blue-300">
+                                Used: {key.usage}
+                              </span>
+                              <span className="text-[11px] sm:text-xs font-medium px-2 py-1 rounded bg-green-100 text-green-900 border border-green-300">
+                                Remaining: {Math.max(0, (key.dailyLimit || 0) - key.usage)}
+                              </span>
+                            </div>
+                          )}
                           <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                            <Badge
-                              variant={key.status === "active" ? "default" : "destructive"}
-                              className="text-[10px] sm:text-xs"
+                            {/* Status badge: active (black text, white bg), others (default/destructive) */}
+                            <span
+                              className={`text-[10px] sm:text-xs font-semibold px-2 py-1 rounded border ${
+                                key.status === "active"
+                                  ? "bg-white text-black border-slate-300"
+                                  : "bg-red-500/10 text-red-500 border-red-500/20"
+                              } flex items-center gap-1`}
                             >
-                              {key.status === "active" ? (
-                                <>
-                                  <div className="w-1.5 h-1.5 bg-white rounded-full mr-1"></div>
-                                  {key.status}
-                                </>
-                              ) : (
-                                key.status
+                              {key.status === "active" && (
+                                <div className="w-1.5 h-1.5 bg-black rounded-full mr-1"></div>
                               )}
-                            </Badge>
-                            <Badge variant="secondary" className="text-[10px] sm:text-xs bg-slate-700/50 border-slate-600">
+                              {key.status}
+                            </span>
+                            {/* Tier badge: free (white text, green bg), others (default) */}
+                            <span
+                              className={`text-[10px] sm:text-xs font-semibold px-2 py-1 rounded border ${
+                                key.tier === "free"
+                                  ? "bg-green-500 text-white border-green-500"
+                                  : "bg-slate-700/50 text-slate-200 border-slate-600"
+                              }`}
+                            >
                               {key.tier}
-                            </Badge>
-                            <Badge variant="outline" className="text-[10px] sm:text-xs border-slate-600 text-slate-400">
+                            </span>
+                            {/* Daily limit badge: black text, white bg */}
+                            <span
+                              className="text-[10px] sm:text-xs font-semibold px-2 py-1 rounded border bg-white text-black border-slate-300"
+                            >
                               {key.dailyLimit} req/day
-                            </Badge>
+                            </span>
                           </div>
                         </div>
                         <div className="text-xs sm:text-sm text-slate-400 shrink-0 flex items-center gap-1">

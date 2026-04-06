@@ -3,13 +3,13 @@ import { motion } from "framer-motion";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, CalendarDays, Clock3, ChevronRight } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import SEOHelmet from "@/components/SEOHelmet";
-import NotFound from "@/pages/NotFound";
-import { blogPosts, getBlogPostBySlug, type BlogPost } from "@/data/blogPosts";
-import { blogEnhancements } from "@/data/blogEnhancements";
-import { api } from "@/lib/api-client";
+import Header from "../../components/layout/Header";
+import Footer from "../../components/layout/Footer";
+import SEOHelmet from "../../components/SEOHelmet";
+import NotFound from "../../pages/NotFound";
+import { blogPosts, getBlogPostBySlug, type BlogPost } from "../../data/blogPosts";
+import { blogEnhancements } from "../../data/blogEnhancements";
+import { api } from "../../lib/api-client";
 
 const BlogPostPage = () => {
   const { slug } = useParams();

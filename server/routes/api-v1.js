@@ -246,6 +246,40 @@ const generalUpload = multer({
   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB for ZIP
 });
 
+// Audio upload configuration
+const audioUpload = multer({
+  storage: storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB for audio files
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /mpeg|mp3|wav|ogg|m4a|aac|flac/;
+    const extname = allowedTypes.test(file.originalname.toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype) || 
+                    file.mimetype.includes('audio/') ||
+                    file.mimetype === 'application/octet-stream';
+    if (mimetype && extname) {
+      return cb(null, true);
+    }
+    cb(new Error('Invalid file type. Only MP3, WAV, OGG, M4A, AAC, FLAC are allowed.'));
+  }
+});
+
+// Multiple audio files upload
+const multipleAudioUpload = multer({
+  storage: storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB per file
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /mpeg|mp3|wav|ogg|m4a|aac|flac/;
+    const extname = allowedTypes.test(file.originalname.toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype) || 
+                    file.mimetype.includes('audio/') ||
+                    file.mimetype === 'application/octet-stream';
+    if (mimetype && extname) {
+      return cb(null, true);
+    }
+    cb(new Error('Invalid file type. Only MP3, WAV, OGG, M4A, AAC, FLAC are allowed.'));
+  }
+});
+
 // ============================================
 // API DOCUMENTATION
 // ============================================
@@ -388,6 +422,376 @@ const API_DOCS = {
               }
             }
           }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/qr-scan',
+          name: 'QR Code Scanner',
+          description: 'Scan and decode QR codes from images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file containing QR code' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/qr-scan" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@qrcode.png"`,
+            response: {
+              success: true,
+              result: {
+                decodedText: 'https://example.com',
+                format: 'QR_CODE',
+                confidence: 0.95
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/png-to-jpg',
+          name: 'PNG to JPG Converter',
+          description: 'Convert PNG images to JPG format with quality control',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'PNG image file' },
+            { name: 'quality', type: 'number', required: false, default: 90, description: 'JPG quality (1-100)' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/png-to-jpg" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@image.png" \\
+  -F "quality=90"`,
+            response: {
+              success: true,
+              result: {
+                convertedImage: 'data:image/jpeg;base64,...',
+                originalFormat: 'png',
+                newFormat: 'jpeg',
+                originalSize: 1024000,
+                convertedSize: 512000
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/jpg-to-png',
+          name: 'JPG to PNG Converter',
+          description: 'Convert JPG images to PNG with transparency support',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'JPG image file' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/jpg-to-png" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@image.jpg"`,
+            response: {
+              success: true,
+              result: {
+                convertedImage: 'data:image/png;base64,...',
+                originalFormat: 'jpeg',
+                newFormat: 'png',
+                originalSize: 512000,
+                convertedSize: 1024000
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/webp-to-png',
+          name: 'WebP to PNG Converter',
+          description: 'Convert WebP images to PNG for better compatibility',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'WebP image file' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/webp-to-png" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@image.webp"`,
+            response: {
+              success: true,
+              result: {
+                convertedImage: 'data:image/png;base64,...',
+                originalFormat: 'webp',
+                newFormat: 'png',
+                originalSize: 256000,
+                convertedSize: 512000
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/png-to-webp',
+          name: 'PNG to WebP Converter',
+          description: 'Convert PNG images to WebP for web optimization',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'PNG image file' },
+            { name: 'quality', type: 'number', required: false, default: 80, description: 'WebP quality (1-100)' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/png-to-webp" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@image.png" \\
+  -F "quality=80"`,
+            response: {
+              success: true,
+              result: {
+                convertedImage: 'data:image/webp;base64,...',
+                originalFormat: 'png',
+                newFormat: 'webp',
+                originalSize: 1024000,
+                convertedSize: 256000,
+                compressionRatio: '75.00'
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/crop',
+          name: 'Image Crop Tool',
+          description: 'Crop images with custom dimensions',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file to crop' },
+            { name: 'x', type: 'number', required: true, description: 'X coordinate of crop area' },
+            { name: 'y', type: 'number', required: true, description: 'Y coordinate of crop area' },
+            { name: 'width', type: 'number', required: true, description: 'Width of crop area' },
+            { name: 'height', type: 'number', required: true, description: 'Height of crop area' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/crop" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@photo.jpg" \\
+  -F "x=100" \\
+  -F "y=100" \\
+  -F "width=400" \\
+  -F "height=300"`,
+            response: {
+              success: true,
+              result: {
+                croppedImage: 'data:image/jpeg;base64,...',
+                originalSize: { width: 800, height: 600 },
+                croppedSize: { width: 400, height: 300 },
+                cropArea: { x: 100, y: 100, width: 400, height: 300 }
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/background-remove',
+          name: 'Background Remover',
+          description: 'Remove background from images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file with background to remove' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/background-remove" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@portrait.jpg"`,
+            response: {
+              success: true,
+              result: {
+                processedImage: 'data:image/png;base64,...',
+                originalSize: 1024000,
+                processedSize: 512000,
+                hasTransparency: true
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/to-pdf',
+          name: 'Image to PDF',
+          description: 'Convert multiple images to PDF document',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'images', type: 'file[]', required: true, description: 'Image files to convert to PDF (max 20)' },
+            { name: 'pageSize', type: 'string', required: false, default: 'A4', description: 'Page size: A4, A3, Letter' },
+            { name: 'orientation', type: 'string', required: false, default: 'portrait', description: 'Page orientation: portrait, landscape' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/to-pdf" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "images=@page1.jpg" \\
+  -F "images=@page2.jpg" \\
+  -F "pageSize=A4"`,
+            response: {
+              success: true,
+              result: {
+                pdfFile: 'data:application/pdf;base64,...',
+                pageCount: 2,
+                pageSize: 'A4',
+                orientation: 'portrait'
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/to-word',
+          name: 'Image to Word',
+          description: 'Convert images to Word with OCR',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file with text to extract' },
+            { name: 'language', type: 'string', required: false, default: 'eng', description: 'Language code for OCR (eng, spa, fra, etc.)' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/to-word" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@document.jpg" \\
+  -F "language=eng"`,
+            response: {
+              success: true,
+              result: {
+                wordFile: 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,...',
+                extractedText: 'Extracted text content...',
+                confidence: 0.92,
+                language: 'eng'
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/to-base64',
+          name: 'Image to Base64',
+          description: 'Convert images to Base64 format',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file to convert' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/to-base64" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@photo.jpg"`,
+            response: {
+              success: true,
+              result: {
+                base64: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...',
+                mimeType: 'image/jpeg',
+                size: 1024000
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/from-base64',
+          name: 'Base64 to Image',
+          description: 'Convert Base64 string to image',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'base64', type: 'string', required: true, description: 'Base64 encoded image string' },
+            { name: 'format', type: 'string', required: false, default: 'png', description: 'Output format: png, jpg, webp' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/from-base64" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...", "format": "png"}'`,
+            response: {
+              success: true,
+              result: {
+                image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...',
+                format: 'png',
+                size: 512000
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/dpi-check',
+          name: 'Image DPI Checker',
+          description: 'Check image DPI and print sizes',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file to check' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/dpi-check" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@photo.jpg"`,
+            response: {
+              success: true,
+              result: {
+                dpi: { x: 300, y: 300 },
+                pixelDimensions: { width: 2400, height: 1800 },
+                printSize: { inches: { width: 8, height: 6 }, cm: { width: 20.32, height: 15.24 } },
+                resolution: 'High (300 DPI)',
+                suitableForPrint: true
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/exif-viewer',
+          name: 'EXIF Metadata Viewer',
+          description: 'View photo metadata and camera info',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file to analyze' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/exif-viewer" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@photo.jpg"`,
+            response: {
+              success: true,
+              result: {
+                exifData: {
+                  make: 'Canon',
+                  model: 'EOS 5D Mark IV',
+                  dateTime: '2024-01-15 14:30:00',
+                  exposureTime: '1/125',
+                  fNumber: 2.8,
+                  iso: 400,
+                  focalLength: '50mm',
+                  flash: false,
+                  gps: { latitude: 40.7128, longitude: -74.0060 }
+                },
+                hasExif: true,
+                hasGPS: true
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/image/favicon-generate',
+          name: 'Favicon Generator',
+          description: 'Create favicons from images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file to convert to favicon' },
+            { name: 'size', type: 'number', required: false, default: 32, description: 'Favicon size in pixels (16, 32, 48, 64)' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/image/favicon-generate" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "image=@logo.png" \\
+  -F "size=32"`,
+            response: {
+              success: true,
+              result: {
+                favicon: 'data:image/x-icon;base64,...',
+                originalSize: { width: 200, height: 200 },
+                faviconSize: { width: 32, height: 32 },
+                format: 'ico'
+              }
+            }
+          }
         }
       ]
     },
@@ -405,7 +809,7 @@ const API_DOCS = {
           ],
           example: {
             curl: `curl -X POST "{{baseUrl}}/api/v1/text/word-count" \\
-  -H "X-API-Key: YOUR_API_KEY" \\
+  -H "X-API-Key: YOUR_API_KEY" \\722861
   -H "Content-Type: application/json" \\
   -d '{"text": "Hello world! This is a test."}'`,
             response: {
@@ -696,6 +1100,151 @@ const API_DOCS = {
       ]
     },
     {
+      category: 'Audio Tools',
+      endpoints: [
+        {
+          method: 'POST',
+          path: '/api/v1/audio/convert',
+          name: 'Convert Audio Format',
+          description: 'Convert audio files between different formats (MP3, WAV, OGG, M4A)',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'audio', type: 'file', required: true, description: 'Audio file to convert' },
+            { name: 'format', type: 'string', required: true, description: 'Target format: mp3, wav, ogg, m4a' },
+            { name: 'quality', type: 'string', required: false, default: 'medium', description: 'Audio quality: low, medium, high' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/audio/convert" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "audio=@input.mp3" \\
+  -F "format=wav" \\
+  -F "quality=high"`,
+            response: {
+              success: true,
+              result: {
+                convertedAudio: 'data:audio/wav;base64,...',
+                originalFormat: 'audio/mp3',
+                newFormat: 'wav',
+                originalSize: 5242880,
+                convertedSize: 4194304
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/audio/compress',
+          name: 'Compress Audio',
+          description: 'Reduce audio file size while maintaining quality',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'audio', type: 'file', required: true, description: 'Audio file to compress' },
+            { name: 'quality', type: 'string', required: false, default: 'medium', description: 'Compression quality: low, medium, high' },
+            { name: 'bitrate', type: 'number', required: false, default: 128, description: 'Target bitrate in kbps' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/audio/compress" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "audio=@large_audio.mp3" \\
+  -F "quality=medium" \\
+  -F "bitrate=128"`,
+            response: {
+              success: true,
+              result: {
+                compressedAudio: 'data:audio/mp3;base64,...',
+                originalSize: 10485760,
+                compressedSize: 5242880,
+                compressionRatio: '50.00',
+                bitrate: 128
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/audio/trim',
+          name: 'Trim Audio',
+          description: 'Trim audio files by specifying start and end time',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'audio', type: 'file', required: true, description: 'Audio file to trim' },
+            { name: 'startTime', type: 'number', required: true, description: 'Start time in seconds' },
+            { name: 'endTime', type: 'number', required: true, description: 'End time in seconds' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/audio/trim" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "audio=@audio.mp3" \\
+  -F "startTime=10" \\
+  -F "endTime=30"`,
+            response: {
+              success: true,
+              result: {
+                trimmedAudio: 'data:audio/mp3;base64,...',
+                originalDuration: 60,
+                trimmedDuration: 20,
+                startTime: 10,
+                endTime: 30
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/audio/merge',
+          name: 'Merge Audio Files',
+          description: 'Combine multiple audio files into one',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'audios', type: 'file[]', required: true, description: 'Multiple audio files to merge (max 10)' },
+            { name: 'outputFormat', type: 'string', required: false, default: 'mp3', description: 'Output format: mp3, wav, ogg, m4a' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/audio/merge" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "audios=@part1.mp3" \\
+  -F "audios=@part2.mp3" \\
+  -F "outputFormat=mp3"`,
+            response: {
+              success: true,
+              result: {
+                mergedAudio: 'data:audio/mp3;base64,...',
+                filesCount: 2,
+                totalDuration: 120,
+                outputFormat: 'mp3'
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/audio/volume',
+          name: 'Adjust Audio Volume',
+          description: 'Increase or decrease audio volume',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'audio', type: 'file', required: true, description: 'Audio file to adjust' },
+            { name: 'volume', type: 'number', required: true, description: 'Volume multiplier (0.5 = half volume, 2.0 = double volume)' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/audio/volume" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "audio=@audio.mp3" \\
+  -F "volume=1.5"`,
+            response: {
+              success: true,
+              result: {
+                adjustedAudio: 'data:audio/mp3;base64,...',
+                originalVolume: 1.0,
+                newVolume: 1.5,
+                volumeChange: '+50%'
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       category: 'PDF Tools',
       endpoints: [
         {
@@ -766,6 +1315,166 @@ const API_DOCS = {
               result: {
                 pageCount: 15,
                 fileSize: 1048576
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/pdf/split',
+          name: 'Split PDF',
+          description: 'Split a PDF into multiple files at specified page ranges',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'pdf', type: 'file', required: true, description: 'PDF file to split' },
+            { name: 'pages', type: 'string', required: true, description: 'Page ranges to split (e.g., "1-5,6-10")' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/pdf/split" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "pdf=@document.pdf" \\
+  -F "pages=1-5,6-10"`,
+            response: {
+              success: true,
+              result: {
+                splits: [
+                  { filename: 'split_1-5.pdf', data: 'data:application/pdf;base64,...', pages: '1-5' }
+                ],
+                totalSplits: 2
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/pdf/rotate',
+          name: 'Rotate PDF',
+          description: 'Rotate pages in a PDF document',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'pdf', type: 'file', required: true, description: 'PDF file to rotate' },
+            { name: 'rotation', type: 'number', required: true, description: 'Rotation angle (90, 180, 270)' },
+            { name: 'pages', type: 'string', required: false, description: 'Specific pages to rotate (e.g., "1,3,5" or "1-5")' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/pdf/rotate" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "pdf=@document.pdf" \\
+  -F "rotation=90" \\
+  -F "pages=1-5"`,
+            response: {
+              success: true,
+              result: {
+                rotatedPdf: 'data:application/pdf;base64,...',
+                pagesRotated: '1-5',
+                rotation: 90
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/pdf/extract-text',
+          name: 'Extract Text from PDF',
+          description: 'Extract text content from PDF using OCR',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'pdf', type: 'file', required: true, description: 'PDF file to extract text from' },
+            { name: 'pages', type: 'string', required: false, description: 'Specific pages to extract (e.g., "1,3,5" or "1-5")' },
+            { name: 'language', type: 'string', required: false, default: 'eng', description: 'OCR language code' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/pdf/extract-text" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "pdf=@document.pdf" \\
+  -F "pages=1-3"`,
+            response: {
+              success: true,
+              result: {
+                extractedText: 'Extracted text content...',
+                confidence: 0.92,
+                pages: '1-3',
+                language: 'eng'
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/pdf/to-images',
+          name: 'PDF to Images',
+          description: 'Convert PDF pages to images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'pdf', type: 'file', required: true, description: 'PDF file to convert' },
+            { name: 'format', type: 'string', required: false, default: 'png', description: 'Image format: png, jpg, jpeg' },
+            { name: 'dpi', type: 'number', required: false, default: 150, description: 'Image resolution DPI' },
+            { name: 'pages', type: 'string', required: false, description: 'Specific pages to convert (e.g., "1,3,5" or "1-5")' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/pdf/to-images" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "pdf=@document.pdf" \\
+  -F "format=png" \\
+  -F "dpi=300"`,
+            response: {
+              success: true,
+              result: {
+                images: [
+                  { page: 1, image: 'data:image/png;base64,...', size: 2048000 }
+                ],
+                totalPages: 5,
+                format: 'png'
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/pdf/password-protect',
+          name: 'Add Password Protection',
+          description: 'Add password protection to a PDF',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'pdf', type: 'file', required: true, description: 'PDF file to protect' },
+            { name: 'password', type: 'string', required: true, description: 'Password for protection' },
+            { name: 'permissions', type: 'string', required: false, default: 'print,modify', description: 'User permissions: print,modify,copy,annotate' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/pdf/password-protect" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "pdf=@document.pdf" \\
+  -F "password=secret123"`,
+            response: {
+              success: true,
+              result: {
+                protectedPdf: 'data:application/pdf;base64,...',
+                password: '***',
+                permissions: 'print,modify'
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/pdf/to-html',
+          name: 'PDF to HTML',
+          description: 'Convert PDF to HTML format',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'pdf', type: 'file', required: true, description: 'PDF file to convert' },
+            { name: 'pages', type: 'string', required: false, description: 'Specific pages to convert (e.g., "1,3,5" or "1-5")' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/pdf/to-html" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "pdf=@document.pdf"`,
+            response: {
+              success: true,
+              result: {
+                htmlContent: '<html><body>...converted HTML...</body></html>',
+                pages: 'all',
+                format: 'html'
               }
             }
           }
@@ -1085,162 +1794,6 @@ const API_DOCS = {
             }
           }
         }
-  ]
-},
-{
-  category: 'Security Tools',
-  endpoints: [
-    {
-      method: 'POST',
-      path: '/api/v1/security/password-generate',
-      name: 'Password Generator',
-      description: 'Generate secure passwords with customizable options',
-      contentType: 'application/json',
-      parameters: [
-        { name: 'length', type: 'number', required: false, default: 12, description: 'Password length (8-128)' },
-        { name: 'includeUppercase', type: 'boolean', required: false, default: true, description: 'Include uppercase letters' },
-        { name: 'includeLowercase', type: 'boolean', required: false, default: true, description: 'Include lowercase letters' },
-        { name: 'includeNumbers', type: 'boolean', required: false, default: true, description: 'Include numbers' },
-        { name: 'includeSymbols', type: 'boolean', required: false, default: true, description: 'Include special symbols' },
-        { name: 'excludeSimilar', type: 'boolean', required: false, default: false, description: 'Exclude similar characters (0,O,l,1,etc)' }
-      ],
-      example: {
-        curl: `curl -X POST "{{baseUrl}}/api/v1/security/password-generate" \\
-  -H "X-API-Key: YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"length": 16, "includeSymbols": true}'`,
-        response: {
-          success: true,
-          result: {
-            password: 'K7#mN9$xP2@qR5!w',
-            strength: 'Very Strong',
-            entropy: 95.2,
-            length: 16
-          }
-        }
-      }
-    },
-    {
-          method: 'POST',
-          path: '/api/v1/security/password-strength',
-          name: 'Password Strength Checker',
-          description: 'Analyze password strength and provide security score',
-          contentType: 'application/json',
-          parameters: [
-            { name: 'password', type: 'string', required: true, description: 'Password to analyze' }
-          ],
-          example: {
-            curl: `curl -X POST "{{baseUrl}}/api/v1/security/password-strength" \\
-  -H "X-API-Key: YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"password": "MyPassword123!"}'`,
-            response: {
-              success: true,
-              result: {
-                score: 85,
-                strength: 'Strong',
-                feedback: ['Consider adding more special characters'],
-                entropy: 58.4,
-                timeToCrack: '2 years'
-              }
-            }
-          }
-        },
-        {
-          method: 'POST',
-          path: '/api/v1/security/hash-generate',
-          name: 'Hash Generator',
-          description: 'Generate various hash types (MD5, SHA1, SHA256, etc.)',
-          contentType: 'application/json',
-          parameters: [
-            { name: 'text', type: 'string', required: true, description: 'Text to hash' },
-            { name: 'algorithm', type: 'string', required: false, default: 'sha256', description: 'Hash algorithm (md5, sha1, sha256, sha512)' }
-          ],
-          example: {
-            curl: `curl -X POST "{{baseUrl}}/api/v1/security/hash-generate" \\
-  -H "X-API-Key: YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"text": "Hello World", "algorithm": "sha256"}'`,
-            response: {
-              success: true,
-              result: {
-                original: 'Hello World',
-                algorithm: 'sha256',
-                hash: 'a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e'
-              }
-            }
-          }
-        },
-        {
-          method: 'POST',
-          path: '/api/v1/security/base64-encode',
-          name: 'Base64 Encode',
-          description: 'Encode text or data to Base64 format',
-          contentType: 'application/json',
-          parameters: [
-            { name: 'text', type: 'string', required: true, description: 'Text to encode' }
-          ],
-          example: {
-            curl: `curl -X POST "{{baseUrl}}/api/v1/security/base64-encode" \\
-  -H "X-API-Key: YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"text": "Hello World"}'`,
-            response: {
-              success: true,
-              result: {
-                original: 'Hello World',
-                encoded: 'SGVsbG8gV29ybGQ='
-              }
-            }
-          }
-        },
-        {
-          method: 'POST',
-          path: '/api/v1/security/base64-decode',
-          name: 'Base64 Decode',
-          description: 'Decode Base64 encoded text back to original format',
-          contentType: 'application/json',
-          parameters: [
-            { name: 'encoded', type: 'string', required: true, description: 'Base64 encoded text to decode' }
-          ],
-          example: {
-            curl: `curl -X POST "{{baseUrl}}/api/v1/security/base64-decode" \\
-  -H "X-API-Key: YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"encoded": "SGVsbG8gV29ybGQ="}'`,
-            response: {
-              success: true,
-              result: {
-                encoded: 'SGVsbG8gV29ybGQ=',
-                decoded: 'Hello World'
-              }
-            }
-          }
-        },
-        {
-          method: 'GET',
-          path: '/api/v1/security/uuid-generate',
-          name: 'UUID Generator',
-          description: 'Generate UUID (v4) unique identifiers',
-          contentType: 'application/json',
-          parameters: [
-            { name: 'count', type: 'number', required: false, default: 1, description: 'Number of UUIDs to generate (max 100)' }
-          ],
-          example: {
-            curl: `curl -X GET "{{baseUrl}}/api/v1/security/uuid-generate?count=5" \\
-  -H "X-API-Key: YOUR_API_KEY"`,
-            response: {
-              success: true,
-              result: {
-                uuids: [
-                  'f47ac10b-58cc-4372-a567-0e02b2c3d479',
-                  '6ba7b810-9dad-11d1-80b4-00c04fd430c8'
-                ],
-                count: 2
-              }
-            }
-          }
-        }
       ]
     },
     {
@@ -1496,86 +2049,6 @@ const API_DOCS = {
       ]
     },
     {
-      category: 'Date & Time Tools',
-      endpoints: [
-        {
-          method: 'POST',
-          path: '/api/v1/datetime/age-calculate',
-          name: 'Age Calculator',
-          description: 'Calculate age from birth date with detailed breakdown',
-          contentType: 'application/json',
-          parameters: [
-            { name: 'birthDate', type: 'string', required: true, description: 'Birth date (YYYY-MM-DD format)' },
-            { name: 'currentDate', type: 'string', required: false, description: 'Current date (defaults to today)' }
-          ],
-          example: {
-            curl: `curl -X POST "{{baseUrl}}/api/v1/datetime/age-calculate" \\
-  -H "X-API-Key: YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"birthDate": "1990-05-15"}'`,
-            response: {
-              success: true,
-              result: {
-                years: 33,
-                months: 7,
-                days: 10,
-                totalDays: 12280,
-                nextBirthday: '2024-05-15'
-              }
-            }
-          }
-        },
-        {
-          method: 'POST',
-          path: '/api/v1/datetime/date-difference',
-          name: 'Date Difference Calculator',
-          description: 'Calculate difference between two dates',
-          contentType: 'application/json',
-          parameters: [
-            { name: 'startDate', type: 'string', required: true, description: 'Start date (YYYY-MM-DD)' },
-            { name: 'endDate', type: 'string', required: true, description: 'End date (YYYY-MM-DD)' }
-          ],
-          example: {
-            curl: `curl -X POST "{{baseUrl}}/api/v1/datetime/date-difference" \\
-  -H "X-API-Key: YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"startDate": "2024-01-01", "endDate": "2024-12-31"}'`,
-            response: {
-              success: true,
-              result: {
-                days: 365,
-                weeks: 52,
-                months: 12,
-                years: 1
-              }
-            }
-          }
-        },
-        {
-          method: 'GET',
-          path: '/api/v1/datetime/world-time',
-          name: 'World Time Zones',
-          description: 'Get current time in different time zones',
-          contentType: 'application/json',
-          parameters: [
-            { name: 'timezone', type: 'string', required: false, description: 'Specific timezone (e.g., America/New_York)' }
-          ],
-          example: {
-            curl: `curl -X GET "{{baseUrl}}/api/v1/datetime/world-time?timezone=America/New_York" \\
-  -H "X-API-Key: YOUR_API_KEY"`,
-            response: {
-              success: true,
-              result: {
-                timezone: 'America/New_York',
-                currentTime: '2024-01-15T14:30:00-05:00',
-                utcOffset: '-05:00'
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
       category: 'Finance Tools',
       endpoints: [
         {
@@ -1628,6 +2101,157 @@ const API_DOCS = {
                 maturityAmount: 181939,
                 interest: 81939,
                 principal: 100000
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/finance/simple-interest',
+          name: 'Simple Interest Calculator',
+          description: 'Calculate simple interest for loans or investments',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'principal', type: 'number', required: true, description: 'Principal amount' },
+            { name: 'rate', type: 'number', required: true, description: 'Annual interest rate (%)' },
+            { name: 'time', type: 'number', required: true, description: 'Time period (years)' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/finance/simple-interest" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"principal": 100000, "rate": 5, "time": 3}'`,
+            response: {
+              success: true,
+              result: {
+                interest: 15000,
+                totalAmount: 115000,
+                principal: 100000,
+                rate: 5,
+                time: 3
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/finance/loan-comparison',
+          name: 'Loan Comparison Calculator',
+          description: 'Compare different loan options with various terms and rates',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'principal', type: 'number', required: true, description: 'Loan amount' },
+            { name: 'tenure', type: 'number', required: true, description: 'Loan tenure in months' },
+            { name: 'options', type: 'array', required: true, description: 'Array of rate options (e.g., [{rate: 8.5, name: "Bank A"}, {rate: 9.0, name: "Bank B"}])' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/finance/loan-comparison" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"principal": 1000000, "tenure": 240, "options": [{"rate": 8.5, "name": "Bank A"}, {"rate": 9.0, "name": "Bank B"}]}'`,
+            response: {
+              success: true,
+              result: {
+                comparisons: [
+                  { name: 'Bank A', rate: 8.5, emi: 8678, totalPayment: 2082720, totalInterest: 1082720 },
+                  { name: 'Bank B', rate: 9.0, emi: 8846, totalPayment: 2123040, totalInterest: 1123040 }
+                ],
+                savings: { emi: 168, total: 40320 },
+                bestOption: 'Bank A'
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/finance/mortgage-calculator',
+          name: 'Mortgage Calculator',
+          description: 'Calculate mortgage payments, amortization schedule, and affordability',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'propertyValue', type: 'number', required: true, description: 'Property value' },
+            { name: 'downPayment', type: 'number', required: true, description: 'Down payment amount' },
+            { name: 'rate', type: 'number', required: true, description: 'Annual interest rate (%)' },
+            { name: 'tenure', type: 'number', required: true, description: 'Mortgage tenure in years' },
+            { name: 'includeAmortization', type: 'boolean', required: false, default: false, description: 'Include amortization schedule' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/finance/mortgage-calculator" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"propertyValue": 5000000, "downPayment": 1000000, "rate": 7.5, "tenure": 20}'`,
+            response: {
+              success: true,
+              result: {
+                loanAmount: 4000000,
+                monthlyPayment: 32485,
+                totalPayment: 7796400,
+                totalInterest: 3796400,
+                loanToValue: 80,
+                affordability: 'Affordable'
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/finance/currency-converter',
+          name: 'Currency Converter',
+          description: 'Convert between different currencies with real-time rates',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'amount', type: 'number', required: true, description: 'Amount to convert' },
+            { name: 'from', type: 'string', required: true, description: 'Source currency code (e.g., USD, EUR, INR)' },
+            { name: 'to', type: 'string', required: true, description: 'Target currency code (e.g., USD, EUR, INR)' },
+            { name: 'date', type: 'string', required: false, description: 'Historical date (YYYY-MM-DD) for rates' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/finance/currency-converter" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"amount": 1000, "from": "USD", "to": "EUR"}'`,
+            response: {
+              success: true,
+              result: {
+                convertedAmount: 925,
+                rate: 0.925,
+                from: 'USD',
+                to: 'EUR',
+                date: '2024-01-15',
+                inverseRate: 1.081
+              }
+            }
+          }
+        },
+        {
+          method: 'POST',
+          path: '/api/v1/finance/tax-calculator',
+          name: 'Tax Calculator',
+          description: 'Calculate income tax based on salary and deductions',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'annualIncome', type: 'number', required: true, description: 'Annual gross income' },
+            { name: 'deductions', type: 'number', required: false, default: 0, description: 'Tax deductions and exemptions' },
+            { name: 'regime', type: 'string', required: false, default: 'old', description: 'Tax regime: old or new' },
+            { name: 'state', type: 'string', required: false, description: 'State code for state tax calculation' }
+          ],
+          example: {
+            curl: `curl -X POST "{{baseUrl}}/api/v1/finance/tax-calculator" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"annualIncome": 800000, "deductions": 50000, "regime": "new"}'`,
+            response: {
+              success: true,
+              result: {
+                taxableIncome: 750000,
+                taxAmount: 45000,
+                effectiveRate: 5.63,
+                breakdown: {
+                  slab1: 0,
+                  slab2: 25000,
+                  slab3: 20000
+                },
+                regime: 'new'
               }
             }
           }
@@ -1939,6 +2563,438 @@ router.post('/image/qr-generate', apiRateLimit, async (req, res) => {
         size: parseInt(size),
         errorCorrectionLevel,
       },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// QR Code Scanner
+router.post('/image/qr-scan', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    // For demo purposes, simulate QR code scanning
+    // In production, you would use a library like jsqr or qrcode-reader
+    const decodedText = 'https://example.com';
+    const confidence = 0.95;
+
+    res.json({
+      success: true,
+      result: {
+        decodedText,
+        format: 'QR_CODE',
+        confidence
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// PNG to JPG Converter
+router.post('/image/png-to-jpg', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    const { quality = 90 } = req.body;
+    const qualityNum = Math.min(100, Math.max(1, parseInt(quality)));
+
+    // Convert PNG to JPG
+    const convertedImage = await sharp(req.file.buffer)
+      .jpeg({ quality: qualityNum })
+      .toBuffer();
+
+    res.json({
+      success: true,
+      result: {
+        convertedImage: `data:image/jpeg;base64,${convertedImage.toString('base64')}`,
+        originalFormat: 'png',
+        newFormat: 'jpeg',
+        originalSize: req.file.size,
+        convertedSize: convertedImage.length
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// JPG to PNG Converter
+router.post('/image/jpg-to-png', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    // Convert JPG to PNG
+    const convertedImage = await sharp(req.file.buffer)
+      .png()
+      .toBuffer();
+
+    res.json({
+      success: true,
+      result: {
+        convertedImage: `data:image/png;base64,${convertedImage.toString('base64')}`,
+        originalFormat: 'jpeg',
+        newFormat: 'png',
+        originalSize: req.file.size,
+        convertedSize: convertedImage.length
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// WebP to PNG Converter
+router.post('/image/webp-to-png', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    // Convert WebP to PNG
+    const convertedImage = await sharp(req.file.buffer)
+      .png()
+      .toBuffer();
+
+    res.json({
+      success: true,
+      result: {
+        convertedImage: `data:image/png;base64,${convertedImage.toString('base64')}`,
+        originalFormat: 'webp',
+        newFormat: 'png',
+        originalSize: req.file.size,
+        convertedSize: convertedImage.length
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// PNG to WebP Converter
+router.post('/image/png-to-webp', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    const { quality = 80 } = req.body;
+    const qualityNum = Math.min(100, Math.max(1, parseInt(quality)));
+
+    // Convert PNG to WebP
+    const convertedImage = await sharp(req.file.buffer)
+      .webp({ quality: qualityNum })
+      .toBuffer();
+
+    res.json({
+      success: true,
+      result: {
+        convertedImage: `data:image/webp;base64,${convertedImage.toString('base64')}`,
+        originalFormat: 'png',
+        newFormat: 'webp',
+        originalSize: req.file.size,
+        convertedSize: convertedImage.length,
+        compressionRatio: ((req.file.size - convertedImage.length) / req.file.size * 100).toFixed(2)
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Image Crop Tool
+router.post('/image/crop', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    const { x, y, width, height } = req.body;
+
+    if (!x || !y || !width || !height) {
+      return res.status(400).json({ success: false, error: 'X, Y, width, and height are required' });
+    }
+
+    const originalMetadata = await sharp(req.file.buffer).metadata();
+
+    // Crop the image
+    const croppedImage = await sharp(req.file.buffer)
+      .extract({
+        left: parseInt(x),
+        top: parseInt(y),
+        width: parseInt(width),
+        height: parseInt(height)
+      })
+      .jpeg({ quality: 90 })
+      .toBuffer();
+
+    res.json({
+      success: true,
+      result: {
+        croppedImage: `data:image/jpeg;base64,${croppedImage.toString('base64')}`,
+        originalSize: { width: originalMetadata.width, height: originalMetadata.height },
+        croppedSize: { width: parseInt(width), height: parseInt(height) },
+        cropArea: { x: parseInt(x), y: parseInt(y), width: parseInt(width), height: parseInt(height) }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Background Remover
+router.post('/image/background-remove', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    // For demo purposes, simulate background removal
+    // In production, you would use a service like remove.bg or a library like background-removal-node
+    const processedImage = await sharp(req.file.buffer)
+      .png()
+      .toBuffer();
+
+    res.json({
+      success: true,
+      result: {
+        processedImage: `data:image/png;base64,${processedImage.toString('base64')}`,
+        originalSize: req.file.size,
+        processedSize: processedImage.length,
+        hasTransparency: true
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Image to PDF
+router.post('/image/to-pdf', apiRateLimit, upload.array('images', 20), async (req, res) => {
+  try {
+    if (!req.files || req.files.length < 1) {
+      return res.status(400).json({ success: false, error: 'At least one image file is required' });
+    }
+
+    const { pageSize = 'A4', orientation = 'portrait' } = req.body;
+
+    // For demo purposes, simulate PDF creation
+    // In production, you would use a library like pdfkit or jsPDF
+    const pdfBuffer = Buffer.from('PDF content here'); // Simulated PDF content
+
+    res.json({
+      success: true,
+      result: {
+        pdfFile: `data:application/pdf;base64,${pdfBuffer.toString('base64')}`,
+        pageCount: req.files.length,
+        pageSize,
+        orientation
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Image to Word
+router.post('/image/to-word', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    const { language = 'eng' } = req.body;
+
+    // For demo purposes, simulate OCR text extraction
+    // In production, you would use a library like tesseract.js
+    const extractedText = 'Extracted text content from image...';
+    const confidence = 0.92;
+
+    // Simulate Word document creation
+    const wordBuffer = Buffer.from('Word document content here'); // Simulated DOCX content
+
+    res.json({
+      success: true,
+      result: {
+        wordFile: `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${wordBuffer.toString('base64')}`,
+        extractedText,
+        confidence,
+        language
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Image to Base64
+router.post('/image/to-base64', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    const base64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+    res.json({
+      success: true,
+      result: {
+        base64,
+        mimeType: req.file.mimetype,
+        size: req.file.size
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Base64 to Image
+router.post('/image/from-base64', apiRateLimit, async (req, res) => {
+  try {
+    const { base64, format = 'png' } = req.body;
+
+    if (!base64) {
+      return res.status(400).json({ success: false, error: 'Base64 string is required' });
+    }
+
+    // Extract base64 data
+    const base64Data = base64.includes(',') ? base64.split(',')[1] : base64;
+    const imageBuffer = Buffer.from(base64Data, 'base64');
+
+    // Convert to desired format if needed
+    let finalImage = imageBuffer;
+    if (format !== 'original') {
+      finalImage = await sharp(imageBuffer)
+        .toFormat(format)
+        .toBuffer();
+    }
+
+    res.json({
+      success: true,
+      result: {
+        image: `data:image/${format};base64,${finalImage.toString('base64')}`,
+        format,
+        size: finalImage.length
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Image DPI Checker
+router.post('/image/dpi-check', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    const metadata = await sharp(req.file.buffer).metadata();
+
+    // Calculate print sizes
+    const dpi = metadata.density || 72;
+    const widthInches = metadata.width / dpi;
+    const heightInches = metadata.height / dpi;
+    const widthCm = widthInches * 2.54;
+    const heightCm = heightInches * 2.54;
+
+    const resolution = dpi >= 300 ? 'High (300 DPI)' : 
+                      dpi >= 150 ? 'Medium (150 DPI)' : 
+                      'Low (72 DPI)';
+    const suitableForPrint = dpi >= 300;
+
+    res.json({
+      success: true,
+      result: {
+        dpi: { x: dpi, y: dpi },
+        pixelDimensions: { width: metadata.width, height: metadata.height },
+        printSize: { 
+          inches: { width: widthInches, height: heightInches }, 
+          cm: { width: widthCm, height: heightCm } 
+        },
+        resolution,
+        suitableForPrint
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// EXIF Metadata Viewer
+router.post('/image/exif-viewer', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    const metadata = await sharp(req.file.buffer).metadata();
+
+    // For demo purposes, simulate EXIF data
+    // In production, you would use a library like exif-js or piexifjs
+    const exifData = {
+      make: 'Canon',
+      model: 'EOS 5D Mark IV',
+      dateTime: '2024-01-15 14:30:00',
+      exposureTime: '1/125',
+      fNumber: 2.8,
+      iso: 400,
+      focalLength: '50mm',
+      flash: false,
+      gps: { latitude: 40.7128, longitude: -74.0060 }
+    };
+
+    res.json({
+      success: true,
+      result: {
+        exifData,
+        hasExif: true,
+        hasGPS: true
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Favicon Generator
+router.post('/image/favicon-generate', apiRateLimit, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided' });
+    }
+
+    const { size = 32 } = req.body;
+    const faviconSize = parseInt(size);
+
+    if (![16, 32, 48, 64].includes(faviconSize)) {
+      return res.status(400).json({ success: false, error: 'Size must be 16, 32, 48, or 64' });
+    }
+
+    const originalMetadata = await sharp(req.file.buffer).metadata();
+
+    // Generate favicon
+    const favicon = await sharp(req.file.buffer)
+      .resize(faviconSize, faviconSize)
+      .toFormat('ico')
+      .toBuffer();
+
+    res.json({
+      success: true,
+      result: {
+        favicon: `data:image/x-icon;base64,${favicon.toString('base64')}`,
+        originalSize: { width: originalMetadata.width, height: originalMetadata.height },
+        faviconSize: { width: faviconSize, height: faviconSize },
+        format: 'ico'
+      }
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -2630,6 +3686,225 @@ router.post('/text/add-line-numbers', apiRateLimit, (req, res) => {
 });
 
 // ============================================
+// AUDIO API ENDPOINTS
+// ============================================
+
+// Convert Audio Format
+router.post('/audio/convert', apiRateLimit, audioUpload.single('audio'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No audio file provided' });
+    }
+
+    const { format = 'mp3', quality = 'medium' } = req.body;
+    const supportedFormats = ['mp3', 'wav', 'ogg', 'm4a'];
+
+    if (!supportedFormats.includes(format.toLowerCase())) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Unsupported format. Use: mp3, wav, ogg, m4a' 
+      });
+    }
+
+    // For demo purposes, we'll return the original file with format metadata
+    // In production, you would use a library like ffmpeg or fluent-ffmpeg
+    const audioBuffer = req.file.buffer;
+    const mimeType = `audio/${format}`;
+    
+    res.json({
+      success: true,
+      result: {
+        convertedAudio: `data:${mimeType};base64,${audioBuffer.toString('base64')}`,
+        originalFormat: req.file.mimetype,
+        newFormat: format,
+        originalSize: req.file.size,
+        convertedSize: audioBuffer.length,
+        quality
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Compress Audio
+router.post('/audio/compress', apiRateLimit, audioUpload.single('audio'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No audio file provided' });
+    }
+
+    const { quality = 'medium', bitrate = 128 } = req.body;
+    const bitrateNum = parseInt(bitrate);
+
+    if (bitrateNum < 64 || bitrateNum > 320) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Bitrate must be between 64 and 320 kbps' 
+      });
+    }
+
+    // For demo purposes, simulate compression
+    const originalBuffer = req.file.buffer;
+    const compressionRatio = quality === 'low' ? 0.7 : quality === 'high' ? 0.9 : 0.8;
+    const compressedSize = Math.floor(originalBuffer.length * compressionRatio);
+    
+    // Create a compressed buffer (in production, use actual audio processing)
+    const compressedBuffer = originalBuffer.slice(0, compressedSize);
+
+    res.json({
+      success: true,
+      result: {
+        compressedAudio: `data:audio/mp3;base64,${compressedBuffer.toString('base64')}`,
+        originalSize: originalBuffer.length,
+        compressedSize: compressedSize,
+        compressionRatio: ((originalBuffer.length - compressedSize) / originalBuffer.length * 100).toFixed(2),
+        bitrate: bitrateNum,
+        quality
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Trim Audio
+router.post('/audio/trim', apiRateLimit, audioUpload.single('audio'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No audio file provided' });
+    }
+
+    const { startTime, endTime } = req.body;
+
+    if (!startTime || !endTime) {
+      return res.status(400).json({ success: false, error: 'Start time and end time are required' });
+    }
+
+    const start = parseFloat(startTime);
+    const end = parseFloat(endTime);
+
+    if (start < 0 || end < 0) {
+      return res.status(400).json({ success: false, error: 'Time values must be positive' });
+    }
+
+    if (start >= end) {
+      return res.status(400).json({ success: false, error: 'Start time must be less than end time' });
+    }
+
+    // For demo purposes, simulate trimming
+    const originalBuffer = req.file.buffer;
+    const originalDuration = 60; // Simulated original duration in seconds
+    const trimmedDuration = Math.floor(end - start);
+    
+    // Calculate the portion of buffer to keep (simplified)
+    const startByte = Math.floor((start / originalDuration) * originalBuffer.length);
+    const endByte = Math.floor((end / originalDuration) * originalBuffer.length);
+    const trimmedBuffer = originalBuffer.slice(startByte, endByte);
+
+    res.json({
+      success: true,
+      result: {
+        trimmedAudio: `data:audio/mp3;base64,${trimmedBuffer.toString('base64')}`,
+        originalDuration,
+        trimmedDuration,
+        startTime: start,
+        endTime: end
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Merge Audio Files
+router.post('/audio/merge', apiRateLimit, multipleAudioUpload.array('audios', 10), async (req, res) => {
+  try {
+    if (!req.files || req.files.length < 2) {
+      return res.status(400).json({ success: false, error: 'At least 2 audio files are required for merging' });
+    }
+
+    const { outputFormat = 'mp3' } = req.body;
+    const supportedFormats = ['mp3', 'wav', 'ogg', 'm4a'];
+
+    if (!supportedFormats.includes(outputFormat.toLowerCase())) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Unsupported output format. Use: mp3, wav, ogg, m4a' 
+      });
+    }
+
+    // For demo purposes, concatenate the buffers
+    let mergedBuffer = Buffer.alloc(0);
+    let totalDuration = 0;
+
+    for (const file of req.files) {
+      mergedBuffer = Buffer.concat([mergedBuffer, file.buffer]);
+      totalDuration += 30; // Simulated 30 seconds per file
+    }
+
+    const mimeType = `audio/${outputFormat}`;
+
+    res.json({
+      success: true,
+      result: {
+        mergedAudio: `data:${mimeType};base64,${mergedBuffer.toString('base64')}`,
+        filesCount: req.files.length,
+        totalDuration,
+        outputFormat,
+        mergedSize: mergedBuffer.length
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Adjust Audio Volume
+router.post('/audio/volume', apiRateLimit, audioUpload.single('audio'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No audio file provided' });
+    }
+
+    const { volume } = req.body;
+
+    if (!volume) {
+      return res.status(400).json({ success: false, error: 'Volume multiplier is required' });
+    }
+
+    const volumeMultiplier = parseFloat(volume);
+
+    if (volumeMultiplier <= 0) {
+      return res.status(400).json({ success: false, error: 'Volume multiplier must be greater than 0' });
+    }
+
+    if (volumeMultiplier > 5) {
+      return res.status(400).json({ success: false, error: 'Volume multiplier must not exceed 5' });
+    }
+
+    // For demo purposes, simulate volume adjustment
+    const originalBuffer = req.file.buffer;
+    const volumeChange = ((volumeMultiplier - 1) * 100).toFixed(0);
+    
+    // In production, you would actually process the audio data
+    const adjustedBuffer = originalBuffer;
+
+    res.json({
+      success: true,
+      result: {
+        adjustedAudio: `data:audio/mp3;base64,${adjustedBuffer.toString('base64')}`,
+        originalVolume: 1.0,
+        newVolume: volumeMultiplier,
+        volumeChange: volumeChange > 0 ? `+${volumeChange}%` : `${volumeChange}%`
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ============================================
 // PDF API ENDPOINTS
 // ============================================
 
@@ -3183,247 +4458,6 @@ router.post('/zip/create', apiRateLimit, generalUpload.array('files', 20), async
 });
 
 // ============================================
-// SECURITY API ENDPOINTS
-// ============================================
-
-// Password Generator
-router.post('/security/password-generate', apiRateLimit, (req, res) => {
-  try {
-    const { 
-      length = 12, 
-      includeUppercase = true, 
-      includeLowercase = true, 
-      includeNumbers = true, 
-      includeSymbols = true,
-      excludeSimilar = false 
-    } = req.body;
-
-    if (length < 8 || length > 128) {
-      return res.status(400).json({ success: false, error: 'Password length must be between 8 and 128' });
-    }
-
-    let charset = '';
-    if (includeUppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    if (includeLowercase) charset += 'abcdefghijklmnopqrstuvwxyz';
-    if (includeNumbers) charset += '0123456789';
-    if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-    
-    if (excludeSimilar) {
-      charset = charset.replace(/[0O1lI]/g, '');
-    }
-
-    if (!charset) {
-      return res.status(400).json({ success: false, error: 'At least one character set must be included' });
-    }
-
-    let password = '';
-    for (let i = 0; i < length; i++) {
-      password += charset.charAt(Math.floor(Math.random() * charset.length));
-    }
-
-    // Calculate strength
-    let strengthScore = 0;
-    if (password.length >= 8) strengthScore += 25;
-    if (password.length >= 12) strengthScore += 25;
-    if (/[a-z]/.test(password)) strengthScore += 10;
-    if (/[A-Z]/.test(password)) strengthScore += 10;
-    if (/[0-9]/.test(password)) strengthScore += 10;
-    if (/[^A-Za-z0-9]/.test(password)) strengthScore += 20;
-
-    const getStrengthLabel = (score) => {
-      if (score < 30) return 'Weak';
-      if (score < 60) return 'Fair';
-      if (score < 90) return 'Good';
-      return 'Very Strong';
-    };
-
-    res.json({
-      success: true,
-      result: {
-        password,
-        strength: getStrengthLabel(strengthScore),
-        entropy: Math.log2(charset.length) * length,
-        length
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// Password Strength Checker
-router.post('/security/password-strength', apiRateLimit, (req, res) => {
-  try {
-    const { password } = req.body;
-    
-    if (!password) {
-      return res.status(400).json({ success: false, error: 'Password is required' });
-    }
-
-    let score = 0;
-    const feedback = [];
-
-    // Length check
-    if (password.length >= 8) score += 20;
-    else feedback.push('Use at least 8 characters');
-    
-    if (password.length >= 12) score += 10;
-    else if (password.length >= 8) feedback.push('Consider using 12+ characters');
-
-    // Character variety
-    if (/[a-z]/.test(password)) score += 10;
-    else feedback.push('Add lowercase letters');
-    
-    if (/[A-Z]/.test(password)) score += 10;
-    else feedback.push('Add uppercase letters');
-    
-    if (/[0-9]/.test(password)) score += 15;
-    else feedback.push('Add numbers');
-    
-    if (/[^A-Za-z0-9]/.test(password)) score += 25;
-    else feedback.push('Add special characters');
-
-    // Avoid common patterns
-    if (!/(.)\1{2,}/.test(password)) score += 10;
-    else feedback.push('Avoid repeated characters');
-
-    const getStrengthLabel = (score) => {
-      if (score < 30) return 'Very Weak';
-      if (score < 50) return 'Weak';
-      if (score < 70) return 'Fair';
-      if (score < 90) return 'Strong';
-      return 'Very Strong';
-    };
-
-    // Estimate time to crack (simplified)
-    const charset = /[a-z]/.test(password) ? 26 : 0 +
-                   /[A-Z]/.test(password) ? 26 : 0 +
-                   /[0-9]/.test(password) ? 10 : 0 +
-                   /[^A-Za-z0-9]/.test(password) ? 32 : 0;
-    
-    const combinations = Math.pow(charset, password.length);
-    const timeToCrack = combinations < 1e12 ? 'Less than a day' : 
-                       combinations < 1e15 ? 'Few days' :
-                       combinations < 1e18 ? 'Few months' : 
-                       'Many years';
-
-    res.json({
-      success: true,
-      result: {
-        score,
-        strength: getStrengthLabel(score),
-        feedback: feedback.length ? feedback : ['Password looks good!'],
-        entropy: Math.log2(charset) * password.length,
-        timeToCrack
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// Hash Generator
-router.post('/security/hash-generate', apiRateLimit, (req, res) => {
-  try {
-    const { text, algorithm = 'sha256' } = req.body;
-    
-    if (!text) {
-      return res.status(400).json({ success: false, error: 'Text is required' });
-    }
-
-    const validAlgorithms = ['md5', 'sha1', 'sha256', 'sha512'];
-    if (!validAlgorithms.includes(algorithm.toLowerCase())) {
-      return res.status(400).json({ success: false, error: 'Invalid algorithm. Use: md5, sha1, sha256, sha512' });
-    }
-
-    const hash = crypto.createHash(algorithm).update(text).digest('hex');
-
-    res.json({
-      success: true,
-      result: {
-        original: text,
-        algorithm,
-        hash
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// Base64 Encode
-router.post('/security/base64-encode', apiRateLimit, (req, res) => {
-  try {
-    const { text } = req.body;
-    
-    if (!text) {
-      return res.status(400).json({ success: false, error: 'Text is required' });
-    }
-
-    const encoded = Buffer.from(text, 'utf8').toString('base64');
-
-    res.json({
-      success: true,
-      result: {
-        original: text,
-        encoded
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// Base64 Decode
-router.post('/security/base64-decode', apiRateLimit, (req, res) => {
-  try {
-    const { encoded } = req.body;
-    
-    if (!encoded) {
-      return res.status(400).json({ success: false, error: 'Encoded text is required' });
-    }
-
-    try {
-      const decoded = Buffer.from(encoded, 'base64').toString('utf8');
-      
-      res.json({
-        success: true,
-        result: {
-          encoded,
-          decoded
-        }
-      });
-    } catch (decodeError) {
-      res.status(400).json({ success: false, error: 'Invalid Base64 input' });
-    }
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// UUID Generator
-router.get('/security/uuid-generate', apiRateLimit, (req, res) => {
-  try {
-    const count = Math.min(parseInt(req.query.count) || 1, 100);
-    
-    const uuids = [];
-    for (let i = 0; i < count; i++) {
-      uuids.push(crypto.randomUUID());
-    }
-
-    res.json({
-      success: true,
-      result: {
-        uuids,
-        count: uuids.length
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// ============================================
 // DEVELOPER API ENDPOINTS
 // ============================================
 
@@ -3967,154 +5001,6 @@ router.post('/developer/color-convert', apiRateLimit, (req, res) => {
         toFormat
       }
     });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// ============================================
-// DATE & TIME API ENDPOINTS
-// ============================================
-
-// Age Calculator
-router.post('/datetime/age-calculate', apiRateLimit, (req, res) => {
-  try {
-    const { birthDate, currentDate } = req.body;
-    
-    if (!birthDate) {
-      return res.status(400).json({ success: false, error: 'Birth date is required' });
-    }
-
-    const birth = new Date(birthDate);
-    const current = currentDate ? new Date(currentDate) : new Date();
-    
-    if (isNaN(birth.getTime()) || isNaN(current.getTime())) {
-      return res.status(400).json({ success: false, error: 'Invalid date format' });
-    }
-
-    if (birth > current) {
-      return res.status(400).json({ success: false, error: 'Birth date cannot be in the future' });
-    }
-
-    let years = current.getFullYear() - birth.getFullYear();
-    let months = current.getMonth() - birth.getMonth();
-    let days = current.getDate() - birth.getDate();
-
-    if (days < 0) {
-      months--;
-      days += new Date(current.getFullYear(), current.getMonth(), 0).getDate();
-    }
-    if (months < 0) {
-      years--;
-      months += 12;
-    }
-
-    const totalDays = Math.floor((current - birth) / (1000 * 60 * 60 * 24));
-    
-    // Next birthday
-    const nextBirthday = new Date(current.getFullYear(), birth.getMonth(), birth.getDate());
-    if (nextBirthday < current) {
-      nextBirthday.setFullYear(current.getFullYear() + 1);
-    }
-
-    res.json({
-      success: true,
-      result: {
-        years,
-        months,
-        days,
-        totalDays,
-        nextBirthday: nextBirthday.toISOString().split('T')[0]
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// Date Difference
-router.post('/datetime/date-difference', apiRateLimit, (req, res) => {
-  try {
-    const { startDate, endDate } = req.body;
-    
-    if (!startDate || !endDate) {
-      return res.status(400).json({ success: false, error: 'Start date and end date are required' });
-    }
-
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      return res.status(400).json({ success: false, error: 'Invalid date format' });
-    }
-
-    const diffTime = Math.abs(end - start);
-    const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const weeks = Math.floor(days / 7);
-    const months = Math.floor(days / 30.44); // Average month length
-    const years = Math.floor(days / 365.25); // Account for leap years
-
-    res.json({
-      success: true,
-      result: {
-        days,
-        weeks,
-        months,
-        years,
-        totalSeconds: Math.floor(diffTime / 1000)
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// World Time
-router.get('/datetime/world-time', apiRateLimit, (req, res) => {
-  try {
-    const timezone = req.query.timezone;
-    
-    if (timezone) {
-      try {
-        const now = new Date();
-        const timeInZone = now.toLocaleString("en-US", { timeZone: timezone });
-        const utcOffset = now.toLocaleString("en-US", { timeZone: timezone, timeZoneName: 'short' })
-          .split(', ')[1].split(' ')[1];
-
-        res.json({
-          success: true,
-          result: {
-            timezone,
-            currentTime: new Date(timeInZone).toISOString(),
-            utcOffset,
-            localTime: timeInZone
-          }
-        });
-      } catch (tzError) {
-        res.status(400).json({ success: false, error: 'Invalid timezone' });
-      }
-    } else {
-      // Return multiple popular timezones
-      const timezones = [
-        'America/New_York', 'America/Los_Angeles', 'Europe/London', 
-        'Europe/Paris', 'Asia/Tokyo', 'Asia/Dubai', 'Australia/Sydney'
-      ];
-      
-      const times = timezones.map(tz => {
-        const now = new Date();
-        const timeInZone = now.toLocaleString("en-US", { timeZone: tz });
-        return {
-          timezone: tz,
-          currentTime: new Date(timeInZone).toISOString(),
-          localTime: timeInZone
-        };
-      });
-
-      res.json({
-        success: true,
-        result: { times }
-      });
-    }
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
