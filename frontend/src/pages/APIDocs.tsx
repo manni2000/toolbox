@@ -180,7 +180,7 @@ const APIDocs = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <Header />
-      <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8 pt-28">
+      <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8">
         {/* Hero Section */}
         <div className="text-center mb-8 sm:mb-12 px-2 relative">
           {/* Background gradient effect */}

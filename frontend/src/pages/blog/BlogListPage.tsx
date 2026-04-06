@@ -79,7 +79,7 @@ const BlogListPage = () => {
         canonical="https://dailytools247.com/blogs"
       />
       <Header />
-      <main className="flex-1 pt-20">
+      <main className="flex-1">
         <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-primary/10 via-background to-sky-500/5 py-12 sm:py-14 md:py-24">
           <div className="absolute inset-0">
             <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />

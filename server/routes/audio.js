@@ -10,12 +10,18 @@ const storage = multer.memoryStorage();
 const upload = multer({ 
   storage: storage,
   limits: {
-    fileSize: 100 * 1024 * 1024 // 100MB limit
+    fileSize: 10 * 1024 * 1024 
   },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /audio|mpeg|wav|aac|ogg|flac/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+    const allowedMimeTypes = [
+      'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/wave',
+      'audio/aac', 'audio/mp4', 'audio/ogg', 'audio/flac',
+      'audio/x-wav', 'audio/x-flac', 'audio/x-aac'
+    ];
+    const allowedExtensions = ['.mp3', '.wav', '.aac', '.ogg', '.flac', '.m4a'];
+    
+    const extname = allowedExtensions.includes(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedMimeTypes.includes(file.mimetype);
     
     if (mimetype && extname) {
       return cb(null, true);
@@ -27,7 +33,11 @@ const upload = multer({
 
 // Helper function to convert buffer to temporary file
 const bufferToTempFile = (buffer, ext) => {
-  const tempPath = path.join(__dirname, '../temp', `temp_${Date.now()}${ext}`);
+  const tempDir = path.join(__dirname, '../temp');
+  if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir, { recursive: true });
+  }
+  const tempPath = path.join(tempDir, `temp_${Date.now()}${ext}`);
   fs.writeFileSync(tempPath, buffer);
   return tempPath;
 };
@@ -282,6 +292,76 @@ router.post('/speed', upload.single('audio'), async (req, res) => {
         cleanupTempFile(tempInputPath);
         cleanupTempFile(tempOutputPath);
         res.status(500).json({ error: 'Audio speed change failed: ' + err.message });
+      })
+      .save(tempOutputPath);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Extract audio from video
+router.post('/video-to-audio', upload.single('video'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No video file provided' });
+    }
+
+    const outputFormat = req.body.format || 'mp3';
+    const supportedFormats = ['mp3', 'wav', 'aac', 'ogg', 'flac'];
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
+
+    if (!supportedFormats.includes(outputFormat.toLowerCase())) {
+      return res.status(400).json({
+        error: 'Unsupported format. Use mp3, wav, aac, ogg, or flac'
+      });
+    }
+
+    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
+    const tempOutputPath = path.join(__dirname, '../temp', `audio_extracted_${Date.now()}.${outputFormat}`);
+
+    // Ensure temp directory exists
+    const tempDir = path.dirname(tempInputPath);
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    ffmpeg(tempInputPath)
+      .noVideo() // Extract only audio
+      .audioCodec('libmp3lame') // Use appropriate codec based on format
+      .toFormat(outputFormat)
+      .on('end', () => {
+        try {
+          const outputBuffer = fs.readFileSync(tempOutputPath);
+          const audioBase64 = outputBuffer.toString('base64');
+
+          const mimeTypes = {
+            'mp3': 'audio/mpeg',
+            'wav': 'audio/wav',
+            'aac': 'audio/aac',
+            'ogg': 'audio/ogg',
+            'flac': 'audio/flac'
+          };
+
+          cleanupTempFile(tempInputPath);
+          cleanupTempFile(tempOutputPath);
+
+          res.json({
+            success: true,
+            audio: `data:${mimeTypes[outputFormat]};base64,${audioBase64}`,
+            filename: `${baseFilename}.${outputFormat}`,
+            original_video_format: path.extname(req.file.originalname).slice(1)
+          });
+        } catch (error) {
+          cleanupTempFile(tempInputPath);
+          cleanupTempFile(tempOutputPath);
+          res.status(500).json({ error: 'Error processing extracted audio file' });
+        }
+      })
+      .on('error', (err) => {
+        cleanupTempFile(tempInputPath);
+        cleanupTempFile(tempOutputPath);
+        res.status(500).json({ error: 'Audio extraction failed: ' + err.message });
       })
       .save(tempOutputPath);
 
