@@ -420,7 +420,7 @@ const HeroSection = () => {
                 <input
                   className="search-input"
                   type="text"
-                  placeholder="Search tools… (e.g., PNG to JPG, ZIP Extract)"
+                  placeholder="Search tools… (e.g., Background Remover, ZIP Extract)"
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
                   onFocus={() => searchQuery.length >= 2 && setShowResults(true)}

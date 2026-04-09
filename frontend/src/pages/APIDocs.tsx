@@ -619,11 +619,11 @@ const APIDocs = () => {
                                   <div className="overflow-x-auto hidden sm:block">
                                     <table className="w-full text-sm">
                                       <thead>
-                                        <tr className="text-left text-foreground text-xs border-b border-slate-800">
-                                          <th className="pb-2 pr-4">Name</th>
-                                          <th className="pb-2 pr-4">Type</th>
-                                          <th className="pb-2 pr-4">Required</th>
-                                          <th className="pb-2">Description</th>
+                                        <tr className="text-left text-xs border-b border-slate-800">
+                                          <th className="pb-2 pr-4 text-white">Name</th>
+                                          <th className="pb-2 pr-4 text-white">Type</th>
+                                          <th className="pb-2 pr-4 text-white">Required</th>
+                                          <th className="pb-2 text-white">Description</th>
                                         </tr>
                                       </thead>
                                       <tbody className="text-slate-300">

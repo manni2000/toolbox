@@ -945,9 +945,25 @@ router.post('/powerpoint-to-pdf', upload.single('ppt'), async (req, res) => {
   }
 });
 
+// Browser pool for reuse across requests
+let browserInstance = null;
+let browserLock = false;
+
+async function getBrowser() {
+  const { chromium } = require('playwright');
+  if (!browserInstance) {
+    console.log('Launching new Chromium browser...');
+    browserInstance = await chromium.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+  }
+  return browserInstance;
+}
+
 // HTML to PDF - Using Playwright for proper rendering with CSS, images, and fonts
 router.post('/html-to-pdf', async (req, res) => {
-  let browser = null;
+  let page = null;
   try {
     const { html, url, options = {} } = req.body;
 
@@ -955,88 +971,58 @@ router.post('/html-to-pdf', async (req, res) => {
       return res.status(400).json({ error: 'HTML content or URL is required' });
     }
 
-    // Import playwright dynamically
-    const { chromium } = require('playwright');
-    
-    // Launch browser
-    browser = await chromium.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    
-    const page = await browser.newPage();
-    
-    // Set viewport for consistent rendering
-    await page.setViewportSize({
-      width: 1200,
-      height: 800
-    });
+    // Get or create browser instance
+    const browser = await getBrowser();
+    page = await browser.newPage();
 
     if (url) {
-      // Navigate to URL
-      await page.goto(url, { 
-        waitUntil: 'networkidle',
-        timeout: 30000 
+      // Navigate to URL - use 'load' instead of 'networkidle' for faster response
+      await page.goto(url, {
+        waitUntil: 'load',
+        timeout: 15000
       });
     } else {
-      // Set HTML content directly
-      await page.setContent(html, { 
-        waitUntil: 'networkidle',
-        timeout: 30000 
+      // Set HTML content directly - use 'load' for faster response
+      await page.setContent(html, {
+        waitUntil: 'load'
       });
     }
 
-    // Wait a bit for any lazy-loaded content
-    await page.waitForTimeout(1000);
-
-    // Parse margin option
-    let marginValue = options.margin || '1cm';
-    if (typeof marginValue === 'string') {
-      marginValue = {
-        top: marginValue,
-        right: marginValue,
-        bottom: marginValue,
-        left: marginValue
-      };
-    }
-
-    // Generate PDF with proper styling
+    // Generate PDF
     const pdfBuffer = await page.pdf({
       format: options.format || 'A4',
       landscape: options.orientation === 'landscape',
-      margin: marginValue,
-      printBackground: true, // Important: preserve background colors and images
-      preferCSSPageSize: false,
-      scale: options.scale || 1
+      margin: {
+        top: options.margin || '1cm',
+        right: options.margin || '1cm',
+        bottom: options.margin || '1cm',
+        left: options.margin || '1cm'
+      },
+      printBackground: true
     });
 
-    await browser.close();
-    browser = null;
+    await page.close();
+    page = null;
 
-    const pdfBase64 = pdfBuffer.toString('base64');
-    const filename = 'converted.pdf';
+    const base64 = pdfBuffer.toString('base64');
+    console.log('PDF generated, size:', pdfBuffer.length);
 
     res.json({
       success: true,
       result: {
         input: html ? 'HTML content' : url,
-        outputFile: filename,
-        options: {
-          format: options.format || 'A4',
-          orientation: options.orientation || 'portrait',
-          margin: options.margin || '1cm'
-        },
-        method: 'playwright-chromium'
+        outputFile: 'converted.pdf'
       },
-      file: `data:application/pdf;base64,${pdfBase64}`,
-      filename
+      file: `data:application/pdf;base64,${base64}`,
+      filename: 'converted.pdf'
     });
   } catch (error) {
-    if (browser) {
-      await browser.close().catch(() => {});
-    }
     console.error('HTML to PDF error:', error);
     res.status(500).json({ error: error.message });
+  } finally {
+    if (page) {
+      await page.close();
+    }
   }
 });
 

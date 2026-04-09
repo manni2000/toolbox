@@ -1,595 +1,606 @@
 const express = require('express');
-const multer = require('multer');
-const sharp = require('sharp');
-const Jimp = require('jimp');
-const QRCode = require('qrcode');
-const exifr = require('exifr');
-const pdfParse = require('pdf-parse');
+const multer  = require('multer');
+const sharp   = require('sharp');
+const Jimp    = require('jimp');
+const QRCode  = require('qrcode');
+const jsQR    = require('jsqr');          // real QR scanning
+const exifr   = require('exifr');
 const { PDFDocument } = require('pdf-lib');
+const { Document, Packer, Paragraph, TextRun, ImageRun } = require('docx');
+const Tesseract = require('tesseract.js');
+const { removeBackground } = require('@imgly/background-removal-node');
+const NodeCache = require('node-cache');
 const path = require('path');
-const fs = require('fs');
 const router = express.Router();
 
-// Configure multer for file uploads
+// ── Cache (shared across routes) ─────────────────────────────────────────────
+const imageCache = new NodeCache({ stdTTL: 600, checkperiod: 120 });
+
+// ── Multer ────────────────────────────────────────────────────────────────────
 const storage = multer.memoryStorage();
-const upload = multer({ 
-  storage: storage,
-  limits: {
-    fileSize: 50 * 1024 * 1024 // 50MB limit
-  },
+const upload  = multer({
+  storage,
+  limits: { fileSize: 50 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|bmp|webp|tiff/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-    
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Only image files are allowed.'));
-    }
-  }
+    const allowed = /jpeg|jpg|png|gif|bmp|webp|tiff/;
+    const ok =
+      allowed.test(path.extname(file.originalname).toLowerCase()) &&
+      allowed.test(file.mimetype);
+    ok ? cb(null, true) : cb(new Error('Invalid file type. Only image files are allowed.'));
+  },
 });
 
-// QR Code Generator
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+/**
+ * Scale pixel dimensions so the image fits within the Word page's printable
+ * width (~6 inches = 576px at 96 dpi).
+ * docx ImageRun.transformation takes PIXELS, not EMUs — the library converts internally.
+ */
+function fitPixels(pixelW, pixelH, maxPx = 576) {
+  if (pixelW <= maxPx) return { width: pixelW, height: pixelH };
+  const scale = maxPx / pixelW;
+  return { width: maxPx, height: Math.round(pixelH * scale) };
+}
+
+/**
+ * Embed an image into a pdf-lib PDFDocument page, handling both JPEG and PNG.
+ * Returns the embedded image object.
+ */
+async function embedImage(pdfDoc, imageBuffer, mimeType) {
+  // pdf-lib requires knowing the type up front
+  const isPng =
+    mimeType === 'image/png' ||
+    (imageBuffer[0] === 0x89 && imageBuffer[1] === 0x50); // PNG magic bytes
+
+  if (isPng) {
+    const pngBuf = await sharp(imageBuffer).png().toBuffer();
+    return pdfDoc.embedPng(pngBuf);
+  }
+  // Convert everything else to JPEG for reliable embedding
+  const jpgBuf = await sharp(imageBuffer).jpeg({ quality: 92 }).toBuffer();
+  return pdfDoc.embedJpg(jpgBuf);
+}
+
+// ── QR Code Generator ─────────────────────────────────────────────────────────
 router.post('/qr-generator', async (req, res) => {
   try {
     const { text, size = 200, errorCorrectionLevel = 'M' } = req.body;
-    
-    if (!text) {
-      return res.status(400).json({ error: 'Text is required' });
-    }
+    if (!text) return res.status(400).json({ error: 'Text is required' });
 
-    const qrCodeDataUrl = await QRCode.toDataURL(text, {
-      width: size,
-      errorCorrectionLevel: errorCorrectionLevel,
-      margin: 1
+    const qrCode = await QRCode.toDataURL(text, {
+      width: parseInt(size),
+      errorCorrectionLevel,
+      margin: 1,
     });
 
-    res.json({
-      success: true,
-      result: {
-        qrCode: qrCodeDataUrl,
-        text,
-        size,
-        errorCorrectionLevel
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.json({ success: true, result: { qrCode, text, size, errorCorrectionLevel } });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Image Compressor
+// ── Image Compressor ──────────────────────────────────────────────────────────
 router.post('/compress', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
+
+    const { quality = 85, format = 'jpeg' } = req.body;
+    const q = Math.min(100, Math.max(1, parseInt(quality)));
+
+    const pipeline = sharp(req.file.buffer);
+    let compressed;
+
+    switch (format) {
+      case 'jpeg': compressed = await pipeline.jpeg({ quality: q, chromaSubsampling: '4:4:4' }).toBuffer(); break;
+      case 'png':  compressed = await pipeline.png({ compressionLevel: 6 }).toBuffer(); break;
+      case 'webp': compressed = await pipeline.webp({ quality: q }).toBuffer(); break;
+      default:     return res.status(400).json({ error: 'Unsupported format' });
     }
-
-    const { quality = 95, format = 'jpeg' } = req.body;
-
-    let compressedImage;
-    if (format === 'jpeg') {
-      compressedImage = await sharp(req.file.buffer)
-        .jpeg({ quality: parseInt(quality), chromaSubsampling: '4:4:4' })
-        .toBuffer();
-    } else if (format === 'png') {
-      compressedImage = await sharp(req.file.buffer)
-        .png({ compressionLevel: 6, quality: 100 })
-        .toBuffer();
-    } else if (format === 'webp') {
-      compressedImage = await sharp(req.file.buffer)
-        .webp({ quality: parseInt(quality), lossless: false })
-        .toBuffer();
-    }
-
-    const compressedBase64 = compressedImage.toString('base64');
-    const mimeType = `image/${format}`;
 
     res.json({
       success: true,
       result: {
-        compressedImage: `data:${mimeType};base64,${compressedBase64}`,
+        compressedImage: `data:image/${format};base64,${compressed.toString('base64')}`,
         originalSize: req.file.size,
-        compressedSize: compressedImage.length,
-        compressionRatio: ((req.file.size - compressedImage.length) / req.file.size * 100).toFixed(2),
-        format
-      }
+        compressedSize: compressed.length,
+        compressionRatio: (((req.file.size - compressed.length) / req.file.size) * 100).toFixed(2),
+        format,
+      },
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Image Converter
+// ── Image Converter ───────────────────────────────────────────────────────────
 router.post('/convert', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
 
-    const { format = 'jpeg', quality = 95 } = req.body;
-    const supportedFormats = ['jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff'];
-    
-    if (!supportedFormats.includes(format)) {
-      return res.status(400).json({ 
-        error: 'Unsupported format. Use jpeg, png, webp, gif, bmp, or tiff' 
-      });
-    }
+    const { format = 'jpeg', quality = 92 } = req.body;
+    const supported = ['jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff'];
+    if (!supported.includes(format))
+      return res.status(400).json({ error: `Unsupported format. Use: ${supported.join(', ')}` });
 
-    let convertedImage;
-    const image = sharp(req.file.buffer);
+    const q = Math.min(100, Math.max(1, parseInt(quality)));
+    const pipeline = sharp(req.file.buffer);
 
-    switch (format) {
-      case 'jpeg':
-        convertedImage = await image.jpeg({ quality: parseInt(quality), chromaSubsampling: '4:4:4' }).toBuffer();
-        break;
-      case 'png':
-        convertedImage = await image.png({ compressionLevel: 6, quality: 100 }).toBuffer();
-        break;
-      case 'webp':
-        convertedImage = await image.webp({ quality: parseInt(quality), lossless: false }).toBuffer();
-        break;
-      case 'gif':
-        convertedImage = await image.gif().toBuffer();
-        break;
-      case 'bmp':
-        convertedImage = await image.bmp().toBuffer();
-        break;
-      case 'tiff':
-        convertedImage = await image.tiff().toBuffer();
-        break;
-    }
-
-    const convertedBase64 = convertedImage.toString('base64');
-    const mimeType = `image/${format}`;
+    const converted = await {
+      jpeg: () => pipeline.jpeg({ quality: q, chromaSubsampling: '4:4:4' }).toBuffer(),
+      png:  () => pipeline.png({ compressionLevel: 6 }).toBuffer(),
+      webp: () => pipeline.webp({ quality: q }).toBuffer(),
+      gif:  () => pipeline.gif().toBuffer(),
+      bmp:  () => pipeline.bmp().toBuffer(),
+      tiff: () => pipeline.tiff().toBuffer(),
+    }[format]();
 
     res.json({
       success: true,
       result: {
-        convertedImage: `data:${mimeType};base64,${convertedBase64}`,
+        convertedImage: `data:image/${format};base64,${converted.toString('base64')}`,
         originalFormat: req.file.mimetype,
         newFormat: format,
         originalSize: req.file.size,
-        convertedSize: convertedImage.length
-      }
+        convertedSize: converted.length,
+      },
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Image Resize
+// ── Image Resize ──────────────────────────────────────────────────────────────
 router.post('/resize', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
 
-    const { width, height, maintainAspect = true, quality = 95 } = req.body;
-
-    if (!width && !height) {
+    const { width, height, maintainAspect = 'true', quality = 92 } = req.body;
+    if (!width && !height)
       return res.status(400).json({ error: 'At least width or height is required' });
-    }
 
-    let resizeOptions = {};
-    if (width) resizeOptions.width = parseInt(width);
-    if (height) resizeOptions.height = parseInt(height);
-    
-    if (maintainAspect === 'true') {
-      resizeOptions.fit = 'inside';
-    }
+    // Capture original dimensions BEFORE resizing
+    const origMeta = await sharp(req.file.buffer).metadata();
 
-    const resizedImage = await sharp(req.file.buffer)
-      .resize(resizeOptions)
+    const resizeOpts = {};
+    if (width)  resizeOpts.width  = parseInt(width);
+    if (height) resizeOpts.height = parseInt(height);
+    if (maintainAspect === 'true') resizeOpts.fit = 'inside';
+
+    const resized = await sharp(req.file.buffer)
+      .resize(resizeOpts)
       .jpeg({ quality: parseInt(quality), chromaSubsampling: '4:4:4' })
       .toBuffer();
 
-    const resizedBase64 = resizedImage.toString('base64');
-    const metadata = await sharp(resizedImage).metadata();
+    const newMeta = await sharp(resized).metadata();
 
     res.json({
       success: true,
       result: {
-        resizedImage: `data:image/jpeg;base64,${resizedBase64}`,
-        originalSize: { width: null, height: null },
-        newSize: { width: metadata.width, height: metadata.height },
+        resizedImage: `data:image/jpeg;base64,${resized.toString('base64')}`,
+        originalSize: { width: origMeta.width, height: origMeta.height },
+        newSize:      { width: newMeta.width,  height: newMeta.height  },
         originalFileSize: req.file.size,
-        resizedFileSize: resizedImage.length
-      }
+        resizedFileSize:  resized.length,
+      },
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Image Crop
+// ── Image Crop ────────────────────────────────────────────────────────────────
 router.post('/crop', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
 
-    const { x, y, width, height, quality = 95 } = req.body;
+    const { x, y, width, height, quality = 92 } = req.body;
+    if (x === undefined || y === undefined || !width || !height)
+      return res.status(400).json({ error: 'x, y, width, and height are all required' });
 
-    if (x === undefined || y === undefined || !width || !height) {
-      return res.status(400).json({ error: 'X, Y, width, and height are required' });
-    }
-
-    const croppedImage = await sharp(req.file.buffer)
-      .extract({
-        left: parseInt(x),
-        top: parseInt(y),
-        width: parseInt(width),
-        height: parseInt(height)
-      })
+    const cropped = await sharp(req.file.buffer)
+      .extract({ left: parseInt(x), top: parseInt(y), width: parseInt(width), height: parseInt(height) })
       .jpeg({ quality: parseInt(quality), chromaSubsampling: '4:4:4' })
       .toBuffer();
 
-    const croppedBase64 = croppedImage.toString('base64');
-    const metadata = await sharp(croppedImage).metadata();
+    const meta = await sharp(cropped).metadata();
 
     res.json({
       success: true,
       result: {
-        croppedImage: `data:image/jpeg;base64,${croppedBase64}`,
+        croppedImage: `data:image/jpeg;base64,${cropped.toString('base64')}`,
         cropArea: { x: parseInt(x), y: parseInt(y), width: parseInt(width), height: parseInt(height) },
-        newSize: { width: metadata.width, height: metadata.height },
+        newSize: { width: meta.width, height: meta.height },
         originalFileSize: req.file.size,
-        croppedFileSize: croppedImage.length
-      }
+        croppedFileSize:  cropped.length,
+      },
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Background Remover (basic implementation)
+// ── Background Remover ────────────────────────────────────────────────────────
 router.post('/background-remover', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
+    if (req.file.size > 20 * 1024 * 1024)
+      return res.status(400).json({ error: 'File too large. Maximum size is 20 MB.' });
 
-    // Load the image using Jimp
-    const image = await Jimp.read(req.file.buffer);
-    
-    // Get image dimensions
-    const width = image.getWidth();
-    const height = image.getHeight();
-    
-    // Simple background removal: make corners/edges transparent
-    // This is a basic implementation - in production, use a proper AI service
-    image.scan(0, 0, width, height, (x, y, idx) => {
-      const red = image.bitmap.data[idx];
-      const green = image.bitmap.data[idx + 1];
-      const blue = image.bitmap.data[idx + 2];
-      
-      // Simple edge detection - if pixel is on the border, make it transparent
-      const isEdge = x < 10 || x > width - 10 || y < 10 || y > height - 10;
-      
-      // Also make white/light backgrounds transparent
-      const isLightBackground = (red > 200 && green > 200 && blue > 200);
-      
-      if (isEdge || isLightBackground) {
-        // Set alpha channel to 0 (transparent)
-        image.bitmap.data[idx + 3] = 0;
-      }
-    });
-    
-    // Convert to PNG with transparency
-    const processedBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
-    const processedBase64 = processedBuffer.toString('base64');
-    
-    res.json({
-      success: true,
-      image: `data:image/png;base64,${processedBase64}`,
-      result: {
-        note: 'Basic background removal applied. For best results, use images with clear subjects and plain backgrounds.',
-        originalSize: req.file.size,
-        processedSize: processedBuffer.length
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message || 'Failed to remove background' });
+    // Use first 32 bytes of the file buffer as cache key (fast, no full base64)
+    const cacheKey = req.file.buffer.slice(0, 32).toString('hex');
+    const cached   = imageCache.get(cacheKey);
+    if (cached) return res.json({ success: true, ...cached, cached: true });
+
+    const pngBuffer  = await sharp(req.file.buffer).png().toBuffer();
+    const blob       = new Blob([pngBuffer], { type: 'image/png' });
+    const resultBlob = await removeBackground(blob);
+    const resultBuf  = Buffer.from(await resultBlob.arrayBuffer());
+    const base64     = resultBuf.toString('base64');
+
+    const payload = {
+      image:  `data:image/png;base64,${base64}`,
+      result: { originalSize: req.file.size, processedSize: resultBuf.length },
+    };
+    imageCache.set(cacheKey, payload);
+
+    res.json({ success: true, ...payload });
+  } catch (err) {
+    console.error('Background removal error:', err);
+    res.status(500).json({ error: err.message || 'Failed to remove background' });
   }
 });
 
-// Image to Base64
+// ── Base64 Encoder ────────────────────────────────────────────────────────────
 router.post('/base64', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
 
-    const base64 = req.file.buffer.toString('base64');
+    const base64  = req.file.buffer.toString('base64');
     const dataUrl = `data:${req.file.mimetype};base64,${base64}`;
 
     res.json({
       success: true,
-      result: {
-        base64,
-        dataUrl,
-        filename: req.file.originalname,
-        size: req.file.size,
-        mimeType: req.file.mimetype
-      }
+      result: { base64, dataUrl, filename: req.file.originalname, size: req.file.size, mimeType: req.file.mimetype },
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// EXIF Viewer
+// ── EXIF Viewer ───────────────────────────────────────────────────────────────
 router.post('/exif-viewer', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
 
-    const exifData = await exifr.parse(req.file.buffer);
-    const metadata = await sharp(req.file.buffer).metadata();
+    const [exifData, metadata] = await Promise.all([
+      exifr.parse(req.file.buffer),
+      sharp(req.file.buffer).metadata(),
+    ]);
 
     res.json({
       success: true,
       result: {
         exif: exifData || {},
         metadata: {
-          format: metadata.format,
-          width: metadata.width,
-          height: metadata.height,
-          size: metadata.size,
-          density: metadata.density,
-          hasAlpha: metadata.hasAlpha,
-          orientation: metadata.orientation
-        }
-      }
+          format:      metadata.format,
+          width:       metadata.width,
+          height:      metadata.height,
+          size:        metadata.size,
+          density:     metadata.density,
+          hasAlpha:    metadata.hasAlpha,
+          orientation: metadata.orientation,
+        },
+      },
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Favicon Generator
+// ── Favicon Generator ─────────────────────────────────────────────────────────
 router.post('/favicon-generator', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
 
-    const sizes = [16, 32, 48, 64, 128, 256];
+    const sizes    = [16, 32, 48, 64, 128, 256];
     const favicons = {};
 
-    for (const size of sizes) {
-      const favicon = await sharp(req.file.buffer)
-        .resize(size, size)
-        .png()
-        .toBuffer();
-      
-      favicons[`${size}x${size}`] = `data:image/png;base64,${favicon.toString('base64')}`;
-    }
+    await Promise.all(
+      sizes.map(async (size) => {
+        const buf = await sharp(req.file.buffer)
+          .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+          .png()
+          .toBuffer();
+        favicons[`${size}x${size}`] = `data:image/png;base64,${buf.toString('base64')}`;
+      })
+    );
 
-    // Generate ICO file (32x32)
-    const icoBuffer = await sharp(req.file.buffer)
-      .resize(32, 32)
-      .png()
-      .toBuffer();
+    const ico32 = favicons['32x32'].split(',')[1];
+    const ico16 = favicons['16x16'].split(',')[1];
 
     res.json({
       success: true,
       result: {
         favicons,
-        ico: `data:image/x-icon;base64,${icoBuffer.toString('base64')}`,
+        ico: `data:image/x-icon;base64,${ico32}`,
         htmlTags: {
-          favicon32x32: `<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,${favicons['32x32'].split(',')[1]}">`,
-          favicon16x16: `<link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,${favicons['16x16'].split(',')[1]}">`,
-          appleTouchIcon: `<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,${favicons['128x128'].split(',')[1]}">`
-        }
-      }
+          favicon32x32:  `<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,${ico32}">`,
+          favicon16x16:  `<link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,${ico16}">`,
+          appleTouchIcon:`<link rel="apple-touch-icon" sizes="180x180" href="${favicons['128x128']}">`,
+        },
+      },
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Image to PDF
+// ── Image to PDF ──────────────────────────────────────────────────────────────
 router.post('/image-to-pdf', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
 
-    const { pageSize = 'a4', orientation = 'portrait', quality = 'high' } = req.body;
+    const { pageSize = 'a4', orientation = 'portrait' } = req.body;
 
-    // Load the image using sharp to get metadata and buffer
-    const imageBuffer = req.file.buffer;
-    const metadata = await sharp(imageBuffer).metadata();
-
-    // Create a new PDF document
-    const pdfDoc = await PDFDocument.create();
-    
-    // Define page sizes (in points)
-    const pageSizes = {
-      'a4': { width: 595, height: 842 },
-      'letter': { width: 612, height: 792 },
-      'a3': { width: 842, height: 1191 }
+    const PAGE_SIZES = {
+      a4:     { width: 595.28, height: 841.89 },
+      letter: { width: 612,    height: 792    },
+      a3:     { width: 841.89, height: 1190.55},
     };
-    
-    const selectedSize = pageSizes[pageSize] || pageSizes['a4'];
-    
-    // Calculate image dimensions to fit the page
-    let imgWidth, imgHeight;
-    const aspectRatio = metadata.width / metadata.height;
-    
-    if (orientation === 'landscape') {
-      imgWidth = selectedSize.height;
-      imgHeight = selectedSize.height / aspectRatio;
-    } else {
-      imgWidth = selectedSize.width;
-      imgHeight = selectedSize.width / aspectRatio;
-    }
-    
-    // Center the image on the page
-    const x = (selectedSize.width - imgWidth) / 2;
-    const y = (selectedSize.height - imgHeight) / 2;
+    const base = PAGE_SIZES[pageSize] ?? PAGE_SIZES.a4;
 
-    // Add the image to the PDF
-    const image = await pdfDoc.embedJpg(imageBuffer); // Try JPG first
-    const page = pdfDoc.addPage([selectedSize.width, selectedSize.height]);
-    page.drawImage(image, {
-      x: x,
-      y: y,
-      width: imgWidth,
-      height: imgHeight
-    });
+    // Swap dimensions for landscape
+    const pageW = orientation === 'landscape' ? base.height : base.width;
+    const pageH = orientation === 'landscape' ? base.width  : base.height;
 
-    // Save the PDF
+    const MARGIN = 36; // 0.5 inch
+    const maxW   = pageW - MARGIN * 2;
+    const maxH   = pageH - MARGIN * 2;
+
+    const meta   = await sharp(req.file.buffer).metadata();
+    const aspect = meta.width / meta.height;
+
+    // Fit image within margins, preserving aspect ratio
+    let imgW = maxW;
+    let imgH = imgW / aspect;
+    if (imgH > maxH) { imgH = maxH; imgW = imgH * aspect; }
+
+    const x = MARGIN + (maxW - imgW) / 2;
+    const y = MARGIN + (maxH - imgH) / 2;
+
+    const pdfDoc = await PDFDocument.create();
+    const page   = pdfDoc.addPage([pageW, pageH]);
+
+    // Handles both JPEG and PNG (and converts anything else to JPEG)
+    const embeddedImg = await embedImage(pdfDoc, req.file.buffer, req.file.mimetype);
+
+    page.drawImage(embeddedImg, { x, y, width: imgW, height: imgH });
+
     const pdfBytes = await pdfDoc.save();
     const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
 
-    const conversionInfo = {
-      originalFile: req.file.originalname,
-      format: metadata.format,
-      dimensions: {
-        width: metadata.width,
-        height: metadata.height
-      },
-      pageSize: pageSize.toUpperCase(),
-      orientation,
-      pdfSize: pdfBytes.length
-    };
-
     res.json({
-      success: true,
-      result: conversionInfo,
-      file: `data:application/pdf;base64,${pdfBase64}`,
-      filename: req.file.originalname.replace(/\.[^/.]+$/, '.pdf')
+      success:  true,
+      result:   { originalFile: req.file.originalname, format: meta.format, dimensions: { width: meta.width, height: meta.height }, pageSize: pageSize.toUpperCase(), orientation, pdfSize: pdfBytes.length },
+      file:     `data:application/pdf;base64,${pdfBase64}`,
+      filename: req.file.originalname.replace(/\.[^/.]+$/, '.pdf'),
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message || 'Failed to convert image to PDF' });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to convert image to PDF' });
   }
 });
 
-// QR Code Scanner
+// ── QR Code Scanner ───────────────────────────────────────────────────────────
+// Uses jsQR for real decoding (add `jsqr` to package.json)
 router.post('/qr-scanner', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
 
-    // Load the image using Jimp
-    const image = await Jimp.read(req.file.buffer);
-    
-    // For demo purposes, we'll return a placeholder result
-    // In a real implementation, you would use a QR code scanning library like jsQR or qrcode-reader
-    const scanResult = {
-      originalFile: req.file.originalname,
-      imageSize: {
-        width: image.getWidth(),
-        height: image.getHeight()
-      },
-      qrCodeFound: true,
-      data: 'https://example.com/sample-qr-data',
-      format: 'QR_CODE',
-      note: 'QR code scanning is simulated in this demo. Please integrate with a QR scanning library like jsQR.'
-    };
+    // Convert to raw RGBA via sharp so jsQR can read it
+    const { data, info } = await sharp(req.file.buffer)
+      .ensureAlpha()          // add alpha channel if missing
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+
+    const code = jsQR(new Uint8ClampedArray(data), info.width, info.height);
+
+    if (!code) {
+      return res.json({
+        success:      true,
+        result:       { qrCodeFound: false, message: 'No QR code detected in the image.' },
+        imageData:    `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
+      });
+    }
 
     res.json({
       success: true,
-      result: scanResult,
-      imageData: `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`
+      result: {
+        qrCodeFound: true,
+        data:        code.data,
+        format:      'QR_CODE',
+        location:    code.location,
+        imageSize:   { width: info.width, height: info.height },
+      },
+      imageData: `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message || 'Failed to scan QR code' });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to scan QR code' });
   }
 });
 
-// Image DPI Checker
+// ── Image DPI Checker ─────────────────────────────────────────────────────────
 router.post('/dpi-checker', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
+
+    const metadata = await sharp(req.file.buffer).metadata();
+
+    // sharp returns `density` in pixels-per-inch for JPEG/TIFF; PNG stores pixels-per-metre
+    // Normalise to DPI
+    let dpi = 72; // safe screen default
+    if (metadata.density) {
+      dpi = metadata.densityUnit === 'pixelsPerCentimeter'
+        ? Math.round(metadata.density * 2.54)
+        : Math.round(metadata.density);  // already PPI / DPI
     }
 
-    // Load the image using sharp to get metadata
-    const metadata = await sharp(req.file.buffer).metadata();
-    
-    // Calculate DPI if available, otherwise estimate
-    let dpi = metadata.dpi || 72; // Default to 72 DPI if not specified
-    
-    // Calculate print sizes at different DPI values
-    const printSizes = {
-      '72 DPI (Screen)': {
-        width: `${(metadata.width / dpi).toFixed(2)} inches`,
-        height: `${(metadata.height / dpi).toFixed(2)} inches`
-      },
-      '150 DPI (Low Print)': {
-        width: `${(metadata.width / 150).toFixed(2)} inches`,
-        height: `${(metadata.height / 150).toFixed(2)} inches`
-      },
-      '300 DPI (High Print)': {
-        width: `${(metadata.width / 300).toFixed(2)} inches`,
-        height: `${(metadata.height / 300).toFixed(2)} inches`
-      }
-    };
-
-    const dpiInfo = {
-      originalFile: req.file.originalname,
-      format: metadata.format,
-      dimensions: {
-        width: metadata.width,
-        height: metadata.height
-      },
-      dpi: dpi,
-      printSizes: printSizes,
-      fileSize: `${(req.file.size / 1024 / 1024).toFixed(2)} MB`
-    };
+    const inch = (px) => (px / dpi).toFixed(2);
 
     res.json({
       success: true,
-      result: dpiInfo
+      result: {
+        originalFile: req.file.originalname,
+        format:       metadata.format,
+        dimensions:   { width: metadata.width, height: metadata.height },
+        dpi,
+        densitySource: metadata.density ? 'embedded' : 'default (72)',
+        printSizes: {
+          [`${dpi} DPI (current)`]: { width: `${inch(metadata.width)} in`, height: `${inch(metadata.height)} in` },
+          '150 DPI (low print)':   { width: `${(metadata.width  / 150).toFixed(2)} in`, height: `${(metadata.height / 150).toFixed(2)} in` },
+          '300 DPI (high print)':  { width: `${(metadata.width  / 300).toFixed(2)} in`, height: `${(metadata.height / 300).toFixed(2)} in` },
+        },
+        fileSize: `${(req.file.size / 1024 / 1024).toFixed(2)} MB`,
+      },
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message || 'Failed to check image DPI' });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to check DPI' });
   }
 });
 
-// Image to Word (OCR placeholder)
-router.post('/image-to-word', upload.single('image'), async (req, res) => {
+// ── Image to Word ─────────────────────────────────────────────────────────────
+// Smart detection: photos → embedded image, text scans → OCR
+router.post('/image-to-word', upload.single('file'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
+    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
+    if (req.file.size > 10 * 1024 * 1024)
+      return res.status(400).json({ error: 'File too large. Maximum size is 10 MB.' });
+
+    const metadata = await sharp(req.file.buffer).metadata();
+
+    // ── OCR ──────────────────────────────────────────────────────────────────
+    // Pre-process: normalise size + contrast for best Tesseract results
+    const ocrBuffer = await sharp(req.file.buffer)
+      .resize(null, 1200, { fit: 'inside', withoutEnlargement: true, kernel: sharp.kernel.lanczos3 })
+      .grayscale()
+      .normalise()
+      .sharpen({ sigma: 1, flat: 1, jagged: 2 })
+      .toBuffer();
+
+    const { data: ocrData } = await Tesseract.recognize(ocrBuffer, 'eng', {
+      logger: () => {},                       // suppress progress logs
+      config: {
+        tessedit_ocr_engine_mode: '1',        // LSTM engine
+        tessedit_pageseg_mode:    '3',        // fully automatic page seg
+        preserve_interword_spaces: '1',
+      },
+    });
+
+    const words         = ocrData.words ?? [];
+    const rawText       = ocrData.text  ?? '';
+    const avgConfidence = words.length
+      ? words.reduce((s, w) => s + w.confidence, 0) / words.length
+      : 0;
+
+    // Treat as photo only when OCR found nothing meaningful
+    const alphaNums = (rawText.match(/[A-Za-z0-9]/g) ?? []).length;
+    const isPhoto   = alphaNums < 20 || avgConfidence < 15;
+
+    // ── Build Word document ───────────────────────────────────────────────────
+    let doc;
+    let conversionType;
+
+    if (isPhoto) {
+      // PHOTO MODE – embed the original image, scaled to fit the page
+      conversionType = 'image_embed';
+
+      // Always convert to PNG for embedding — universally supported by docx library
+      const embBuf  = await sharp(req.file.buffer)
+        .resize(1600, 1600, { fit: 'inside', withoutEnlargement: true })
+        .png()                   // PNG required: jpeg can cause corrupt docx on some builds
+        .toBuffer();
+
+      const embMeta = await sharp(embBuf).metadata();
+      // fitPixels returns pixel dimensions — docx ImageRun.transformation takes PIXELS
+      const { width: pxW, height: pxH } = fitPixels(embMeta.width, embMeta.height);
+
+      doc = new Document({
+        sections: [{
+          properties: {
+            page: {
+              size: { width: 12240, height: 15840 },           // US Letter in DXA
+              margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
+            },
+          },
+          children: [
+            new Paragraph({
+              children: [
+                new ImageRun({
+                  type:           'png',                        // REQUIRED – omitting corrupts the docx
+                  data:           embBuf,                       // Pass Buffer directly, not ArrayBuffer slice
+                  transformation: { width: pxW, height: pxH }, // pixels, not EMUs
+                  altText: { title: 'Image', description: req.file.originalname, name: 'embedded-image' },
+                }),
+              ],
+            }),
+          ],
+        }],
+      });
+
+    } else {
+      // TEXT MODE – clean up OCR output and write as paragraphs
+      conversionType = 'ocr_text';
+
+      // Strip non-printable ASCII; keep newlines for paragraph splitting
+      const cleanText = rawText
+        .replace(/[^\x20-\x7E\n\r]/g, '')
+        .replace(/\r\n?/g, '\n')
+        .trim() || 'No readable text detected.';
+
+      const paragraphs = cleanText
+        .split(/\n{2,}/)                   // split on blank lines
+        .map((block) => block.trim())
+        .filter(Boolean)
+        .map((block) =>
+          new Paragraph({
+            children: block
+              .split('\n')
+              .flatMap((line, i, arr) =>
+                i < arr.length - 1
+                  ? [new TextRun({ text: line }), new TextRun({ break: 1 })]
+                  : [new TextRun({ text: line })]
+              ),
+          })
+        );
+
+      if (paragraphs.length === 0) {
+        paragraphs.push(new Paragraph({ children: [new TextRun({ text: 'No readable text detected.' })] }));
+      }
+
+      doc = new Document({ sections: [{ children: paragraphs }] });
     }
 
-    // Load the image using Jimp
-    const image = await Jimp.read(req.file.buffer);
-    
-    // This is a placeholder implementation
-    // In a real implementation, you would use an OCR library like Tesseract.js
-    const ocrResult = {
-      originalFile: req.file.originalname,
-      imageSize: {
-        width: image.getWidth(),
-        height: image.getHeight()
-      },
-      extractedText: 'This is placeholder text extracted from the image. In a real implementation, this would contain the actual text extracted using OCR.',
-      confidence: 0.95,
-      language: 'eng',
-      note: 'OCR is simulated in this demo. Please integrate with an OCR library like Tesseract.js for actual text extraction.'
-    };
-
-    // Create a simple Word document content (as base64)
-    const wordContent = `Extracted Text from ${req.file.originalname}\n\n${ocrResult.extractedText}`;
-    const wordBase64 = Buffer.from(wordContent).toString('base64');
+    // ── Pack and send ─────────────────────────────────────────────────────────
+    const wordBuffer = await Packer.toBuffer(doc);
 
     res.json({
-      success: true,
-      result: ocrResult,
-      file: `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${wordBase64}`,
-      filename: req.file.originalname.replace(/\.[^/.]+$/, '.docx')
+      success:  true,
+      mode:     isPhoto ? 'image' : 'text',
+      result: {
+        originalFile:   req.file.originalname,
+        imageSize:      { width: metadata.width, height: metadata.height },
+        conversionType,
+        confidence:     Math.round(avgConfidence),
+        wordCount:      words.length,
+        isPhoto,
+      },
+      file:     `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${wordBuffer.toString('base64')}`,
+      filename: req.file.originalname.replace(/\.[^/.]+$/, '.docx'),
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message || 'Failed to convert image to Word' });
+
+  } catch (err) {
+    console.error('Image to Word error:', err);
+    res.status(500).json({ error: err.message || 'Failed to convert image to Word' });
   }
 });
 
