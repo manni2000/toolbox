@@ -127,9 +127,7 @@ const HeroSection = () => {
   const quickTools = [
     { name: "JSON Formatter",     path: "/json-formatter"     },
     { name: "Image Compressor",   path: "/image-compressor"   },
-    { name: "PDF to Word",        path: "/pdf-to-word"        },
-    { name: "QR Code Generator",  path: "/qr-code-generator"  },
-    { name: "Password Generator", path: "/password-generator" },
+    { name: "PDF to Word",        path: "/pdf-to-word"        }
   ];
 
   return (
