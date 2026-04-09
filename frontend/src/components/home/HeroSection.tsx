@@ -7,7 +7,6 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllTools } from "@/data/toolCategories";
 
-/* ─── Data ─────────────────────────────────────────────────────────────── */
 const ORBS = [
   { icon: Code2,     color: "#22d3ee", bg: "rgba(34,211,238,0.15)",  top: "14%", left: "5%",   size: 56, delay: 0    },
   { icon: Image,     color: "#a78bfa", bg: "rgba(167,139,250,0.15)", top: "38%", left: "2%",   size: 64, delay: 0.15 },
@@ -44,7 +43,6 @@ const STATS = [
 
 /* LOGOS removed */
 
-/* ─── FloatingOrb ─────────────────────────────────────────────────────── */
 const FloatingOrb = ({
   icon: Icon, color, bg, top, left, right, size, delay,
 }: {
@@ -76,7 +74,6 @@ const FloatingOrb = ({
   </motion.div>
 );
 
-/* ═══════════════════════════════════════════════════════════════════════ */
 const HeroSection = () => {
   const [searchQuery, setSearchQuery]     = useState("");
   const [searchResults, setSearchResults] = useState<ReturnType<typeof getAllTools>>([]);
@@ -133,7 +130,6 @@ const HeroSection = () => {
   return (
     <div style={{ background: "#080d18", minHeight: "100vh", fontFamily: "'Sora','DM Sans',system-ui,sans-serif", color: "#e2e8f0", overflowX: "hidden" }}>
 
-      {/* ══ All CSS ══════════════════════════════════════════════════════ */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
 
