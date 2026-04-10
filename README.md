@@ -226,7 +226,7 @@ Each tool category has its own Express router in the `server/routes/` directory:
 ### Key Technologies
 - **Image Processing**: Sharp, Jimp, @imgly/background-removal-node (AI-powered), Tesseract.js (OCR)
 - **PDF Processing**: pdf-lib, pdf-parse, pdf-to-png-converter
-- **Video/Audio**: fluent-ffmpeg, ffmpeg-static
+- **Audio Processing**: node-wav, audio-buffer (WAV file manipulation)
 - **Web Automation**: Playwright, Puppeteer
 - **Validation**: Joi schema validation
 - **Caching**: node-cache for performance optimization
@@ -284,14 +284,15 @@ The frontend is built with modern React patterns and best practices:
 - **API**: RESTful API with Express Router
 - **Image Processing**: Sharp, Jimp, @imgly/background-removal-node (AI-powered)
 - **PDF Processing**: pdf-lib, pdf-parse, pdf-to-png-converter
-- **Video Processing**: fluent-ffmpeg, ffmpeg-static
-- **Audio Processing**: fluent-ffmpeg
+- **Audio Processing**: node-wav, audio-buffer (WAV-only processing, no ffmpeg dependency)
 - **OCR**: Tesseract.js
 - **QR Code**: qrcode, jsqr
 - **Web Automation**: Playwright
 - **Security**: Helmet, CORS, express-rate-limit
 - **Caching**: node-cache
 - **Validation**: Joi
+
+**Note**: Video processing and advanced audio format conversion (MP3, AAC, OGG, FLAC) require cloud services due to serverless environment limitations. The API provides helpful error messages with recommended cloud alternatives like CloudConvert, AWS Elastic Transcoder, Google Cloud Transcoder, and Azure Media Services.
 
 ### Frontend
 - **Framework**: React 18 with Vite
