@@ -25,7 +25,7 @@ const ToolLayout = ({ title, description, category, categoryPath, toolSlug, chil
         description={description}
         category={category}
         toolSlug={toolSlug}
-        url={`https://dailytools247.com${location.pathname}`}
+        url={`https://dailytools247.app${location.pathname}`}
       />
       <div className="flex min-h-screen flex-col">
         <Header />

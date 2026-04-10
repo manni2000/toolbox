@@ -291,12 +291,12 @@ const API_DOCS = {
     version: '1.0.0',
     contact: {
       name: 'Daily Tools API',
-      url: 'https://dailytools247.vercel.app'
+      url: 'https://dailytools247.app'
     }
   },
   servers: [
     {
-      url: process.env.API_BASE_URL || 'https://toolbox-backend-jet.vercel.app',
+      url: process.env.API_BASE_URL || 'https://api.dailytools247.app',
       description: 'Production server'
     }
   ],
