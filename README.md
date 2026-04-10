@@ -692,7 +692,7 @@ For support, please email info@dailytools247.com or create an issue on GitHub.
 
 ## 🌐 Live Demo
 
-Visit our live site: [https://dailytools247.app](https://dailytools247.app)
+Visit our live site: [https://www.dailytools247.app](https://www.dailytools247.app)
 
 ## 🚀 Deployment Configuration
 
@@ -714,7 +714,7 @@ The project includes a `vercel.json` configuration optimized for Vercel deployme
 - **Sitemap**: Automatically generated at `/sitemap.xml`
 - **Robots.txt**: Configured for optimal search engine crawling
 - **Meta Tags**: Properly configured Open Graph and Twitter Card meta tags
-- **Canonical URLs**: Set to `https://dailytools247.app`
+- **Canonical URLs**: Set to `https://www.dailytools247.app`
 - **Structured Data**: JSON-LD schema for better search engine understanding
 
 ### Environment Variables

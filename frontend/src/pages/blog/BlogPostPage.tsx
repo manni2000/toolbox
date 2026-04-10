@@ -90,8 +90,8 @@ const BlogPostPage = () => {
     description: post.description,
     datePublished: post.publishedDate,
     dateModified: post.publishedDate,
-    image: [`https://dailytools247.app${post.image}`],
-    mainEntityOfPage: `https://dailytools247.app/blogs/${post.slug}`,
+    image: [`https://www.dailytools247.app${post.image}`],
+    mainEntityOfPage: `https://www.dailytools247.app/blogs/${post.slug}`,
     author: {
       "@type": "Organization",
       name: "Dailytools247",
@@ -101,7 +101,7 @@ const BlogPostPage = () => {
       name: "Dailytools247",
       logo: {
         "@type": "ImageObject",
-        url: "https://dailytools247.app/dailytools247.png",
+        url: "https://www.dailytools247.app/dailytools247.png",
       },
     },
   };
@@ -125,7 +125,7 @@ const BlogPostPage = () => {
         title={post.title}
         description={post.description}
         keywords={post.keywords}
-        canonical={`https://dailytools247.app/blogs/${post.slug}`}
+        canonical={`https://www.dailytools247.app/blogs/${post.slug}`}
         ogImage={post.image}
         ogType="article"
       />

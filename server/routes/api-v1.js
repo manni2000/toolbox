@@ -291,7 +291,7 @@ const API_DOCS = {
     version: '1.0.0',
     contact: {
       name: 'Daily Tools API',
-      url: 'https://dailytools247.app'
+      url: 'https://www.dailytools247.app'
     }
   },
   servers: [

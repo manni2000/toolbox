@@ -76,7 +76,7 @@ const BlogListPage = () => {
         title="Blog - Free Online Tools, Guides, and Tutorials"
         description="Read practical blog guides on free online tools, converters, developer utilities, and productivity workflows for 2026."
         keywords="free online tools blog, best tools 2026, online converter free, no signup required tools"
-        canonical="https://dailytools247.app/blogs"
+        canonical="https://www.dailytools247.app/blogs"
       />
       <Header />
       <main className="flex-1">

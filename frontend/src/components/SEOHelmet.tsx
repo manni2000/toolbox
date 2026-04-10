@@ -36,7 +36,7 @@ const SEOHelmet = ({
   noindex = false
 }: SEOHelmetProps) => {
   const location = useLocation();
-  const currentUrl = url || canonical || `https://dailytools247.app${location.pathname}`;
+  const currentUrl = url || canonical || `https://www.dailytools247.app${location.pathname}`;
   
   // Get tool-specific metadata if toolSlug is provided
   const toolMetadata = toolSlug ? getToolSeoMetadata(toolSlug) : null;
@@ -49,7 +49,7 @@ const SEOHelmet = ({
   const finalFaqs = faqs.length > 0 ? faqs : toolMetadata?.faqs || [];
   const finalSchema = schema || toolMetadata?.schema;
 
-  const siteUrl = 'https://dailytools247.app';
+  const siteUrl = 'https://www.dailytools247.app';
   const fullTitleWithSuffix = finalTitle.includes('Dailytools247') ? finalTitle : `${finalTitle} | Dailytools247`;
   const finalImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
@@ -69,12 +69,12 @@ const SEOHelmet = ({
       author: {
         '@type': 'Organization',
         name: 'Dailytools247',
-        url: 'https://dailytools247.app'
+        url: 'https://www.dailytools247.app'
       },
       publisher: {
         '@type': 'Organization',
         name: 'Dailytools247',
-        url: 'https://dailytools247.app'
+        url: 'https://www.dailytools247.app'
       },
       offers: {
         '@type': 'Offer',
