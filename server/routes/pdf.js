@@ -945,85 +945,20 @@ router.post('/powerpoint-to-pdf', upload.single('ppt'), async (req, res) => {
   }
 });
 
-// Browser pool for reuse across requests
-let browserInstance = null;
-let browserLock = false;
-
-async function getBrowser() {
-  const { chromium } = require('playwright');
-  if (!browserInstance) {
-    console.log('Launching new Chromium browser...');
-    browserInstance = await chromium.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-  }
-  return browserInstance;
-}
-
-// HTML to PDF - Using Playwright for proper rendering with CSS, images, and fonts
+// HTML to PDF - Requires cloud service
 router.post('/html-to-pdf', async (req, res) => {
-  let page = null;
-  try {
-    const { html, url, options = {} } = req.body;
-
-    if (!html && !url) {
-      return res.status(400).json({ error: 'HTML content or URL is required' });
-    }
-
-    // Get or create browser instance
-    const browser = await getBrowser();
-    page = await browser.newPage();
-
-    if (url) {
-      // Navigate to URL - use 'load' instead of 'networkidle' for faster response
-      await page.goto(url, {
-        waitUntil: 'load',
-        timeout: 15000
-      });
-    } else {
-      // Set HTML content directly - use 'load' for faster response
-      await page.setContent(html, {
-        waitUntil: 'load'
-      });
-    }
-
-    // Generate PDF
-    const pdfBuffer = await page.pdf({
-      format: options.format || 'A4',
-      landscape: options.orientation === 'landscape',
-      margin: {
-        top: options.margin || '1cm',
-        right: options.margin || '1cm',
-        bottom: options.margin || '1cm',
-        left: options.margin || '1cm'
-      },
-      printBackground: true
-    });
-
-    await page.close();
-    page = null;
-
-    const base64 = pdfBuffer.toString('base64');
-    console.log('PDF generated, size:', pdfBuffer.length);
-
-    res.json({
-      success: true,
-      result: {
-        input: html ? 'HTML content' : url,
-        outputFile: 'converted.pdf'
-      },
-      file: `data:application/pdf;base64,${base64}`,
-      filename: 'converted.pdf'
-    });
-  } catch (error) {
-    console.error('HTML to PDF error:', error);
-    res.status(500).json({ error: error.message });
-  } finally {
-    if (page) {
-      await page.close();
-    }
-  }
+  return res.status(503).json({
+    error: 'HTML to PDF conversion requires cloud service',
+    message: 'Browser-based PDF rendering is not available in serverless environments due to browser binary size constraints.',
+    alternatives: [
+      'Use Browserless.io (https://browserless.io/)',
+      'Use Puppeteer Cloud (https://cloud.puppeteer.com/)',
+      'Use Apify (https://apify.com/)',
+      'Use HTMLtoPDF API (https://html2pdf.app/)',
+      'Use PDFShift (https://pdfshift.io/)'
+    ],
+    note: 'Browser binaries required for HTML-to-PDF are too large for Vercel serverless functions (250MB limit). Consider integrating a cloud service for this feature.'
+  });
 });
 
 // PDF Info Extractor

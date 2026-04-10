@@ -7,8 +7,8 @@ const jsQR    = require('jsqr');          // real QR scanning
 const exifr   = require('exifr');
 const { PDFDocument } = require('pdf-lib');
 const { Document, Packer, Paragraph, TextRun, ImageRun } = require('docx');
-const Tesseract = require('tesseract.js');
-const { removeBackground } = require('@imgly/background-removal-node');
+// const Tesseract = require('tesseract.js'); // Removed - too large for serverless
+// const { removeBackground } = require('@imgly/background-removal-node'); // Removed - too large for serverless
 const NodeCache = require('node-cache');
 const path = require('path');
 const router = express.Router();
@@ -222,33 +222,17 @@ router.post('/crop', upload.single('image'), async (req, res) => {
 
 // ── Background Remover ────────────────────────────────────────────────────────
 router.post('/background-remover', upload.single('image'), async (req, res) => {
-  try {
-    if (!req.file) return res.status(400).json({ error: 'No image file provided' });
-    if (req.file.size > 20 * 1024 * 1024)
-      return res.status(400).json({ error: 'File too large. Maximum size is 20 MB.' });
-
-    // Use first 32 bytes of the file buffer as cache key (fast, no full base64)
-    const cacheKey = req.file.buffer.slice(0, 32).toString('hex');
-    const cached   = imageCache.get(cacheKey);
-    if (cached) return res.json({ success: true, ...cached, cached: true });
-
-    const pngBuffer  = await sharp(req.file.buffer).png().toBuffer();
-    const blob       = new Blob([pngBuffer], { type: 'image/png' });
-    const resultBlob = await removeBackground(blob);
-    const resultBuf  = Buffer.from(await resultBlob.arrayBuffer());
-    const base64     = resultBuf.toString('base64');
-
-    const payload = {
-      image:  `data:image/png;base64,${base64}`,
-      result: { originalSize: req.file.size, processedSize: resultBuf.length },
-    };
-    imageCache.set(cacheKey, payload);
-
-    res.json({ success: true, ...payload });
-  } catch (err) {
-    console.error('Background removal error:', err);
-    res.status(500).json({ error: err.message || 'Failed to remove background' });
-  }
+  return res.status(503).json({
+    error: 'Background removal requires cloud service',
+    message: 'AI-powered background removal is not available in serverless environments due to ML model size constraints.',
+    alternatives: [
+      'Use remove.bg API (https://www.remove.bg/)',
+      'Use Cloudinary AI Background Removal',
+      'Use Stability AI API',
+      'Use Replicate.com background removal models'
+    ],
+    note: 'The ML models required for background removal are too large for Vercel serverless functions (250MB limit). Consider integrating a cloud service for this feature.'
+  });
 });
 
 // ── Base64 Encoder ────────────────────────────────────────────────────────────
@@ -469,7 +453,7 @@ router.post('/dpi-checker', upload.single('image'), async (req, res) => {
 });
 
 // ── Image to Word ─────────────────────────────────────────────────────────────
-// Smart detection: photos → embedded image, text scans → OCR
+// Embeds image as Word document (OCR disabled due to size constraints)
 router.post('/image-to-word', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No image file provided' });
@@ -478,123 +462,50 @@ router.post('/image-to-word', upload.single('file'), async (req, res) => {
 
     const metadata = await sharp(req.file.buffer).metadata();
 
-    // ── OCR ──────────────────────────────────────────────────────────────────
-    // Pre-process: normalise size + contrast for best Tesseract results
-    const ocrBuffer = await sharp(req.file.buffer)
-      .resize(null, 1200, { fit: 'inside', withoutEnlargement: true, kernel: sharp.kernel.lanczos3 })
-      .grayscale()
-      .normalise()
-      .sharpen({ sigma: 1, flat: 1, jagged: 2 })
+    // Always convert to PNG for embedding — universally supported by docx library
+    const embBuf  = await sharp(req.file.buffer)
+      .resize(1600, 1600, { fit: 'inside', withoutEnlargement: true })
+      .png()
       .toBuffer();
 
-    const { data: ocrData } = await Tesseract.recognize(ocrBuffer, 'eng', {
-      logger: () => {},                       // suppress progress logs
-      config: {
-        tessedit_ocr_engine_mode: '1',        // LSTM engine
-        tessedit_pageseg_mode:    '3',        // fully automatic page seg
-        preserve_interword_spaces: '1',
-      },
+    const embMeta = await sharp(embBuf).metadata();
+    const { width: pxW, height: pxH } = fitPixels(embMeta.width, embMeta.height);
+
+    const doc = new Document({
+      sections: [{
+        properties: {
+          page: {
+            size: { width: 12240, height: 15840 },
+            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
+          },
+        },
+        children: [
+          new Paragraph({
+            children: [
+              new ImageRun({
+                type: 'png',
+                data: embBuf,
+                transformation: { width: pxW, height: pxH },
+                altText: { title: 'Image', description: req.file.originalname, name: 'embedded-image' },
+              }),
+            ],
+          }),
+        ],
+      }],
     });
 
-    const words         = ocrData.words ?? [];
-    const rawText       = ocrData.text  ?? '';
-    const avgConfidence = words.length
-      ? words.reduce((s, w) => s + w.confidence, 0) / words.length
-      : 0;
-
-    // Treat as photo only when OCR found nothing meaningful
-    const alphaNums = (rawText.match(/[A-Za-z0-9]/g) ?? []).length;
-    const isPhoto   = alphaNums < 20 || avgConfidence < 15;
-
-    // ── Build Word document ───────────────────────────────────────────────────
-    let doc;
-    let conversionType;
-
-    if (isPhoto) {
-      // PHOTO MODE – embed the original image, scaled to fit the page
-      conversionType = 'image_embed';
-
-      // Always convert to PNG for embedding — universally supported by docx library
-      const embBuf  = await sharp(req.file.buffer)
-        .resize(1600, 1600, { fit: 'inside', withoutEnlargement: true })
-        .png()                   // PNG required: jpeg can cause corrupt docx on some builds
-        .toBuffer();
-
-      const embMeta = await sharp(embBuf).metadata();
-      // fitPixels returns pixel dimensions — docx ImageRun.transformation takes PIXELS
-      const { width: pxW, height: pxH } = fitPixels(embMeta.width, embMeta.height);
-
-      doc = new Document({
-        sections: [{
-          properties: {
-            page: {
-              size: { width: 12240, height: 15840 },           // US Letter in DXA
-              margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
-            },
-          },
-          children: [
-            new Paragraph({
-              children: [
-                new ImageRun({
-                  type:           'png',                        // REQUIRED – omitting corrupts the docx
-                  data:           embBuf,                       // Pass Buffer directly, not ArrayBuffer slice
-                  transformation: { width: pxW, height: pxH }, // pixels, not EMUs
-                  altText: { title: 'Image', description: req.file.originalname, name: 'embedded-image' },
-                }),
-              ],
-            }),
-          ],
-        }],
-      });
-
-    } else {
-      // TEXT MODE – clean up OCR output and write as paragraphs
-      conversionType = 'ocr_text';
-
-      // Strip non-printable ASCII; keep newlines for paragraph splitting
-      const cleanText = rawText
-        .replace(/[^\x20-\x7E\n\r]/g, '')
-        .replace(/\r\n?/g, '\n')
-        .trim() || 'No readable text detected.';
-
-      const paragraphs = cleanText
-        .split(/\n{2,}/)                   // split on blank lines
-        .map((block) => block.trim())
-        .filter(Boolean)
-        .map((block) =>
-          new Paragraph({
-            children: block
-              .split('\n')
-              .flatMap((line, i, arr) =>
-                i < arr.length - 1
-                  ? [new TextRun({ text: line }), new TextRun({ break: 1 })]
-                  : [new TextRun({ text: line })]
-              ),
-          })
-        );
-
-      if (paragraphs.length === 0) {
-        paragraphs.push(new Paragraph({ children: [new TextRun({ text: 'No readable text detected.' })] }));
-      }
-
-      doc = new Document({ sections: [{ children: paragraphs }] });
-    }
-
-    // ── Pack and send ─────────────────────────────────────────────────────────
     const wordBuffer = await Packer.toBuffer(doc);
 
     res.json({
-      success:  true,
-      mode:     isPhoto ? 'image' : 'text',
+      success: true,
+      mode: 'image',
       result: {
-        originalFile:   req.file.originalname,
-        imageSize:      { width: metadata.width, height: metadata.height },
-        conversionType,
-        confidence:     Math.round(avgConfidence),
-        wordCount:      words.length,
-        isPhoto,
+        originalFile: req.file.originalname,
+        imageSize: { width: metadata.width, height: metadata.height },
+        conversionType: 'image_embed',
+        note: 'OCR feature is disabled in serverless environment. Image is embedded in Word document.'
       },
-      file:     `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${wordBuffer.toString('base64')}`,
+      file: `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${wordBuffer.toString('base64')}`,
       filename: req.file.originalname.replace(/\.[^/.]+$/, '.docx'),
     });
 
