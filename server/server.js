@@ -35,6 +35,7 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
       'https://toolbox-backend-jet.vercel.app',
       'https://dailytools247.vercel.app',
       'https://www.dailytools247.app',
+      'https://api.dailytools247.app'
     ]
   : [
       'http://localhost:8080', 
@@ -43,7 +44,8 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
       'http://localhost:5173',
       'https://toolbox-backend-jet.vercel.app',
       'https://dailytools247.vercel.app',
-      'https://www.dailytools247.app'
+      'https://www.dailytools247.app',
+      'https://api.dailytools247.app'
     ];
 
 app.use(cors({
