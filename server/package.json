@@ -36,6 +36,7 @@
     "jimp": "^0.22.12",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
+    "jsqr": "^1.4.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
