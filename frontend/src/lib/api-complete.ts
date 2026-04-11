@@ -1,8 +1,8 @@
-// API Configuration - Updated for Node.js Server Integration
+// API Configuration - Updated for Django Backend
 const isProduction = process.env.NODE_ENV === 'production';
 const API_BASE_URL = isProduction 
   ? 'https://api.dailytools247.app'
-  : 'http://localhost:5000';
+  : 'http://localhost:8000';
 
 // For deployment on dailytools247.vercel.app, ensure backend allows this origin
 export const API_URLS = {
