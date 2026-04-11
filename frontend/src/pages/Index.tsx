@@ -1,13 +1,22 @@
+import { lazy, Suspense } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
-import CategoryGrid from "@/components/home/CategoryGrid";
 import PopularTools from "@/components/home/PopularTools";
-import TrustSection from "@/components/home/TrustSection";
-import HowItWorks from "@/components/home/HowItWorks";
-import ContactSection from "@/components/home/ContactSection";
-import BlogHighlights from "@/components/home/BlogHighlights";
-import FAQSection from "@/components/home/FAQSection";
+import CategoryGrid from "@/components/home/CategoryGrid";
+
+// Lazy load below-the-fold components
+const BlogHighlights = lazy(() => import("@/components/home/BlogHighlights"));
+const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
+const FAQSection = lazy(() => import("@/components/home/FAQSection"));
+const TrustSection = lazy(() => import("@/components/home/TrustSection"));
+const ContactSection = lazy(() => import("@/components/home/ContactSection"));
+
+const PageLoader = () => (
+  <div className="flex h-32 items-center justify-center">
+    <div className="h-6 w-6 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+  </div>
+);
 
 const Index = () => {
   return (
@@ -17,11 +26,21 @@ const Index = () => {
         <HeroSection />
         <PopularTools />
         <CategoryGrid />
-        <BlogHighlights />
-        <HowItWorks />
-        <FAQSection />
-        <TrustSection />
-        <ContactSection />
+        <Suspense fallback={<PageLoader />}>
+          <BlogHighlights />
+        </Suspense>
+        <Suspense fallback={<PageLoader />}>
+          <HowItWorks />
+        </Suspense>
+        <Suspense fallback={<PageLoader />}>
+          <FAQSection />
+        </Suspense>
+        <Suspense fallback={<PageLoader />}>
+          <TrustSection />
+        </Suspense>
+        <Suspense fallback={<PageLoader />}>
+          <ContactSection />
+        </Suspense>
       </main>
       <Footer />
     </div>

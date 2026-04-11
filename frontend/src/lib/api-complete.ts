@@ -1,7 +1,7 @@
 // API Configuration - Updated for Node.js Server Integration
 const isProduction = process.env.NODE_ENV === 'production';
 const API_BASE_URL = isProduction 
-  ? 'https://toolbox-backend-jet.vercel.app'
+  ? 'https://api.dailytools247.app'
   : 'http://localhost:5000';
 
 // For deployment on dailytools247.vercel.app, ensure backend allows this origin

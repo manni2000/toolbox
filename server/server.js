@@ -10,7 +10,6 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT;
 
-// Trust proxy only in production (for Vercel)
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', true);
 }
@@ -28,16 +27,19 @@ app.use(morgan('dev'));
 
 const allowedOrigins = process.env.NODE_ENV === 'production' 
   ? [
-      'https://toolbox-backend-jet.vercel.app',
+      'https://api.dailytools247.app',
+      'https://api.dailytools247.app',
       'https://dailytools247.vercel.app',
+      'https://www.dailytools247.app'
     ]
   : [
       'http://localhost:8080', 
       'http://localhost:3000', 
       'http://localhost:5000',
       'http://localhost:5173',
-      'https://toolbox-backend-jet.vercel.app',
-      'https://dailytools247.vercel.app'
+      'https://api.dailytools247.app',
+      'https://dailytools247.vercel.app',
+      'https://api.dailytools247.app'
     ];
 
 app.use(cors({
@@ -49,42 +51,33 @@ app.use(cors({
   optionsSuccessStatus: 204
 }));
 
-// Rate limiting with proper IP handling for Vercel
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200, // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, 
+  max: 200, 
   keyGenerator: (req) => {
-    // In Vercel, the real client IP is the first IP in X-Forwarded-For
     const forwardedFor = req.headers['x-forwarded-for'];
     if (forwardedFor) {
-      // Take the first IP in the chain (the original client)
       const clientIP = forwardedFor.split(',')[0].trim();
       return clientIP;
     }
-    // Fallback to req.ip if X-Forwarded-For is not present
     return req.ip;
   },
   skip: (req) => {
-    // Skip rate limiting for health checks
     return req.path === '/health';
   }
 });
 app.use('/api/', limiter);
 
-// Body parsing middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Set proper MIME types for API responses
 app.use('/api', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   next();
 });
 
-// Static files with proper MIME types
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'healthy',
@@ -95,7 +88,6 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Root endpoint
 app.get('/', (req, res) => {
   res.status(200).json({
     message: 'Daily Tools Backend API',
@@ -110,7 +102,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// API Routes
 app.use('/api/v1', require('./routes/api-v1'));
 app.use('/api/blog', require('./routes/blog'));
 app.use('/api/audio', require('./routes/audio'));
@@ -128,7 +119,6 @@ app.use('/api/text', require('./routes/text'));
 app.use('/api/video', require('./routes/video'));
 app.use('/api/zip', require('./routes/zip'));
 
-// Root endpoint
 app.get('/', (req, res) => {
   res.json({
     status: 'Node.js server running 🚀',
@@ -154,7 +144,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// API root endpoint
 app.get('/api', (req, res) => {
   res.json({
     status: 'Node.js server running 🚀',
@@ -186,11 +175,9 @@ app.get('/api', (req, res) => {
   });
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Server Error:', err);
   
-  // Handle different error types
   if (err.code === 'ENOTFOUND') {
     return res.status(503).json({
       error: 'Service Unavailable',
@@ -219,7 +206,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
 app.use('*', (req, res) => {
   res.status(404).json({
     error: 'Not Found',
@@ -227,7 +213,6 @@ app.use('*', (req, res) => {
   });
 });
 
-// Start server - only for non-serverless environments
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

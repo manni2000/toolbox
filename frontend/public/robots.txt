@@ -1,5 +1,5 @@
 # Dailytools247 Robots.txt - Comprehensive SEO Setup
-# https://dailytools247.com
+# https://www.dailytools247.app
 # Allow all search engines to index all tools and content
 
 User-agent: *
@@ -186,7 +186,7 @@ Disallow: /build/
 Disallow: /dist/
 
 # Sitemap location
-Sitemap: https://dailytools247.com/sitemap.xml
+Sitemap: https://www.dailytools247.app/sitemap.xml
 
 # Crawl delay for polite crawling
 Crawl-delay: 1

@@ -70,7 +70,7 @@ const CategoriesPage = () => {
         title="All Categories - Browse 200+ Free Online Tools"
         description={`Explore ${totalTools}+ free online tools across ${toolCategories.length} categories including PDF tools, image editors, calculators, text processors, security tools, and more. No signup required.`}
         keywords={["online tools categories", "free tools", "PDF tools", "image tools", "text tools", "calculators", "converters", "security tools", "developer tools", "finance tools"]}
-        canonical="https://dailytools247.com/categories"
+        canonical="https://www.dailytools247.app/categories"
       />
       <Header />
       <main className="flex-1 overflow-x-hidden">

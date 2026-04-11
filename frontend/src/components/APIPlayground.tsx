@@ -76,7 +76,7 @@ interface SavedExample {
   createdAt: Date;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "https://toolbox-backend-jet.vercel.app");
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "https://api.dailytools247.app");
 
 const APIPlayground = ({ 
   apiDocs, 

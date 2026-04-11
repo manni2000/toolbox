@@ -429,9 +429,15 @@ const HeroSection = () => {
                   spellCheck={false}
                 />
                 {searchQuery && (
-                  <button className="search-clear-btn" onClick={() => { setSearchQuery(""); setShowResults(false); }}>✕</button>
+                  <button
+                    className="search-clear-btn"
+                    onClick={() => { setSearchQuery(""); setShowResults(false); }}
+                    aria-label="Clear search"
+                  >
+                    ✕
+                  </button>
                 )}
-                <button className="search-submit-btn">
+                <button className="search-submit-btn" aria-label="Search tools">
                   <Search size={14} />
                   <span className="btn-label">Search</span>
                 </button>
@@ -453,6 +459,7 @@ const HeroSection = () => {
                         className={`dropdown-item${selectedIndex === i ? " active" : ""}`}
                         onClick={() => handleSelectTool(tool.path)}
                         onMouseEnter={() => setSelectedIndex(i)}
+                        aria-label={`Open ${tool.name}`}
                         style={{ borderBottom: i < Math.min(searchResults.length, 6) - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}
                       >
                         <div style={{
@@ -491,7 +498,14 @@ const HeroSection = () => {
             >
               <span style={{ fontSize: 13, color: "rgba(226,232,240,0.4)", flexShrink: 0 }}>Popular:</span>
               {quickTools.map((t) => (
-                <button key={t.path} className="pill" onClick={() => navigate(t.path)}>{t.name}</button>
+                <button
+                  key={t.path}
+                  className="pill"
+                  onClick={() => navigate(t.path)}
+                  aria-label={`Navigate to ${t.name}`}
+                >
+                  {t.name}
+                </button>
               ))}
             </motion.div>
           </div>

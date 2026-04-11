@@ -202,10 +202,11 @@ const Footer = () => {
           <div className="flex flex-col sm:items-start gap-4">
             <div className="flex flex-col sm:items-start -mt-2">
             <div className="relative flex h-40 w-40 sm:h-48 sm:w-48 overflow-hidden ml-[-30px]">
-              <img 
-                src="/dailytools247.png" 
-                alt="dailytools247 logo" 
+              <img
+                src="/dailytools247.png"
+                alt="dailytools247 logo"
                 className="h-40 w-40 sm:h-48 sm:w-48 object-contain"
+                loading="lazy"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
