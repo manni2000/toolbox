@@ -7,6 +7,10 @@ const rateLimit = require('express-rate-limit');
 const path = require('path');
 require('dotenv').config();
 
+// Global polyfills required for @imgly/background-removal-node
+global.XMLHttpRequest = require('xhr2');
+global.fetch = require('node-fetch');
+
 const app = express();
 const PORT = process.env.PORT;
 

@@ -433,6 +433,75 @@ npm run build
 - Set publish directory: `dist`
 - Add environment variable: `VITE_API_URL=https://your-backend-url.com`
 
+## 📁 Project Structure
+
+```
+dailytools247/
+├── server/                          # Node.js/Express backend
+│   ├── routes/                     # API route handlers
+│   │   ├── api-v1.js              # Public API v1 endpoints
+│   │   ├── audio.js               # Audio tools API
+│   │   ├── blog.js                # Blog API
+│   │   ├── date-time.js           # Date & Time tools API
+│   │   ├── dev.js                 # Developer tools API
+│   │   ├── education.js           # Education tools API
+│   │   ├── finance.js             # Finance tools API
+│   │   ├── image.js               # Image tools API
+│   │   ├── internet.js            # Internet tools API
+│   │   ├── pdf.js                 # PDF tools API
+│   │   ├── security.js            # Security tools API
+│   │   ├── seo.js                 # SEO tools API
+│   │   ├── social.js              # Social media tools API
+│   │   ├── text.js                # Text tools API
+│   │   ├── video.js               # Video tools API
+│   │   └── zip.js                 # ZIP tools API
+│   ├── server.js                  # Express server entry point
+│   ├── package.json               # Backend dependencies
+│   ├── .env                       # Environment variables
+│   └── vercel.json                # Vercel deployment config
+├── frontend/                       # React/TypeScript frontend
+│   ├── src/                       # React source code
+│   │   ├── components/            # Reusable components
+│   │   │   ├── home/             # Homepage components
+│   │   │   ├── layout/           # Layout components
+│   │   │   └── ui/               # shadcn/ui components
+│   │   ├── pages/                 # Tool pages and routes
+│   │   │   ├── tools/            # Tool-specific pages
+│   │   │   │   ├── audio/        # Audio tools
+│   │   │   │   ├── date-time/    # Date & Time tools
+│   │   │   │   ├── dev/          # Developer tools
+│   │   │   │   ├── education/    # Education tools
+│   │   │   │   ├── finance/      # Finance tools
+│   │   │   │   ├── image/        # Image tools
+│   │   │   │   ├── internet/     # Internet tools
+│   │   │   │   ├── pdf/          # PDF tools
+│   │   │   │   ├── security/     # Security tools
+│   │   │   │   ├── seo/          # SEO tools
+│   │   │   │   ├── social/       # Social media tools
+│   │   │   │   ├── text/         # Text tools
+│   │   │   │   ├── video/        # Video tools
+│   │   │   │   └── zip/          # ZIP tools
+│   │   │   ├── blog/             # Blog pages
+│   │   │   ├── APIDocs.tsx       # API documentation
+│   │   │   ├── About.tsx         # About page
+│   │   │   └── CategoriesPage.tsx # Categories page
+│   │   ├── data/                  # Tool categories data
+│   │   │   ├── toolCategories.ts # Tool definitions
+│   │   │   ├── toolSeoEnhancements.ts # SEO data
+│   │   │   ├── blogPosts.ts      # Blog content
+│   │   │   └── blogEnhancements.ts # Blog SEO
+│   │   ├── hooks/                 # Custom React hooks
+│   │   ├── lib/                   # Utility functions
+│   │   ├── App.tsx                # Main app component
+│   │   └── main.tsx               # Entry point
+│   ├── public/                    # Static assets
+│   ├── package.json               # Frontend dependencies
+│   ├── vite.config.ts             # Vite configuration
+│   ├── tailwind.config.ts         # Tailwind configuration
+│   └── vercel.json                # Vercel deployment config
+└── README.md
+```
+
 ## 🔧 Configuration
 
 ### Backend Settings

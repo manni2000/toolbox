@@ -76,169 +76,7 @@ function createPlaceholderImage(width, height, text) {
     <rect width="${width}" height="${height}" fill="url(#grid)"/>
     <rect x="20" y="20" width="${width - 40}" height="${height - 40}" fill="none" stroke="#ddd" stroke-width="2" stroke-dasharray="5,5"/>
     <text x="${width / 2}" y="${height / 2 - 20}" text-anchor="middle" font-size="18" font-weight="bold" fill="#666">${escapeHtml(text)}</text>
-    <text x="${width / 2}" y="${height / 2 + 20}" text-anchor="middle" font-size="12" fill="#999">${width} × ${height}px</text>
   </svg>`;
-  
-  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
-}
-
-function degreesToRadians(degrees) {
-  return degrees * (Math.PI / 180);
-}
-
-async function convertPdfWithPngConverter(pdfBuffer, baseFilename, format = 'png') {
-  console.log('Attempting PDF conversion with pdf-to-png-converter...');
-
-  const isProduction = process.env.NODE_ENV === 'production' || 
-                       process.env.VERCEL === '1' || 
-                       process.env.VERCEL_ENV === 'production';
-
-  try {
-    if (isProduction) {
-      return await convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format);
-    }
-
-    const pdfToPng = require('pdf-to-png-converter');
-    const results = await pdfToPng.pdfToPng(pdfBuffer, {
-      viewportScale: 2.0,            
-      returnPageContent: true       
-    });
-
-    if (!results || results.length === 0) {
-      throw new Error('pdf-to-png-converter returned no results');
-    }
-
-    const processedImages = results.map((result, index) => {
-      const base64 = result.content ? result.content.toString('base64') : '';
-      const pageNum = result.pageNumber || (index + 1);
-      const name = pageNum === 1 ? `${baseFilename}.png` : `${baseFilename}_${pageNum}.png`;
-      return {
-        page: pageNum,
-        image: `data:image/png;base64,${base64}`,
-        name: name,
-        width: result.width || 2000,
-        height: result.height || 2000,
-        format: 'png',
-        size: result.content ? result.content.length : 0
-      };
-    });
-
-    return processedImages;
-  } catch (error) {
-    console.error('pdf-to-png-converter conversion failed:', error);
-    throw error;
-  }
-}
-
-async function convertPdfWithPdfjsDirect(pdfBuffer, baseFilename, format = 'png') {
-  console.log('Using direct pdfjs-dist conversion (serverless mode)...');
-  
-  try {
-    const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
-    
-    const workerPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.mjs');
-    const standardFontDataPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'standard_fonts') + '/';
-    const cMapPath = path.resolve(__dirname, '..', 'node_modules', 'pdfjs-dist', 'cmaps') + '/';
-    
-    const { pathToFileURL } = require('url');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = pathToFileURL(workerPath).href;
-    
-    const loadingTask = pdfjsLib.getDocument({
-      data: new Uint8Array(pdfBuffer),
-      disableFontFace: true,
-      useSystemFonts: false,
-      isEvalSupported: false,
-      disableAutoFetch: true,
-      disableStream: true,
-      disableRange: true,      
-      disableCreateObjectURL: true, 
-      standardFontDataUrl: pathToFileURL(standardFontDataPath).href,
-      cMapUrl: pathToFileURL(cMapPath).href,
-      cMapPacked: true,
-    });
-    
-    const pdfDocument = await loadingTask.promise;
-    const numPages = pdfDocument.numPages;
-    
-    const maxPages = Math.min(numPages, 20);
-    console.log(`PDF has ${numPages} pages, converting first ${maxPages} for speed...`);
-    
-    const processedImages = [];
-    
-    const { createCanvas } = require('@napi-rs/canvas');
-    
-    const scale = 2.0;
-    
-    const BATCH_SIZE = 6; 
-    
-    for (let i = 0; i < maxPages; i += BATCH_SIZE) {
-      const batch = [];
-      for (let j = 0; j < BATCH_SIZE && (i + j) < maxPages; j++) {
-        const pageNum = i + j + 1;
-        batch.push(
-          pdfDocument.getPage(pageNum).then(async (page) => {
-            const viewport = page.getViewport({ scale });
-            
-            const canvas = createCanvas(Math.floor(viewport.width), Math.floor(viewport.height));
-            const context = canvas.getContext('2d');
-            
-            const renderPromise = page.render({
-              canvasContext: context,
-              viewport: viewport,
-            }).promise;
-            
-            const timeoutPromise = new Promise((_, reject) => 
-              setTimeout(() => reject(new Error('Page render timeout')), 3000)
-            );
-            
-            try {
-              await Promise.race([renderPromise, timeoutPromise]);
-            } catch (error) {
-              console.warn(`Page ${pageNum} render failed, using placeholder:`, error.message);
-              context.fillStyle = '#f0f0f0';
-              context.fillRect(0, 0, viewport.width, viewport.height);
-              context.fillStyle = '#666';
-              context.font = '20px Arial';
-              context.textAlign = 'center';
-              context.fillText(`Page ${pageNum}`, viewport.width/2, viewport.height/2);
-            }
-            
-            const imageBuffer = canvas.toBuffer('image/png');
-            const base64 = imageBuffer.toString('base64');
-            
-            const name = pageNum === 1 ? `${baseFilename}.png` : `${baseFilename}_${pageNum}.png`;
-            
-            const result = {
-              page: pageNum,
-              image: `data:image/png;base64,${base64}`,
-              name: name,
-              width: Math.floor(viewport.width),
-              height: Math.floor(viewport.height),
-              format: 'png',
-              size: imageBuffer.length
-            };
-            
-            page.cleanup();
-            return result;
-          })
-        );
-      }
-      
-      const batchResults = await Promise.all(batch);
-      processedImages.push(...batchResults);
-    }
-    
-    processedImages.sort((a, b) => a.page - b.page);
-    
-    await pdfDocument.cleanup();
-    
-    console.log(`Successfully converted ${processedImages.length} pages`);
-    return processedImages;
-    
-  } catch (error) {
-    console.error('Direct pdfjs-dist conversion failed:', error);
-    throw error;
-  }
 }
 
 router.post('/merge', upload.array('pdfs', 10), async (req, res) => {
@@ -364,197 +202,21 @@ router.post('/split', upload.single('pdf'), async (req, res) => {
   }
 });
 
-// PDF to Image - Fast in-memory conversion using pdftoimg-js
+// PDF to Image - Requires cloud service
 router.post('/to-image', upload.single('pdf'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No PDF file uploaded' });
-    }
-
-    const { format = 'png', quality = 85 } = req.body;
-    const imageFormat = format.toLowerCase() === 'jpg' ? 'jpeg' : 'png';
-    const qualityVal = Math.min(Math.max(parseInt(quality) || 85, 10), 100);
-
-    // Check if we're in production/serverless - pdf-to-png-converter doesn't work due to pdfjs-dist worker issues
-    const isProduction = process.env.NODE_ENV === 'production' || 
-                        process.env.VERCEL === '1' || 
-                        process.env.VERCEL_ENV === 'production' ||
-                        !process.env.NODE_ENV; // Default to production if not set
-    
-    const baseFilename = path.parse(req.file.originalname).name;
-    
-    console.log('Environment check:', { 
-      NODE_ENV: process.env.NODE_ENV, 
-      VERCEL: process.env.VERCEL,
-      VERCEL_ENV: process.env.VERCEL_ENV,
-      isProduction 
-    });
-
-    // Try PDF conversion even in production to get detailed error info
-    let conversionAttempted = false;
-    let conversionError = null;
-    let conversionResult = null;
-
-    if (isProduction) {
-      console.log('Attempting PDF conversion in production environment for debugging...');
-      
-      // Try pdf-to-png-converter first (serverless-friendly with @napi-rs/canvas)
-      try {
-        console.log('Trying pdf-to-png-converter...');
-        
-        const images = await convertPdfWithPngConverter(req.file.buffer, baseFilename, 'png');
-        
-        if (images && images.length > 0) {
-          console.log('PDF conversion succeeded with pdf-to-png-converter!');
-          
-          // Images are already processed by convertPdfWithPngConverter
-          conversionResult = images;
-          
-          conversionAttempted = true;
-        } else {
-          throw new Error('pdf-to-png-converter returned empty result');
-        }
-      } catch (error) {
-        conversionError = error;
-        console.error('pdf-to-png-converter failed:', {
-          message: error.message,
-          stack: error.stack,
-          name: error.name,
-          code: error.code
-        });
-        
-        // Continue with fallback
-      }
-    }
-
-    if (isProduction && !conversionAttempted) {
-      console.log('PDF conversion disabled in production - using fallback due to known issues');
-      
-      // Return PDF as base64 in production since image conversion has worker issues
-      const pdfBase64 = req.file.buffer.toString('base64');
-      return res.json({
-        success: true,
-        images: [{
-          page: 1,
-          image: `data:application/pdf;base64,${pdfBase64}`,
-          name: req.file.originalname,
-          format: 'pdf',
-          size: req.file.size,
-          error: `PDF to image conversion not available in production environment. Error: ${conversionError?.message || 'Cloudinary failed'}`
-        }],
-        totalPages: 1,
-        renderedPages: 1,
-        format: 'pdf',
-        pdfName: path.parse(req.file.originalname).name,
-        method: 'production-fallback',
-        debug: {
-          attempted: conversionAttempted,
-          error: conversionError ? {
-            message: conversionError.message,
-            code: conversionError.code,
-            name: conversionError.name
-          } : null,
-          environment: {
-            NODE_ENV: process.env.NODE_ENV,
-            VERCEL: process.env.VERCEL,
-            VERCEL_ENV: process.env.VERCEL_ENV
-          }
-        },
-        performance: { render: Date.now() }
-      });
-    }
-
-    // Check if we already have processed images from production conversion
-    let images;
-    if (conversionResult) {
-      images = conversionResult;
-    } else {
-      // Convert PDF buffer to images using pdf-to-png-converter (serverless-friendly with @napi-rs/canvas)
-      images = await convertPdfWithPngConverter(req.file.buffer, baseFilename, 'png');
-    }
-
-    if (!images || images.length === 0) {
-      return res.status(500).json({ error: 'Failed to generate page images' });
-    }
-
-    // Process images into response format
-    const processedImages = images.map((page, index) => {
-      // Handle both pdf-to-img buffer format and our processed format
-      const imgBuffer = page.content || page;
-
-      const base64Image = imgBuffer.toString('base64');
-      const mimeType = imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png';
-      const ext = imageFormat === 'jpeg' ? 'jpg' : 'png';
-      const pageNum = page.pageNumber || (index + 1);
-
-      // Use clean filename: baseFilename.ext for page 1, baseFilename_2.ext for others
-      const name = pageNum === 1 ? `${baseFilename}.${ext}` : `${baseFilename}_${pageNum}.${ext}`;
-
-      return {
-        page: pageNum,
-        image: page.image || `data:${mimeType};base64,${base64Image}`, // Use existing image if URL
-        name: name,
-        width: page.width || 2000,
-        height: page.height || 2000,
-        format: imageFormat,
-        size: page.size || imgBuffer.length
-      };
-    });
-
-    return res.json({
-      success: true,
-      images: processedImages,
-      totalPages: processedImages.length,
-      renderedPages: processedImages.length,
-      format: imageFormat,
-      pdfName: baseFilename,
-      method: 'pdf-to-png-converter',
-      performance: { render: Date.now() }
-    });
-
-  } catch (error) {
-    console.error('PDF conversion error:', error);
-
-    // Fallback: return PDF as base64 if conversion fails
-    try {
-      const pdfBase64 = req.file.buffer.toString('base64');
-      return res.json({
-        success: true,
-        images: [{
-          page: 1,
-          image: `data:application/pdf;base64,${pdfBase64}`,
-          name: req.file.originalname,
-          format: 'pdf',
-          size: req.file.size,
-          error: 'Image conversion failed, returning PDF instead'
-        }],
-        method: 'fallback-pdf'
-      });
-    } catch (fallbackError) {
-      return res.status(500).json({
-        error: 'Failed to convert PDF',
-        details: error.message
-      });
-    }
-  }
+  return res.status(503).json({
+    error: 'PDF to image conversion requires cloud service',
+    message: 'PDF rendering to images is not available in serverless environments due to PDF.js size constraints.',
+    alternatives: [
+      'Use Cloudinary (https://cloudinary.com/)',
+      'Use PDFShift (https://pdfshift.io/)',
+      'Use HTMLtoPDF API (https://html2pdf.app/)',
+      'Use ConvertAPI (https://www.convertapi.com/)',
+      'Use PDF.co (https://pdf.co/)'
+    ],
+    note: 'PDF.js and related libraries are too large for Vercel serverless functions (250MB limit). Consider integrating a cloud service for this feature.'
+  });
 });
-
-// Node.js Canvas Factory for PDF.js
-class NodeCanvasFactory {
-  create(width, height) {
-    const canvas = createCanvas(width, height);
-    const context = canvas.getContext('2d');
-
-    return {
-      canvas: canvas,
-      context: context,
-    };
-  }
-
-  destroy(canvasAndContext) {
-    // Canvas cleanup is handled by garbage collection
-  }
-}
 
 // High-quality SVG generation with proper content rendering
 function generateHighQualitySvg(width, height, textContent, label) {
@@ -945,99 +607,20 @@ router.post('/powerpoint-to-pdf', upload.single('ppt'), async (req, res) => {
   }
 });
 
-// HTML to PDF - Using Playwright for proper rendering with CSS, images, and fonts
+// HTML to PDF - Requires cloud service
 router.post('/html-to-pdf', async (req, res) => {
-  let browser = null;
-  try {
-    const { html, url, options = {} } = req.body;
-
-    if (!html && !url) {
-      return res.status(400).json({ error: 'HTML content or URL is required' });
-    }
-
-    // Import playwright dynamically
-    const { chromium } = require('playwright');
-    
-    // Launch browser
-    browser = await chromium.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    
-    const page = await browser.newPage();
-    
-    // Set viewport for consistent rendering
-    await page.setViewportSize({
-      width: 1200,
-      height: 800
-    });
-
-    if (url) {
-      // Navigate to URL
-      await page.goto(url, { 
-        waitUntil: 'networkidle',
-        timeout: 30000 
-      });
-    } else {
-      // Set HTML content directly
-      await page.setContent(html, { 
-        waitUntil: 'networkidle',
-        timeout: 30000 
-      });
-    }
-
-    // Wait a bit for any lazy-loaded content
-    await page.waitForTimeout(1000);
-
-    // Parse margin option
-    let marginValue = options.margin || '1cm';
-    if (typeof marginValue === 'string') {
-      marginValue = {
-        top: marginValue,
-        right: marginValue,
-        bottom: marginValue,
-        left: marginValue
-      };
-    }
-
-    // Generate PDF with proper styling
-    const pdfBuffer = await page.pdf({
-      format: options.format || 'A4',
-      landscape: options.orientation === 'landscape',
-      margin: marginValue,
-      printBackground: true, // Important: preserve background colors and images
-      preferCSSPageSize: false,
-      scale: options.scale || 1
-    });
-
-    await browser.close();
-    browser = null;
-
-    const pdfBase64 = pdfBuffer.toString('base64');
-    const filename = 'converted.pdf';
-
-    res.json({
-      success: true,
-      result: {
-        input: html ? 'HTML content' : url,
-        outputFile: filename,
-        options: {
-          format: options.format || 'A4',
-          orientation: options.orientation || 'portrait',
-          margin: options.margin || '1cm'
-        },
-        method: 'playwright-chromium'
-      },
-      file: `data:application/pdf;base64,${pdfBase64}`,
-      filename
-    });
-  } catch (error) {
-    if (browser) {
-      await browser.close().catch(() => {});
-    }
-    console.error('HTML to PDF error:', error);
-    res.status(500).json({ error: error.message });
-  }
+  return res.status(503).json({
+    error: 'HTML to PDF conversion requires cloud service',
+    message: 'Browser-based PDF rendering is not available in serverless environments due to browser binary size constraints.',
+    alternatives: [
+      'Use Browserless.io (https://browserless.io/)',
+      'Use Puppeteer Cloud (https://cloud.puppeteer.com/)',
+      'Use Apify (https://apify.com/)',
+      'Use HTMLtoPDF API (https://html2pdf.app/)',
+      'Use PDFShift (https://pdfshift.io/)'
+    ],
+    note: 'Browser binaries required for HTML-to-PDF are too large for Vercel serverless functions (250MB limit). Consider integrating a cloud service for this feature.'
+  });
 });
 
 // PDF Info Extractor

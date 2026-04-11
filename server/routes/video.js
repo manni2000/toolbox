@@ -2,18 +2,14 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const ffmpeg = require('fluent-ffmpeg');
 const router = express.Router();
-
-// Set ffmpeg path for video processing
-process.env.FFMPEG_PATH = require('ffmpeg-static');
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ 
   storage: storage,
   limits: {
-    fileSize: 500 * 1024 * 1024 // 500MB limit
+    fileSize: 500 * 1024 * 1024 
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /mp4|avi|mov|wmv|flv|webm|mkv|3gp/;
@@ -111,90 +107,19 @@ router.get('/thumbnail-proxy', async (req, res) => {
 //   }
 // });
 
-// Video to Audio
+// Video to Audio - Requires cloud service
 router.post('/to-audio', upload.single('video'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No video file provided' });
-    }
-
-    const { format = 'mp3', quality = 'medium' } = req.body;
-    const supportedFormats = ['mp3', 'wav', 'aac', 'ogg'];
-    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
-    
-    if (!supportedFormats.includes(format)) {
-      return res.status(400).json({ 
-        error: 'Unsupported format. Use mp3, wav, aac, or ogg' 
-      });
-    }
-
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    const tempOutputPath = path.join(__dirname, '../temp', `audio_${Date.now()}.${format}`);
-
-    // Ensure temp directory exists
-    const tempDir = path.dirname(tempInputPath);
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    const command = ffmpeg(tempInputPath);
-
-    // Set audio codec based on format
-    if (format === 'mp3') {
-      command.audioCodec('libmp3lame');
-      if (quality === 'high') {
-        command.audioBitrate('320k');
-      } else if (quality === 'low') {
-        command.audioBitrate('128k');
-      } else {
-        command.audioBitrate('192k');
-      }
-    } else if (format === 'wav') {
-      command.audioCodec('pcm_s16le');
-    } else if (format === 'aac') {
-      command.audioCodec('aac');
-      command.audioBitrate('256k');
-    } else if (format === 'ogg') {
-      command.audioCodec('libvorbis');
-      command.audioBitrate('192k');
-    }
-
-    command
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const audioBase64 = outputBuffer.toString('base64');
-          
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-
-          res.json({
-            success: true,
-            result: {
-              audio: `data:audio/${format};base64,${audioBase64}`,
-              filename: `${baseFilename}.${format}`,
-              format,
-              originalVideo: req.file.originalname,
-              originalSize: req.file.size,
-              convertedSize: outputBuffer.length
-            }
-          });
-        } catch (error) {
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing video file' });
-        }
-      })
-      .on('error', (err) => {
-        cleanupTempFile(tempInputPath);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Audio extraction failed: ' + err.message });
-      })
-      .save(tempOutputPath);
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  return res.status(503).json({ 
+    error: 'Video to audio conversion requires ffmpeg or cloud service',
+    message: 'Video to audio extraction cannot be done without ffmpeg in serverless environments.',
+    alternatives: [
+      'Use CloudConvert API (https://cloudconvert.com/) - supports video to audio conversion',
+      'Use AWS Elastic Transcoder',
+      'Use Google Cloud Transcoder API',
+      'Use Azure Media Services'
+    ],
+    note: 'Consider integrating a cloud service for video-to-audio conversion functionality.'
+  });
 });
 
 // Video Trim
@@ -265,336 +190,138 @@ router.post('/speed', upload.single('video'), async (req, res) => {
   }
 });
 
-// Video Thumbnail
+// Video Thumbnail - Requires cloud service
 router.post('/thumbnail', upload.single('video'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No video file provided' });
-    }
-
-    const { timestamp = '00:00:01', width = 320, height = 240 } = req.body;
-    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
-
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    const tempOutputPath = path.join(__dirname, '../temp', `thumbnail_${Date.now()}.jpg`);
-
-    // Ensure temp directory exists
-    const tempDir = path.dirname(tempInputPath);
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    ffmpeg(tempInputPath)
-      .seekInput(timestamp)
-      .frames(1)
-      .size(`${width}x${height}`)
-      .format('jpg')
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const thumbnailBase64 = outputBuffer.toString('base64');
-          
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-
-          res.json({
-            success: true,
-            result: {
-              thumbnail: `data:image/jpeg;base64,${thumbnailBase64}`,
-              filename: `${baseFilename}.jpg`,
-              timestamp,
-              width: parseInt(width),
-              height: parseInt(height)
-            }
-          });
-        } catch (error) {
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing video file' });
-        }
-      })
-      .on('error', (err) => {
-        cleanupTempFile(tempInputPath);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Thumbnail generation failed: ' + err.message });
-      })
-      .save(tempOutputPath);
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  return res.status(503).json({ 
+    error: 'Video thumbnail generation requires ffmpeg or cloud service',
+    message: 'Thumbnail extraction from video cannot be done without ffmpeg in serverless environments.',
+    alternatives: [
+      'Use CloudConvert API (https://cloudconvert.com/) - supports thumbnail extraction',
+      'Use AWS Elastic Transcoder',
+      'Use Google Cloud Video Intelligence API',
+      'Use Azure Media Services'
+    ],
+    note: 'Consider integrating a cloud service for video thumbnail generation.'
+  });
 });
 
-// Video Resolution Change
+// Video Resolution Change - Requires cloud service
 router.post('/resolution', upload.single('video'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No video file provided' });
-    }
-
-    const { width, height, maintainAspect = true } = req.body;
-    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
-    
-    if (!width && !height) {
-      return res.status(400).json({ error: 'At least width or height is required' });
-    }
-
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    const tempOutputPath = path.join(__dirname, '../temp', `resized_${Date.now()}.mp4`);
-
-    // Ensure temp directory exists
-    const tempDir = path.dirname(tempInputPath);
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    let sizeString = '';
-    if (width && height) {
-      sizeString = `${width}x${height}`;
-    } else if (width) {
-      sizeString = `${width}?`;
-    } else {
-      sizeString = `?${height}`;
-    }
-
-    const command = ffmpeg(tempInputPath)
-      .videoCodec('libx264')
-      .audioCodec('aac');
-
-    if (maintainAspect === 'true') {
-      command.size(sizeString + '^').autopad();
-    } else {
-      command.size(sizeString);
-    }
-
-    command
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const videoBase64 = outputBuffer.toString('base64');
-          
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-
-          res.json({
-            success: true,
-            result: {
-              video: `data:video/mp4;base64,${videoBase64}`,
-              filename: `${baseFilename}.mp4`,
-              width: width || 'auto',
-              height: height || 'auto',
-              maintainAspect: maintainAspect === 'true'
-            }
-          });
-        } catch (error) {
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing video file' });
-        }
-      })
-      .on('error', (err) => {
-        cleanupTempFile(tempInputPath);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Video resolution change failed: ' + err.message });
-      })
-      .save(tempOutputPath);
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  return res.status(503).json({ 
+    error: 'Video resolution change requires ffmpeg or cloud service',
+    message: 'Video resolution modification cannot be done without ffmpeg in serverless environments.',
+    alternatives: [
+      'Use CloudConvert API (https://cloudconvert.com/) - supports video resizing',
+      'Use AWS Elastic Transcoder',
+      'Use Google Cloud Transcoder API',
+      'Use Azure Media Services'
+    ],
+    note: 'Consider integrating a cloud service for video resolution changes.'
+  });
 });
 
-// Video Format Converter
+// Video Format Converter - Requires cloud service
 router.post('/convert', upload.single('video'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No video file provided' });
-    }
-
-    const { format = 'mp4', quality = 'medium' } = req.body;
-    const supportedFormats = ['mp4', 'webm', 'avi', 'mov', 'flv'];
-    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
-    
-    if (!supportedFormats.includes(format)) {
-      return res.status(400).json({ 
-        error: 'Unsupported format. Use mp4, webm, avi, mov, or flv' 
-      });
-    }
-
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    const tempOutputPath = path.join(__dirname, '../temp', `converted_${Date.now()}.${format}`);
-
-    // Ensure temp directory exists
-    const tempDir = path.dirname(tempInputPath);
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    const command = ffmpeg(tempInputPath)
-      .toFormat(format);
-
-    // Set quality based on format and quality parameter
-    if (format === 'mp4') {
-      command.videoCodec('libx264').audioCodec('aac');
-      if (quality === 'high') {
-        command.videoBitrate('2000k');
-      } else if (quality === 'low') {
-        command.videoBitrate('500k');
-      }
-    } else if (format === 'webm') {
-      command.videoCodec('libvpx').audioCodec('libvorbis');
-    }
-
-    command
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const videoBase64 = outputBuffer.toString('base64');
-          
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-
-          res.json({
-            success: true,
-            result: {
-              video: `data:video/${format};base64,${videoBase64}`,
-              filename: `${baseFilename}.${format}`,
-              format,
-              quality,
-              originalFormat: path.extname(req.file.originalname).slice(1)
-            }
-          });
-        } catch (error) {
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing video file' });
-        }
-      })
-      .on('error', (err) => {
-        cleanupTempFile(tempInputPath);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Video conversion failed: ' + err.message });
-      })
-      .save(tempOutputPath);
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  return res.status(503).json({ 
+    error: 'Video format conversion requires ffmpeg or cloud service',
+    message: 'Video format conversion cannot be done without ffmpeg in serverless environments.',
+    alternatives: [
+      'Use CloudConvert API (https://cloudconvert.com/) - supports all video formats',
+      'Use AWS Elastic Transcoder',
+      'Use Google Cloud Transcoder API',
+      'Use Azure Media Services',
+      'Use Mux.com API'
+    ],
+    note: 'Consider integrating a cloud service for video format conversion.'
+  });
 });
 
-// Video Info Extractor
+// Video Info Extractor - Basic implementation
 router.post('/info', upload.single('video'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No video file provided' });
     }
 
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
+    
+    // Basic info we can extract without ffmpeg
+    const basicInfo = {
+      filename: req.file.originalname,
+      size: req.file.size,
+      size_mb: (req.file.size / (1024 * 1024)).toFixed(2),
+      format: ext.slice(1),
+      mimetype: req.file.mimetype
+    };
 
-    ffmpeg.ffprobe(tempInputPath, (err, metadata) => {
-      cleanupTempFile(tempInputPath);
+    // Try to extract some metadata from file headers for common formats
+    try {
+      const buffer = req.file.buffer;
       
-      if (err) {
-        return res.status(500).json({ error: 'Failed to extract video info: ' + err.message });
+      // MP4 detection (ftyp box)
+      if (ext === '.mp4' || ext === '.mov' || ext === '.m4v') {
+        if (buffer.length > 4) {
+          const ftyp = buffer.slice(4, 8).toString('ascii');
+          basicInfo.container_type = ftyp;
+          basicInfo.format_detected = 'MP4/MOV container';
+        }
       }
-
-      const videoStream = metadata.streams.find(stream => stream.codec_type === 'video');
-      const audioStream = metadata.streams.find(stream => stream.codec_type === 'audio');
-
-      const videoInfo = {
-        filename: req.file.originalname,
-        size: req.file.size,
-        format: metadata.format.format_name,
-        duration: metadata.format.duration,
-        bitrate: metadata.format.bit_rate,
-        video: videoStream ? {
-          codec: videoStream.codec_name,
-          width: videoStream.width,
-          height: videoStream.height,
-          frameRate: eval(videoStream.r_frame_rate),
-          pixelFormat: videoStream.pix_fmt,
-          bitrate: videoStream.bit_rate
-        } : null,
-        audio: audioStream ? {
-          codec: audioStream.codec_name,
-          sampleRate: audioStream.sample_rate,
-          channels: audioStream.channels,
-          bitrate: audioStream.bit_rate
-        } : null
-      };
+      
+      // AVI detection (RIFF header)
+      else if (ext === '.avi') {
+        if (buffer.length > 12) {
+          const riff = buffer.slice(0, 4).toString('ascii');
+          const avi = buffer.slice(8, 12).toString('ascii');
+          if (riff === 'RIFF' && avi === 'AVI ') {
+            basicInfo.format_detected = 'AVI container';
+          }
+        }
+      }
+      
+      // WebM detection (EBML header)
+      else if (ext === '.webm' || ext === '.mkv') {
+        if (buffer.length > 4) {
+          const ebml = buffer.readUInt32LE(0);
+          if (ebml === 0x1A45DFA3) {
+            basicInfo.format_detected = 'WebM/Matroska container';
+          }
+        }
+      }
 
       res.json({
         success: true,
-        result: videoInfo
+        result: basicInfo,
+        note: 'Basic file information extracted. For detailed video metadata (duration, codec, resolution, bitrate), ffmpeg or a cloud service is required.'
       });
-    });
+    } catch (metadataError) {
+      // Return basic info even if metadata extraction fails
+      res.json({
+        success: true,
+        result: basicInfo,
+        note: 'Basic file information extracted. Could not extract format-specific metadata.'
+      });
+    }
 
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// Video Compress
+// Video Compress - Requires cloud service
 router.post('/compress', upload.single('video'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No video file provided' });
-    }
-
-    const { quality = 'medium', crf = '23' } = req.body;
-    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
-
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    const tempOutputPath = path.join(__dirname, '../temp', `compressed_${Date.now()}.mp4`);
-
-    // Ensure temp directory exists
-    const tempDir = path.dirname(tempInputPath);
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    ffmpeg(tempInputPath)
-      .videoCodec('libx264')
-      .audioCodec('aac')
-      .videoBitrate(quality === 'high' ? '2000k' : quality === 'low' ? '500k' : '1000k')
-      .audioBitrate('128k')
-      .addOption('-crf', crf)
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const videoBase64 = outputBuffer.toString('base64');
-          
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-
-          res.json({
-            success: true,
-            result: {
-              video: `data:video/mp4;base64,${videoBase64}`,
-              filename: `${baseFilename}.mp4`,
-              originalSize: req.file.size,
-              compressedSize: outputBuffer.length,
-              compressionRatio: ((req.file.size - outputBuffer.length) / req.file.size * 100).toFixed(2),
-              quality,
-              crf
-            }
-          });
-        } catch (error) {
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing video file' });
-        }
-      })
-      .on('error', (err) => {
-        cleanupTempFile(tempInputPath);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Video compression failed: ' + err.message });
-      })
-      .save(tempOutputPath);
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  return res.status(503).json({ 
+    error: 'Video compression requires ffmpeg or cloud service',
+    message: 'Video compression cannot be done without ffmpeg in serverless environments.',
+    alternatives: [
+      'Use CloudConvert API (https://cloudconvert.com/) - supports video compression',
+      'Use AWS Elastic Transcoder',
+      'Use Google Cloud Transcoder API',
+      'Use Azure Media Services',
+      'Use Mux.com API - optimized for web video'
+    ],
+    note: 'Consider integrating a cloud service for video compression.'
+  });
 });
 
 module.exports = router;

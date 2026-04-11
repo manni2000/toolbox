@@ -1,8 +1,7 @@
 import { useState, useRef } from "react";
-import { FileText, Upload, X, Loader2, Sparkles, Zap } from "lucide-react";
+import { FileText, Upload, X, Loader2} from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
-import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
@@ -71,12 +70,11 @@ const ImageToWordTool = () => {
       const result = await response.json();
 
       if (result.success) {
-        setResultData(result.data || result.result || result.file || result.image || result.pdf || result.video);
+        setResultData(result.file || result.data || result.image || result.pdf || result.video || result.result);
         toast({
           title: "Success!",
           description: "Image to Word completed successfully",
         });
-        // Scroll to download section after successful conversion
         setTimeout(() => {
           downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
@@ -97,7 +95,7 @@ const ImageToWordTool = () => {
   return (
     <ToolLayout
       title="Image to Word"
-      description="Convert images to Word documents using OCR"
+      description="Convert images to Word documents"
       category="Image Tools"
       categoryPath="/category/image"
     >
@@ -126,9 +124,9 @@ const ImageToWordTool = () => {
               <FileText className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Image to Word OCR</h2>
+              <h2 className="text-2xl font-bold">Image to Word</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Extract text from images and convert to editable Word documents using OCR.
+                Images and convert to editable Word documents.
               </p>
             </div>
           </div>

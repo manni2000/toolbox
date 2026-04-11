@@ -1,8 +1,5 @@
 import { useState, useRef } from "react";
-import { FileText, Upload, X, Loader2, Sparkles, Code2, Link, Settings2 } from "lucide-react";
-import { motion } from "framer-motion";
-import { fadeInUp, scaleIn } from "@/lib/animations";
-import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
+import { FileText, X, Loader2, Link, Settings2 } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
@@ -303,9 +300,6 @@ const HTMLToPDFTool = () => {
               description="Your HTML has been converted with full styling, images, and formatting preserved"
               fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : undefined}
             />
-            <button onClick={reset} className="btn-secondary w-full">
-              Convert Another
-            </button>
           </div>
         )}
       </div>

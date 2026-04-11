@@ -2,7 +2,9 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const ffmpeg = require('fluent-ffmpeg');
+const wav = require('node-wav');
+const AudioBuffer = require('audio-buffer');
+// const ffmpeg = require('fluent-ffmpeg'); // Removed - fluent-ffmpeg uninstalled
 const router = express.Router();
 
 // Configure multer for file uploads
@@ -60,61 +62,37 @@ router.post('/convert', upload.single('audio'), async (req, res) => {
       return res.status(400).json({ error: 'No audio file provided' });
     }
 
-    const targetFormat = req.body.format || 'mp3';
-    const supportedFormats = ['mp3', 'wav', 'aac', 'ogg', 'flac'];
+    const targetFormat = req.body.format || 'wav';
+    const supportedFormats = ['wav']; // Currently only WAV is supported without ffmpeg
     const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
     
     if (!supportedFormats.includes(targetFormat.toLowerCase())) {
       return res.status(400).json({ 
-        error: 'Unsupported format. Use mp3, wav, aac, ogg, or flac' 
+        error: `Unsupported format. Currently only WAV is supported. Requested: ${targetFormat}`,
+        note: 'For MP3, AAC, OGG, FLAC conversion, ffmpeg is required which is not available in serverless environments.'
       });
     }
 
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    const tempOutputPath = path.join(__dirname, '../temp', `output_${Date.now()}.${targetFormat}`);
-
-    // Ensure temp directory exists
-    const tempDir = path.dirname(tempInputPath);
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
+    // If already WAV, return as-is
+    if (path.extname(req.file.originalname).toLowerCase() === '.wav') {
+      const audioBase64 = req.file.buffer.toString('base64');
+      return res.json({
+        success: true,
+        audio: `data:audio/wav;base64,${audioBase64}`,
+        filename: `${baseFilename}.wav`,
+        original_format: 'wav',
+        converted: false,
+        note: 'File was already in WAV format'
+      });
     }
 
-    ffmpeg(tempInputPath)
-      .toFormat(targetFormat)
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const audioBase64 = outputBuffer.toString('base64');
-          
-          const mimeTypes = {
-            'mp3': 'audio/mpeg',
-            'wav': 'audio/wav',
-            'aac': 'audio/aac',
-            'ogg': 'audio/ogg',
-            'flac': 'audio/flac'
-          };
-          
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-
-          res.json({
-            success: true,
-            audio: `data:${mimeTypes[targetFormat]};base64,${audioBase64}`,
-            filename: `${baseFilename}.${targetFormat}`,
-            original_format: path.extname(req.file.originalname).slice(1)
-          });
-        } catch (error) {
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing audio file' });
-        }
-      })
-      .on('error', (err) => {
-        cleanupTempFile(tempInputPath);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Audio conversion failed: ' + err.message });
-      })
-      .save(tempOutputPath);
+    // For non-WAV files, we can't convert without ffmpeg
+    return res.status(503).json({ 
+      error: 'Audio format conversion is limited',
+      message: `Conversion from ${path.extname(req.file.originalname).slice(1)} to WAV requires ffmpeg which is not available.`,
+      supported_formats: ['wav'],
+      note: 'For full format conversion support, consider using a cloud service like CloudConvert or AWS Elastic Transcoder.'
+    });
 
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -132,45 +110,67 @@ router.post('/trim', upload.single('audio'), async (req, res) => {
     const endTime = parseFloat(req.body.end_time) || 10;
     const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
 
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    const tempOutputPath = path.join(__dirname, '../temp', `trimmed_${Date.now()}.mp3`);
-
-    // Ensure temp directory exists
-    const tempDir = path.dirname(tempInputPath);
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
+    // Only support WAV files for trimming
+    if (path.extname(req.file.originalname).toLowerCase() !== '.wav') {
+      return res.status(503).json({ 
+        error: 'Audio trimming is limited to WAV files',
+        message: 'Trimming non-WAV files requires ffmpeg which is not available.',
+        note: 'Convert your file to WAV first, or use a cloud service for trimming other formats.'
+      });
     }
 
-    ffmpeg(tempInputPath)
-      .seekInput(startTime)
-      .duration(endTime - startTime)
-      .toFormat('mp3')
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const audioBase64 = outputBuffer.toString('base64');
-          
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
+    try {
+      // Decode WAV file
+      const decoded = wav.decode(req.file.buffer);
+      
+      if (!decoded || !decoded.channelData) {
+        return res.status(500).json({ error: 'Failed to decode WAV file' });
+      }
 
-          res.json({
-            success: true,
-            audio: `data:audio/mpeg;base64,${audioBase64}`,
-            filename: `${baseFilename}.mp3`,
-            duration: endTime - startTime
-          });
-        } catch (error) {
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing audio file' });
-        }
-      })
-      .on('error', (err) => {
-        cleanupTempFile(tempInputPath);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Audio trimming failed: ' + err.message });
-      })
-      .save(tempOutputPath);
+      const sampleRate = decoded.sampleRate;
+      const startSample = Math.floor(startTime * sampleRate);
+      const endSample = Math.floor(endTime * sampleRate);
+      const totalSamples = decoded.channelData[0].length;
+
+      // Validate time range
+      if (startSample >= totalSamples || endSample > totalSamples || startSample >= endSample) {
+        return res.status(400).json({ 
+          error: 'Invalid time range',
+          message: `Start time (${startTime}s) or end time (${endTime}s) is out of bounds for ${totalSamples/sampleRate}s audio.`
+        });
+      }
+
+      // Trim each channel
+      const trimmedChannels = decoded.channelData.map(channel => {
+        return channel.slice(startSample, endSample);
+      });
+
+      // Encode back to WAV
+      const audioBuffer = new AudioBuffer(trimmedChannels.length, endSample - startSample, sampleRate);
+      for (let i = 0; i < trimmedChannels.length; i++) {
+        audioBuffer.getChannelData(i).set(trimmedChannels[i]);
+      }
+
+      const wavBuffer = wav.encode(audioBuffer);
+      const audioBase64 = Buffer.from(wavBuffer).toString('base64');
+
+      res.json({
+        success: true,
+        audio: `data:audio/wav;base64,${audioBase64}`,
+        filename: `${baseFilename}.wav`,
+        original_duration: totalSamples / sampleRate,
+        trimmed_duration: (endSample - startSample) / sampleRate,
+        start_time: startTime,
+        end_time: endTime
+      });
+
+    } catch (decodeError) {
+      return res.status(500).json({ 
+        error: 'Failed to process WAV file',
+        message: decodeError.message,
+        note: 'The WAV file may be corrupted or use an unsupported format.'
+      });
+    }
 
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -184,58 +184,91 @@ router.post('/merge', upload.array('audios', 10), async (req, res) => {
       return res.status(400).json({ error: 'At least 2 audio files are required' });
     }
 
-    // Use the first file's name as the base filename
-    const baseFilename = req.files[0].originalname.replace(/\.[^/.]+$/, '');
-
-    const tempDir = path.join(__dirname, '../temp');
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
+    // Check if all files are WAV
+    const nonWavFiles = req.files.filter(file => path.extname(file.originalname).toLowerCase() !== '.wav');
+    if (nonWavFiles.length > 0) {
+      return res.status(503).json({ 
+        error: 'Audio merging is limited to WAV files',
+        message: 'Merging non-WAV files requires ffmpeg which is not available.',
+        note: 'Convert all files to WAV first, or use a cloud service for merging other formats.'
+      });
     }
 
-    const tempFiles = [];
-    const tempOutputPath = path.join(tempDir, `merged_${Date.now()}.mp3`);
+    try {
+      const baseFilename = req.files[0].originalname.replace(/\.[^/.]+$/, '');
+      const decodedFiles = [];
+      let maxSampleRate = 0;
+      let maxChannels = 0;
+      let totalSamples = 0;
 
-    // Save all files to temp directory
-    for (const file of req.files) {
-      const tempPath = path.join(tempDir, `temp_${Date.now()}_${Math.random()}${path.extname(file.originalname)}`);
-      fs.writeFileSync(tempPath, file.buffer);
-      tempFiles.push(tempPath);
-    }
-
-    // Create ffmpeg command
-    let command = ffmpeg();
-    tempFiles.forEach(file => {
-      command = command.input(file);
-    });
-
-    command
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const audioBase64 = outputBuffer.toString('base64');
-          
-          // Clean up all temp files
-          tempFiles.forEach(cleanupTempFile);
-          cleanupTempFile(tempOutputPath);
-
-          res.json({
-            success: true,
-            audio: `data:audio/mpeg;base64,${audioBase64}`,
-            filename: `${baseFilename}.mp3`,
-            files_merged: req.files.length
-          });
-        } catch (error) {
-          tempFiles.forEach(cleanupTempFile);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing audio files' });
+      // Decode all files
+      for (const file of req.files) {
+        const decoded = wav.decode(file.buffer);
+        if (!decoded || !decoded.channelData) {
+          return res.status(500).json({ error: `Failed to decode ${file.originalname}` });
         }
-      })
-      .on('error', (err) => {
-        tempFiles.forEach(cleanupTempFile);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Audio merging failed: ' + err.message });
-      })
-      .mergeToFile(tempOutputPath);
+        decodedFiles.push(decoded);
+        maxSampleRate = Math.max(maxSampleRate, decoded.sampleRate);
+        maxChannels = Math.max(maxChannels, decoded.channelData.length);
+        totalSamples += decoded.channelData[0].length;
+      }
+
+      // Normalize all files to same sample rate and channels
+      const mergedChannels = Array(maxChannels).fill(null).map(() => new Float32Array(totalSamples));
+      let currentOffset = 0;
+
+      for (const decoded of decodedFiles) {
+        const channels = decoded.channelData;
+        const fileSampleRate = decoded.sampleRate;
+        const samplesPerChannel = channels[0].length;
+
+        // Resample if needed (simple linear interpolation)
+        for (let ch = 0; ch < maxChannels; ch++) {
+          const sourceChannel = channels[ch] || channels[0]; // Use first channel if not enough channels
+          for (let i = 0; i < samplesPerChannel; i++) {
+            const srcSample = sourceChannel[i];
+            if (fileSampleRate === maxSampleRate) {
+              mergedChannels[ch][currentOffset + i] = srcSample;
+            } else {
+              // Simple resampling - just skip or duplicate samples
+              const ratio = fileSampleRate / maxSampleRate;
+              const targetIndex = Math.floor(i * ratio);
+              if (targetIndex < samplesPerChannel) {
+                mergedChannels[ch][currentOffset + targetIndex] = srcSample;
+              }
+            }
+          }
+        }
+        currentOffset += samplesPerChannel;
+      }
+
+      // Create output buffer
+      const actualSamples = currentOffset;
+      const audioBuffer = new AudioBuffer(maxChannels, actualSamples, maxSampleRate);
+      for (let i = 0; i < maxChannels; i++) {
+        audioBuffer.getChannelData(i).set(mergedChannels[i].slice(0, actualSamples));
+      }
+
+      const wavBuffer = wav.encode(audioBuffer);
+      const audioBase64 = Buffer.from(wavBuffer).toString('base64');
+
+      res.json({
+        success: true,
+        audio: `data:audio/wav;base64,${audioBase64}`,
+        filename: `${baseFilename}_merged.wav`,
+        files_merged: req.files.length,
+        duration: actualSamples / maxSampleRate,
+        channels: maxChannels,
+        sample_rate: maxSampleRate
+      });
+
+    } catch (error) {
+      return res.status(500).json({ 
+        error: 'Failed to merge audio files',
+        message: error.message,
+        note: 'The files may have incompatible formats or be corrupted.'
+      });
+    }
 
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -256,176 +289,97 @@ router.post('/speed', upload.single('audio'), async (req, res) => {
       return res.status(400).json({ error: 'Speed factor must be between 0.1 and 4.0' });
     }
 
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    const tempOutputPath = path.join(__dirname, '../temp', `speed_${Date.now()}.mp3`);
-
-    // Ensure temp directory exists
-    const tempDir = path.dirname(tempInputPath);
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    ffmpeg(tempInputPath)
-      .audioFilters(`atempo=${speedFactor}`)
-      .toFormat('mp3')
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const audioBase64 = outputBuffer.toString('base64');
-          
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-
-          res.json({
-            success: true,
-            audio: `data:audio/mpeg;base64,${audioBase64}`,
-            filename: `${baseFilename}.mp3`,
-            speed_factor: speedFactor
-          });
-        } catch (error) {
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing audio file' });
-        }
-      })
-      .on('error', (err) => {
-        cleanupTempFile(tempInputPath);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Audio speed change failed: ' + err.message });
-      })
-      .save(tempOutputPath);
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Extract audio from video
-router.post('/video-to-audio', upload.single('video'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No video file provided' });
-    }
-
-    const outputFormat = req.body.format || 'mp3';
-    const supportedFormats = ['mp3', 'wav', 'aac', 'ogg', 'flac'];
-    const baseFilename = req.file.originalname.replace(/\.[^/.]+$/, '');
-
-    if (!supportedFormats.includes(outputFormat.toLowerCase())) {
-      return res.status(400).json({
-        error: 'Unsupported format. Use mp3, wav, aac, ogg, or flac'
+    // Only support WAV files
+    if (path.extname(req.file.originalname).toLowerCase() !== '.wav') {
+      return res.status(503).json({ 
+        error: 'Audio speed change is limited to WAV files',
+        message: 'Speed change for non-WAV files requires ffmpeg which is not available.',
+        note: 'Convert your file to WAV first, or use a cloud service for other formats.'
       });
     }
 
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    const tempOutputPath = path.join(__dirname, '../temp', `audio_extracted_${Date.now()}.${outputFormat}`);
-
-    // Ensure temp directory exists
-    const tempDir = path.dirname(tempInputPath);
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    ffmpeg(tempInputPath)
-      .noVideo() // Extract only audio
-      .audioCodec('libmp3lame') // Use appropriate codec based on format
-      .toFormat(outputFormat)
-      .on('end', () => {
-        try {
-          const outputBuffer = fs.readFileSync(tempOutputPath);
-          const audioBase64 = outputBuffer.toString('base64');
-
-          const mimeTypes = {
-            'mp3': 'audio/mpeg',
-            'wav': 'audio/wav',
-            'aac': 'audio/aac',
-            'ogg': 'audio/ogg',
-            'flac': 'audio/flac'
-          };
-
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-
-          res.json({
-            success: true,
-            audio: `data:${mimeTypes[outputFormat]};base64,${audioBase64}`,
-            filename: `${baseFilename}.${outputFormat}`,
-            original_video_format: path.extname(req.file.originalname).slice(1)
-          });
-        } catch (error) {
-          cleanupTempFile(tempInputPath);
-          cleanupTempFile(tempOutputPath);
-          res.status(500).json({ error: 'Error processing extracted audio file' });
-        }
-      })
-      .on('error', (err) => {
-        cleanupTempFile(tempInputPath);
-        cleanupTempFile(tempOutputPath);
-        res.status(500).json({ error: 'Audio extraction failed: ' + err.message });
-      })
-      .save(tempOutputPath);
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Speech to text - Serverless placeholder
-router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No audio file provided' });
-    }
-
-    const language = req.body.language || 'en-US';
-    
-    // Save audio file temporarily
-    const tempInputPath = bufferToTempFile(req.file.buffer, path.extname(req.file.originalname));
-    
     try {
-      // Convert audio to WAV format for speech recognition
-      const wavPath = path.join(__dirname, '../temp', `speech_${Date.now()}.wav`);
+      const decoded = wav.decode(req.file.buffer);
       
-      await new Promise((resolve, reject) => {
-        ffmpeg(tempInputPath)
-          .toFormat('wav')
-          .audioFrequency(16000)
-          .audioChannels(1)
-          .on('end', resolve)
-          .on('error', reject)
-          .save(wavPath);
+      if (!decoded || !decoded.channelData) {
+        return res.status(500).json({ error: 'Failed to decode WAV file' });
+      }
+
+      const sampleRate = decoded.sampleRate;
+      const channels = decoded.channelData;
+      const originalSamples = channels[0].length;
+      const newSamples = Math.floor(originalSamples / speedFactor);
+      const newSampleRate = Math.floor(sampleRate / speedFactor);
+
+      // Resample by skipping or duplicating samples
+      const resampledChannels = channels.map(channel => {
+        const resampled = new Float32Array(newSamples);
+        for (let i = 0; i < newSamples; i++) {
+          const srcIndex = Math.floor(i * speedFactor);
+          resampled[i] = channel[srcIndex] || 0;
+        }
+        return resampled;
       });
 
-      cleanupTempFile(tempInputPath);
-      cleanupTempFile(wavPath);
+      // Create output buffer
+      const audioBuffer = new AudioBuffer(resampledChannels.length, newSamples, newSampleRate);
+      for (let i = 0; i < resampledChannels.length; i++) {
+        audioBuffer.getChannelData(i).set(resampledChannels[i]);
+      }
 
-      // Placeholder response for serverless environment
+      const wavBuffer = wav.encode(audioBuffer);
+      const audioBase64 = Buffer.from(wavBuffer).toString('base64');
+
       res.json({
         success: true,
-        text: 'Speech recognition processed. Note: This is a serverless placeholder implementation. For full speech-to-text functionality, a dedicated server with proper ML models is required.',
-        language: language,
-        confidence: 0.8,
-        duration: 0,
-        note: 'Serverless environment - placeholder implementation'
+        audio: `data:audio/wav;base64,${audioBase64}`,
+        filename: `${baseFilename}_speed_${speedFactor}.wav`,
+        speed_factor: speedFactor,
+        original_duration: originalSamples / sampleRate,
+        new_duration: newSamples / newSampleRate,
+        note: 'Speed change affects both playback speed and pitch (resampling method)'
       });
 
     } catch (error) {
-      cleanupTempFile(tempInputPath);
-      
-      // Fallback to placeholder if speech recognition fails
-      res.json({
-        success: true,
-        text: 'Speech recognition temporarily unavailable. Please try again later.',
-        language: language,
-        confidence: 0.0,
-        duration: 0,
-        note: 'Serverless environment - service temporarily unavailable'
+      return res.status(500).json({ 
+        error: 'Failed to change audio speed',
+        message: error.message
       });
     }
 
   } catch (error) {
-    res.status(500).json({ error: error.message || 'Failed to process speech-to-text' });
+    res.status(500).json({ error: error.message });
   }
+});
+
+// Extract audio from video - Requires cloud service
+router.post('/video-to-audio', upload.single('video'), async (req, res) => {
+  return res.status(503).json({ 
+    error: 'Audio extraction from video requires ffmpeg or cloud service',
+    message: 'Video to audio extraction cannot be done without ffmpeg in serverless environments.',
+    alternatives: [
+      'Use CloudConvert API (https://cloudconvert.com/)',
+      'Use AWS Elastic Transcoder',
+      'Use Google Cloud Transcoder API',
+      'Use Azure Media Services'
+    ],
+    note: 'Consider integrating a cloud service for video-to-audio extraction functionality.'
+  });
+});
+
+// Speech to text - Requires cloud service
+router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
+  return res.status(503).json({ 
+    error: 'Speech to text requires ML models or cloud service',
+    message: 'Speech recognition cannot be done without ML models or cloud APIs in serverless environments.',
+    alternatives: [
+      'Use Google Cloud Speech-to-Text API',
+      'Use AWS Transcribe',
+      'Use Azure Speech Services',
+      'Use OpenAI Whisper API'
+    ],
+    note: 'Consider integrating a cloud speech recognition service for full functionality.'
+  });
 });
 
 module.exports = router;
