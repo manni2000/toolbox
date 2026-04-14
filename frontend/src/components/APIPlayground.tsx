@@ -76,7 +76,15 @@ interface SavedExample {
   createdAt: Date;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "https://api.dailytools247.app");
+// Backend selection constants
+const LOCAL_BACKEND = "http://localhost:8000";
+const PROD_BACKEND = "https://api.dailytools247.app";
+const DEFAULT_BACKEND = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? LOCAL_BACKEND : PROD_BACKEND);
+
+const BACKEND_OPTIONS = [
+  { label: "Localhost (http://localhost:8000)", value: LOCAL_BACKEND },
+  { label: "Production (https://api.dailytools247.app)", value: PROD_BACKEND },
+];
 
 const APIPlayground = ({ 
   apiDocs, 
@@ -99,6 +107,7 @@ const APIPlayground = ({
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState("curl");
   const [responseFormat, setResponseFormat] = useState("pretty");
+  const [backendUrl, setBackendUrl] = useState<string>(DEFAULT_BACKEND);
 
   useEffect(() => {
     const saved = localStorage.getItem("api-playground-history");
@@ -213,7 +222,7 @@ const APIPlayground = ({
     const startTime = Date.now();
 
     try {
-      const url = new URL(`${API_BASE_URL}${selectedEndpoint.path}`);
+      const url = new URL(`${backendUrl}${selectedEndpoint.path}`);
       const options: RequestInit = {
         method: selectedEndpoint.method,
         headers: {
@@ -316,7 +325,7 @@ const APIPlayground = ({
   const generateCode = (language: string) => {
     if (!selectedEndpoint) return "";
 
-    const baseUrl = API_BASE_URL;
+    const baseUrl = backendUrl;
     const endpoint = selectedEndpoint;
 
     switch (language) {
@@ -631,7 +640,7 @@ if ($err) {
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <CardHeader className="pb-3 relative z-10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center shrink-0">
                   <Terminal className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
                 </div>
                 <div>
