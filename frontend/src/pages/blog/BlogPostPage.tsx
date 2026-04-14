@@ -22,37 +22,36 @@ const BlogPostPage = () => {
       if (!slug) return;
 
       try {
-        // Try to fetch from API first
-        const response = await api.getBlogPost(slug);
-        if (response.success && response.result.post) {
-          setPost(response.result.post);
-          // Get all other posts, prioritizing same category
-          const allOtherPosts = blogPosts.filter((item) => item.slug !== slug);
-          const sameCategoryPosts = allOtherPosts.filter((item) => item.category === response.result.post.category);
-          const otherCategoryPosts = allOtherPosts.filter((item) => item.category !== response.result.post.category);
-          setRelatedPosts([...sameCategoryPosts, ...otherCategoryPosts]);
-        } else {
-          const localPost = getBlogPostBySlug(slug);
-          if (localPost) {
-            setPost(localPost);
-            const allOtherPosts = blogPosts.filter((item) => item.slug !== slug);
-            const sameCategoryPosts = allOtherPosts.filter((item) => item.category === localPost.category);
-            const otherCategoryPosts = allOtherPosts.filter((item) => item.category !== localPost.category);
-            setRelatedPosts([...sameCategoryPosts, ...otherCategoryPosts]);
-          }
-        }
-      } catch (error) {
-        console.warn('Failed to fetch blog post from API, using local data:', error);
-        // Fallback to local data
+        // Always prefer local data first (it has full sections/faqs structure)
         const localPost = getBlogPostBySlug(slug);
         if (localPost) {
           setPost(localPost);
-          // Get all other posts, prioritizing same category
           const allOtherPosts = blogPosts.filter((item) => item.slug !== slug);
           const sameCategoryPosts = allOtherPosts.filter((item) => item.category === localPost.category);
           const otherCategoryPosts = allOtherPosts.filter((item) => item.category !== localPost.category);
           setRelatedPosts([...sameCategoryPosts, ...otherCategoryPosts]);
+        } else {
+          // Fall back to API only when local data is not available
+          const response = await api.getBlogPost(slug);
+          if (response.success && response.result.post) {
+            const apiPost = response.result.post;
+            // API post may lack sections/faqs - provide defaults to prevent crashes
+            setPost({
+              ...apiPost,
+              sections: apiPost.sections || [],
+              faqs: apiPost.faqs || [],
+              description: apiPost.description || apiPost.excerpt || '',
+              keywords: apiPost.keywords || apiPost.tags || [],
+              publishedDate: apiPost.publishedDate || apiPost.date || '',
+              readTime: apiPost.readTime || '5 min',
+              image: apiPost.image || '/dailytools247.png',
+            });
+            const allOtherPosts = blogPosts.filter((item) => item.slug !== slug);
+            setRelatedPosts(allOtherPosts);
+          }
         }
+      } catch (error) {
+        console.warn('Failed to load blog post:', error);
       } finally {
         setLoading(false);
       }
@@ -81,7 +80,7 @@ const BlogPostPage = () => {
   }
 
   const enhancement = blogEnhancements[post.slug];
-  const faqs = enhancement ? [...post.faqs, ...(enhancement.additionalFaqs || [])] : post.faqs;
+  const faqs = enhancement ? [...(post.faqs || []), ...(enhancement.additionalFaqs || [])] : (post.faqs || []);
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -185,7 +184,7 @@ const BlogPostPage = () => {
         <article className="py-10 md:py-14">
           <div className="container grid gap-8 xl:grid-cols-[minmax(0,1fr)_280px]">
             <div className="min-w-0 space-y-8">
-              {post.sections.map((section, sectionIndex) => (
+              {(post.sections || []).map((section, sectionIndex) => (
                 <Fragment key={section.heading}>
                   <motion.section
                     initial={{ opacity: 0, y: 12 }}

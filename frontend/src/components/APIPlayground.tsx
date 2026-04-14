@@ -77,12 +77,12 @@ interface SavedExample {
 }
 
 // Backend selection constants
-const LOCAL_BACKEND = "http://localhost:8000";
+const LOCAL_BACKEND = import.meta.env.DEV ? "http://localhost:5000" : (typeof window !== 'undefined' ? window.location.origin : "");
 const PROD_BACKEND = "https://api.dailytools247.app";
-const DEFAULT_BACKEND = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? LOCAL_BACKEND : PROD_BACKEND);
+const DEFAULT_BACKEND = import.meta.env.VITE_API_URL || LOCAL_BACKEND;
 
 const BACKEND_OPTIONS = [
-  { label: "Localhost (http://localhost:8000)", value: LOCAL_BACKEND },
+  { label: "Local (proxied via dev server)", value: LOCAL_BACKEND },
   { label: "Production (https://api.dailytools247.app)", value: PROD_BACKEND },
 ];
 

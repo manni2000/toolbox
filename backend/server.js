@@ -62,6 +62,7 @@ app.get('/api/health/all', async (_req, res) => {
   res.json({ success: true, checked: results.length, results });
 });
 
+app.use('/api/v1', require('./routes/apiv1'));
 app.use('/api/internet', require('./routes/internet'));
 app.use('/api/security', require('./routes/security'));
 app.use('/api/pdf', require('./routes/pdf'));

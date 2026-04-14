@@ -25,7 +25,7 @@ A comprehensive web application providing 130+ free online tools organized into 
 - **Backend API** - Runs the Express server (`cd backend && npm start`) on port 8000
 
 ## API Proxy
-The Vite dev server proxies all `/api/*` requests to `http://localhost:8000`, so the frontend and backend run together seamlessly.
+The Vite dev server proxies all `/api/*` requests (regex `^/api/`) to `http://localhost:8000`. The proxy uses a regex pattern to avoid intercepting frontend routes like `/api-docs`.
 
 ## Key Directories
 - `frontend/src/pages/tools/` - All 130+ tool implementations (14 subfolders)
@@ -41,4 +41,21 @@ The Vite dev server proxies all `/api/*` requests to `http://localhost:8000`, so
 
 ## Notable Packages
 - Frontend: `sharp` (not needed client-side), `pdf-lib`, `jszip`, `qrcode`, `framer-motion`, `recharts`
-- Backend: `sharp`, `pdf-lib`, `multer`, `fluent-ffmpeg`, `archiver`, `node-fetch`
+- Backend: `sharp`, `pdf-lib`, `multer`, `fluent-ffmpeg`, `archiver`, `node-fetch`, `pdf-parse`, `qrcode`, `jsqr`, `docx`, `xlsx`
+
+## Backend Routes
+- `backend/routes/pdf.js` — PDF compress, info, merge, split, rotate, password, html-to-pdf, to-word, to-excel, to-powerpoint
+- `backend/routes/image.js` — Image resize/crop/convert/compress/watermark/flip/rotate, QR generator, QR scanner, background remover, color picker
+- `backend/routes/apiv1.js` — Developer API v1: GET /docs, POST /keys/generate, /keys/list, /text, /security, /dev, /finance (X-API-Key auth + rate limiting)
+- Other routes: text, security, dev, internet, seo, finance, social, audio, video, zip, education, datetime, blog
+
+## Known Limitations
+- PDF-to-image conversion not available (requires Ghostscript, not installed)
+- PowerPoint-to-PDF not available (requires LibreOffice, not installed)
+- Email breach check in security route returns format-only validation (HaveIBeenPwned requires paid API key)
+- API key storage is in-memory (reset on server restart); suitable for dev/demo only
+
+## Bug Fixes Applied
+- Fixed Vite proxy: changed `/api` to `^/api/` regex so `/api-docs` frontend route is not proxied
+- Fixed BlogPostPage: prioritizes local data (which has `sections`/`faqs`) over simplified API response to prevent crash
+- Fixed BlogPostPage: added null safety `(post.sections || [])` and `(post.faqs || [])` guards
