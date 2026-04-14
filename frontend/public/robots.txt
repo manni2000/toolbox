@@ -13,6 +13,10 @@ Allow: /categories
 Allow: /blogs
 Allow: /blogs/
 
+# AI Model Content (Markdown)
+Allow: /markdown
+Allow: /markdown/
+
 # PDF Tools
 Allow: /pdf-merge
 Allow: /pdf-split
