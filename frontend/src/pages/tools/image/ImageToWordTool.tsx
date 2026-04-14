@@ -62,7 +62,7 @@ const ImageToWordTool = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch(`${API_URLS.IMAGE_TO_WORD}`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.IMAGE_TO_WORD}`, {
         method: 'POST',
         body: formData,
       });

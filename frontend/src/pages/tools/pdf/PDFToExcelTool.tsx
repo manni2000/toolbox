@@ -62,7 +62,7 @@ const PDFToExcelTool = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch(`${API_URLS.PDF_TO_EXCEL}`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.PDF_TO_EXCEL}`, {
         method: 'POST',
         body: formData,
       });

@@ -74,7 +74,7 @@ const PDFPasswordTool = () => {
     formData.append('action', 'protect');
 
     try {
-      const response = await fetch(`${API_URLS.PDF_PASSWORD}`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.PDF_PASSWORD}`, {
         method: 'POST',
         body: formData,
       });

@@ -63,7 +63,7 @@ const IPLookupTool = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(API_URLS.IP_LOOKUP, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.IP_LOOKUP}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

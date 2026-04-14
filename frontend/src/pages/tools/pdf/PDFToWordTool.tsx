@@ -90,7 +90,7 @@ const PDFToWordTool = () => {
     formData.append('pdf', file);
 
     try {
-      const response = await fetch(`${API_URLS.PDF_TO_WORD}`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.PDF_TO_WORD}`, {
         method: 'POST',
         body: formData,
       });

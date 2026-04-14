@@ -1,8 +1,7 @@
 import { useState, useRef } from "react";
-import { Upload, Eraser, Image as ImageIcon, X, Loader2, Sparkles, Zap } from "lucide-react";
+import { Eraser, Image as ImageIcon, X, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { fadeInUp, scaleIn } from "@/lib/animations";
-import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
+import { fadeInUp } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
@@ -72,7 +71,7 @@ const BackgroundRemoverTool = () => {
     formData.append('image', fileRef.current);
 
     try {
-      const response = await fetch(`${API_URLS.BACKGROUND_REMOVER}`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.BACKGROUND_REMOVER}`, {
         method: 'POST',
         body: formData,
       });

@@ -89,7 +89,7 @@ const PasswordZipTool = () => {
     formData.append('compression_level', '6');
 
     try {
-      const response = await fetch(`${API_URLS.PASSWORD_ZIP}`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.PASSWORD_ZIP}`, {
         method: 'POST',
         body: formData,
       });

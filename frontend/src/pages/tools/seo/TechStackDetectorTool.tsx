@@ -70,7 +70,7 @@ const TechStackDetectorTool = () => {
     setIsScanning(true);
 
     try {
-      const response = await fetch(API_URLS.TECH_STACK_DETECTOR, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.TECH_STACK_DETECTOR}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

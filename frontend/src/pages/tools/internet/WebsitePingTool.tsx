@@ -51,7 +51,7 @@ const WebsitePingTool = () => {
     setLoading(true);
     
     try {
-      const response = await fetch(API_URLS.WEBSITE_PING, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.WEBSITE_PING}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -59,7 +59,7 @@ const PDFUnlockTool = () => {
       formData.append('pdf', file);
       formData.append('password', password);
       
-      const response = await fetch(API_URLS.PDF_UNLOCK, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.PDF_UNLOCK}`, {
         method: 'POST',
         body: formData,
       });

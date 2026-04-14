@@ -44,7 +44,7 @@ const WebsiteScreenshotTool = () => {
     setResult(null);
 
     try {
-      const response = await fetch(API_URLS.WEBSITE_SCREENSHOT, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.WEBSITE_SCREENSHOT}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

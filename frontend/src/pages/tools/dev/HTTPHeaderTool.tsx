@@ -36,7 +36,7 @@ const HTTPHeaderTool = () => {
     setResult(null);
     
     try {
-      const response = await fetch(API_URLS.HTTP_HEADER_CHECKER, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.HTTP_HEADER_CHECKER}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -84,7 +84,7 @@ const HTMLToPDFTool = () => {
         throw new Error("No input provided");
       }
 
-      const response = await fetch(`${API_URLS.HTML_TO_PDF}`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.HTML_TO_PDF}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

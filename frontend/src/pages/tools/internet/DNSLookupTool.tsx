@@ -46,7 +46,7 @@ const DNSLookupTool = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(API_URLS.DNS_LOOKUP, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.DNS_LOOKUP}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

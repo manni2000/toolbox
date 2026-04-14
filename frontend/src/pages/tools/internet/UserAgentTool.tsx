@@ -52,7 +52,7 @@ const UserAgentTool = () => {
     
     try {
       // Try backend API first for more accurate parsing
-      const response = await fetch(API_URLS.USER_AGENT, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.USER_AGENT}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
