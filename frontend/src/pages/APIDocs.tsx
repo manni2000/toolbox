@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { Copy, Key, Code2, Zap, Shield, Clock, ChevronDown, ChevronRight, Eye, EyeOff, ExternalLink, Terminal, Rocket, Sparkles, ArrowRight, CheckCircle } from "lucide-react";
 import APIPlayground from "../components/APIPlayground";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "https://api.dailytools247.app");
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
 const itemVariants = {
   hidden: { opacity: 0, y: 30 },

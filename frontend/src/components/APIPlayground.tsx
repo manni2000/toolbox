@@ -76,8 +76,8 @@ interface SavedExample {
   createdAt: Date;
 }
 
-// Backend selection constants
-const LOCAL_BACKEND = import.meta.env.DEV ? "http://localhost:5000" : (typeof window !== 'undefined' ? window.location.origin : "");
+// Backend selection constants - use relative URLs so Vite proxy routes correctly
+const LOCAL_BACKEND = typeof window !== 'undefined' ? window.location.origin : "";
 const PROD_BACKEND = "https://api.dailytools247.app";
 const DEFAULT_BACKEND = import.meta.env.VITE_API_URL || LOCAL_BACKEND;
 
