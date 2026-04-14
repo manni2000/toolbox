@@ -26,7 +26,7 @@ const SEOContent: React.FC<SEOContentProps> = ({
       {/* SEO-optimized Hero Section */}
       <section className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
         <h2 className="text-2xl font-bold text-blue-900 mb-3">
-          Best {primaryKeyword} Tool Online Free 2024
+          Best {primaryKeyword} Tool Online Free 2026
         </h2>
         <p className="text-blue-800 mb-4 leading-relaxed">
           {description}
@@ -50,7 +50,7 @@ const SEOContent: React.FC<SEOContentProps> = ({
       {/* Key Features */}
       <section>
         <h3 className="text-xl font-bold text-gray-900 mb-4">
-          Why Choose Our {toolName}? #1 Choice in 2024
+          Why Choose Our {toolName}? #1 Choice in 2026
         </h3>
         <div className="grid md:grid-cols-2 gap-4">
           {benefits.map((benefit: { title: string; description: string }, index) => (

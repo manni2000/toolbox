@@ -27,13 +27,11 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-
-  <!-- API Documentation -->
   <url>
-    <loc>https://www.dailytools247.app/api-docs</loc>
+    <loc>https://www.dailytools247.app/developers</loc>
     <lastmod>2026-04-14</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <!-- Blog Section -->
@@ -79,12 +77,12 @@
   <url><loc>https://www.dailytools247.app/html-to-pdf</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/pdf-password</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/pdf-unlock</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.dailytools247.app/pdf-remove-pages</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/pdf-page-remover</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/pdf-rotate</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Image Tools -->
-  <url><loc>https://www.dailytools247.app/qr-generator</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.dailytools247.app/qr-scanner</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.dailytools247.app/qr-code-generator</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.dailytools247.app/qr-code-scanner</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/png-to-jpg-converter</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.dailytools247.app/jpg-to-png-converter</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/webp-to-png-converter</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
@@ -95,7 +93,7 @@
   <url><loc>https://www.dailytools247.app/background-remover</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://www.dailytools247.app/image-to-pdf</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/image-to-word</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/base64-image</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/image-base64</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/image-dpi-checker</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/exif-viewer</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/favicon-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -112,15 +110,15 @@
   <url><loc>https://www.dailytools247.app/speech-to-text</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/audio-trimmer</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/audio-merger</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/audio-speed</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Text Tools -->
   <url><loc>https://www.dailytools247.app/word-counter</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.dailytools247.app/case-converter</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/color-converter</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/remove-spaces</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/line-sorter</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/duplicate-remover</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown-html</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.dailytools247.app/markdown-to-html</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/text-summarizer</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/text-diff</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
@@ -128,22 +126,22 @@
   <url><loc>https://www.dailytools247.app/password-generator</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://www.dailytools247.app/password-strength</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/hash-generator</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/base64-tool</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/base64-encoder</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.dailytools247.app/uuid-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/password-strength-explainer</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/data-breach-checker</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/data-breach-email-checker</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/file-hash-comparison</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/exif-location-remover</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/text-redaction</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/qr-phishing-scanner</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/secure-notes</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/url-reputation</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.dailytools247.app/url-reputation-checker</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Date & Time Tools -->
   <url><loc>https://www.dailytools247.app/date-difference</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/age-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.dailytools247.app/working-days</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/countdown</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/working-days-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/countdown-timer</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/world-time</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Developer Tools -->
@@ -151,38 +149,39 @@
   <url><loc>https://www.dailytools247.app/regex-tester</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.dailytools247.app/jwt-decoder</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.dailytools247.app/url-encoder</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/lorem-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/color-converter</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/lorem-ipsum-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/cron-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/http-header</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/website-screenshot</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/http-header-checker</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/token-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/color-palettes</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/api-response-formatter</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/json-typescript</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/sql-beautifier</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/jwt-expiry</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/env-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/postman-collection</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/json-to-typescript-interface</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/sql-query-beautifier</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/jwt-token-expiry-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/environment-variable-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/postman-collection-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/dockerfile-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/curl-axios</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/http-status-codes</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/curl-to-axios-converter</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/http-status-code-explainer</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Internet Tools -->
   <url><loc>https://www.dailytools247.app/ip-lookup</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.dailytools247.app/user-agent</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/user-agent-parser</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/dns-lookup</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/ssl-checker</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/website-ping</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/website-screenshot</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Education Tools -->
   <url><loc>https://www.dailytools247.app/scientific-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.dailytools247.app/percentage-calc</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/percentage-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/unit-converter</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.dailytools247.app/compound-interest</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/simple-interest</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/cgpa-percentage</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/lcm-hcf</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/study-timetable</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/compound-interest-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/simple-interest-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/cgpa-to-percentage</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/lcm-hcf-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/study-timetable-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/mcq-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Finance Tools -->
@@ -201,7 +200,7 @@
   <url><loc>https://www.dailytools247.app/budget-planner</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/salary-breakup-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/mutual-fund-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/lump-sum-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.dailytools247.app/lumpsum-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.dailytools247.app/recurring-deposit-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/inflation-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/roi-calculator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -223,70 +222,17 @@
   <url><loc>https://www.dailytools247.app/meme-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- SEO Tools -->
-  <url><loc>https://www.dailytools247.app/meta-title-description</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/keyword-density</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/robots-txt</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/meta-title-description-generator</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/keyword-density-checker</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/robots-txt-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/sitemap-validator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/page-speed-checklist-generator</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/og-image-preview</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/og-image-preview-tool</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/broken-image-finder</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/utm-link-builder</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/domain-age</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/domain-age-checker</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.dailytools247.app/tech-stack-detector</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.dailytools247.app/page-seo</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.dailytools247.app/page-seo-analyzer</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
-  <!-- AI Model Content (Markdown) -->
-  <url><loc>https://www.dailytools247.app/markdown/pdf-merge.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/image-compressor.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/json-formatter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/background-remover.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/qr-generator.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/pdf-split.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/pdf-to-png.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/pdf-to-word.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/pdf-to-powerpoint.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/pdf-to-excel.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/word-to-pdf.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/powerpoint-to-pdf.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/html-to-pdf.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/pdf-password.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/pdf-unlock.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/pdf-remove-pages.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/pdf-rotate.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/qr-scanner.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/png-to-jpg-converter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/jpg-to-png-converter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/webp-to-png-converter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/png-to-webp-converter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/image-resize.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/image-crop.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/image-to-pdf.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/image-to-word.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/base64-image.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/image-dpi-checker.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/exif-viewer.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/favicon-generator.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/video-to-audio.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/video-trim.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/video-speed.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/video-thumbnail.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/video-resolution.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/audio-converter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/speech-to-text.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/audio-trimmer.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/audio-merger.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/word-counter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/case-converter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/color-converter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/remove-spaces.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/line-sorter.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/duplicate-remover.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/markdown-html.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/text-summarizer.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/text-diff.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/password-generator.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/password-strength.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/hash-generator.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.dailytools247.app/markdown/base64-tool.md</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
 </urlset>
