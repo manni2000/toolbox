@@ -4,13 +4,7 @@ const fs = require('fs');
 
 const router = express.Router();
 
-const BLOG_POSTS = [
-  { slug: 'top-10-free-online-tools-2024', title: 'Top 10 Free Online Tools You Need in 2024', excerpt: 'Discover the most useful free online tools that can boost your productivity.', category: 'Productivity', featured: true, date: '2024-01-15', readTime: '5 min', tags: ['tools', 'productivity', 'free'] },
-  { slug: 'how-to-compress-images-without-losing-quality', title: 'How to Compress Images Without Losing Quality', excerpt: 'Learn professional techniques to reduce image file sizes while maintaining visual quality.', category: 'Image', featured: true, date: '2024-02-10', readTime: '7 min', tags: ['image', 'compression', 'webp'] },
-  { slug: 'pdf-tools-guide', title: 'Complete Guide to PDF Tools', excerpt: 'Everything you need to know about working with PDF files online.', category: 'PDF', featured: false, date: '2024-03-05', readTime: '10 min', tags: ['pdf', 'merge', 'split'] },
-  { slug: 'web-security-best-practices', title: 'Web Security Best Practices for 2024', excerpt: 'Protect yourself online with these essential security practices and tools.', category: 'Security', featured: true, date: '2024-03-20', readTime: '8 min', tags: ['security', 'password', 'privacy'] },
-  { slug: 'seo-tools-for-beginners', title: 'SEO Tools for Beginners: A Complete Guide', excerpt: 'Start your SEO journey with these powerful free tools and techniques.', category: 'SEO', featured: false, date: '2024-04-01', readTime: '12 min', tags: ['seo', 'marketing', 'beginners'] },
-];
+const BLOG_POSTS = [];
 
 router.get('/', (req, res) => {
   const { page = 1, limit = 10, category, featured } = req.query;

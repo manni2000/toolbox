@@ -124,7 +124,7 @@ const BlogPostPage = () => {
       <SEOHelmet
         title={post.title}
         description={post.description}
-        keywords={post.keywords}
+        keywords={[post.keywords]}
         canonical={`https://www.dailytools247.app/blogs/${post.slug}`}
         ogImage={post.image}
         ogType="article"
