@@ -23,6 +23,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SEOHelmet from "@/components/SEOHelmet";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { universalToolFaqs } from "@/data/toolSeoEnhancements";
+import CategoryFAQSection from "@/components/CategoryFAQSection";
 
 type SortOption = "alphabetical" | "most-tools" | "default";
 
@@ -556,6 +558,9 @@ const CategoriesPage = () => {
             </motion.div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <CategoryFAQSection faqs={universalToolFaqs} categoryName="tools" />
       </main>
       <Footer />
     </div>

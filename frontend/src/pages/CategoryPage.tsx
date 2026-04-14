@@ -6,6 +6,8 @@ import Footer from "@/components/layout/Footer";
 import { getCategoryById } from "@/data/toolCategories";
 import ToolCard from "@/components/ToolCard";
 import { staggerContainer, fadeInUp } from "@/lib/animations";
+import { universalToolFaqs } from "@/data/toolSeoEnhancements";
+import CategoryFAQSection from "@/components/CategoryFAQSection";
 
 const CategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -40,7 +42,7 @@ const CategoryPage = () => {
       "date-time": ["date-difference", "age-calculator", "working-days", "countdown"]
     };
     
-    return trendingMap[categoryId] || [];
+    return trendingMap[categoryId || ""] || [];
   };
 
   const trendingTools = getTrendingTools();
@@ -224,6 +226,9 @@ const CategoryPage = () => {
             </motion.div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <CategoryFAQSection faqs={universalToolFaqs} categoryName={category.name.toLowerCase()} />
       </main>
       <Footer />
     </div>

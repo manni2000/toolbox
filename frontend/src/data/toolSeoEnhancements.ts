@@ -22,6 +22,18 @@ export interface ToolSeoMetadata {
   };
 }
 
+// Universal FAQs that apply to all tools
+export const universalToolFaqs: Array<{ question: string; answer: string }> = [
+  {
+    question: 'Is this tool completely free to use?',
+    answer: 'Yes, this tool is 100% free with no hidden charges, subscriptions, or premium features. Simply visit the page and start using it immediately without any signup.',
+  },
+  {
+    question: 'Is my data secure and private when using this tool?',
+    answer: 'Absolutely. All processing happens locally in your browser. Your files and data never leave your device and are not stored on any server. We do not collect any personal information.',
+  },
+];
+
 export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
   'pdf-to-word': {
     slug: 'pdf-to-word',
@@ -2876,7 +2888,17 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 };
 
 export const getToolSeoMetadata = (toolSlug: string): ToolSeoMetadata | null => {
-  return toolSeoEnhancements[toolSlug] || null;
+  const toolData = toolSeoEnhancements[toolSlug];
+  if (!toolData) return null;
+
+  // Merge universal FAQs with tool-specific FAQs
+  // Universal FAQs are added first, followed by tool-specific FAQs
+  const mergedFaqs = [...universalToolFaqs, ...(toolData.faqs || [])];
+
+  return {
+    ...toolData,
+    faqs: mergedFaqs,
+  };
 };
 
 export const getAllToolSlugs = (): string[] => {
