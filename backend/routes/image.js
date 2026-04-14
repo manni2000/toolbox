@@ -217,44 +217,96 @@ router.post('/background-remover', upload.single('image'), async (req, res, next
     if (!req.file) return res.status(400).json({ success: false, error: 'Image file required' });
     if (!validateImageFile(req.file)) return res.status(400).json({ success: false, error: 'Invalid image type' });
 
+    const threshold = parseInt(req.body.threshold) || 30;
     const image = sharp(req.file.buffer);
     const meta = await image.metadata();
 
-    const rgba = await image.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-    const { data, info } = rgba;
+    // Convert to RGBA for transparency support
+    const { data, info } = await image
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+
     const { width, height, channels } = info;
 
-    const cornerSamples = [
-      { r: data[0], g: data[1], b: data[2] },
-      { r: data[(width - 1) * channels], g: data[(width - 1) * channels + 1], b: data[(width - 1) * channels + 2] },
-      { r: data[(height - 1) * width * channels], g: data[(height - 1) * width * channels + 1], b: data[(height - 1) * width * channels + 2] },
-    ];
+    // Sample background color from multiple edge points
+    const samplePoints = [];
+    const margin = 5;
+    
+    // Top edge
+    for (let x = margin; x < width - margin; x += Math.max(1, Math.floor(width / 10))) {
+      samplePoints.push({ x, y: margin });
+    }
+    // Bottom edge
+    for (let x = margin; x < width - margin; x += Math.max(1, Math.floor(width / 10))) {
+      samplePoints.push({ x, y: height - margin - 1 });
+    }
+    // Left edge
+    for (let y = margin; y < height - margin; y += Math.max(1, Math.floor(height / 10))) {
+      samplePoints.push({ x: margin, y });
+    }
+    // Right edge
+    for (let y = margin; y < height - margin; y += Math.max(1, Math.floor(height / 10))) {
+      samplePoints.push({ x: width - margin - 1, y });
+    }
 
-    const bgR = Math.round(cornerSamples.reduce((s, c) => s + c.r, 0) / cornerSamples.length);
-    const bgG = Math.round(cornerSamples.reduce((s, c) => s + c.g, 0) / cornerSamples.length);
-    const bgB = Math.round(cornerSamples.reduce((s, c) => s + c.b, 0) / cornerSamples.length);
+    // Get colors from sample points
+    const sampleColors = samplePoints.map(({ x, y }) => {
+      const idx = (y * width + x) * channels;
+      return { r: data[idx], g: data[idx + 1], b: data[idx + 2] };
+    });
 
-    const threshold = parseInt(req.body.threshold) || 30;
+    // Calculate average background color using median to handle outliers
+    const sortedR = [...sampleColors].sort((a, b) => a.r - b.r);
+    const sortedG = [...sampleColors].sort((a, b) => a.g - b.g);
+    const sortedB = [...sampleColors].sort((a, b) => a.b - b.b);
+    const mid = Math.floor(sampleColors.length / 2);
+    
+    const bgR = sortedR[mid].r;
+    const bgG = sortedG[mid].g;
+    const bgB = sortedB[mid].b;
 
+    // Create new buffer with transparency
     const newData = Buffer.from(data);
+    
+    // Remove pixels similar to background color
     for (let i = 0; i < data.length; i += channels) {
-      const r = data[i], g = data[i + 1], b = data[i + 2];
-      const diff = Math.sqrt(
-        Math.pow(r - bgR, 2) + Math.pow(g - bgG, 2) + Math.pow(b - bgB, 2)
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      
+      // Calculate color distance using weighted RGB (perceptual)
+      const distance = Math.sqrt(
+        Math.pow(r - bgR, 2) * 0.299 +
+        Math.pow(g - bgG, 2) * 0.587 +
+        Math.pow(b - bgB, 2) * 0.114
       );
-      if (diff < threshold) {
-        newData[i + 3] = 0;
+
+      if (distance < threshold) {
+        newData[i + 3] = 0; // Set alpha to 0 (transparent)
       }
     }
 
+    // Convert back to image
     const result = await sharp(newData, {
       raw: { width, height, channels: 4 },
     }).png().toBuffer();
 
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Disposition', 'attachment; filename="background-removed.png"');
-    res.send(result);
+    // Return as base64 in JSON response
+    const base64 = result.toString('base64');
+    console.log(`Background removal: ${width}x${height}, base64 length: ${base64.length}`);
+    
+    res.json({
+      success: true,
+      result: {
+        image: base64,
+        format: 'png',
+        width,
+        height
+      }
+    });
   } catch (err) {
+    console.error('Background removal error:', err);
     next(err);
   }
 });

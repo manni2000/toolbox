@@ -98,19 +98,74 @@ router.post('/lorem-generator', (req, res) => {
 });
 
 function handleSqlBeautifier(req, res) {
-  const { sql } = req.body;
+  const { sql, indent = 2 } = req.body;
   if (!sql) return res.status(400).json({ success: false, error: 'SQL required' });
 
-  const keywords = ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'ORDER BY', 'GROUP BY', 'HAVING', 'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'OUTER JOIN', 'ON', 'INSERT INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE FROM', 'CREATE TABLE', 'DROP TABLE', 'ALTER TABLE', 'LIMIT', 'OFFSET', 'UNION', 'DISTINCT', 'AS', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END'];
+  try {
+    const keywords = [
+      'SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'ORDER BY', 'GROUP BY', 'HAVING',
+      'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'OUTER JOIN', 'FULL JOIN',
+      'ON', 'INSERT INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE FROM',
+      'CREATE TABLE', 'DROP TABLE', 'ALTER TABLE', 'LIMIT', 'OFFSET',
+      'UNION', 'UNION ALL', 'DISTINCT', 'AS', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END',
+      'WITH', 'EXISTS', 'IN', 'NOT', 'BETWEEN', 'LIKE', 'IS NULL', 'IS NOT NULL'
+    ];
 
-  let formatted = sql.trim();
-  for (const kw of keywords.sort((a, b) => b.length - a.length)) {
-    const regex = new RegExp(`\\b${kw.replace(/ /g, '\\s+')}\\b`, 'gi');
-    formatted = formatted.replace(regex, `\n${kw}`);
+    // Remove existing formatting first
+    let formatted = sql.replace(/\s+/g, ' ').trim();
+
+    // Sort keywords by length (longer first) to handle multi-word keywords
+    const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
+
+    // Add newlines before major keywords
+    for (const kw of sortedKeywords) {
+      const regex = new RegExp(`\\b${kw.replace(/ /g, '\\s+')}\\b`, 'gi');
+      formatted = formatted.replace(regex, (match) => {
+        // Don't add newline if already at start or after newline
+        const beforeLastChar = formatted[formatted.indexOf(match) - 1];
+        if (beforeLastChar === '\n' || beforeLastChar === ' ') {
+          return match.toUpperCase();
+        }
+        return `\n${match.toUpperCase()}`;
+      });
+    }
+
+    // Split into lines and process
+    const lines = formatted.split('\n').map(line => line.trim()).filter(Boolean);
+
+    // Add proper indentation
+    const indentStr = ' '.repeat(parseInt(indent) || 2);
+    let indentedLines = [];
+    let indentLevel = 0;
+
+    for (const line of lines) {
+      const upperLine = line.toUpperCase();
+
+      // Decrease indent for certain keywords
+      if (upperLine.match(/^(FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT)/)) {
+        indentLevel = Math.max(0, indentLevel - 1);
+      }
+      if (upperLine === 'END') {
+        indentLevel = Math.max(0, indentLevel - 1);
+      }
+
+      // Add current line with indentation
+      indentedLines.push(indentStr.repeat(indentLevel) + line);
+
+      // Increase indent for certain keywords
+      if (upperLine.match(/^(SELECT|INSERT INTO|UPDATE|DELETE FROM|CREATE TABLE|VALUES|CASE|WHEN|THEN|ELSE|FROM|JOIN|LEFT JOIN|RIGHT JOIN|INNER JOIN|OUTER JOIN|FULL JOIN|ON|WHERE|GROUP BY|ORDER BY|HAVING)/)) {
+        indentLevel++;
+      }
+      if (upperLine === 'CASE') {
+        indentLevel++;
+      }
+    }
+
+    const finalFormatted = indentedLines.join('\n');
+    res.json({ success: true, result: { formatted: finalFormatted, original: sql } });
+  } catch (err) {
+    res.status(500).json({ success: false, error: `Failed to format SQL: ${err.message}` });
   }
-
-  formatted = formatted.split('\n').map(line => line.trim()).filter(Boolean).join('\n');
-  res.json({ success: true, result: { formatted } });
 }
 
 router.post('/sql-query-beautifier', handleSqlBeautifier);

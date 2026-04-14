@@ -90,12 +90,21 @@ export const EnhancedDownload = ({
   };
 
   const downloadFile = (url: string, name: string) => {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = name;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Download error:', error);
+      toast({
+        title: "Download failed",
+        description: "Could not download file. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const formatFileSize = (bytes: number) => {
@@ -168,6 +177,17 @@ export const EnhancedDownload = ({
                   </div>
                 </div>
               </div>
+
+              {/* Image Preview for image types */}
+              {fileType === 'image' && data.startsWith('data:') && (
+                <div className="rounded-lg border border-border overflow-hidden bg-muted/30">
+                  <img
+                    src={data}
+                    alt="Preview"
+                    className="w-full h-auto max-h-48 object-contain"
+                  />
+                </div>
+              )}
               
               {/* Action Button */}
               <Button
