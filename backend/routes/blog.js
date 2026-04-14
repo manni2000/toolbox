@@ -52,4 +52,8 @@ router.get('/:slug', (req, res) => {
   res.json({ success: true, result: { post: { ...post, content: `<h1>${post.title}</h1><p>${post.excerpt}</p><p>Full blog content would be loaded here from markdown files.</p>` } } });
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

@@ -97,4 +97,8 @@ router.post('/cgpa-to-percentage', (req, res) => {
   res.json({ success: true, result: { cgpa: c, scale: s, percentage: Math.round(percentage * 100) / 100, grade } });
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

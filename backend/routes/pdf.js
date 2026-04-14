@@ -229,4 +229,8 @@ router.post('/to-image', upload.fields([{ name: 'file', maxCount: 1 }, { name: '
   });
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

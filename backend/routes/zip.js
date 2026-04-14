@@ -86,4 +86,8 @@ router.post('/password', upload.array('files', 20), async (req, res, next) => {
   });
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

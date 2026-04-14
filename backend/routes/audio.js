@@ -229,4 +229,8 @@ router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
   });
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

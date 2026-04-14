@@ -332,4 +332,8 @@ router.post('/utm-link-builder', (req, res) => {
   res.json({ success: true, result: { url: finalUrl, params: Object.fromEntries(params) } });
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

@@ -3,14 +3,20 @@ const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 
 const allowedOrigins = [
-  'http://localhost:5000',
-  'http://localhost:8000',
-  process.env.FRONTEND_URL,
+  'http://localhost:5000', 
+  'http://localhost:8000', 
+  'https://www.dailytools247.app',
+  'https://api.dailytools247.app',
 ].filter(Boolean);
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.some(o => origin.startsWith(o)) || origin.includes('replit.dev') || origin.includes('replit.app')) {
+    if (
+      !origin ||
+      allowedOrigins.some(o => origin && origin.startsWith(o)) ||
+      origin.includes('replit.dev') ||
+      origin.includes('replit.app')
+    ) {
       callback(null, true);
     } else {
       callback(new Error('CORS policy violation'));

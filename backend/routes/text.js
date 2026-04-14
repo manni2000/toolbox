@@ -176,4 +176,8 @@ router.post('/text-summarizer', (req, res) => {
   res.json({ success: true, result: { summary, originalSentences: sentences.length, summarySentences: topSentences.length, compressionRatio: `${Math.round((1 - summary.length / text.length) * 100)}%` } });
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

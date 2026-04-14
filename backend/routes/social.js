@@ -95,4 +95,8 @@ router.post('/line-break-generator', (req, res) => {
   res.json({ success: true, result: { formatted: result, platform, lineCount: text.split('\n').length } });
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

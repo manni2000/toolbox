@@ -555,4 +555,8 @@ ${data.bank_details ? `<div class="notes" style="margin-top:16px"><div class="no
   res.send(html);
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

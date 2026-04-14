@@ -502,4 +502,12 @@ router.post('/exif-location-remover', uploadLimiter, upload.fields([{ name: 'ima
   }
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;

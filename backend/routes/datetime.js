@@ -109,4 +109,8 @@ router.get('/world-time', (req, res) => {
   res.json({ success: true, result: { times, serverTime: new Date().toISOString() } });
 });
 
+// Add OPTIONS handler for all endpoints in this router
+router.options('*', (req, res) => {
+  res.sendStatus(204);
+});
 module.exports = router;
