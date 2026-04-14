@@ -12,10 +12,57 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 
 router.use(uploadLimiter);
 
 const MIME_TYPES = { mp3: 'audio/mpeg', wav: 'audio/wav', ogg: 'audio/ogg', flac: 'audio/flac', aac: 'audio/aac', m4a: 'audio/mp4', opus: 'audio/ogg' };
+let ffmpegAvailabilityPromise;
+const ffmpegCandidates = [
+  process.env.FFMPEG_PATH,
+  process.env.LOCALAPPDATA
+    ? path.join(process.env.LOCALAPPDATA, 'Microsoft', 'WinGet', 'Packages', 'Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe', 'ffmpeg-8.1-full_build', 'bin', 'ffmpeg.exe')
+    : null,
+  process.env.LOCALAPPDATA
+    ? path.join(process.env.LOCALAPPDATA, 'ffmpeg-static-nodejs', 'ffmpeg.exe')
+    : null,
+].filter(Boolean);
+const ffmpegBinary = ffmpegCandidates.find(candidate => fs.existsSync(candidate));
+
+if (ffmpegBinary) {
+  ffmpeg.setFfmpegPath(ffmpegBinary);
+}
 
 function validateAudioFile(file) {
   const allowedTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/flac', 'audio/aac', 'audio/m4a', 'audio/x-m4a', 'audio/mp4'];
   return allowedTypes.includes(file.mimetype) || /\.(mp3|wav|ogg|flac|aac|m4a|opus)$/i.test(file.originalname);
+}
+
+function getFfmpegAvailability() {
+  if (!ffmpegAvailabilityPromise) {
+    ffmpegAvailabilityPromise = new Promise((resolve) => {
+      ffmpeg.getAvailableFormats((err) => {
+        if (err) {
+          resolve({
+            available: false,
+            error: err.message || 'FFmpeg is not available',
+          });
+          return;
+        }
+
+        resolve({ available: true, error: null });
+      });
+    });
+  }
+
+  return ffmpegAvailabilityPromise;
+}
+
+async function ensureFfmpegAvailable(res, capability) {
+  const availability = await getFfmpegAvailability();
+  if (availability.available) return true;
+
+  res.json({
+    success: false,
+    error: `${capability} requires FFmpeg, but FFmpeg is not installed or not available on the server PATH.`,
+    details: availability.error,
+  });
+  return false;
 }
 
 async function withTempFiles(ext1, ext2, fn) {
@@ -37,6 +84,7 @@ function bufferToDataUrl(buffer, mimeType) {
 router.post('/convert', upload.single('audio'), async (req, res, next) => {
   if (!req.file) return res.status(400).json({ success: false, error: 'Audio file required' });
   if (!validateAudioFile(req.file)) return res.status(400).json({ success: false, error: 'Invalid audio file type' });
+  if (!(await ensureFfmpegAvailable(res, 'Audio conversion'))) return;
 
   const { format = 'mp3', bitrate = '128k' } = req.body;
   const allowedFormats = ['mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a'];
@@ -68,6 +116,7 @@ router.post('/convert', upload.single('audio'), async (req, res, next) => {
 
 router.post('/trim', upload.single('audio'), async (req, res, next) => {
   if (!req.file) return res.status(400).json({ success: false, error: 'Audio file required' });
+  if (!(await ensureFfmpegAvailable(res, 'Audio trimming'))) return;
 
   const { startTime = 0, endTime, duration } = req.body;
   const inputExt = req.file.originalname.split('.').pop() || 'mp3';
@@ -98,6 +147,7 @@ router.post('/trim', upload.single('audio'), async (req, res, next) => {
 
 router.post('/speed', upload.single('audio'), async (req, res, next) => {
   if (!req.file) return res.status(400).json({ success: false, error: 'Audio file required' });
+  if (!(await ensureFfmpegAvailable(res, 'Audio speed adjustment'))) return;
 
   const speed = Math.min(Math.max(parseFloat(req.body.speed) || 1.0, 0.5), 4.0);
   const inputExt = req.file.originalname.split('.').pop() || 'mp3';
@@ -128,6 +178,7 @@ router.post('/merge', upload.array('audio', 10), async (req, res, next) => {
   if (!req.files || req.files.length < 2) {
     return res.status(400).json({ success: false, error: 'At least 2 audio files required' });
   }
+  if (!(await ensureFfmpegAvailable(res, 'Audio merging'))) return;
 
   const tmpDir = os.tmpdir();
   const ts = `${Date.now()}-${Math.random().toString(36).slice(2)}`;

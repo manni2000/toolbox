@@ -10,6 +10,7 @@ import {
   formatSmartIndianCurrency,
   formatAmount
 } from './number-formatting';
+import { describe, expect, it } from "vitest";
 
 console.log('=== Indian Number Formatting Tests ===\n');
 
@@ -101,3 +102,23 @@ import { formatIndianCurrency } from '@/lib/number-formatting';
 <p>{formatIndianCurrency(value, { decimals: 0 })}</p>
 <p>{formatIndianCurrency(value, { compact: true })}</p>
 `);
+
+describe("number formatting", () => {
+  it("formats INR values using Indian digit grouping", () => {
+    expect(formatIndianCurrency(100000)).toBe("₹1,00,000.00");
+    expect(formatIndianNumber(100000)).toBe("1,00,000.00");
+    expect(formatIndianCurrencyWithCommas(1000000)).toBe("₹10,00,000.00");
+  });
+
+  it("supports compact and international variants", () => {
+    expect(formatIndianCurrency(10000000, { compact: true, decimals: 1 })).toBe("₹1.0Cr");
+    expect(formatSmartIndianCurrency(50000)).toBe("₹50,000.00");
+    expect(formatSmartIndianCurrency(100000)).toBe("₹1.00L");
+    expect(formatAmount(5372829203, { currency: "USD", format: "international" })).toBe("$5,372,829,203.00");
+  });
+
+  it("sanitizes invalid values", () => {
+    expect(formatIndianCurrency(Number.NaN)).toBe("₹0.00");
+    expect(formatIndianCurrency(undefined as unknown as number)).toBe("₹0.00");
+  });
+});

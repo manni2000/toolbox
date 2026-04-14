@@ -32,7 +32,7 @@ export default function URLReputationCheckerTool() {
     setResult(null);
     
     try {
-      const response = await fetch(`${API_URLS.BASE_URL}/api/security/url-reputation`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.URL_REPUTATION_CHECKER}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

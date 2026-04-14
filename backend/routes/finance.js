@@ -343,8 +343,12 @@ router.post('/stock-cagr-calculator', (req, res) => {
 });
 
 router.post('/tax-slab-analyzer', (req, res) => {
-  const { income, regime = 'new', age_group = 'below_60' } = req.body;
+  let { income, regime = 'new', age_group = 'below_60' } = req.body;
   if (!income) return res.status(400).json({ success: false, error: 'Income required' });
+
+  if (age_group === 'regular') age_group = 'below_60';
+  else if (age_group === 'senior') age_group = 'above_60';
+  else if (age_group === 'super_senior') age_group = 'above_80';
 
   const inc = parseFloat(income);
   let tax = 0;
@@ -396,6 +400,18 @@ router.post('/tax-slab-analyzer', (req, res) => {
 
   res.json({
     success: true,
+    income: inc,
+    age_group,
+    slab_details: slabs.map((slab) => ({
+      range: slab.to === Infinity ? `${slab.from}+` : `${slab.from} - ${slab.to}`,
+      rate: `${slab.rate}%`,
+      taxable_amount: slab.taxableAmount,
+      tax: slab.tax,
+    })),
+    tax_before_cess: Math.round(tax),
+    cess_amount: Math.round(cess),
+    total_tax: Math.round(totalTax),
+    effective_rate: Math.round(effectiveRate * 100) / 100,
     taxBreakdown: slabs,
     incomeTax: Math.round(tax),
     educationCess: Math.round(cess),
@@ -415,13 +431,15 @@ router.post('/invoice-generator', (req, res) => {
   };
 
   const items = (data.items || []).map(item => {
-    const qty = parseFloat(item.quantity) || 0;
-    const price = parseFloat(item.price) || 0;
-    const tax = parseFloat(item.tax) || 0;
-    const subtotal = qty * price;
-    const taxAmount = subtotal * (tax / 100);
-    const total = subtotal + taxAmount;
-    return { ...item, qty, price, tax, subtotal, taxAmount, total };
+    const qty = parseFloat(item.quantity ?? item.qty) || 0;
+    const price = parseFloat(item.unit_price ?? item.price) || 0;
+    const discount = parseFloat(item.discount) || 0;
+    const tax = parseFloat(item.tax ?? item.tax_rate ?? data.tax_rate) || 0;
+    const lineSubtotal = qty * price;
+    const discountedSubtotal = lineSubtotal * (1 - discount / 100);
+    const taxAmount = discountedSubtotal * (tax / 100);
+    const total = discountedSubtotal + taxAmount;
+    return { ...item, qty, price, discount, tax, subtotal: discountedSubtotal, lineSubtotal, taxAmount, total };
   });
 
   const subtotal = items.reduce((s, i) => s + i.subtotal, 0);
@@ -477,7 +495,7 @@ router.post('/invoice-generator', (req, res) => {
     <div class="invoice-title">INVOICE</div>
     <div class="invoice-meta">
       <div><strong>Invoice #:</strong> ${data.invoice_number || '001'}</div>
-      <div><strong>Date:</strong> ${data.invoice_date || new Date().toLocaleDateString()}</div>
+      <div><strong>Date:</strong> ${data.invoice_date || data.date || new Date().toLocaleDateString()}</div>
       ${data.due_date ? `<div><strong>Due Date:</strong> ${data.due_date}</div>` : ''}
     </div>
   </div>
@@ -508,7 +526,7 @@ router.post('/invoice-generator', (req, res) => {
   <tbody>
     ${items.map((item, i) => `<tr>
       <td>${i + 1}</td>
-      <td><strong>${item.name || item.description || ''}</strong>${item.description && item.name ? `<br><span style="font-size:12px;color:#777">${item.description}</span>` : ''}</td>
+      <td><strong>${item.name || item.description || ''}</strong>${item.description && item.name ? `<br><span style="font-size:12px;color:#777">${item.description}</span>` : ''}${item.discount ? `<br><span style="font-size:12px;color:#777">Discount: ${item.discount}%</span>` : ''}</td>
       <td>${item.qty}</td>
       <td>${formatCurrency(item.price, data.currency)}</td>
       <td>${item.tax}%</td>

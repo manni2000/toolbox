@@ -19,6 +19,67 @@ async function fetchWithTimeout(url, timeout = 10000) {
   });
 }
 
+async function getDomainAgeResult(domain) {
+  const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '').trim().toLowerCase();
+
+  let nsRecords = [];
+  try { nsRecords = await dns.resolveNs(cleanDomain); } catch {}
+
+  let creationDate = 'Unavailable';
+  let expirationDate = 'Unavailable';
+  let age = 0;
+  let daysUntilExpiration = 0;
+  let registrar = 'Unavailable';
+  let note = 'Exact domain age requires WHOIS/RDAP support.';
+
+  try {
+    const rdapResponse = await fetch(`https://rdap.org/domain/${encodeURIComponent(cleanDomain)}`, {
+      timeout: 8000,
+      headers: { 'User-Agent': 'DailyTools247/1.0 SEO Analyzer' },
+    });
+
+    if (rdapResponse.ok) {
+      const rdap = await rdapResponse.json();
+      const eventMap = Object.fromEntries((rdap.events || []).map((event) => [event.eventAction, event.eventDate]));
+      const createdAt = eventMap.registration || eventMap['last changed'];
+      const expiresAt = eventMap.expiration;
+
+      if (createdAt) {
+        creationDate = new Date(createdAt).toISOString().split('T')[0];
+        age = Math.max(0, Math.round(((Date.now() - new Date(createdAt).getTime()) / (365.25 * 24 * 3600 * 1000)) * 10) / 10);
+      }
+
+      if (expiresAt) {
+        expirationDate = new Date(expiresAt).toISOString().split('T')[0];
+        daysUntilExpiration = Math.max(0, Math.round((new Date(expiresAt).getTime() - Date.now()) / (24 * 3600 * 1000)));
+      }
+
+      const registrarEntity = (rdap.entities || []).find((entity) => (entity.roles || []).includes('registrar'));
+      const registrarFn = registrarEntity?.vcardArray?.[1]?.find((item) => item[0] === 'fn');
+      if (registrarFn?.[3]) registrar = registrarFn[3];
+
+      note = nsRecords.length
+        ? 'Domain age data fetched via RDAP. Nameservers are also included.'
+        : 'Domain age data fetched via RDAP.';
+    }
+  } catch {
+    // Fall back to DNS-only metadata when RDAP is unavailable.
+  }
+
+  return {
+    domain: cleanDomain,
+    nameservers: nsRecords,
+    creationDate,
+    expirationDate,
+    age,
+    daysUntilExpiration,
+    registrar,
+    status: nsRecords.length > 0 || creationDate !== 'Unavailable' ? 'valid' : 'error',
+    note,
+    checked: new Date().toISOString(),
+  };
+}
+
 router.post('/meta-title-description', async (req, res, next) => {
   try {
     const { url } = req.body;
@@ -205,28 +266,18 @@ router.post('/broken-image-finder', async (req, res, next) => {
   }
 });
 
-router.post('/domain-age-checker', async (req, res, next) => {
+async function handleDomainAge(req, res, next) {
   try {
     const { domain } = req.body;
     if (!domain) return res.status(400).json({ success: false, error: 'Domain required' });
-    const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '').trim();
-
-    let nsRecords = [];
-    try { nsRecords = await dns.resolveNs(cleanDomain); } catch {}
-
-    res.json({
-      success: true,
-      result: {
-        domain: cleanDomain,
-        nameservers: nsRecords,
-        note: 'Exact domain age requires WHOIS lookup. NS records are shown as available.',
-        checked: new Date().toISOString(),
-      },
-    });
+    const result = await getDomainAgeResult(domain);
+    res.json({ success: true, result });
   } catch (err) {
     next(err);
   }
-});
+}
+
+router.post('/domain-age-checker', handleDomainAge);
 
 router.post('/tech-stack-detector', async (req, res, next) => {
   try {

@@ -97,7 +97,7 @@ router.post('/lorem-generator', (req, res) => {
   res.json({ success: true, result: { text: paragraphTexts.join('\n\n'), paragraphs: paragraphTexts } });
 });
 
-router.post('/sql-beautifier', (req, res) => {
+function handleSqlBeautifier(req, res) {
   const { sql } = req.body;
   if (!sql) return res.status(400).json({ success: false, error: 'SQL required' });
 
@@ -111,7 +111,9 @@ router.post('/sql-beautifier', (req, res) => {
 
   formatted = formatted.split('\n').map(line => line.trim()).filter(Boolean).join('\n');
   res.json({ success: true, result: { formatted } });
-});
+}
+
+router.post('/sql-query-beautifier', handleSqlBeautifier);
 
 router.post('/cron-generator', (req, res) => {
   const { minute = '*', hour = '*', dayOfMonth = '*', month = '*', dayOfWeek = '*', description } = req.body;

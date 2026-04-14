@@ -31,7 +31,7 @@ export default function DataBreachEmailCheckerTool() {
 
     setLoading(true);
     try {
-      const response = await fetch(`${API_URLS.BASE_URL}/api/security/data-breach-check/`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.DATA_BREACH_EMAIL_CHECKER}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

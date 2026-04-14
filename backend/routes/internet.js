@@ -4,6 +4,10 @@ const tls = require('tls');
 const https = require('https');
 const http = require('http');
 const fetch = require('node-fetch');
+const { execFile } = require('child_process');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 const { strictLimiter } = require('../middleware/security');
 
 const router = express.Router();
@@ -25,6 +29,21 @@ function isPrivateOrReserved(ip) {
   if (parts[0] === 127) return true;
   if (parts[0] === 0) return true;
   return false;
+}
+
+function execFileAsync(command, args, options = {}) {
+  return new Promise((resolve, reject) => {
+    execFile(command, args, options, (error, stdout, stderr) => {
+      if (error) {
+        error.stdout = stdout;
+        error.stderr = stderr;
+        reject(error);
+        return;
+      }
+
+      resolve({ stdout, stderr });
+    });
+  });
 }
 
 router.post('/ip-lookup', async (req, res, next) => {
@@ -303,10 +322,86 @@ function parseUserAgent(ua) {
 }
 
 router.post('/website-screenshot', async (req, res, next) => {
-  res.json({
-    success: false,
-    error: 'Website screenshot requires Puppeteer which is not available in this environment. Try a browser extension or online screenshot service.',
-  });
+  const { url, width = 1440, height = 900, format = 'png' } = req.body;
+
+  if (!url) {
+    return res.status(400).json({ success: false, error: 'URL is required' });
+  }
+
+  let targetUrl;
+  try {
+    targetUrl = new URL(url);
+  } catch {
+    return res.status(400).json({ success: false, error: 'Invalid URL' });
+  }
+
+  if (!['http:', 'https:'].includes(targetUrl.protocol)) {
+    return res.status(400).json({ success: false, error: 'Only HTTP and HTTPS URLs are supported' });
+  }
+
+  const hostname = targetUrl.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
+    return res.status(400).json({ success: false, error: 'Localhost URLs are not allowed for screenshots' });
+  }
+
+  if (isValidIP(hostname) && isPrivateOrReserved(hostname)) {
+    return res.status(400).json({ success: false, error: 'Private network IPs are not allowed for screenshots' });
+  }
+
+  const normalizedFormat = String(format).toLowerCase() === 'jpeg' ? 'jpeg' : 'png';
+  const extension = normalizedFormat === 'jpeg' ? 'jpg' : 'png';
+  const screenshotPath = path.join(os.tmpdir(), `website-screenshot-${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`);
+
+  try {
+    await execFileAsync('playwright.exe', [
+      'screenshot',
+      '--full-page',
+      '--viewport-size', `${parseInt(width) || 1440},${parseInt(height) || 900}`,
+      '--timeout', '30000',
+      targetUrl.toString(),
+      screenshotPath,
+    ], { windowsHide: true, timeout: 45000 });
+
+    const imageBuffer = fs.readFileSync(screenshotPath);
+    const mimeType = normalizedFormat === 'jpeg' ? 'image/jpeg' : 'image/png';
+
+    res.json({
+      success: true,
+      result: {
+        url: targetUrl.toString(),
+        width: parseInt(width) || 1440,
+        height: parseInt(height) || 900,
+        format: normalizedFormat,
+        screenshot: `data:${mimeType};base64,${imageBuffer.toString('base64')}`,
+        timestamp: new Date().toISOString(),
+      },
+    });
+  } catch (err) {
+    const stderr = `${err.stderr || ''} ${err.message || ''}`;
+    if (/Executable doesn't exist/i.test(stderr) || /playwright install/i.test(stderr)) {
+      return res.json({
+        success: false,
+        error: 'Website screenshot needs a Playwright browser runtime. Run `playwright install chromium` on the server, then try again.',
+      });
+    }
+
+    if (/ENOENT/i.test(err.message)) {
+      return res.json({
+        success: false,
+        error: 'Playwright CLI is not installed on the server PATH. Install Playwright to enable website screenshots.',
+      });
+    }
+
+    return res.json({
+      success: false,
+      error: 'Failed to capture website screenshot.',
+      details: err.message,
+    });
+  } finally {
+    try {
+      if (fs.existsSync(screenshotPath)) fs.unlinkSync(screenshotPath);
+    } catch {}
+  }
 });
 
 module.exports = router;

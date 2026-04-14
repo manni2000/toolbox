@@ -26,7 +26,7 @@ const DomainAgeTool = () => {
 
   const checkDomainAge = async (domain: string): Promise<DomainInfo> => {
     try {
-      const response = await fetch(`${API_URLS.BASE_URL}/api/seo/domain-age`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.DOMAIN_AGE}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

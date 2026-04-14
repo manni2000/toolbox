@@ -14,6 +14,15 @@ function validateImageFile(file) {
   return allowedTypes.includes(file.mimetype);
 }
 
+function getUploadedFile(req, fieldNames = ['image', 'file']) {
+  if (req.file) return req.file;
+  for (const fieldName of fieldNames) {
+    const candidate = req.files?.[fieldName];
+    if (Array.isArray(candidate) && candidate[0]) return candidate[0];
+  }
+  return null;
+}
+
 router.post('/compress', upload.single('image'), async (req, res, next) => {
   try {
     if (!req.file) return res.status(400).json({ success: false, error: 'Image file required' });
@@ -209,7 +218,10 @@ router.post('/background-remover', upload.single('image'), async (req, res, next
   });
 });
 
-router.post('/image-to-word', upload.single('image'), async (req, res, next) => {
+router.post('/image-to-word', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'file', maxCount: 1 }]), async (req, res, next) => {
+  const file = getUploadedFile(req);
+  if (!file) return res.status(400).json({ success: false, error: 'Image file required' });
+
   res.json({
     success: false,
     error: 'Image to Word (OCR) conversion requires Tesseract.js or similar OCR library.',

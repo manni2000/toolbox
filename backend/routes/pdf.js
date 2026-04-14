@@ -8,15 +8,37 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 
 
 router.use(uploadLimiter);
 
-router.post('/merge', upload.array('files', 20), async (req, res, next) => {
+function getUploadedFile(req, fieldNames = ['file', 'pdf']) {
+  if (req.file) return req.file;
+  for (const fieldName of fieldNames) {
+    const candidate = req.files?.[fieldName];
+    if (Array.isArray(candidate) && candidate[0]) return candidate[0];
+  }
+  return null;
+}
+
+function getUploadedFiles(req, fieldNames = ['files', 'pdfs']) {
+  if (Array.isArray(req.files)) return req.files;
+
+  const files = [];
+  for (const fieldName of fieldNames) {
+    const candidate = req.files?.[fieldName];
+    if (Array.isArray(candidate)) files.push(...candidate);
+  }
+
+  return files;
+}
+
+router.post('/merge', upload.fields([{ name: 'files', maxCount: 20 }, { name: 'pdfs', maxCount: 20 }]), async (req, res, next) => {
   try {
-    if (!req.files || req.files.length < 2) {
+    const files = getUploadedFiles(req);
+    if (!files || files.length < 2) {
       return res.status(400).json({ success: false, error: 'At least 2 PDF files required' });
     }
 
     const mergedPdf = await PDFDocument.create();
 
-    for (const file of req.files) {
+    for (const file of files) {
       if (file.mimetype !== 'application/pdf') continue;
       const pdf = await PDFDocument.load(file.buffer, { ignoreEncryption: true });
       const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
@@ -32,12 +54,13 @@ router.post('/merge', upload.array('files', 20), async (req, res, next) => {
   }
 });
 
-router.post('/split', upload.single('file'), async (req, res, next) => {
+router.post('/split', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res, next) => {
   try {
-    if (!req.file) return res.status(400).json({ success: false, error: 'PDF file required' });
+    const file = getUploadedFile(req);
+    if (!file) return res.status(400).json({ success: false, error: 'PDF file required' });
 
     const { fromPage = 1, toPage } = req.body;
-    const srcPdf = await PDFDocument.load(req.file.buffer, { ignoreEncryption: true });
+    const srcPdf = await PDFDocument.load(file.buffer, { ignoreEncryption: true });
     const pageCount = srcPdf.getPageCount();
 
     const from = Math.max(1, parseInt(fromPage)) - 1;
@@ -56,13 +79,15 @@ router.post('/split', upload.single('file'), async (req, res, next) => {
   }
 });
 
-router.post('/rotate', upload.single('file'), async (req, res, next) => {
+router.post('/rotate', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res, next) => {
   try {
-    if (!req.file) return res.status(400).json({ success: false, error: 'PDF file required' });
+    const file = getUploadedFile(req);
+    if (!file) return res.status(400).json({ success: false, error: 'PDF file required' });
 
-    const { rotation = 90, pages: pagesParam } = req.body;
+    const rotation = req.body.rotation ?? req.body.angle ?? 90;
+    const pagesParam = req.body.pages;
     const rotDeg = parseInt(rotation) || 90;
-    const pdf = await PDFDocument.load(req.file.buffer, { ignoreEncryption: true });
+    const pdf = await PDFDocument.load(file.buffer, { ignoreEncryption: true });
     const allPages = pdf.getPages();
 
     let targetPages;
@@ -86,14 +111,15 @@ router.post('/rotate', upload.single('file'), async (req, res, next) => {
   }
 });
 
-router.post('/remove-pages', upload.single('file'), async (req, res, next) => {
+router.post('/remove-pages', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res, next) => {
   try {
-    if (!req.file) return res.status(400).json({ success: false, error: 'PDF file required' });
+    const file = getUploadedFile(req);
+    if (!file) return res.status(400).json({ success: false, error: 'PDF file required' });
 
-    const { pages: pagesParam } = req.body;
+    const pagesParam = req.body.pages ?? req.body.pagesToRemove;
     if (!pagesParam) return res.status(400).json({ success: false, error: 'Pages to remove are required' });
 
-    const pdf = await PDFDocument.load(req.file.buffer, { ignoreEncryption: true });
+    const pdf = await PDFDocument.load(file.buffer, { ignoreEncryption: true });
     const total = pdf.getPageCount();
 
     const toRemove = new Set(
@@ -119,9 +145,10 @@ router.post('/remove-pages', upload.single('file'), async (req, res, next) => {
   }
 });
 
-router.post('/password', upload.single('file'), async (req, res, next) => {
+router.post('/password', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res, next) => {
   try {
-    if (!req.file) return res.status(400).json({ success: false, error: 'PDF file required' });
+    const file = getUploadedFile(req);
+    if (!file) return res.status(400).json({ success: false, error: 'PDF file required' });
     const { password } = req.body;
     if (!password) return res.status(400).json({ success: false, error: 'Password is required' });
 
@@ -134,12 +161,13 @@ router.post('/password', upload.single('file'), async (req, res, next) => {
   }
 });
 
-router.post('/unlock', upload.single('file'), async (req, res, next) => {
+router.post('/unlock', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res, next) => {
   try {
-    if (!req.file) return res.status(400).json({ success: false, error: 'PDF file required' });
+    const file = getUploadedFile(req);
+    if (!file) return res.status(400).json({ success: false, error: 'PDF file required' });
 
     try {
-      const pdf = await PDFDocument.load(req.file.buffer, { ignoreEncryption: true });
+      const pdf = await PDFDocument.load(file.buffer, { ignoreEncryption: true });
       const bytes = await pdf.save();
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename="unlocked.pdf"');
@@ -159,21 +187,21 @@ router.post('/html-to-pdf', async (req, res, next) => {
   });
 });
 
-router.post('/to-word', upload.single('file'), async (req, res, next) => {
+router.post('/to-word', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res, next) => {
   res.json({
     success: false,
     error: 'PDF to Word conversion requires specialized conversion libraries. This feature is not available in the current server configuration.',
   });
 });
 
-router.post('/to-excel', upload.single('file'), async (req, res, next) => {
+router.post('/to-excel', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res, next) => {
   res.json({
     success: false,
     error: 'PDF to Excel conversion requires specialized conversion libraries. This feature is not available in the current server configuration.',
   });
 });
 
-router.post('/to-powerpoint', upload.single('file'), async (req, res, next) => {
+router.post('/to-powerpoint', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res, next) => {
   res.json({
     success: false,
     error: 'PDF to PowerPoint conversion requires specialized conversion libraries.',
@@ -194,7 +222,7 @@ router.post('/powerpoint-to-pdf', upload.single('file'), async (req, res, next) 
   });
 });
 
-router.post('/to-image', upload.single('file'), async (req, res, next) => {
+router.post('/to-image', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res, next) => {
   res.json({
     success: false,
     error: 'PDF to Image conversion requires pdf-poppler or similar library. This feature requires additional setup.',
