@@ -1,6 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const { strictLimiter } = require('../middleware/security');
+const { cache } = require('../redis');
 
 const router = express.Router();
 
@@ -416,7 +417,7 @@ const API_DOCUMENTATION = {
   ],
 };
 
-router.post('/keys/generate', strictLimiter, (req, res) => {
+router.post('/keys/generate', strictLimiter, async (req, res) => {
   const { email, name = 'Default' } = req.body;
   if (!email || !email.includes('@')) {
     return res.status(400).json({ success: false, error: 'Valid email required' });
@@ -446,6 +447,14 @@ router.post('/keys/generate', strictLimiter, (req, res) => {
     createdAt: new Date().toISOString(),
   });
 
+  // Invalidate cache for this email's key list
+  try {
+    const cacheKey = cache.generateKey('api', 'keys', email);
+    await cache.del(cacheKey);
+  } catch (error) {
+    console.error('Cache invalidation error in /keys/generate:', error);
+  }
+
   res.json({
     success: true,
     data: {
@@ -460,33 +469,88 @@ router.post('/keys/generate', strictLimiter, (req, res) => {
   });
 });
 
-router.post('/keys/list', (req, res) => {
+router.post('/keys/list', async (req, res) => {
   const { email } = req.body;
   if (!email || !email.includes('@')) {
     return res.status(400).json({ success: false, error: 'Valid email required' });
   }
 
-  const keys = [...apiKeys.values()]
-    .filter(k => k.email === email)
-    .map(k => ({
-      key: k.key.substring(0, 12) + '...',
-      name: k.name,
-      status: k.status,
-      tier: k.tier,
-      dailyLimit: k.dailyLimit,
-      usageToday: k.usageToday,
-      totalRequests: k.totalRequests,
-      createdAt: k.createdAt,
-    }));
+  const cacheKey = cache.generateKey('api', 'keys', email);
+  
+  try {
+    // Try to get from cache first (short TTL since usage changes frequently)
+    const cachedKeys = await cache.get(cacheKey);
+    if (cachedKeys) {
+      return res.json(cachedKeys);
+    }
 
-  res.json({ success: true, keys });
+    const keys = [...apiKeys.values()]
+      .filter(k => k.email === email)
+      .map(k => ({
+        key: k.key.substring(0, 12) + '...',
+        name: k.name,
+        status: k.status,
+        tier: k.tier,
+        dailyLimit: k.dailyLimit,
+        usageToday: k.usageToday,
+        totalRequests: k.totalRequests,
+        createdAt: k.createdAt,
+      }));
+
+    const response = { success: true, keys };
+    
+    // Cache for 5 minutes (300 seconds) since usage changes
+    await cache.set(cacheKey, response, 300);
+
+    res.json(response);
+  } catch (error) {
+    console.error('Cache error in /keys/list:', error);
+    // Fallback to direct response if cache fails
+    const keys = [...apiKeys.values()]
+      .filter(k => k.email === email)
+      .map(k => ({
+        key: k.key.substring(0, 12) + '...',
+        name: k.name,
+        status: k.status,
+        tier: k.tier,
+        dailyLimit: k.dailyLimit,
+        usageToday: k.usageToday,
+        totalRequests: k.totalRequests,
+        createdAt: k.createdAt,
+      }));
+
+    res.json({ success: true, keys });
+  }
 });
 
-router.get('/docs', (req, res) => {
-  res.json({
-    success: true,
-    ...API_DOCUMENTATION,
-  });
+router.get('/docs', async (req, res) => {
+  const cacheKey = cache.generateKey('api', 'docs');
+  
+  try {
+    // Try to get from cache first
+    const cachedDocs = await cache.get(cacheKey);
+    if (cachedDocs) {
+      return res.json(cachedDocs);
+    }
+
+    // If not in cache, generate response
+    const response = {
+      success: true,
+      ...API_DOCUMENTATION,
+    };
+
+    // Cache the response for 1 hour (3600 seconds)
+    await cache.set(cacheKey, response, 3600);
+
+    res.json(response);
+  } catch (error) {
+    console.error('Cache error in /docs:', error);
+    // Fallback to direct response if cache fails
+    res.json({
+      success: true,
+      ...API_DOCUMENTATION,
+    });
+  }
 });
 
 router.post('/text/word-count', validateApiKey, (req, res) => {

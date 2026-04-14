@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { PDFDocument, degrees, StandardFonts, rgb } = require('pdf-lib');
-const pdfParse = require('pdf-parse');
+const PDFParser = require('pdf2json');
 const { Document, Packer, Paragraph, TextRun, HeadingLevel } = require('docx');
 const XLSX = require('xlsx');
 const { uploadLimiter } = require('../middleware/security');
@@ -10,6 +10,37 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 
 router.use(uploadLimiter);
+
+async function extractTextFromPDF(buffer) {
+  return new Promise((resolve) => {
+    const pdfParser = new PDFParser();
+    
+    pdfParser.on('pdfParser_dataError', (errData) => {
+      resolve({ text: '', numpages: 0 });
+    });
+    
+    pdfParser.on('pdfParser_dataReady', (pdfData) => {
+      let fullText = '';
+      if (pdfData && pdfData.Pages) {
+        pdfData.Pages.forEach(page => {
+          if (page.Texts) {
+            page.Texts.forEach(text => {
+              if (text.R) {
+                text.R.forEach(r => {
+                  fullText += decodeURIComponent(r.T) + ' ';
+                });
+              }
+            });
+            fullText += '\n';
+          }
+        });
+      }
+      resolve({ text: fullText.trim(), numpages: pdfData.Pages ? pdfData.Pages.length : 0 });
+    });
+    
+    pdfParser.parseBuffer(buffer);
+  });
+}
 
 function getUploadedFile(req, fieldNames = ['file', 'pdf']) {
   if (req.file) return req.file;
@@ -242,7 +273,7 @@ router.post('/info', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf'
 
     let textInfo = {};
     try {
-      const parsed = await pdfParse(file.buffer);
+      const parsed = await extractTextFromPDF(file.buffer);
       textInfo = {
         wordCount: parsed.text ? parsed.text.split(/\s+/).filter(Boolean).length : 0,
         charCount: parsed.text ? parsed.text.length : 0,
@@ -367,7 +398,7 @@ router.post('/to-word', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'p
 
     let text = '';
     try {
-      const parsed = await pdfParse(file.buffer);
+      const parsed = await extractTextFromPDF(file.buffer);
       text = parsed.text || '';
     } catch (e) {
       text = 'Could not extract text from this PDF.';
@@ -411,7 +442,7 @@ router.post('/to-excel', upload.fields([{ name: 'file', maxCount: 1 }, { name: '
 
     let text = '';
     try {
-      const parsed = await pdfParse(file.buffer);
+      const parsed = await extractTextFromPDF(file.buffer);
       text = parsed.text || '';
     } catch (e) {
       text = 'Could not extract text from this PDF.';
@@ -444,7 +475,7 @@ router.post('/to-powerpoint', upload.fields([{ name: 'file', maxCount: 1 }, { na
     let text = '';
     let pageCount = 0;
     try {
-      const parsed = await pdfParse(file.buffer);
+      const parsed = await extractTextFromPDF(file.buffer);
       text = parsed.text || '';
       pageCount = parsed.numpages || 1;
     } catch (e) {

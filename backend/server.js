@@ -1,8 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
 const { corsOptions, generalLimiter, helmetOptions, requestSanitizer, errorHandler } = require('./middleware/security');
+const { cacheMiddleware } = require('./middleware/cache');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -23,7 +25,7 @@ app.use((req, _res, next) => {
 });
 
 
-app.get('/api/health', (_req, res) => {
+app.get('/api/health', cacheMiddleware('health', 30), (_req, res) => {
   res.json({ success: true, status: 'ok', timestamp: new Date().toISOString() });
 });
 
