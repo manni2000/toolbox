@@ -261,8 +261,8 @@ const APIDocs = () => {
           <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 bg-slate-800/50 h-auto p-1">
             <TabsTrigger value="getstarted" className="text-xs sm:text-sm py-2 sm:py-2.5 px-1 sm:px-3 text-white data-[state=active]:text-black">Get Started</TabsTrigger>
             <TabsTrigger value="endpoints" className="text-xs sm:text-sm py-2 sm:py-2.5 px-1 sm:px-3 text-white data-[state=active]:text-black">Endpoints</TabsTrigger>
-            <TabsTrigger value="playground" className="text-xs sm:text-sm py-2 sm:py-2.5 px-1 sm:px-3 flex items-center gap-1 text-white data-[state=active]:text-black">
-              <Terminal className="h-3 w-3 text-white data-[state=active]:text-black" />
+            <TabsTrigger value="playground" className="text-xs sm:text-sm py-2 sm:py-2.5 px-1 sm:px-3 flex items-center gap-1 text-white data-[state=active]:text-black hover:text-white/90 data-[state=active]:hover:text-black/90">
+              <Terminal className="h-3 w-3 text-current" />
               Playground
             </TabsTrigger>
             <TabsTrigger value="mykeys" className="text-xs sm:text-sm py-2 sm:py-2.5 px-1 sm:px-3 text-white data-[state=active]:text-black">My Keys</TabsTrigger>
