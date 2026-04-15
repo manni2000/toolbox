@@ -1,11 +1,9 @@
 import { useState, useRef } from "react";
-import { ImageIcon, Upload, X, Loader2, Sparkles, FileImage } from "lucide-react";
+import { ImageIcon, Upload, X, Loader2, FileImage } from "lucide-react";
 import { motion } from "framer-motion";
-import { fadeInUp, scaleIn } from "@/lib/animations";
-import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
+import { fadeInUp } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
-import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 
@@ -25,19 +23,11 @@ interface ImageResult {
 interface ConversionResult {
   success: boolean;
   images: ImageResult[];
-  totalPages?: number;
-  renderedPages?: number;
-  format?: string;
-  pdfName?: string;
-  method?: string;
-  performance?: {
-    load?: number;
-    parse?: number;
-    render?: number;
-    encode?: number;
-    save?: number;
-  };
-  error?: string;
+  totalPages: number;
+  renderedPages: number;
+  format: string;
+  pdfName: string;
+  method: string;
 }
 
 const PDFToImageTool = () => {
@@ -47,6 +37,7 @@ const PDFToImageTool = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [conversionStats, setConversionStats] = useState<ConversionResult | null>(null);
+  const [progress, setProgress] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const downloadSectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -63,6 +54,7 @@ const PDFToImageTool = () => {
     setFile(f);
     setFileName(f.name);
     setResultImages([]);
+    setProgress(0);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -91,62 +83,86 @@ const PDFToImageTool = () => {
     setFileName("");
     setResultImages([]);
     setConversionStats(null);
+    setProgress(0);
   };
 
   const processFile = async () => {
     if (!file) return;
 
     setIsProcessing(true);
-    const formData = new FormData();
-    formData.append('pdf', file);
+    const images: ImageResult[] = [];
 
     try {
-      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.PDF_TO_IMAGE}`, {
-        method: 'POST',
-        body: formData,
+      // Dynamically import PDF.js with worker
+      const pdfjsLib = await import('pdfjs-dist');
+      
+      // Set worker before loading document
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@5.6.205/build/pdf.worker.min.mjs';
+      
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const numPages = pdf.numPages;
+
+      for (let i = 1; i <= numPages; i++) {
+        const page = await pdf.getPage(i);
+        const scale = 2; // Higher scale for better quality
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        if (!context) throw new Error('Could not get canvas context');
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        await page.render({
+          canvasContext: context,
+          viewport: viewport,
+          canvas: canvas,
+        }).promise;
+
+        const imageDataUrl = canvas.toDataURL('image/png');
+        const imageName = numPages === 1 
+          ? `${file.name.replace('.pdf', '')}.png`
+          : `${file.name.replace('.pdf', '')}-${i}.png`;
+
+        images.push({
+          page: i,
+          image: imageDataUrl,
+          name: imageName,
+          width: viewport.width,
+          height: viewport.height,
+          format: 'png',
+        });
+
+        // Update progress
+        setProgress(Math.round((i / numPages) * 100));
+      }
+
+      setResultImages(images);
+      setConversionStats({
+        success: true,
+        images,
+        totalPages: numPages,
+        renderedPages: numPages,
+        format: 'png',
+        pdfName: file.name,
+        method: 'client-side-pdfjs',
       });
 
-      const result: ConversionResult = await response.json();
+      toast({
+        title: "Success!",
+        description: `Converted ${numPages} pages to PNG images`,
+      });
 
-      if (result.success && result.images && result.images.length > 0) {
-        // Check if we got a PDF fallback (production environment)
-        const hasPdfFallback = result.images[0].format === 'pdf' || result.images[0].error;
-        
-        if (hasPdfFallback) {
-          // Show error message for production environment
-          toast({
-            title: "PDF to Image Not Available",
-            description: "PDF to image conversion is not available in production. You can download the original PDF file.",
-            variant: "destructive",
-          });
-          
-          // Still set the result so user can download the PDF
-          setResultImages(result.images);
-          setConversionStats(result);
-        } else {
-          // Normal image conversion result
-          setResultImages(result.images);
-          setConversionStats(result);
-
-          const methodText = result.method === 'pdftoimg-js' ? 'Fast PDF-to-Image conversion' : 'PDF conversion';
-
-          toast({
-            title: "Success!",
-            description: `Converted ${result.renderedPages || result.images.length} pages using ${methodText}`,
-          });
-        }
-
-        // Scroll to download section after successful conversion
-        setTimeout(() => {
-          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
-      } else {
-        throw new Error(result.error || 'No images were generated');
-      }
+      setTimeout(() => {
+        downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     } catch (error) {
+      console.error('PDF to image conversion error:', error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to process file",
+        description: error instanceof Error ? error.message : "Failed to convert PDF to images",
         variant: "destructive",
       });
     } finally {
@@ -235,7 +251,7 @@ const PDFToImageTool = () => {
               {isProcessing ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Processing...
+                  {progress > 0 ? `Processing... ${progress}%` : 'Processing...'}
                 </>
               ) : (
                 <>
@@ -245,6 +261,21 @@ const PDFToImageTool = () => {
               )}
             </button>
 
+            {isProcessing && progress > 0 && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>Converting pages...</span>
+                  <span>{progress}%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all duration-300"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
             {resultImages.length > 0 && conversionStats && (
               <div className="space-y-4">
                 {/* Download Section */}
@@ -252,14 +283,11 @@ const PDFToImageTool = () => {
                   <EnhancedDownload
                     data={resultImages[0].image}
                     fileName={resultImages[0].name}
-                    fileType={resultImages[0].format === 'pdf' ? 'pdf' : 'image'}
-                    title={resultImages[0].format === 'pdf' ? 'PDF Download' : 'PDF Converted to Images'}
-                    description={resultImages[0].format === 'pdf' 
-                      ? 'PDF to image conversion is not available in production. Download the original PDF file.'
-                      : `Successfully converted ${resultImages.length} pages to ${conversionStats.format?.toUpperCase() || 'PNG'} images`
-                    }
+                    fileType="image"
+                    title="PDF Converted to Images"
+                    description={`Successfully converted ${resultImages.length} pages to PNG images`}
                     fileSize={`${(file.size / 1024 / 1024).toFixed(2)} MB`}
-                    multipleFiles={resultImages[0].format === 'pdf' ? undefined : resultImages.map(img => ({
+                    multipleFiles={resultImages.map(img => ({
                       url: img.image,
                       name: img.name,
                       page: img.page
