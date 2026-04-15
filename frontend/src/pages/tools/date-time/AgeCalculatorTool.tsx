@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Calendar, Gift } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "220 80% 55%";
 
@@ -157,6 +158,9 @@ const AgeCalculatorTool = () => {
             </div>
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

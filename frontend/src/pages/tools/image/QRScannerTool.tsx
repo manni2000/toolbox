@@ -6,6 +6,7 @@ import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "173 80% 40%";
 
@@ -17,7 +18,6 @@ const QRScannerTool = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
 
   const handleFile = async (file: File) => {
@@ -35,50 +35,40 @@ const QRScannerTool = () => {
     setLoading(true);
 
     try {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const dataUrl = e.target?.result as string;
-        setImage(dataUrl);
+      setImage(URL.createObjectURL(file));
+      const formData = new FormData();
+      formData.append('image', file);
 
-        // Use jsQR library for scanning
-        const img = new Image();
-        img.onload = () => {
-          const canvas = canvasRef.current;
-          if (!canvas) {
-            setLoading(false);
-            return;
-          }
+      const response = await fetch('/api/image/qr-scanner', {
+        method: 'POST',
+        body: formData,
+      });
 
-          canvas.width = img.width;
-          canvas.height = img.height;
-          const ctx = canvas.getContext("2d");
-          if (!ctx) {
-            setLoading(false);
-            return;
-          }
+      const data = await response.json();
 
-          ctx.drawImage(img, 0, 0);
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-          // Simple pattern detection (for demo - real implementation needs jsQR)
-          setError("QR scanning requires the jsQR library. Install it to enable full scanning functionality.");
-          toast({
-            title: "Library Required",
-            description: "QR scanning functionality needs additional setup. Please install the jsQR library.",
-            variant: "destructive",
-          });
-          setLoading(false);
-        };
-        img.src = dataUrl;
-      };
-      reader.readAsDataURL(file);
+      if (data.success) {
+        setResult(data.result.text);
+        toast({
+          title: "QR Code Scanned",
+          description: "QR code has been successfully decoded.",
+        });
+      } else {
+        setError(data.error || 'Failed to scan QR code');
+        toast({
+          title: "Scan Failed",
+          description: data.error || "Could not find a QR code in the image.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
-      setError("Failed to process the image file.");
+      const errorMessage = "Failed to scan QR code. Please try again.";
+      setError(errorMessage);
       toast({
-        title: "Processing Failed",
-        description: "Failed to process the selected image file.",
+        title: "Error",
+        description: errorMessage,
         variant: "destructive",
       });
+    } finally {
       setLoading(false);
     }
   };
@@ -127,8 +117,6 @@ const QRScannerTool = () => {
       category="Image Tools"
       categoryPath="/category/image"
     >
-      <canvas ref={canvasRef} className="hidden" />
-      
       <div className="space-y-6">
         <motion.div
           variants={fadeInUp}
@@ -295,6 +283,9 @@ const QRScannerTool = () => {
             )}
           </motion.div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

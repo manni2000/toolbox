@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "173 80% 40%";
 
@@ -361,6 +362,9 @@ const ImageToPDFTool = () => {
             )}
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

@@ -3,6 +3,7 @@ import { Copy, Check, Search, BarChart3, FileText, TrendingUp, AlertCircle, Targ
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "25 90% 50%";
 
@@ -403,6 +404,9 @@ const KeywordDensityTool = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

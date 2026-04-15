@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 70% 50%";
 
@@ -204,7 +205,7 @@ const PDFToImageTool = () => {
             <div>
               <h2 className="text-2xl font-bold">PDF to High-Quality Images</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Convert each PDF page to individual image files in PNG or JPG format.
+                Convert each PDF page to image files.
               </p>
             </div>
           </div>
@@ -298,6 +299,9 @@ const PDFToImageTool = () => {
             )}
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

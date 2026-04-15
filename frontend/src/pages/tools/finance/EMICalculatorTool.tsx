@@ -8,6 +8,7 @@ import { InteractiveSlider } from "@/components/ui/interactive-slider";
 import { FormulaCard } from "@/components/ui/formula-card";
 import { FinanceChart, generateEMIData, generatePieData } from "@/components/ui/finance-chart";
 import { EnhancedDownload, downloadText, downloadJSON } from "@/components/EnhancedDownload";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "35 85% 55%";
 
@@ -417,6 +418,9 @@ const EMICalculatorTool = () => {
           defaultExpanded={false}
         />
       </div>
+
+      {/* FAQ Section */}
+      <ToolFAQ />
     </ToolLayout>
   );
 };

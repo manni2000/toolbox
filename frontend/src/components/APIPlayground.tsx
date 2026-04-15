@@ -819,12 +819,12 @@ if ($err) {
               <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700 hover:bg-slate-800/70 transition-all duration-300 overflow-hidden relative group">
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <CardHeader className="pb-3 relative z-10">
-                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                  <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center shrink-0">
                         <Code2 className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400" />
                       </div>
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <CardTitle className="text-white text-base sm:text-lg flex items-center gap-2">
                           Code Generation
                         </CardTitle>
@@ -833,47 +833,51 @@ if ($err) {
                         </CardDescription>
                       </div>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-                        <SelectTrigger className="w-24 sm:w-28 bg-slate-900/50 border-slate-700 focus:border-purple-500/50 text-white text-xs">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="curl">cURL</SelectItem>
-                          <SelectItem value="javascript">JavaScript</SelectItem>
-                          <SelectItem value="python">Python</SelectItem>
-                          <SelectItem value="node">Node.js</SelectItem>
-                          <SelectItem value="php">PHP</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => copyCode(generateCode(selectedLanguage))}
-                        className="border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 text-white"
-                      >
-                        {copiedCode === generateCode(selectedLanguage) ? (
-                          <Check className="h-3 w-3 sm:h-4 sm:w-4 text-green-400" />
-                        ) : (
-                          <Copy className="h-3 w-3 sm:h-4 sm:w-4" />
-                        )}
-                        <span className="hidden sm:inline ml-2">Copy</span>
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={saveExample}
-                        className="border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 text-white"
-                      >
-                        <Save className="h-3 w-3 sm:h-4 sm:w-4" />
-                        <span className="hidden sm:inline ml-2">Save</span>
-                      </Button>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                          <SelectTrigger className="w-28 sm:w-32 bg-slate-900/50 border-slate-700 focus:border-purple-500/50 text-white text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="curl">cURL</SelectItem>
+                            <SelectItem value="javascript">JavaScript</SelectItem>
+                            <SelectItem value="python">Python</SelectItem>
+                            <SelectItem value="node">Node.js</SelectItem>
+                            <SelectItem value="php">PHP</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => copyCode(generateCode(selectedLanguage))}
+                          className="border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 text-white px-3 py-2 text-xs sm:text-sm"
+                        >
+                          {copiedCode === generateCode(selectedLanguage) ? (
+                            <Check className="h-3 w-3 sm:h-4 sm:w-4 text-green-400" />
+                          ) : (
+                            <Copy className="h-3 w-3 sm:h-4 sm:w-4" />
+                          )}
+                          <span className="ml-1 sm:ml-2">Copy</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={saveExample}
+                          className="border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 text-white px-3 py-2 text-xs sm:text-sm"
+                        >
+                          <Save className="h-3 w-3 sm:h-4 sm:w-4" />
+                          <span className="ml-1 sm:ml-2">Save</span>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <div className="overflow-x-auto">
-                    <pre className="text-xs bg-slate-950/50 p-3 sm:p-4 rounded-lg text-slate-300 whitespace-pre border border-slate-700 font-mono leading-relaxed min-w-[250px] sm:min-w-[300px]">
+                    <pre className="text-xs bg-slate-950/50 p-3 sm:p-4 rounded-lg text-slate-300 whitespace-pre-wrap sm:whitespace-pre border border-slate-700 font-mono leading-relaxed min-w-[280px] sm:min-w-[300px] break-all sm:break-normal">
                       {generateCode(selectedLanguage)}
                     </pre>
                   </div>

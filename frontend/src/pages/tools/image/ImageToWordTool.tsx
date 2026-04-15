@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "173 80% 40%";
 
@@ -195,6 +196,9 @@ const ImageToWordTool = () => {
             )}
           </motion.div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

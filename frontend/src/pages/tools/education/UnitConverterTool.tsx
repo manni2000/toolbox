@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PresetButtonGroup, PresetOption } from "@/components/ui/preset-button-group";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "145 70% 45%";
 
@@ -352,6 +353,9 @@ const UnitConverterTool = () => {
             </div>
           </motion.div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

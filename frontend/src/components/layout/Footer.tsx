@@ -8,7 +8,7 @@ const Footer = () => {
     { name: "QR Code Generator", path: "/qr-code-generator" },
     { name: "Image to PDF", path: "/image-to-pdf" },
     { name: "PDF to Word", path: "/pdf-to-word" },
-    { name: "PDF to Image", path: "/pdf-to-png" },
+    { name: "PDF to Image", path: "/pdf-to-image" },
     { name: "Background Remover", path: "/background-remover" },
     { name: "Invoice Generator", path: "/invoice-generator" },
   ];
@@ -16,7 +16,7 @@ const Footer = () => {
   const pdfTools = [
     { name: "PDF Merge", path: "/pdf-merge" },
     { name: "PDF Split", path: "/pdf-split" },
-    { name: "PDF to Image", path: "/pdf-to-png" },
+    { name: "PDF to Image", path: "/pdf-to-image" },
     { name: "PDF to Word", path: "/pdf-to-word" },
     { name: "PDF to PowerPoint", path: "/pdf-to-powerpoint" },
     { name: "PDF to Excel", path: "/pdf-to-excel" },

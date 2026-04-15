@@ -3,6 +3,7 @@ import { Copy, Check, Hash, Sparkles, TrendingUp, Users, Target, Zap } from "luc
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "330 80% 55%";
 
@@ -270,6 +271,9 @@ const HashtagGeneratorTool = () => {
             </motion.div>
           </motion.div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 70% 50%";
 
@@ -198,7 +199,7 @@ const PDFMergeTool = () => {
           <div className="flex justify-center mt-6">
             <EnhancedDownload
               data={mergedUrl}
-              fileName="merged.pdf"
+              fileName={files.length > 0 ? `${files[0].name.replace(/\.[^/.]+$/, "")}-merged.pdf` : "merged.pdf"}
               fileType="pdf"
               title="PDFs Merged Successfully"
               description={`${files.length} PDF files have been merged into one document`}
@@ -206,6 +207,9 @@ const PDFMergeTool = () => {
             />
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

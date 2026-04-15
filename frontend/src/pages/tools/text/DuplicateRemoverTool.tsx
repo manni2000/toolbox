@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Trash2, Copy, Check } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const DuplicateRemoverTool = () => {
   const [input, setInput] = useState("");
@@ -98,6 +99,9 @@ const DuplicateRemoverTool = () => {
             />
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

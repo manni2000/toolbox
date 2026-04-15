@@ -16,7 +16,7 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 
 ## PDF Tools
 /pdf-split - Split PDF files into multiple documents
-/pdf-to-png - Convert PDF to PNG images
+/pdf-to-image - Convert PDF to PNG images
 /pdf-to-word - Convert PDF to Word documents
 /pdf-to-powerpoint - Convert PDF to PowerPoint
 /pdf-to-excel - Convert PDF to Excel spreadsheets
@@ -184,7 +184,7 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /markdown/background-remover.md - Background Remover tool documentation
 /markdown/qr-generator.md - QR Generator tool documentation
 /markdown/pdf-split.md - PDF Split tool documentation
-/markdown/pdf-to-png.md - PDF to PNG converter documentation
+/markdown/pdf-to-image.md - PDF to PNG converter documentation
 /markdown/pdf-to-word.md - PDF to Word converter documentation
 /markdown/pdf-to-powerpoint.md - PDF to PowerPoint converter documentation
 /markdown/pdf-to-excel.md - PDF to Excel converter documentation

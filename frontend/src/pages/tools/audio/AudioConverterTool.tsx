@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "290 80% 55%";
 
@@ -405,6 +406,9 @@ const AudioConverterTool = () => {
             </Card>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

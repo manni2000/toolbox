@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Delete, RotateCcw, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "145 70% 45%";
 
@@ -470,6 +471,9 @@ const ScientificCalculatorTool = () => {
           </Button>
         </div>
       </Card>
+
+      {/* FAQ Section */}
+      <ToolFAQ />
     </ToolLayout>
   );
 };

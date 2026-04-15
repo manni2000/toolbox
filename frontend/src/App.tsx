@@ -234,7 +234,7 @@ const AnimatedRoutes = () => {
           {/* PDF Tools */}
           <Route path="/pdf-merge" element={<Suspense fallback={<PageLoader />}><PDFMergeTool /></Suspense>} />
           <Route path="/pdf-split" element={<Suspense fallback={<PageLoader />}><PDFSplitTool /></Suspense>} />
-          <Route path="/pdf-to-png" element={<Suspense fallback={<PageLoader />}><PDFToImageTool /></Suspense>} />
+          <Route path="/pdf-to-image" element={<Suspense fallback={<PageLoader />}><PDFToImageTool /></Suspense>} />
           <Route path="/pdf-password" element={<Suspense fallback={<PageLoader />}><PDFPasswordTool /></Suspense>} />
           <Route path="/pdf-unlock" element={<Suspense fallback={<PageLoader />}><PDFUnlockTool /></Suspense>} />
           <Route path="/pdf-page-remover" element={<Suspense fallback={<PageLoader />}><PDFPageRemoverTool /></Suspense>} />

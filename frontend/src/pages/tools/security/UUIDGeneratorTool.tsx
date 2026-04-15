@@ -4,6 +4,7 @@ import { v4 as uuidv4, v1 as uuidv1 } from "uuid";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 80% 55%";
 
@@ -150,6 +151,9 @@ const UUIDGeneratorTool = () => {
             </p>
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

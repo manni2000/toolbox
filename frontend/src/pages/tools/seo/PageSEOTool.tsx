@@ -3,6 +3,7 @@ import { Copy, Check, Search, Download, Globe, AlertCircle, CheckCircle, XCircle
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "25 90% 50%";
 
@@ -942,6 +943,9 @@ const PageSEOTool = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

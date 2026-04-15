@@ -3,6 +3,7 @@ import { Copy, Check, RefreshCw, Shield, Eye, EyeOff, Sparkles, Settings } from 
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 80% 55%";
 
@@ -239,6 +240,9 @@ const PasswordGeneratorTool = () => {
           <RefreshCw className="h-5 w-5" />
           Generate Password
         </motion.button>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

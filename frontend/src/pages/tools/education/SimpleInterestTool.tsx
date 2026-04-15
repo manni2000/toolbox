@@ -3,6 +3,7 @@ import { Copy, Check, TrendingUp, Sparkles, DollarSign, Calendar, Percent, Targe
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "145 70% 45%";
 
@@ -226,6 +227,9 @@ const SimpleInterestTool = () => {
             Simple interest is calculated only on the principal amount. Unlike compound interest, it doesn't earn "interest on interest" — making it easier to calculate but typically yielding less over time.
           </p>
         </div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

@@ -7,6 +7,7 @@ import { saveAs } from "file-saver";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "280 70% 55%";
 
@@ -317,6 +318,9 @@ const CompressionZipTool = () => {
             </li>
           </ul>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

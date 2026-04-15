@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "290 80% 55%";
 
@@ -451,6 +452,9 @@ const SpeechToTextTool = () => {
             like Google Cloud Speech-to-Text, AWS Transcribe, or OpenAI Whisper would be required.
           </p>
         </Card>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

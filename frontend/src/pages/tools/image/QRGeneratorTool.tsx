@@ -8,6 +8,7 @@ import { EnhancedInput } from "@/components/ui/enhanced-input";
 import { ProcessingState } from "@/components/ProcessingState";
 import { EmptyState, NoData } from "@/components/EmptyState";
 import { toast } from "@/lib/toast";
+import ToolFAQ from "@/components/ToolFAQ";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -260,6 +261,9 @@ const QRGeneratorToolEnhanced = () => {
             </CardContent>
           </Card>
         </main>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </ToolLayout>
     </>
   );

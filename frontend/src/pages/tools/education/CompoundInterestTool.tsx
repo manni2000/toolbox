@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { FormulaCard } from "@/components/ui/formula-card";
 import { ComparisonCard } from "@/components/ui/comparison-card";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "145 70% 45%";
 
@@ -388,6 +389,9 @@ const CompoundInterestTool = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

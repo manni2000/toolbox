@@ -3,6 +3,7 @@ import { Copy, Check, Palette, RefreshCw, Download, Sparkles, Eye, Droplets, Zap
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "210 80% 55%";
 
@@ -819,6 +820,9 @@ const ColorPalettesTool = () => {
             </div>
           </motion.div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

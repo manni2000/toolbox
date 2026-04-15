@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "200 85% 50%";
 
@@ -328,6 +329,8 @@ const DNSLookupTool = () => {
           </motion.div>
         )}
 
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

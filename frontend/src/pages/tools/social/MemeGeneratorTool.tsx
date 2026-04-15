@@ -3,6 +3,7 @@ import { Smile, Download, Type, Image as ImageIcon, Upload, X, Palette, AlignLef
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "330 80% 55%";
 
@@ -623,6 +624,9 @@ const MemeGeneratorTool = () => {
             <li>• Try different text alignments for creative layouts</li>
           </ul>
         </div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

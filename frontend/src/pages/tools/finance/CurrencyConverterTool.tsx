@@ -3,6 +3,7 @@ import { ArrowRightLeft, RefreshCw, TrendingUp, AlertCircle, Sparkles } from "lu
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "35 85% 55%";
 
@@ -382,6 +383,9 @@ const CurrencyConverterTool = () => {
             live market data. Rates may vary slightly between different financial institutions.
           </p>
         </div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

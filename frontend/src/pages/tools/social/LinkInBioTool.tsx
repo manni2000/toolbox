@@ -3,6 +3,7 @@ import { Plus, Trash2, ExternalLink, Download, Eye, GripVertical, Sparkles } fro
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "330 80% 55%";
 
@@ -276,6 +277,9 @@ const LinkInBioTool = () => {
             </div>
           </div>
         </div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

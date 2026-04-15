@@ -3,6 +3,7 @@ import { Clock, Copy, Check, Info, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "210 80% 55%";
 
@@ -240,6 +241,9 @@ const CronGeneratorTool = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

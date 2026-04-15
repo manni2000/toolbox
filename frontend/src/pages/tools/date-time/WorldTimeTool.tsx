@@ -3,6 +3,7 @@ import { Globe, Clock, RefreshCw, Search, MapPin, Sunrise, Sunset, Eye, EyeOff, 
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "220 80% 55%";
 
@@ -548,6 +549,9 @@ const WorldTimeTool = () => {
             </div>
           </div>
         </div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

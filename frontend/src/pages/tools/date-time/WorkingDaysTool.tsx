@@ -3,6 +3,7 @@ import { Calendar, Clock, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "220 80% 55%";
 
@@ -118,6 +119,9 @@ const WorkingDaysTool = () => {
           <strong className="text-foreground">Note:</strong> This calculator excludes Saturdays and 
           Sundays. Public holidays are not excluded as they vary by region.
         </div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

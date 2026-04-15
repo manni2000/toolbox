@@ -3,6 +3,7 @@ import { Copy, Check, Image, Download, Globe, Share2, Eye, Settings, Sparkles } 
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "25 90% 50%";
 
@@ -454,6 +455,9 @@ const OGImagePreviewTool = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

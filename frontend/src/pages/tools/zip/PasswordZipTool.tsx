@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "280 70% 55%";
 
@@ -318,7 +319,7 @@ const PasswordZipTool = () => {
                 
                 <EnhancedDownload
                   data={zipData}
-                  fileName="protected_archive.zip"
+                  fileName={fileName ? fileName.replace(/\.[^/.]+$/, "_protected.zip") : "protected_archive.zip"}
                   fileType="zip"
                   title="Password-Protected ZIP Created Successfully"
                   description={`${files.length} file(s) encrypted with ${encryptionMethod.toUpperCase()} protection`}
@@ -385,6 +386,9 @@ const PasswordZipTool = () => {
             </li>
           </ul>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

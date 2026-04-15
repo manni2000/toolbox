@@ -8,6 +8,7 @@ import { InteractiveSlider } from "@/components/ui/interactive-slider";
 import { FormulaCard } from "@/components/ui/formula-card";
 import { FinanceChart, generateGrowthData } from "@/components/ui/finance-chart";
 import { EnhancedDownload, downloadJSON, downloadText } from "@/components/EnhancedDownload";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "35 85% 55%";
 
@@ -401,6 +402,9 @@ const LumpsumCalculatorTool = () => {
             </p>
           </motion.div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

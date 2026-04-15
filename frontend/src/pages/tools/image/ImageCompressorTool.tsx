@@ -8,6 +8,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { useToast } from "@/hooks/use-toast";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "173 80% 40%";
 
@@ -346,7 +347,7 @@ const ImageCompressorTool = () => {
               >
                 <EnhancedDownload
                   data={compressedUrl}
-                  fileName={`compressed-${image.name.split('.')[0]}.webp`}
+                  fileName={image.name.replace(/\.[^/.]+$/, ".webp")}
                   fileType="image"
                   title="Image Compressed Successfully"
                   description={`Original: ${(originalSize / 1024).toFixed(1)}KB → Compressed: ${(compressedSize / 1024).toFixed(1)}KB (${Math.round((1 - compressedSize / originalSize) * 100)}% reduction)`}
@@ -356,6 +357,9 @@ const ImageCompressorTool = () => {
             )}
           </motion.div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

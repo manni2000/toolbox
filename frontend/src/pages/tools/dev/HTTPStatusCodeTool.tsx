@@ -3,6 +3,7 @@ import { Copy, Check, Search, Download, AlertCircle, Globe, Info, CheckCircle, X
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "210 80% 55%";
 
@@ -487,6 +488,9 @@ const HTTPStatusCodeTool = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

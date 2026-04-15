@@ -61,24 +61,6 @@ function getUploadedFiles(req, fieldNames = ['files', 'pdfs']) {
   return files;
 }
 
-function stripHtmlTags(html) {
-  return html
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n')
-    .replace(/<\/div>/gi, '\n')
-    .replace(/<\/h[1-6]>/gi, '\n')
-    .replace(/<li>/gi, '• ')
-    .replace(/<\/li>/gi, '\n')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .trim();
-}
-
 router.post('/merge', upload.fields([{ name: 'files', maxCount: 20 }, { name: 'pdfs', maxCount: 20 }]), async (req, res, next) => {
   try {
     const files = getUploadedFiles(req);
@@ -310,82 +292,33 @@ router.post('/info', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'pdf'
 
 router.post('/html-to-pdf', async (req, res, next) => {
   try {
-    const { html, title = 'Document', fontSize = 12 } = req.body;
+    const { html, title = 'Document' } = req.body;
     if (!html) return res.status(400).json({ success: false, error: 'HTML content is required' });
 
-    const plainText = stripHtmlTags(html);
-    const lines = plainText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const { chromium } = require('playwright-core');
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
 
-    const pdfDoc = await PDFDocument.create();
-    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    // Set content and wait for it to load
+    await page.setContent(html, { waitUntil: 'networkidle' });
 
-    const pageWidth = 595;
-    const pageHeight = 842;
-    const margin = 50;
-    const maxWidth = pageWidth - margin * 2;
-    const fs = Math.max(8, Math.min(18, parseInt(fontSize) || 12));
-    const lineHeight = fs + 6;
+    // Generate PDF with proper formatting
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '20px',
+        right: '20px',
+        bottom: '20px',
+        left: '20px',
+      },
+    });
 
-    let page = pdfDoc.addPage([pageWidth, pageHeight]);
-    let y = pageHeight - margin;
+    await browser.close();
 
-    if (title) {
-      const titleText = title.substring(0, 80);
-      page.drawText(titleText, {
-        x: margin,
-        y,
-        size: 16,
-        font: boldFont,
-        color: rgb(0, 0, 0),
-      });
-      y -= 30;
-
-      page.drawLine({
-        start: { x: margin, y },
-        end: { x: pageWidth - margin, y },
-        thickness: 1,
-        color: rgb(0.7, 0.7, 0.7),
-      });
-      y -= 20;
-    }
-
-    for (const line of lines) {
-      const words = line.split(' ');
-      let currentLine = '';
-
-      for (const word of words) {
-        const testLine = currentLine ? `${currentLine} ${word}` : word;
-        const textWidth = font.widthOfTextAtSize(testLine, fs);
-
-        if (textWidth > maxWidth && currentLine) {
-          if (y < margin + lineHeight) {
-            page = pdfDoc.addPage([pageWidth, pageHeight]);
-            y = pageHeight - margin;
-          }
-          page.drawText(currentLine, { x: margin, y, size: fs, font, color: rgb(0, 0, 0) });
-          y -= lineHeight;
-          currentLine = word;
-        } else {
-          currentLine = testLine;
-        }
-      }
-
-      if (currentLine) {
-        if (y < margin + lineHeight) {
-          page = pdfDoc.addPage([pageWidth, pageHeight]);
-          y = pageHeight - margin;
-        }
-        page.drawText(currentLine.substring(0, 200), { x: margin, y, size: fs, font, color: rgb(0, 0, 0) });
-        y -= lineHeight;
-      }
-      y -= 2;
-    }
-
-    const bytes = await pdfDoc.save();
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename="document.pdf"');
-    res.send(Buffer.from(bytes));
+    res.setHeader('Content-Disposition', `attachment; filename="${title.replace(/[^a-z0-9]/gi, '_')}.pdf"`);
+    res.send(pdfBuffer);
   } catch (err) {
     next(err);
   }

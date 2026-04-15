@@ -4,6 +4,7 @@ import { Copy, Check, Calculator, DollarSign, Users, Zap, AlertCircle, Sparkles 
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "35 85% 55%";
 

@@ -3,6 +3,7 @@ import { Copy, Check, Type, AlignLeft, Hash, FileText, Sparkles } from "lucide-r
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "260 70% 55%";
 
@@ -105,6 +106,9 @@ const WordCounterTool = () => {
             </div>
           </div>
         </div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

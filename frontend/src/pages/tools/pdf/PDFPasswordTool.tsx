@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 70% 50%";
 
@@ -216,6 +217,9 @@ const PDFPasswordTool = () => {
             )}
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

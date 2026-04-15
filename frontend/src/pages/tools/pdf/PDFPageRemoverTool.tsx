@@ -8,6 +8,7 @@ import { PDFDocument } from "pdf-lib";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 70% 50%";
 
@@ -166,7 +167,7 @@ const PDFPageRemoverTool = () => {
               <div className="flex justify-center mt-6">
                 <EnhancedDownload
                   data={resultUrl}
-                  fileName="modified.pdf"
+                  fileName={file ? file.name.replace(/\.[^/.]+$/, "-pages-removed.pdf") : "modified.pdf"}
                   fileType="pdf"
                   title="Pages Removed Successfully"
                   description={`${pagesToRemove.length} page(s) have been removed from your PDF`}
@@ -182,6 +183,9 @@ const PDFPageRemoverTool = () => {
             )}
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

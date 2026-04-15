@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "173 80% 40%";
 
@@ -35,36 +36,32 @@ const WebPToPNGConverter = () => {
     if (file) handleFile(file);
   };
 
-  const convert = () => {
-    if (!preview) return;
+  const convert = async () => {
+    if (!image) return;
     setIsConverting(true);
 
-    const img = new window.Image();
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        setIsConverting(false);
-        return;
-      }
+    try {
+      const formData = new FormData();
+      formData.append('image', image);
+      formData.append('format', 'png');
 
-      // WebP to PNG conversion - preserve transparency
-      ctx.drawImage(img, 0, 0);
-      
-      // Convert to PNG (lossless)
-      const url = canvas.toDataURL("image/png", 1);
-      setConvertedUrl(url);
+      const response = await fetch('/api/image/convert', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        setConvertedUrl(url);
+      } else {
+        alert('Failed to convert image');
+      }
+    } catch (error) {
+      alert('Failed to convert image');
+    } finally {
       setIsConverting(false);
-    };
-    
-    img.onerror = () => {
-      alert("Failed to load image for conversion");
-      setIsConverting(false);
-    };
-    
-    img.src = preview;
+    }
   };
 
   const reset = () => {
@@ -74,9 +71,8 @@ const WebPToPNGConverter = () => {
   };
 
   const getFileName = () => {
-    if (!image) return "converted";
-    const nameWithoutExt = image.name.replace(/\.[^/.]+$/, "");
-    return `${nameWithoutExt}-converted.png`;
+    if (!image) return "converted.png";
+    return image.name.replace(/\.[^/.]+$/, ".png");
   };
 
   return (
@@ -290,6 +286,9 @@ const WebPToPNGConverter = () => {
             />
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

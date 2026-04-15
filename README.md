@@ -225,7 +225,7 @@ Each tool category has its own Express router in the `server/routes/` directory:
 
 ### Key Technologies
 - **Image Processing**: Sharp, Jimp
-- **PDF Processing**: pdf-lib, pdf-parse, pdf-to-png-converter
+- **PDF Processing**: pdf-lib, pdf-parse, pdf-to-image-converter
 - **Audio Processing**: node-wav, audio-buffer (WAV file manipulation)
 - **Validation**: Joi schema validation
 - **Caching**: node-cache for performance optimization
@@ -282,7 +282,7 @@ The frontend is built with modern React patterns and best practices:
 - **Framework**: Node.js with Express 4.18.2
 - **API**: RESTful API with Express Router
 - **Image Processing**: Sharp, Jimp
-- **PDF Processing**: pdf-lib, pdf-parse, pdf-to-png-converter
+- **PDF Processing**: pdf-lib, pdf-parse, pdf-to-image-converter
 - **Audio Processing**: node-wav, audio-buffer (WAV-only processing)
 - **QR Code**: qrcode, jsqr
 - **Security**: Helmet, CORS, express-rate-limit

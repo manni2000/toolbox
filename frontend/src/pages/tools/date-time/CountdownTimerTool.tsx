@@ -3,6 +3,7 @@ import { Clock, Play, Pause, RotateCcw, Bell, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "220 80% 55%";
 
@@ -170,6 +171,9 @@ const CountdownTimerTool = () => {
             {eventName && <p className="text-muted-foreground">{eventName}</p>}
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "173 80% 40%";
 
@@ -36,39 +37,33 @@ const PNGToJPGConverter = () => {
     if (file) handleFile(file);
   };
 
-  const convert = () => {
-    if (!preview) return;
+  const convert = async () => {
+    if (!image) return;
     setIsConverting(true);
 
-    const img = new window.Image();
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        setIsConverting(false);
-        return;
+    try {
+      const formData = new FormData();
+      formData.append('image', image);
+      formData.append('format', 'jpeg');
+      formData.append('quality', quality.toString());
+
+      const response = await fetch('/api/image/convert', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        setConvertedUrl(url);
+      } else {
+        alert('Failed to convert image');
       }
-
-      // Fill white background for JPG (no transparency)
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.drawImage(img, 0, 0);
-      
-      // Convert to JPG with specified quality
-      const url = canvas.toDataURL("image/jpeg", quality / 100);
-      setConvertedUrl(url);
+    } catch (error) {
+      alert('Failed to convert image');
+    } finally {
       setIsConverting(false);
-    };
-    
-    img.onerror = () => {
-      alert("Failed to load image for conversion");
-      setIsConverting(false);
-    };
-    
-    img.src = preview;
+    }
   };
 
   const reset = () => {
@@ -78,9 +73,8 @@ const PNGToJPGConverter = () => {
   };
 
   const getFileName = () => {
-    if (!image) return "converted";
-    const nameWithoutExt = image.name.replace(/\.[^/.]+$/, "");
-    return `${nameWithoutExt}-converted.jpg`;
+    if (!image) return "converted.jpg";
+    return image.name.replace(/\.[^/.]+$/, ".jpg");
   };
 
   return (
@@ -302,6 +296,9 @@ const PNGToJPGConverter = () => {
             />
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

@@ -20,7 +20,7 @@ Allow: /markdown/
 # PDF Tools
 Allow: /pdf-merge
 Allow: /pdf-split
-Allow: /pdf-to-png
+Allow: /pdf-to-image
 Allow: /pdf-to-word
 Allow: /pdf-to-powerpoint
 Allow: /pdf-to-excel

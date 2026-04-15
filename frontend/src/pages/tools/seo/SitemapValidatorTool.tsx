@@ -3,6 +3,7 @@ import { Copy, Check, FileText, Upload, Download, Globe, AlertCircle, CheckCircl
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "25 90% 50%";
 
@@ -451,6 +452,9 @@ const SitemapValidatorTool = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

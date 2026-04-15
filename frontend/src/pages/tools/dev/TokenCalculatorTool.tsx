@@ -3,6 +3,7 @@ import { Copy, Check, Hash, Type, Sparkles, Settings, Calculator, Lightbulb } fr
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "210 80% 55%";
 
@@ -251,6 +252,9 @@ const TokenCalculatorTool = () => {
             the official tokenizer (e.g., tiktoken for OpenAI).
           </p>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

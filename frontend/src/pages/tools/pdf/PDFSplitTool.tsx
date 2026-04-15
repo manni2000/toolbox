@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 import { useToast } from "@/hooks/use-toast";
 
 const categoryColor = "0 70% 50%";
@@ -388,7 +389,7 @@ const PDFSplitTool = () => {
             </div>
             <EnhancedDownload
               data={resultUrl}
-              fileName="split_document.pdf"
+              fileName={file ? file.name.replace(/\.[^/.]+$/, "-split.pdf") : "split_document.pdf"}
               fileType="pdf"
               title="Download Split PDF"
               description="Your split PDF document is ready for download"
@@ -397,6 +398,8 @@ const PDFSplitTool = () => {
           </div>
         )}
 
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

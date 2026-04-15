@@ -3,6 +3,7 @@ import { Copy, Check, Search, Download, AlertTriangle, Image, Link, Globe, Loade
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "25 90% 50%";
 
@@ -482,6 +483,9 @@ const BrokenImageFinderTool = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

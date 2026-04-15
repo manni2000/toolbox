@@ -6,6 +6,7 @@ import { Calculator, Plus, RotateCcw, Hash, Sparkles, Target, Trash2, BookOpen }
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "145 70% 45%";
 
@@ -370,6 +371,9 @@ const LCMHCFTool = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

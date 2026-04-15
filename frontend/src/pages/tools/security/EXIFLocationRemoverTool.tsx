@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 80% 55%";
 
@@ -21,14 +22,16 @@ export default function EXIFLocationRemoverTool() {
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [copied, setCopied] = useState(false);
 
-  const handleFileSelect = (file: File) => {
+  const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
     setResult(null);
     
     // Create preview
-    if (file.type.startsWith('image/')) {
+    if (file && file.type.startsWith('image/')) {
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
+    } else {
+      setPreviewUrl('');
     }
   };
 
@@ -289,6 +292,9 @@ export default function EXIFLocationRemoverTool() {
             </div>
           </div>
         </motion.div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

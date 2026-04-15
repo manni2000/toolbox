@@ -3,6 +3,7 @@ import { FileText, Copy, Check, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "260 70% 55%";
 
@@ -141,6 +142,9 @@ const TextSummarizerTool = () => {
           to identify and extract the most important sentences. It's a deterministic, rule-based approach 
           (not AI-powered) that works best with news articles and factual content.
         </div>
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

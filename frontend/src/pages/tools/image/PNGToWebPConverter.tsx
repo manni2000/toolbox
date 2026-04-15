@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "173 80% 40%";
 
@@ -80,9 +81,8 @@ const PNGToWebPConverter = () => {
   };
 
   const getFileName = () => {
-    if (!image) return "converted";
-    const nameWithoutExt = image.name.replace(/\.[^/.]+$/, "");
-    return `${nameWithoutExt}-converted.webp`;
+    if (!image) return "converted.webp";
+    return image.name.replace(/\.[^/.]+$/, ".webp");
   };
 
   return (
@@ -335,6 +335,9 @@ const PNGToWebPConverter = () => {
             />
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

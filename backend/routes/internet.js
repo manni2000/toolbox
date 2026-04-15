@@ -4,7 +4,7 @@ const tls = require('tls');
 const https = require('https');
 const http = require('http');
 const fetch = require('node-fetch');
-const { execFile } = require('child_process');
+const { chromium } = require('playwright-core');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -352,17 +352,59 @@ router.post('/website-screenshot', async (req, res, next) => {
   const extension = normalizedFormat === 'jpeg' ? 'jpg' : 'png';
   const screenshotPath = path.join(os.tmpdir(), `website-screenshot-${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`);
 
+  let browser;
   try {
-    await execFileAsync('playwright.exe', [
-      'screenshot',
-      '--full-page',
-      '--viewport-size', `${parseInt(width) || 1440},${parseInt(height) || 900}`,
-      '--timeout', '30000',
-      targetUrl.toString(),
-      screenshotPath,
-    ], { windowsHide: true, timeout: 45000 });
+    // Launch browser with Playwright JavaScript API for better control
+    browser = await chromium.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+    });
 
-    const imageBuffer = fs.readFileSync(screenshotPath);
+    const context = await browser.newContext({
+      viewport: {
+        width: parseInt(width) || 1440,
+        height: parseInt(height) || 900
+      }
+    });
+
+    const page = await context.newPage();
+
+    // Navigate and wait for network to be idle
+    await page.goto(targetUrl.toString(), {
+      waitUntil: 'networkidle',
+      timeout: 30000
+    });
+
+    // Wait for all images to load
+    await page.waitForLoadState('domcontentloaded');
+
+    // Wait for animations to settle (2 seconds)
+    await page.waitForTimeout(2000);
+
+    // Wait for any CSS animations/transitions to complete
+    await page.evaluate(() => {
+      return new Promise((resolve) => {
+        // Force all CSS animations to complete immediately
+        const style = document.createElement('style');
+        style.innerHTML = `
+          *, *::before, *::after {
+            animation-duration: 0s !important;
+            animation-delay: 0s !important;
+            transition-duration: 0s !important;
+            transition-delay: 0s !important;
+          }
+        `;
+        document.head.appendChild(style);
+        setTimeout(resolve, 500);
+      });
+    });
+
+    // Take screenshot
+    const screenshotBuffer = await page.screenshot({
+      type: normalizedFormat,
+      fullPage: true
+    });
+
     const mimeType = normalizedFormat === 'jpeg' ? 'image/jpeg' : 'image/png';
 
     res.json({
@@ -372,23 +414,15 @@ router.post('/website-screenshot', async (req, res, next) => {
         width: parseInt(width) || 1440,
         height: parseInt(height) || 900,
         format: normalizedFormat,
-        screenshot: `data:${mimeType};base64,${imageBuffer.toString('base64')}`,
+        screenshot: `data:${mimeType};base64,${screenshotBuffer.toString('base64')}`,
         timestamp: new Date().toISOString(),
       },
     });
   } catch (err) {
-    const stderr = `${err.stderr || ''} ${err.message || ''}`;
-    if (/Executable doesn't exist/i.test(stderr) || /playwright install/i.test(stderr)) {
+    if (/browserType.launch/i.test(err.message)) {
       return res.json({
         success: false,
         error: 'Website screenshot needs a Playwright browser runtime. Run `playwright install chromium` on the server, then try again.',
-      });
-    }
-
-    if (/ENOENT/i.test(err.message)) {
-      return res.json({
-        success: false,
-        error: 'Playwright CLI is not installed on the server PATH. Install Playwright to enable website screenshots.',
       });
     }
 
@@ -399,7 +433,7 @@ router.post('/website-screenshot', async (req, res, next) => {
     });
   } finally {
     try {
-      if (fs.existsSync(screenshotPath)) fs.unlinkSync(screenshotPath);
+      if (browser) await browser.close();
     } catch {}
   }
 });

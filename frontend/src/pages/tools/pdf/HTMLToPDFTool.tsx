@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
-import { FileText, X, Loader2, Link, Settings2 } from "lucide-react";
+import { FileText, X, Loader2, Link } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 70% 50%";
 
@@ -12,17 +13,11 @@ const HTMLToPDFTool = () => {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [urlInput, setUrlInput] = useState("");
-  const [inputMode, setInputMode] = useState<"file" | "url">("file");
+  const [htmlContent, setHtmlContent] = useState("");
+  const [inputMode, setInputMode] = useState<"file" | "url" | "paste">("file");
   const [resultData, setResultData] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [showOptions, setShowOptions] = useState(false);
-  const [pdfOptions, setPdfOptions] = useState({
-    format: "A4",
-    orientation: "portrait",
-    margin: "1cm",
-    scale: 1
-  });
   const inputRef = useRef<HTMLInputElement>(null);
   const downloadSectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -58,11 +53,12 @@ const HTMLToPDFTool = () => {
     setFile(null);
     setFileName("");
     setUrlInput("");
+    setHtmlContent("");
     setResultData(null);
   };
 
   const processFile = async () => {
-    if (!file && !urlInput.trim()) return;
+    if (!file && !urlInput.trim() && !htmlContent.trim()) return;
 
     setIsProcessing(true);
 
@@ -70,15 +66,26 @@ const HTMLToPDFTool = () => {
       let requestBody: Record<string, unknown>;
       
       if (inputMode === "url" && urlInput.trim()) {
+        // For URL mode, we need to fetch the HTML content first
+        const htmlResponse = await fetch(urlInput.trim());
+        if (!htmlResponse.ok) {
+          throw new Error('Failed to fetch URL content');
+        }
+        const content = await htmlResponse.text();
         requestBody = {
-          url: urlInput.trim(),
-          options: pdfOptions,
+          html: content,
+          title: new URL(urlInput.trim()).hostname,
         };
-      } else if (file) {
-        const htmlContent = await file.text();
+      } else if (inputMode === "paste" && htmlContent.trim()) {
         requestBody = {
           html: htmlContent,
-          options: pdfOptions,
+          title: "Pasted Content",
+        };
+      } else if (file) {
+        const content = await file.text();
+        requestBody = {
+          html: content,
+          title: file.name.replace(/\.[^/.]+$/, ""),
         };
       } else {
         throw new Error("No input provided");
@@ -92,20 +99,25 @@ const HTMLToPDFTool = () => {
         body: JSON.stringify(requestBody),
       });
 
-      const result = await response.json();
-
-      if (result.success) {
-        setResultData(result.file || result.pdf || result.data || JSON.stringify(result.result, null, 2));
-        toast({
-          title: "Success!",
-          description: "HTML to PDF completed successfully with full styling",
-        });
-        setTimeout(() => {
-          downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
-      } else {
-        throw new Error(result.error || 'Failed to process');
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Failed to process');
       }
+
+      // Handle binary PDF response
+      const pdfBuffer = await response.arrayBuffer();
+      const pdfBase64 = btoa(
+        new Uint8Array(pdfBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      setResultData(`data:application/pdf;base64,${pdfBase64}`);
+      
+      toast({
+        title: "Success!",
+        description: "HTML converted to PDF successfully",
+      });
+      setTimeout(() => {
+        downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     } catch (error) {
       toast({
         title: "Error",
@@ -120,7 +132,7 @@ const HTMLToPDFTool = () => {
   return (
     <ToolLayout
       title="HTML to PDF"
-      description="Convert HTML pages to PDF documents with full styling, images, and formatting"
+      description="Convert HTML content to PDF documents"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -128,7 +140,7 @@ const HTMLToPDFTool = () => {
         {/* Input Mode Toggle */}
         <div className="flex gap-2 p-1 bg-muted rounded-lg w-fit">
           <button
-            onClick={() => { setInputMode("file"); setUrlInput(""); }}
+            onClick={() => { setInputMode("file"); setUrlInput(""); setHtmlContent(""); }}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               inputMode === "file" ? "bg-background shadow-sm" : "hover:bg-background/50"
             }`}
@@ -137,13 +149,22 @@ const HTMLToPDFTool = () => {
             Upload File
           </button>
           <button
-            onClick={() => { setInputMode("url"); setFile(null); setFileName(""); }}
+            onClick={() => { setInputMode("url"); setFile(null); setFileName(""); setHtmlContent(""); }}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               inputMode === "url" ? "bg-background shadow-sm" : "hover:bg-background/50"
             }`}
           >
             <Link className="h-4 w-4 inline mr-2" />
             Enter URL
+          </button>
+          <button
+            onClick={() => { setInputMode("paste"); setFile(null); setFileName(""); setUrlInput(""); }}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              inputMode === "paste" ? "bg-background shadow-sm" : "hover:bg-background/50"
+            }`}
+          >
+            <FileText className="h-4 w-4 inline mr-2" />
+            Paste HTML
           </button>
         </div>
 
@@ -167,6 +188,25 @@ const HTMLToPDFTool = () => {
           </div>
         )}
 
+        {/* Paste HTML Mode */}
+        {inputMode === "paste" && !resultData && (
+          <div className="space-y-4">
+            <div className="rounded-xl border border-border bg-card p-6">
+              <label htmlFor="html-content" className="block text-sm font-medium mb-2">HTML Content</label>
+              <textarea
+                id="html-content"
+                value={htmlContent}
+                onChange={(e) => setHtmlContent(e.target.value)}
+                placeholder="<h1>Your HTML content here</h1><p>Paste or type your HTML code...</p>"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[200px] font-mono text-sm"
+              />
+              <p className="text-xs text-muted-foreground mt-2">
+                Paste your HTML content directly. The formatting will be preserved in the PDF.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* File Upload Mode */}
         {inputMode === "file" && !file && (
           <PDFUploadZone
@@ -179,7 +219,7 @@ const HTMLToPDFTool = () => {
             onFileSelect={handleFile}
             accept="text/html"
             title="Drop HTML file here"
-            subtitle="Convert HTML pages to PDF with full styling preserved"
+            subtitle="Convert HTML content to PDF"
           />
         )}
 
@@ -199,94 +239,25 @@ const HTMLToPDFTool = () => {
           </div>
         )}
 
-        {/* PDF Options */}
-        {(file || urlInput.trim()) && !resultData && (
-          <div className="space-y-4">
-            <button
-              onClick={() => setShowOptions(!showOptions)}
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
-            >
-              <Settings2 className="h-4 w-4" />
-              {showOptions ? "Hide" : "Show"} PDF Options
-            </button>
-
-            {showOptions && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-xl border border-border bg-card">
-                <div>
-                  <label htmlFor="pdf-page-size" className="block text-xs font-medium mb-1">Page Size</label>
-                  <select
-                    id="pdf-page-size"
-                    value={pdfOptions.format}
-                    onChange={(e) => setPdfOptions({ ...pdfOptions, format: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm"
-                  >
-                    <option value="A4">A4</option>
-                    <option value="Letter">Letter</option>
-                    <option value="Legal">Legal</option>
-                    <option value="A3">A3</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="pdf-orientation" className="block text-xs font-medium mb-1">Orientation</label>
-                  <select
-                    id="pdf-orientation"
-                    value={pdfOptions.orientation}
-                    onChange={(e) => setPdfOptions({ ...pdfOptions, orientation: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm"
-                  >
-                    <option value="portrait">Portrait</option>
-                    <option value="landscape">Landscape</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="pdf-margin" className="block text-xs font-medium mb-1">Margin</label>
-                  <select
-                    id="pdf-margin"
-                    value={pdfOptions.margin}
-                    onChange={(e) => setPdfOptions({ ...pdfOptions, margin: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm"
-                  >
-                    <option value="0">None</option>
-                    <option value="0.5cm">Small (0.5cm)</option>
-                    <option value="1cm">Normal (1cm)</option>
-                    <option value="2cm">Large (2cm)</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="pdf-scale" className="block text-xs font-medium mb-1">Scale</label>
-                  <select
-                    id="pdf-scale"
-                    value={pdfOptions.scale}
-                    onChange={(e) => setPdfOptions({ ...pdfOptions, scale: parseFloat(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm"
-                  >
-                    <option value="0.5">50%</option>
-                    <option value="0.75">75%</option>
-                    <option value="1">100%</option>
-                    <option value="1.25">125%</option>
-                  </select>
-                </div>
-              </div>
+        {/* Convert Button */}
+        {(file || urlInput.trim() || htmlContent.trim()) && !resultData && (
+          <button
+            onClick={processFile}
+            disabled={isProcessing}
+            className="btn-primary w-full"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Converting...
+              </>
+            ) : (
+              <>
+                <FileText className="h-5 w-5" />
+                Convert to PDF
+              </>
             )}
-
-            <button
-              onClick={processFile}
-              disabled={isProcessing}
-              className="btn-primary w-full"
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Converting... (This may take a moment)
-                </>
-              ) : (
-                <>
-                  <FileText className="h-5 w-5" />
-                  Convert to PDF
-                </>
-              )}
-            </button>
-          </div>
+          </button>
         )}
 
         {/* Result */}
@@ -297,11 +268,14 @@ const HTMLToPDFTool = () => {
               fileName={fileName ? fileName.replace(/\.[^/.]+$/, ".pdf") : "converted.pdf"}
               fileType="pdf"
               title="HTML Converted to PDF"
-              description="Your HTML has been converted with full styling, images, and formatting preserved"
+              description="Your HTML content has been converted to PDF"
               fileSize={file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : undefined}
             />
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

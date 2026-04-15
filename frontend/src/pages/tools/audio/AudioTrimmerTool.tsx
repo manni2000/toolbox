@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "290 80% 55%";
 
@@ -373,6 +374,9 @@ const AudioTrimmerTool = () => {
             </Card>
           </>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

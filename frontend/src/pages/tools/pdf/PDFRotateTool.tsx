@@ -8,6 +8,7 @@ import { PDFDocument, degrees } from "pdf-lib";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 70% 50%";
 
@@ -195,7 +196,7 @@ const PDFRotateTool = () => {
               <div className="flex justify-center mt-6">
                 <EnhancedDownload
                   data={resultUrl}
-                  fileName="rotated.pdf"
+                  fileName={file ? file.name.replace(/\.[^/.]+$/, "-rotated.pdf") : "rotated.pdf"}
                   fileType="pdf"
                   title="PDF Rotated Successfully"
                   description={`Your PDF has been rotated according to your specifications`}
@@ -205,6 +206,9 @@ const PDFRotateTool = () => {
             )}
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );

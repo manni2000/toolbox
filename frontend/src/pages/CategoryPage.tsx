@@ -26,7 +26,7 @@ const CategoryPage = () => {
   // Define trending tools for each category
   const getTrendingTools = () => {
     const trendingMap: Record<string, string[]> = {
-      "pdf": ["pdf-to-word", "pdf-to-png", "pdf-merger", "pdf-compressor"],
+      "pdf": ["pdf-to-word", "pdf-to-image", "pdf-merger", "pdf-compressor"],
       "image": ["png-to-jpg-converter", "qr-generator", "image-compressor", "background-remover"],
       "video": ["video-to-audio", "video-trim", "video-speed", "video-thumbnail"],
       "audio": ["audio-converter", "speech-to-text", "audio-trimmer", "audio-merger"],

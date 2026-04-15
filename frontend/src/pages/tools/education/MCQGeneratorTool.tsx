@@ -7,8 +7,7 @@ import {
   ChevronDown,
   Sparkles,
 } from "lucide-react";
-import { motion } from "framer-motion";
-import { fadeInUp, scaleIn } from "@/lib/animations";
+import ToolFAQ from "@/components/ToolFAQ";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -419,6 +418,9 @@ const MCQGeneratorTool = () => {
             </div>
           </div>
         )}
+
+        {/* FAQ Section */}
+        <ToolFAQ />
       </div>
     </ToolLayout>
   );
