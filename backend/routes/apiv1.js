@@ -49,9 +49,9 @@ function validateApiKey(req, res, next) {
 }
 
 const API_DOCUMENTATION = {
-  version: '1.0.0',
+  version: '2.0.0',
   baseUrl: '/api/v1',
-  description: 'DailyTools247 Developer API - 100+ tool endpoints',
+  description: 'DailyTools247 Developer API - 80+ tool endpoints across 8 categories - Free tier with 100 requests/day',
   endpoints: [
     {
       category: 'Text',
@@ -70,11 +70,11 @@ const API_DOCUMENTATION = {
         },
         {
           method: 'POST', path: '/api/v1/text/case-converter', name: 'Case Converter',
-          description: 'Convert text to different cases (upper, lower, title, camel, snake)',
+          description: 'Convert text to different cases (upper, lower, title, camel, snake, kebab, pascal, alternating, inverse)',
           contentType: 'application/json',
           parameters: [
             { name: 'text', type: 'string', required: true, description: 'Text to convert' },
-            { name: 'case', type: 'string', required: true, default: 'upper', description: 'upper | lower | title | camel | snake | kebab' },
+            { name: 'case', type: 'string', required: true, default: 'upper', description: 'upper | lower | title | camel | snake | kebab | pascal | alternating | inverse' },
           ],
           example: {
             curl: `curl -X POST /api/v1/text/case-converter -H "X-API-Key: YOUR_KEY" -d '{"text":"hello world","case":"title"}'`,
@@ -91,6 +91,73 @@ const API_DOCUMENTATION = {
           example: {
             curl: `curl -X POST /api/v1/text/markdown-to-html -H "X-API-Key: YOUR_KEY" -d '{"markdown":"# Hello"}'`,
             response: { success: true, result: { html: '<h1>Hello</h1>' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/v1/text/remove-spaces', name: 'Remove Spaces',
+          description: 'Remove extra spaces, tabs, blank lines from text',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true, description: 'Text to process' },
+            { name: 'type', type: 'string', required: false, default: 'extra', description: 'extra | all | leading | trailing | blank | tabs' },
+          ],
+          example: {
+            curl: `curl -X POST /api/v1/text/remove-spaces -H "X-API-Key: YOUR_KEY" -d '{"text":"  hello  world  ","type":"extra"}'`,
+            response: { success: true, result: { output: 'hello world' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/v1/text/line-sorter', name: 'Line Sorter',
+          description: 'Sort lines alphabetically, remove duplicates',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true, description: 'Text with lines to sort' },
+            { name: 'order', type: 'string', required: false, default: 'asc', description: 'asc | desc | random' },
+            { name: 'removeDuplicates', type: 'boolean', required: false, default: false },
+            { name: 'caseSensitive', type: 'boolean', required: false, default: false },
+          ],
+          example: {
+            curl: `curl -X POST /api/v1/text/line-sorter -H "X-API-Key: YOUR_KEY" -d '{"text":"banana\\napple\\ncherry","order":"asc"}'`,
+            response: { success: true, result: { output: 'apple\nbanana\ncherry', lineCount: 3 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/v1/text/duplicate-remover', name: 'Duplicate Remover',
+          description: 'Remove duplicate lines from text',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true, description: 'Text with potential duplicates' },
+            { name: 'caseSensitive', type: 'boolean', required: false, default: false },
+          ],
+          example: {
+            curl: `curl -X POST /api/v1/text/duplicate-remover -H "X-API-Key: YOUR_KEY" -d '{"text":"apple\\nbanana\\napple"}'`,
+            response: { success: true, result: { output: 'apple\nbanana', original: 3, unique: 2, duplicatesRemoved: 1 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/v1/text/text-diff', name: 'Text Diff',
+          description: 'Compare two texts and show differences',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text1', type: 'string', required: true, description: 'Original text' },
+            { name: 'text2', type: 'string', required: true, description: 'Modified text' },
+          ],
+          example: {
+            curl: `curl -X POST /api/v1/text/text-diff -H "X-API-Key: YOUR_KEY" -d '{"text1":"hello","text2":"hello world"}'`,
+            response: { success: true, result: { diff: [{ type: 'unchanged', line: 'hello' }], stats: { added: 1, removed: 0, unchanged: 1 } } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/v1/text/text-summarizer', name: 'Text Summarizer',
+          description: 'Summarize text by extracting key sentences',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true, description: 'Text to summarize' },
+            { name: 'sentences', type: 'number', required: false, default: 3, description: 'Number of sentences in summary' },
+          ],
+          example: {
+            curl: `curl -X POST /api/v1/text/text-summarizer -H "X-API-Key: YOUR_KEY" -d '{"text":"Long text here...","sentences":3}'`,
+            response: { success: true, result: { summary: '...', originalSentences: 10, summarySentences: 3 } },
           },
         },
       ],
@@ -127,12 +194,28 @@ const API_DOCUMENTATION = {
           },
         },
         {
+          method: 'POST', path: '/api/image/crop', name: 'Image Cropper',
+          description: 'Crop images to specified dimensions',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file' },
+            { name: 'x', type: 'number', required: true, description: 'X coordinate' },
+            { name: 'y', type: 'number', required: true, description: 'Y coordinate' },
+            { name: 'width', type: 'number', required: true, description: 'Crop width' },
+            { name: 'height', type: 'number', required: true, description: 'Crop height' },
+          ],
+          example: {
+            curl: `curl -X POST /api/image/crop -H "X-API-Key: YOUR_KEY" -F "image=@photo.jpg" -F "x=0" -F "y=0" -F "width=500" -F "height=500"`,
+            response: 'Binary image data',
+          },
+        },
+        {
           method: 'POST', path: '/api/image/convert', name: 'Image Format Converter',
-          description: 'Convert images between formats: JPEG, PNG, WebP, AVIF, TIFF',
+          description: 'Convert images between formats: JPEG, PNG, WebP, AVIF, TIFF, GIF',
           contentType: 'multipart/form-data',
           parameters: [
             { name: 'image', type: 'file', required: true, description: 'Source image file' },
-            { name: 'format', type: 'string', required: true, default: 'png', description: 'jpeg | png | webp | avif | tiff' },
+            { name: 'format', type: 'string', required: true, default: 'png', description: 'jpeg | png | webp | avif | tiff | gif' },
           ],
           example: {
             curl: `curl -X POST /api/image/convert -H "X-API-Key: YOUR_KEY" -F "image=@photo.png" -F "format=webp"`,
@@ -192,6 +275,56 @@ const API_DOCUMENTATION = {
           example: {
             curl: `curl -X POST /api/image/base64 -H "X-API-Key: YOUR_KEY" -F "image=@photo.jpg" -F "action=encode"`,
             response: { success: true, result: { base64: '...', dataUrl: 'data:image/jpeg;base64,...' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/image/exif-viewer', name: 'EXIF Viewer',
+          description: 'View EXIF metadata from images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file' },
+          ],
+          example: {
+            curl: `curl -X POST /api/image/exif-viewer -H "X-API-Key: YOUR_KEY" -F "image=@photo.jpg"`,
+            response: { success: true, result: { format: 'jpeg', width: 1920, height: 1080, dpi: 72, hasProfile: true } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/image/favicon-generator', name: 'Favicon Generator',
+          description: 'Generate favicons from images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file' },
+            { name: 'size', type: 'number', required: false, default: 32, description: 'Size: 16, 32, 48, 64, 128, 256' },
+          ],
+          example: {
+            curl: `curl -X POST /api/image/favicon-generator -H "X-API-Key: YOUR_KEY" -F "image=@logo.png" -F "size=32"`,
+            response: 'Binary PNG image',
+          },
+        },
+        {
+          method: 'POST', path: '/api/image/background-remover', name: 'Background Remover',
+          description: 'Remove background from images using AI',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file (PNG, JPEG, WebP)' },
+            { name: 'threshold', type: 'number', required: false, default: 30, description: 'Threshold for background detection (1-100)' },
+          ],
+          example: {
+            curl: `curl -X POST /api/image/background-remover -H "X-API-Key: YOUR_KEY" -F "image=@photo.jpg"`,
+            response: { success: true, result: { image: 'base64...', format: 'png', width: 1920, height: 1080 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/image/image-to-pdf', name: 'Images to PDF',
+          description: 'Convert multiple images to a single PDF',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'images', type: 'file[]', required: true, description: 'Image files (up to 20)' },
+          ],
+          example: {
+            curl: `curl -X POST /api/image/image-to-pdf -H "X-API-Key: YOUR_KEY" -F "images=@photo1.jpg" -F "images=@photo2.png"`,
+            response: 'Binary PDF data',
           },
         },
       ],
@@ -278,6 +411,31 @@ const API_DOCUMENTATION = {
           },
         },
         {
+          method: 'POST', path: '/api/pdf/remove-pages', name: 'PDF Remove Pages',
+          description: 'Remove specific pages from a PDF',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'file', type: 'file', required: true, description: 'PDF file' },
+            { name: 'pages', type: 'string', required: true, description: 'Page numbers to remove (e.g. "1,3,5")' },
+          ],
+          example: {
+            curl: `curl -X POST /api/pdf/remove-pages -H "X-API-Key: YOUR_KEY" -F "file=@doc.pdf" -F "pages=2,4"`,
+            response: 'Binary PDF data',
+          },
+        },
+        {
+          method: 'POST', path: '/api/pdf/unlock', name: 'PDF Unlock',
+          description: 'Remove password protection from a PDF (if possible)',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'file', type: 'file', required: true, description: 'PDF file to unlock' },
+          ],
+          example: {
+            curl: `curl -X POST /api/pdf/unlock -H "X-API-Key: YOUR_KEY" -F "file=@doc.pdf"`,
+            response: 'Binary PDF data',
+          },
+        },
+        {
           method: 'POST', path: '/api/pdf/html-to-pdf', name: 'HTML to PDF',
           description: 'Convert HTML content to a PDF document',
           contentType: 'application/json',
@@ -315,6 +473,18 @@ const API_DOCUMENTATION = {
             response: 'Binary XLSX data',
           },
         },
+        {
+          method: 'POST', path: '/api/pdf/word-to-pdf', name: 'Word to PDF',
+          description: 'Convert plain text to PDF',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'file', type: 'file', required: true, description: 'Text file (.txt)' },
+          ],
+          example: {
+            curl: `curl -X POST /api/pdf/word-to-pdf -H "X-API-Key: YOUR_KEY" -F "file=@document.txt"`,
+            response: 'Binary PDF data',
+          },
+        },
       ],
     },
     {
@@ -325,40 +495,165 @@ const API_DOCUMENTATION = {
           description: 'Generate secure random passwords',
           contentType: 'application/json',
           parameters: [
-            { name: 'length', type: 'number', required: false, default: 16, description: 'Password length (8-128)' },
-            { name: 'uppercase', type: 'boolean', required: false, default: true, description: 'Include uppercase' },
-            { name: 'lowercase', type: 'boolean', required: false, default: true, description: 'Include lowercase' },
-            { name: 'numbers', type: 'boolean', required: false, default: true, description: 'Include numbers' },
-            { name: 'symbols', type: 'boolean', required: false, default: true, description: 'Include symbols' },
+            { name: 'length', type: 'number', required: false, default: 16, description: 'Password length (4-128)' },
+            { name: 'uppercase', type: 'boolean', required: false, default: true },
+            { name: 'lowercase', type: 'boolean', required: false, default: true },
+            { name: 'numbers', type: 'boolean', required: false, default: true },
+            { name: 'symbols', type: 'boolean', required: false, default: true },
           ],
           example: {
-            curl: `curl -X POST /api/security/password-generator -H "X-API-Key: YOUR_KEY" -d '{"length":20,"symbols":true}'`,
-            response: { success: true, result: { password: 'xK3#mP9@qL7$nR2!vT5^', strength: 'Very Strong' } },
+            curl: 'curl -X POST /api/security/password-generator -H "X-API-Key: YOUR_KEY" -d \'{"length":20}\'',
+            response: { success: true, result: { password: 'xK9#mP2$vL5@nQ8!', strength: 'Very Strong', length: 20 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/password-strength', name: 'Password Strength Checker',
+          description: 'Check password strength and get suggestions',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'password', type: 'string', required: true, description: 'Password to check' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/password-strength -H "X-API-Key: YOUR_KEY" -d \'{"password":"MyP@ssw0rd123"}\'',
+            response: { success: true, result: { score: 83, strengthLabel: 'Strong', checks: {}, suggestions: [] } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/password-strength-explainer', name: 'Password Strength Explainer',
+          description: 'Detailed password analysis with entropy and crack time estimation',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'password', type: 'string', required: true, description: 'Password to analyze' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/password-strength-explainer -H "X-API-Key: YOUR_KEY" -d \'{"password":"MyP@ssw0rd123"}\'',
+            response: { success: true, result: { entropy: 65, crackTime: 'Centuries', strength: 'Very Strong', feedback: [], suggestions: [] } },
           },
         },
         {
           method: 'POST', path: '/api/security/hash-generator', name: 'Hash Generator',
-          description: 'Generate MD5, SHA1, SHA256, SHA512 hashes',
+          description: 'Generate MD5, SHA1, SHA256, SHA384, SHA512 hashes',
           contentType: 'application/json',
           parameters: [
             { name: 'text', type: 'string', required: true, description: 'Text to hash' },
-            { name: 'algorithm', type: 'string', required: false, default: 'sha256', description: 'md5 | sha1 | sha256 | sha512' },
+            { name: 'algorithm', type: 'string', required: false, default: 'sha256', description: 'md5 | sha1 | sha256 | sha384 | sha512' },
           ],
           example: {
-            curl: `curl -X POST /api/security/hash-generator -H "X-API-Key: YOUR_KEY" -d '{"text":"hello","algorithm":"sha256"}'`,
-            response: { success: true, result: { hash: '2cf24dba...', algorithm: 'sha256' } },
+            curl: 'curl -X POST /api/security/hash-generator -H "X-API-Key: YOUR_KEY" -d \'{"text":"hello","algorithm":"sha256"}\'',
+            response: { success: true, result: { requested: '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824', all: {} } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/base64', name: 'Base64 Encoder/Decoder',
+          description: 'Encode or decode Base64 strings',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true, description: 'Text to encode/decode' },
+            { name: 'action', type: 'string', required: false, default: 'encode', description: 'encode | decode' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/base64 -H "X-API-Key: YOUR_KEY" -d \'{"text":"hello world","action":"encode"}\'',
+            response: { success: true, result: { output: 'aGVsbG8gd29ybGQ=', action: 'encode' } },
           },
         },
         {
           method: 'POST', path: '/api/security/uuid-generator', name: 'UUID Generator',
-          description: 'Generate RFC 4122 UUIDs',
+          description: 'Generate random UUID v4 strings',
           contentType: 'application/json',
           parameters: [
-            { name: 'count', type: 'number', required: false, default: 1, description: 'Number of UUIDs to generate (1-100)' },
+            { name: 'count', type: 'number', required: false, default: 1, description: 'Number of UUIDs (1-100)' },
           ],
           example: {
-            curl: `curl -X POST /api/security/uuid-generator -H "X-API-Key: YOUR_KEY" -d '{"count":3}'`,
-            response: { success: true, result: { uuids: ['...', '...', '...'] } },
+            curl: 'curl -X POST /api/security/uuid-generator -H "X-API-Key: YOUR_KEY" -d \'{"count":5}\'',
+            response: { success: true, result: { uuids: ['550e8400-e29b-41d4-a716-446655440000'], count: 1 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/text-redaction', name: 'Text Redaction',
+          description: 'Redact sensitive information like emails, phones, SSN, credit cards, IPs from text',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true, description: 'Text to redact' },
+            { name: 'redactionTypes', type: 'object', required: false, description: 'Override which types to redact' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/text-redaction -H "X-API-Key: YOUR_KEY" -d \'{"text":"Contact us at test@example.com or 555-1234"}\'',
+            response: { success: true, result: { redacted: 'Contact us at [EMAIL REDACTED] or [PHONE REDACTED]', totalRedacted: 2 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/file-hash-comparison', name: 'File Hash Comparison',
+          description: 'Compare two files to check if they are identical using hash',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'file1', type: 'file', required: true, description: 'First file' },
+            { name: 'file2', type: 'file', required: true, description: 'Second file' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/file-hash-comparison -H "X-API-Key: YOUR_KEY" -F "file1=@file1.pdf" -F "file2=@file2.pdf"',
+            response: { success: true, result: { match: true, file1: { sha256: '...', size: 1024 }, file2: { sha256: '...', size: 1024 } } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/qr-phishing-scanner', name: 'QR Phishing Scanner',
+          description: 'Scan QR code URLs for phishing risks',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true, description: 'URL from QR code' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/qr-phishing-scanner -H "X-API-Key: YOUR_KEY" -d \'{"url":"https://example.com/login"}\'',
+            response: { success: true, result: { riskScore: 20, riskLevel: 'Low Risk', risks: [], isSafe: true } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/url-reputation-checker', name: 'URL Reputation Checker',
+          description: 'Check URL reputation and safety',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true, description: 'URL to check' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/url-reputation-checker -H "X-API-Key: YOUR_KEY" -d \'{"url":"https://example.com"}\'',
+            response: { success: true, result: { reputationScore: 100, rating: 'Safe', risks: [] } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/secure-notes', name: 'Secure Notes',
+          description: 'Encrypt or decrypt notes with AES-256 encryption',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'note', type: 'string', required: true, description: 'Note text' },
+            { name: 'key', type: 'string', required: true, description: 'Encryption key/password' },
+            { name: 'action', type: 'string', required: false, default: 'encrypt', description: 'encrypt | decrypt' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/secure-notes -H "X-API-Key: YOUR_KEY" -d \'{"note":"Secret message","key":"mykey","action":"encrypt"}\'',
+            response: { success: true, result: { output: '...', action: 'encrypt' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/data-breach-checker', name: 'Data Breach Checker',
+          description: 'Check if email has been in data breaches',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'email', type: 'string', required: true, description: 'Email to check' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/data-breach-checker -H "X-API-Key: YOUR_KEY" -d \'{"email":"test@example.com"}\'',
+            response: { success: true, result: { email: 'test@example.com', breachCount: 0, checked: true } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/security/exif-location-remover', name: 'EXIF Location Remover',
+          description: 'Remove EXIF metadata and GPS location from images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Image file (JPEG, PNG, WebP)' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/security/exif-location-remover -H "X-API-Key: YOUR_KEY" -F "image=@photo.jpg"',
+            response: { success: true, result: { hadGpsData: true, imageData: 'data:image/jpeg;base64,...' } },
           },
         },
       ],
@@ -376,8 +671,21 @@ const API_DOCUMENTATION = {
             { name: 'indent', type: 'number', required: false, default: 2, description: 'Indentation spaces' },
           ],
           example: {
-            curl: `curl -X POST /api/dev/json-formatter -H "X-API-Key: YOUR_KEY" -d '{"json":"{\"a\":1}","action":"format"}'`,
+            curl: 'curl -X POST /api/dev/json-formatter -H "X-API-Key: YOUR_KEY" -d \'{"json":"{\\"a\\":1}","action":"format"}\'',
             response: { success: true, result: { formatted: '{\n  "a": 1\n}', valid: true } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/dev/json-to-typescript', name: 'JSON to TypeScript',
+          description: 'Convert JSON to TypeScript interfaces',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'json', type: 'string', required: true, description: 'JSON string' },
+            { name: 'interfaceName', type: 'string', required: false, default: 'RootObject', description: 'Name for root interface' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/dev/json-to-typescript -H "X-API-Key: YOUR_KEY" -d \'{"json":"{\\"name\\":\\"John\\",\\"age\\":30}"}\'',
+            response: { success: true, result: { typescript: 'interface RootObject {\n  name: string;\n  age: number;\n}' } },
           },
         },
         {
@@ -389,8 +697,116 @@ const API_DOCUMENTATION = {
             { name: 'action', type: 'string', required: false, default: 'encode', description: 'encode | decode' },
           ],
           example: {
-            curl: `curl -X POST /api/dev/url-encoder -H "X-API-Key: YOUR_KEY" -d '{"text":"hello world","action":"encode"}'`,
+            curl: 'curl -X POST /api/dev/url-encoder -H "X-API-Key: YOUR_KEY" -d \'{"text":"hello world","action":"encode"}\'',
             response: { success: true, result: { output: 'hello%20world' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/dev/lorem-generator', name: 'Lorem Ipsum Generator',
+          description: 'Generate placeholder text',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'paragraphs', type: 'number', required: false, default: 1, description: 'Number of paragraphs' },
+            { name: 'words', type: 'number', required: false, description: 'Number of words' },
+            { name: 'sentences', type: 'number', required: false, description: 'Number of sentences' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/dev/lorem-generator -H "X-API-Key: YOUR_KEY" -d \'{"paragraphs":3}\'',
+            response: { success: true, result: { text: 'Lorem ipsum...' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/dev/sql-query-beautifier', name: 'SQL Query Beautifier',
+          description: 'Format and beautify SQL queries',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'sql', type: 'string', required: true, description: 'SQL query to format' },
+            { name: 'indent', type: 'number', required: false, default: 2, description: 'Indentation spaces' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/dev/sql-query-beautifier -H "X-API-Key: YOUR_KEY" -d \'{"sql":"SELECT * FROM users WHERE id=1"}\'',
+            response: { success: true, result: { formatted: 'SELECT\n  *\nFROM\n  users\nWHERE\n  id = 1' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/dev/cron-generator', name: 'Cron Expression Generator',
+          description: 'Generate and interpret cron expressions',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'minute', type: 'string', required: false, default: '*' },
+            { name: 'hour', type: 'string', required: false, default: '*' },
+            { name: 'dayOfMonth', type: 'string', required: false, default: '*' },
+            { name: 'month', type: 'string', required: false, default: '*' },
+            { name: 'dayOfWeek', type: 'string', required: false, default: '*' },
+            { name: 'description', type: 'string', required: false, description: 'Custom description' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/dev/cron-generator -H "X-API-Key: YOUR_KEY" -d \'{"minute":"0","hour":"9"}\'',
+            response: { success: true, result: { expression: '0 9 * * *', description: 'Every day at 9:00' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/dev/http-header-checker', name: 'HTTP Header Checker',
+          description: 'Check HTTP headers and security headers of a URL',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true, description: 'URL to check' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/dev/http-header-checker -H "X-API-Key: YOUR_KEY" -d \'{"url":"https://example.com"}\'',
+            response: { success: true, result: { url: 'https://example.com', statusCode: 200, securityHeaders: {} } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/dev/curl-to-axios', name: 'cURL to Axios Converter',
+          description: 'Convert cURL commands to Axios code',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'curl', type: 'string', required: true, description: 'cURL command' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/dev/curl-to-axios -H "X-API-Key: YOUR_KEY" -d \'{"curl":"curl -X POST https://api.example.com/data"}\'',
+            response: { success: true, result: { axios: 'const response = await axios.post(...)' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/dev/jwt-decoder', name: 'JWT Decoder',
+          description: 'Decode and inspect JWT tokens',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'token', type: 'string', required: true, description: 'JWT token' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/dev/jwt-decoder -H "X-API-Key: YOUR_KEY" -d \'{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}\'',
+            response: { success: true, result: { header: {}, payload: {}, isExpired: false } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/dev/dockerfile-generator', name: 'Dockerfile Generator',
+          description: 'Generate Dockerfile for various languages',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'language', type: 'string', required: false, default: 'node', description: 'node | python | react | go' },
+            { name: 'version', type: 'string', required: false, default: 'latest' },
+            { name: 'appPort', type: 'number', required: false, default: 3000 },
+            { name: 'startCommand', type: 'string', required: false },
+          ],
+          example: {
+            curl: 'curl -X POST /api/dev/dockerfile-generator -H "X-API-Key: YOUR_KEY" -d \'{"language":"node","version":"18"}\'',
+            response: { success: true, result: { dockerfile: 'FROM node:18-alpine...' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/dev/color-converter', name: 'Color Converter',
+          description: 'Convert colors between HEX, RGB, HSL',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'color', type: 'string', required: true, description: 'Color value' },
+            { name: 'from', type: 'string', required: false, default: 'hex', description: 'hex | rgb | hsl' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/dev/color-converter -H "X-API-Key: YOUR_KEY" -d \'{"color":"#ff0000","from":"hex"}\'',
+            response: { success: true, result: { hex: '#ff0000', rgb: { r: 255, g: 0, b: 0 }, hsl: { h: 0, s: 100, l: 50 } } },
           },
         },
       ],
@@ -406,10 +822,425 @@ const API_DOCUMENTATION = {
             { name: 'principal', type: 'number', required: true, description: 'Loan amount' },
             { name: 'rate', type: 'number', required: true, description: 'Annual interest rate (%)' },
             { name: 'tenure', type: 'number', required: true, description: 'Loan tenure in months' },
+            { name: 'tenureType', type: 'string', required: false, default: 'months', description: 'months | years' },
           ],
           example: {
-            curl: `curl -X POST /api/finance/emi-calculator -H "X-API-Key: YOUR_KEY" -d '{"principal":500000,"rate":8.5,"tenure":60}'`,
+            curl: 'curl -X POST /api/finance/emi-calculator -H "X-API-Key: YOUR_KEY" -d \'{"principal":500000,"rate":8.5,"tenure":60}\'',
             response: { success: true, result: { emi: 10233.4, totalPayment: 614004, totalInterest: 114004 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/finance/emi-comparison', name: 'EMI Comparison',
+          description: 'Compare EMIs across different interest rates',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'principal', type: 'number', required: true },
+            { name: 'tenure', type: 'number', required: true },
+            { name: 'tenureType', type: 'string', required: false, default: 'years' },
+            { name: 'rates', type: 'number[]', required: true, description: 'Array of interest rates to compare' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/finance/emi-comparison -H "X-API-Key: YOUR_KEY" -d \'{"principal":500000,"tenure":5,"rates":[8,8.5,9]}\'',
+            response: { success: true, result: { comparison: [{ rate: 8, emi: 10138 }, { rate: 8.5, emi: 10233 }] } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/finance/currency-converter', name: 'Currency Converter',
+          description: 'Convert between currencies using live rates',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'amount', type: 'number', required: true },
+            { name: 'from', type: 'string', required: false, default: 'USD' },
+            { name: 'to', type: 'string', required: false, default: 'EUR' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/finance/currency-converter -H "X-API-Key: YOUR_KEY" -d \'{"amount":100,"from":"USD","to":"EUR"}\'',
+            response: { success: true, result: { from: 'USD', to: 'EUR', amount: 100, converted: 92.5 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/finance/gst-calculator', name: 'GST Calculator',
+          description: 'Calculate GST amount (India)',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'amount', type: 'number', required: true },
+            { name: 'gstRate', type: 'number', required: true },
+            { name: 'type', type: 'string', required: false, default: 'exclusive', description: 'exclusive | inclusive' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/finance/gst-calculator -H "X-API-Key: YOUR_KEY" -d \'{"amount":1000,"gstRate":18}\'',
+            response: { success: true, result: { original: 1000, gstAmount: 180, total: 1180 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/finance/profit-margin', name: 'Profit Margin Calculator',
+          description: 'Calculate profit margin and markup',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'cost', type: 'number', required: true },
+            { name: 'revenue', type: 'number', required: true },
+            { name: 'sellingPrice', type: 'number', required: false },
+          ],
+          example: {
+            curl: 'curl -X POST /api/finance/profit-margin -H "X-API-Key: YOUR_KEY" -d \'{"cost":80,"revenue":100}\'',
+            response: { success: true, result: { cost: 80, revenue: 100, profit: 20, grossMargin: 20, markup: 25 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/finance/salary-calculator', name: 'Salary Calculator',
+          description: 'Convert salary between annual, monthly, weekly, hourly',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'grossSalary', type: 'number', required: true },
+            { name: 'frequency', type: 'string', required: false, default: 'annual', description: 'annual | monthly | weekly | hourly' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/finance/salary-calculator -H "X-API-Key: YOUR_KEY" -d \'{"grossSalary":60000,"frequency":"annual"}\'',
+            response: { success: true, result: { annual: 60000, monthly: 5000, weekly: 1154, hourly: 29 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/finance/compound-interest', name: 'Compound Interest Calculator',
+          description: 'Calculate compound interest',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'principal', type: 'number', required: true },
+            { name: 'rate', type: 'number', required: true },
+            { name: 'time', type: 'number', required: true },
+            { name: 'compoundFrequency', type: 'number', required: false, default: 12 },
+          ],
+          example: {
+            curl: 'curl -X POST /api/finance/compound-interest -H "X-API-Key: YOUR_KEY" -d \'{"principal":10000,"rate":5,"time":5}\'',
+            response: { success: true, result: { principal: 10000, amount: 12833.59, interest: 2833.59 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/finance/salary-breakup-generator', name: 'Salary Breakup Generator',
+          description: 'Generate detailed salary breakup (India)',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'ctc', type: 'number', required: true },
+            { name: 'city', type: 'string', required: false, default: 'metro', description: 'metro | non-metro' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/finance/salary-breakup-generator -H "X-API-Key: YOUR_KEY" -d \'{"ctc":1200000,"city":"metro"}\'',
+            response: { success: true, result: { annual: 1200000, monthly: 100000, breakdown: {} } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/finance/tax-slab-analyzer', name: 'Tax Slab Analyzer',
+          description: 'Analyze income tax slabs (India)',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'income', type: 'number', required: true },
+            { name: 'regime', type: 'string', required: false, default: 'new', description: 'new | old' },
+            { name: 'age_group', type: 'string', required: false, default: 'below_60' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/finance/tax-slab-analyzer -H "X-API-Key: YOUR_KEY" -d \'{"income":1000000}\'',
+            response: { success: true, result: { income: 1000000, totalTax: 112500, effectiveRate: 11.25 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/finance/invoice-generator', name: 'Invoice Generator',
+          description: 'Generate professional invoice HTML',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'company_name', type: 'string', required: true },
+            { name: 'client_name', type: 'string', required: true },
+            { name: 'items', type: 'array', required: true, description: 'Array of line items' },
+            { name: 'invoice_number', type: 'string', required: false },
+            { name: 'invoice_date', type: 'string', required: false },
+            { name: 'currency', type: 'string', required: false, default: 'INR' },
+          ],
+          example: {
+            curl: `curl -X POST /api/finance/invoice-generator -H "X-API-Key: YOUR_KEY" -d '{"company_name":"ABC Corp","client_name":"XYZ Inc","items":[{"name":"Service","quantity":1,"price":1000}]}'`,
+            response: 'HTML invoice document',
+          },
+        },
+      ],
+    },
+    {
+      category: 'SEO',
+      endpoints: [
+        {
+          method: 'POST', path: '/api/seo/meta-title-description', name: 'Meta Title & Description Checker',
+          description: 'Check and analyze meta title and description from a URL',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true, description: 'URL to analyze' },
+          ],
+          example: {
+            curl: `curl -X POST /api/seo/meta-title-description -H "X-API-Key: YOUR_KEY" -d '{"url":"https://example.com"}'`,
+            response: { success: true, result: { title: 'Example', titleLength: 7, description: '...', descriptionLength: 50 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/seo/keyword-density', name: 'Keyword Density Analyzer',
+          description: 'Analyze keyword density in text',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true },
+            { name: 'topN', type: 'number', required: false, default: 20 },
+          ],
+          example: {
+            curl: `curl -X POST /api/seo/keyword-density -H "X-API-Key: YOUR_KEY" -d '{"text":"Your text here..."}'`,
+            response: { success: true, result: { totalWords: 100, keywords: [{ word: 'example', count: 5, density: '5%' }] } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/seo/robots-txt-generator', name: 'Robots.txt Generator',
+          description: 'Generate robots.txt file',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'userAgent', type: 'string', required: false, default: '*' },
+            { name: 'disallowPaths', type: 'array', required: false },
+            { name: 'allowPaths', type: 'array', required: false },
+            { name: 'sitemap', type: 'string', required: false },
+          ],
+          example: {
+            curl: `curl -X POST /api/seo/robots-txt-generator -H "X-API-Key: YOUR_KEY" -d '{"disallowPaths":["/admin"]}'`,
+            response: { success: true, result: { robotsTxt: 'User-agent: *\nDisallow: /admin' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/seo/sitemap-validator', name: 'Sitemap Validator',
+          description: 'Validate and parse XML sitemap',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true },
+          ],
+          example: {
+            curl: `curl -X POST /api/seo/sitemap-validator -H "X-API-Key: YOUR_KEY" -d '{"url":"https://example.com/sitemap.xml"}'`,
+            response: { success: true, result: { isValid: true, urlCount: 50 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/seo/og-image-preview', name: 'Open Graph Preview',
+          description: 'Extract Open Graph and Twitter Card meta tags',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true },
+          ],
+          example: {
+            curl: `curl -X POST /api/seo/og-image-preview -H "X-API-Key: YOUR_KEY" -d '{"url":"https://example.com"}'`,
+            response: { success: true, result: { og: { title: '...', image: '...' }, twitter: { card: 'summary' } } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/seo/broken-image-finder', name: 'Broken Image Finder',
+          description: 'Find broken images on a webpage',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true },
+          ],
+          example: {
+            curl: `curl -X POST /api/seo/broken-image-finder -H "X-API-Key: YOUR_KEY" -d '{"url":"https://example.com"}'`,
+            response: { success: true, result: { totalImages: 20, brokenImages: 2 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/seo/domain-age-checker', name: 'Domain Age Checker',
+          description: 'Check domain age and registration info',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'domain', type: 'string', required: true },
+          ],
+          example: {
+            curl: `curl -X POST /api/seo/domain-age-checker -H "X-API-Key: YOUR_KEY" -d '{"domain":"example.com"}'`,
+            response: { success: true, result: { domain: 'example.com', age: 15, creationDate: '2009-01-01' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/seo/tech-stack-detector', name: 'Tech Stack Detector',
+          description: 'Detect technologies used by a website',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true },
+          ],
+          example: {
+            curl: `curl -X POST /api/seo/tech-stack-detector -H "X-API-Key: YOUR_KEY" -d '{"url":"https://example.com"}'`,
+            response: { success: true, result: { technologies: ['React', 'Node.js', 'MongoDB'] } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/seo/utm-link-builder', name: 'UTM Link Builder',
+          description: 'Build UTM tracking links',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true },
+            { name: 'source', type: 'string', required: true },
+            { name: 'medium', type: 'string', required: false, default: 'cpc' },
+            { name: 'campaign', type: 'string', required: true },
+            { name: 'term', type: 'string', required: false },
+            { name: 'content', type: 'string', required: false },
+          ],
+          example: {
+            curl: `curl -X POST /api/seo/utm-link-builder -H "X-API-Key: YOUR_KEY" -d '{"url":"https://example.com","source":"google","campaign":"spring"}'`,
+            response: { success: true, result: { url: 'https://example.com?utm_source=google&utm_campaign=spring' } },
+          },
+        },
+      ],
+    },
+    {
+      category: 'Social Media',
+      endpoints: [
+        {
+          method: 'POST', path: '/api/social/hashtag-generator', name: 'Hashtag Generator',
+          description: 'Generate relevant hashtags for social media posts',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'topic', type: 'string', required: true },
+            { name: 'niche', type: 'string', required: false },
+            { name: 'count', type: 'number', required: false, default: 30 },
+          ],
+          example: {
+            curl: `curl -X POST /api/social/hashtag-generator -H "X-API-Key: YOUR_KEY" -d '{"topic":"fitness","count":20}'`,
+            response: { success: true, result: { hashtags: ['#fitness', '#workout', '#health'], count: 20 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/social/bio-generator', name: 'Bio Generator',
+          description: 'Generate social media bios',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'name', type: 'string', required: true },
+            { name: 'profession', type: 'string', required: true },
+            { name: 'skills', type: 'array', required: false },
+            { name: 'emoji', type: 'boolean', required: false, default: true },
+            { name: 'platform', type: 'string', required: false, default: 'instagram', description: 'instagram | linkedin | twitter' },
+          ],
+          example: {
+            curl: `curl -X POST /api/social/bio-generator -H "X-API-Key: YOUR_KEY" -d '{"name":"John","profession":"Developer","platform":"linkedin"}'`,
+            response: { success: true, result: { bio: 'John | Developer | Passionate about innovation', characterCount: 50 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/social/caption-formatter', name: 'Caption Formatter',
+          description: 'Format social media captions with special styles',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true },
+            { name: 'style', type: 'string', required: false, default: 'default', description: 'default | spaced | bold | italic' },
+            { name: 'addEmojis', type: 'boolean', required: false, default: false },
+          ],
+          example: {
+            curl: `curl -X POST /api/social/caption-formatter -H "X-API-Key: YOUR_KEY" -d '{"text":"Hello World","style":"bold"}'`,
+            response: { success: true, result: { formatted: '𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝', style: 'bold' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/social/line-break-generator', name: 'Line Break Generator',
+          description: 'Add line breaks for social media platforms',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true },
+            { name: 'platform', type: 'string', required: false, default: 'instagram', description: 'instagram | generic' },
+          ],
+          example: {
+            curl: `curl -X POST /api/social/line-break-generator -H "X-API-Key: YOUR_KEY" -d '{"text":"Line 1\\nLine 2\\nLine 3"}'`,
+            response: { success: true, result: { formatted: 'Line 1\n.\nLine 2\n.\nLine 3', platform: 'instagram' } },
+          },
+        },
+      ],
+    },
+    {
+      category: 'Internet',
+      endpoints: [
+        {
+          method: 'POST', path: '/api/internet/ip-lookup', name: 'IP Lookup',
+          description: 'Lookup IP address information',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'ip', type: 'string', required: false, description: 'IP address (defaults to client IP)' },
+          ],
+          example: {
+            curl: `curl -X POST /api/internet/ip-lookup -H "X-API-Key: YOUR_KEY" -d '{"ip":"8.8.8.8"}'`,
+            response: { success: true, result: { ip: '8.8.8.8', country: 'United States', city: 'Mountain View', isp: 'Google LLC' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/internet/dns-lookup', name: 'DNS Lookup',
+          description: 'Perform DNS record lookups',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'domain', type: 'string', required: true },
+            { name: 'recordType', type: 'string', required: false, default: 'A', description: 'A | AAAA | MX | TXT | NS | CNAME | SOA' },
+          ],
+          example: {
+            curl: `curl -X POST /api/internet/dns-lookup -H "X-API-Key: YOUR_KEY" -d '{"domain":"example.com","recordType":"A"}'`,
+            response: { success: true, result: { domain: 'example.com', recordType: 'A', records: ['93.184.216.34'] } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/internet/ssl-checker', name: 'SSL Checker',
+          description: 'Check SSL certificate information',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'domain', type: 'string', required: true },
+          ],
+          example: {
+            curl: `curl -X POST /api/internet/ssl-checker -H "X-API-Key: YOUR_KEY" -d '{"domain":"example.com"}'`,
+            response: { success: true, result: { domain: 'example.com', isValid: true, daysRemaining: 90, issuer: "Let's Encrypt" } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/internet/website-ping', name: 'Website Ping',
+          description: 'Ping a website to check availability and response time',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true },
+          ],
+          example: {
+            curl: `curl -X POST /api/internet/website-ping -H "X-API-Key: YOUR_KEY" -d '{"url":"https://example.com"}'`,
+            response: { success: true, result: { url: 'https://example.com', avgTime: 45, status: 'online' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/internet/user-agent', name: 'User Agent Parser',
+          description: 'Parse and analyze user agent strings',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'userAgent', type: 'string', required: false },
+          ],
+          example: {
+            curl: 'curl -X POST /api/internet/user-agent -H "X-API-Key: YOUR_KEY" -d \'{"userAgent":"Mozilla/5.0 (Windows NT 10.0) Chrome/120.0"}\'',
+            response: { success: true, result: { browser: 'Chrome', os: 'Windows', deviceType: 'Desktop' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/internet/website-screenshot', name: 'Website Screenshot',
+          description: 'Capture screenshot of a website',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'url', type: 'string', required: true },
+            { name: 'width', type: 'number', required: false, default: 1440 },
+            { name: 'height', type: 'number', required: false, default: 900 },
+            { name: 'format', type: 'string', required: false, default: 'png', description: 'png | jpeg' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/internet/website-screenshot -H "X-API-Key: YOUR_KEY" -d \'{"url":"https://example.com","width":1440}\'',
+            response: { success: true, result: { screenshot: 'data:image/png;base64,...', width: 1440, height: 900 } },
+          },
+        },
+        {
+          method: 'GET', path: '/sitemap.xml', name: 'Sitemap',
+          description: 'Get website sitemap XML file',
+          contentType: 'application/xml',
+          parameters: [],
+          example: {
+            curl: 'curl -X GET /sitemap.xml',
+            response: { success: true, result: 'XML sitemap content' },
+          },
+        },
+        {
+          method: 'GET', path: '/robots.txt', name: 'Robots.txt',
+          description: 'Get website robots.txt file',
+          contentType: 'text/plain',
+          parameters: [],
+          example: {
+            curl: 'curl -X GET /robots.txt',
+            response: { success: true, result: 'User-agent: *\\nAllow: /\\nSitemap: https://www.dailytools247.app/sitemap.xml' },
           },
         },
       ],
@@ -537,6 +1368,7 @@ router.get('/docs', async (req, res) => {
     const response = {
       success: true,
       ...API_DOCUMENTATION,
+      tier: req.apiKeyRecord?.tier || 'free',
     };
 
     // Cache the response for 1 hour (3600 seconds)
@@ -550,6 +1382,18 @@ router.get('/docs', async (req, res) => {
       success: true,
       ...API_DOCUMENTATION,
     });
+  }
+});
+
+router.post('/docs/clear-cache', async (req, res) => {
+  const cacheKey = cache.generateKey('api', 'docs');
+  
+  try {
+    await cache.del(cacheKey);
+    res.json({ success: true, message: 'API docs cache cleared successfully' });
+  } catch (error) {
+    console.error('Cache clear error:', error);
+    res.status(500).json({ success: false, error: 'Failed to clear cache' });
   }
 });
 
@@ -576,18 +1420,23 @@ router.post('/text/case-converter', validateApiKey, (req, res) => {
   if (!text) return res.status(400).json({ success: false, error: 'text is required' });
 
   let converted;
-  switch (targetCase.toLowerCase()) {
-    case 'upper': converted = text.toUpperCase(); break;
-    case 'lower': converted = text.toLowerCase(); break;
-    case 'title': converted = text.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase()); break;
-    case 'camel': converted = text.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase()); break;
-    case 'snake': converted = text.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''); break;
-    case 'kebab': converted = text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''); break;
-    case 'sentence': converted = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(); break;
-    default: return res.status(400).json({ success: false, error: 'Invalid case. Use: upper, lower, title, camel, snake, kebab, sentence' });
-  }
+  const converters = {
+    upper: t => t.toUpperCase(),
+    lower: t => t.toLowerCase(),
+    title: t => t.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()),
+    sentence: t => t.replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase()),
+    camel: t => t.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase()),
+    pascal: t => t.replace(/\w+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).replace(/\s+/g, ''),
+    snake: t => t.replace(/\s+/g, '_').replace(/[A-Z]/g, c => '_' + c.toLowerCase()).replace(/^_/, '').toLowerCase(),
+    kebab: t => t.replace(/\s+/g, '-').replace(/[A-Z]/g, c => '-' + c.toLowerCase()).replace(/^-/, '').toLowerCase(),
+    alternating: t => t.split('').map((c, i) => i % 2 === 0 ? c.toLowerCase() : c.toUpperCase()).join(''),
+    inverse: t => t.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join(''),
+  };
 
-  res.json({ success: true, result: { original: text, converted, case: targetCase } });
+  const convert = converters[targetCase.toLowerCase()];
+  if (!convert) return res.status(400).json({ success: false, error: 'Invalid case. Use: upper, lower, title, sentence, camel, pascal, snake, kebab, alternating, inverse' });
+
+  res.json({ success: true, result: { original: text, converted: convert(text), case: targetCase } });
 });
 
 router.post('/text/markdown-to-html', validateApiKey, (req, res) => {
@@ -611,6 +1460,115 @@ router.post('/text/markdown-to-html', validateApiKey, (req, res) => {
     .replace(/(?<!\>)\n/g, '<br>');
 
   res.json({ success: true, result: { html } });
+});
+
+router.post('/text/remove-spaces', validateApiKey, (req, res) => {
+  const { text, type = 'extra' } = req.body;
+  if (text === undefined) return res.status(400).json({ success: false, error: 'text is required' });
+
+  const processors = {
+    extra: t => t.replace(/[ \t]+/g, ' ').replace(/^ /gm, '').replace(/ $/gm, ''),
+    all: t => t.replace(/\s+/g, ''),
+    leading: t => t.replace(/^[ \t]+/gm, ''),
+    trailing: t => t.replace(/[ \t]+$/gm, ''),
+    blank: t => t.replace(/^\s*[\r\n]/gm, ''),
+    tabs: t => t.replace(/\t/g, '    '),
+  };
+
+  const fn = processors[type] || processors.extra;
+  res.json({ success: true, result: { output: fn(text) } });
+});
+
+router.post('/text/line-sorter', validateApiKey, (req, res) => {
+  const { text, order = 'asc', caseSensitive = false, removeDuplicates = false } = req.body;
+  if (text === undefined) return res.status(400).json({ success: false, error: 'text is required' });
+
+  let lines = text.split('\n');
+  if (removeDuplicates) {
+    const seen = new Set();
+    lines = lines.filter(l => {
+      const key = caseSensitive ? l : l.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  lines.sort((a, b) => {
+    const ca = caseSensitive ? a : a.toLowerCase();
+    const cb = caseSensitive ? b : b.toLowerCase();
+    return order === 'desc' ? cb.localeCompare(ca) : ca.localeCompare(cb);
+  });
+
+  if (order === 'random') {
+    for (let i = lines.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [lines[i], lines[j]] = [lines[j], lines[i]];
+    }
+  }
+
+  res.json({ success: true, result: { output: lines.join('\n'), lineCount: lines.length } });
+});
+
+router.post('/text/duplicate-remover', validateApiKey, (req, res) => {
+  const { text, caseSensitive = false } = req.body;
+  if (text === undefined) return res.status(400).json({ success: false, error: 'text is required' });
+
+  const lines = text.split('\n');
+  const seen = new Set();
+  const unique = lines.filter(l => {
+    const key = caseSensitive ? l : l.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  const duplicates = lines.length - unique.length;
+  res.json({ success: true, result: { output: unique.join('\n'), original: lines.length, unique: unique.length, duplicatesRemoved: duplicates } });
+});
+
+router.post('/text/text-diff', validateApiKey, (req, res) => {
+  const { text1 = '', text2 = '' } = req.body;
+
+  const lines1 = text1.split('\n');
+  const lines2 = text2.split('\n');
+  const diff = [];
+
+  const maxLen = Math.max(lines1.length, lines2.length);
+  let added = 0, removed = 0, unchanged = 0;
+
+  for (let i = 0; i < maxLen; i++) {
+    const l1 = lines1[i];
+    const l2 = lines2[i];
+
+    if (l1 === undefined) { diff.push({ type: 'added', line: l2, lineNum: i + 1 }); added++; }
+    else if (l2 === undefined) { diff.push({ type: 'removed', line: l1, lineNum: i + 1 }); removed++; }
+    else if (l1 === l2) { diff.push({ type: 'unchanged', line: l1, lineNum: i + 1 }); unchanged++; }
+    else { diff.push({ type: 'removed', line: l1, lineNum: i + 1 }, { type: 'added', line: l2, lineNum: i + 1 }); removed++; added++; }
+  }
+
+  res.json({ success: true, result: { diff, stats: { added, removed, unchanged, total: maxLen } } });
+});
+
+router.post('/text/text-summarizer', validateApiKey, (req, res) => {
+  const { text, sentences: sentenceCount = 3 } = req.body;
+  if (!text) return res.status(400).json({ success: false, error: 'text is required' });
+
+  const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+  const wordFreq = {};
+  const words = text.toLowerCase().replace(/[^a-z\s]/g, ' ').split(/\s+/);
+  for (const w of words) if (w.length > 3) wordFreq[w] = (wordFreq[w] || 0) + 1;
+
+  const scoredSentences = sentences.map((s, i) => {
+    const words = s.toLowerCase().split(/\s+/);
+    const score = words.reduce((acc, w) => acc + (wordFreq[w] || 0), 0) / (words.length || 1);
+    return { sentence: s.trim(), score, index: i };
+  });
+
+  const topSentences = scoredSentences.sort((a, b) => b.score - a.score).slice(0, Math.min(parseInt(sentenceCount) || 3, sentences.length));
+  const summary = topSentences.sort((a, b) => a.index - b.index).map(s => s.sentence).join(' ');
+
+  res.json({ success: true, result: { summary, originalSentences: sentences.length, summarySentences: topSentences.length, compressionRatio: `${Math.round((1 - summary.length / text.length) * 100)}%` } });
 });
 
 router.post('/security/password-generator', validateApiKey, (req, res) => {
@@ -706,22 +1664,23 @@ router.post('/dev/url-encoder', validateApiKey, (req, res) => {
 });
 
 router.post('/finance/emi-calculator', validateApiKey, (req, res) => {
-  const { principal, rate, tenure } = req.body;
+  const { principal, rate, tenure, tenureType = 'months' } = req.body;
   if (!principal || !rate || !tenure) {
     return res.status(400).json({ success: false, error: 'principal, rate, and tenure are required' });
   }
 
   const p = parseFloat(principal);
-  const r = parseFloat(rate) / 100 / 12;
-  const n = parseInt(tenure);
+  const annualRate = parseFloat(rate);
+  const months = tenureType === 'years' ? parseInt(tenure) * 12 : parseInt(tenure);
+  const r = annualRate / 100 / 12;
 
   if (r === 0) {
-    const emi = p / n;
-    return res.json({ success: true, result: { emi: +emi.toFixed(2), totalPayment: +(emi * n).toFixed(2), totalInterest: 0, principal: p } });
+    const emi = p / months;
+    return res.json({ success: true, result: { emi: +emi.toFixed(2), totalPayment: +(emi * months).toFixed(2), totalInterest: 0, principal: p } });
   }
 
-  const emi = p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
-  const totalPayment = emi * n;
+  const emi = p * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+  const totalPayment = emi * months;
   const totalInterest = totalPayment - p;
 
   res.json({
@@ -731,14 +1690,15 @@ router.post('/finance/emi-calculator', validateApiKey, (req, res) => {
       totalPayment: +totalPayment.toFixed(2),
       totalInterest: +totalInterest.toFixed(2),
       principal: p,
-      rate: parseFloat(rate),
-      tenure: n,
+      rate: annualRate,
+      tenure: months,
+      tenureType,
     },
   });
 });
 
 router.get('/health', (req, res) => {
-  res.json({ success: true, version: '1.0.0', status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ success: true, version: '2.0.0', status: 'ok', timestamp: new Date().toISOString() });
 });
 
 module.exports = router;
