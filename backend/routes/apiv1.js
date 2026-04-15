@@ -1223,27 +1223,7 @@ const API_DOCUMENTATION = {
             response: { success: true, result: { screenshot: 'data:image/png;base64,...', width: 1440, height: 900 } },
           },
         },
-        {
-          method: 'GET', path: '/sitemap.xml', name: 'Sitemap',
-          description: 'Get website sitemap XML file',
-          contentType: 'application/xml',
-          parameters: [],
-          example: {
-            curl: 'curl -X GET /sitemap.xml',
-            response: { success: true, result: 'XML sitemap content' },
-          },
-        },
-        {
-          method: 'GET', path: '/robots.txt', name: 'Robots.txt',
-          description: 'Get website robots.txt file',
-          contentType: 'text/plain',
-          parameters: [],
-          example: {
-            curl: 'curl -X GET /robots.txt',
-            response: { success: true, result: 'User-agent: *\\nAllow: /\\nSitemap: https://www.dailytools247.app/sitemap.xml' },
-          },
-        },
-      ],
+              ],
     },
   ],
 };
