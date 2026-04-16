@@ -81,9 +81,18 @@ app.use('/api/education', require('./routes/education'));
 app.use('/api/date-time', require('./routes/datetime'));
 app.use('/api/blog', require('./routes/blog'));
 
-app.use((_req, res) => {
-  res.status(404).json({ success: false, error: 'Endpoint not found' });
-});
+// Serve frontend static files in production
+if (process.env.NODE_ENV === 'production') {
+  const staticPath = path.join(__dirname, 'public');
+  app.use(express.static(staticPath));
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(staticPath, 'index.html'));
+  });
+} else {
+  app.use((_req, res) => {
+    res.status(404).json({ success: false, error: 'Endpoint not found' });
+  });
+}
 
 app.use(errorHandler);
 
