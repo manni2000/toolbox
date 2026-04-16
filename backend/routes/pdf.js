@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const { PDFDocument, degrees, StandardFonts, rgb } = require('pdf-lib');
 const PDFParser = require('pdf2json');
-const { Document, Packer, Paragraph, TextRun, HeadingLevel } = require('docx');
+const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, ShadingType } = require('docx');
 const XLSX = require('xlsx');
 const { uploadLimiter } = require('../middleware/security');
 
@@ -14,11 +14,7 @@ router.use(uploadLimiter);
 async function extractTextFromPDF(buffer) {
   return new Promise((resolve) => {
     const pdfParser = new PDFParser();
-    
-    pdfParser.on('pdfParser_dataError', (errData) => {
-      resolve({ text: '', numpages: 0 });
-    });
-    
+    pdfParser.on('pdfParser_dataError', () => resolve({ text: '', numpages: 0 }));
     pdfParser.on('pdfParser_dataReady', (pdfData) => {
       let fullText = '';
       if (pdfData && pdfData.Pages) {
@@ -26,9 +22,7 @@ async function extractTextFromPDF(buffer) {
           if (page.Texts) {
             page.Texts.forEach(text => {
               if (text.R) {
-                text.R.forEach(r => {
-                  fullText += decodeURIComponent(r.T) + ' ';
-                });
+                text.R.forEach(r => { fullText += decodeURIComponent(r.T) + ' '; });
               }
             });
             fullText += '\n';
@@ -37,9 +31,145 @@ async function extractTextFromPDF(buffer) {
       }
       resolve({ text: fullText.trim(), numpages: pdfData.Pages ? pdfData.Pages.length : 0 });
     });
-    
     pdfParser.parseBuffer(buffer);
   });
+}
+
+async function extractStructuredFromPDF(buffer) {
+  return new Promise((resolve) => {
+    const pdfParser = new PDFParser(null, 1);
+    pdfParser.on('pdfParser_dataError', () => resolve({ pages: [], numpages: 0 }));
+    pdfParser.on('pdfParser_dataReady', (pdfData) => {
+      if (!pdfData || !pdfData.Pages) return resolve({ pages: [], numpages: 0 });
+
+      const pages = pdfData.Pages.map((page) => {
+        const items = [];
+        if (!page.Texts) return { items: [] };
+
+        page.Texts.forEach(textBlock => {
+          const x = textBlock.x || 0;
+          const y = textBlock.y || 0;
+          if (!textBlock.R) return;
+          textBlock.R.forEach(run => {
+            const text = decodeURIComponent(run.T || '');
+            if (!text.trim()) return;
+            const ts = run.TS || [0, 12, 0, 0];
+            const fontSize = ts[1] || 12;
+            const bold = ts[2] === 1;
+            const italic = ts[3] === 1;
+            // Color comes as hex string or integer
+            let color = '000000';
+            if (run.clr !== undefined && run.clr !== -1) {
+              color = run.clr.toString(16).padStart(6, '0');
+            }
+            items.push({ x, y, text, fontSize, bold, italic, color });
+          });
+        });
+
+        // Sort items top-to-bottom, then left-to-right
+        items.sort((a, b) => a.y !== b.y ? a.y - b.y : a.x - b.x);
+
+        // Group items into lines by y-position (within threshold)
+        const lines = [];
+        let currentLine = null;
+        const Y_THRESHOLD = 0.5;
+
+        for (const item of items) {
+          if (!currentLine || Math.abs(item.y - currentLine.y) > Y_THRESHOLD) {
+            currentLine = { y: item.y, runs: [] };
+            lines.push(currentLine);
+          }
+          currentLine.runs.push(item);
+        }
+
+        // Group lines into paragraphs by gap between lines
+        const paragraphs = [];
+        let prevY = null;
+        let currentPara = null;
+        const LINE_GAP_THRESHOLD = 2;
+
+        for (const line of lines) {
+          const isNewPara = prevY === null || (line.y - prevY) > LINE_GAP_THRESHOLD;
+          if (isNewPara) {
+            currentPara = { lines: [] };
+            paragraphs.push(currentPara);
+          }
+          currentPara.lines.push(line);
+          prevY = line.y;
+        }
+
+        return { paragraphs };
+      });
+
+      resolve({ pages, numpages: pages.length });
+    });
+    pdfParser.parseBuffer(buffer);
+  });
+}
+
+function hexToDocxColor(hex) {
+  if (!hex || hex === '000000') return undefined;
+  return hex.replace('#', '').toUpperCase();
+}
+
+function buildDocxParagraphs(pages) {
+  const docxParagraphs = [];
+
+  pages.forEach((page, pageIndex) => {
+    if (pageIndex > 0) {
+      // Page break between pages
+      docxParagraphs.push(new Paragraph({
+        children: [new TextRun({ text: '', break: 1 })],
+        pageBreakBefore: true,
+      }));
+    }
+
+    (page.paragraphs || []).forEach(para => {
+      // Collect all runs in this paragraph across its lines
+      const allRuns = [];
+      para.lines.forEach((line, lineIdx) => {
+        line.runs.forEach(run => {
+          allRuns.push(run);
+        });
+        // Add line break between lines within a paragraph (except last)
+        if (lineIdx < para.lines.length - 1) {
+          allRuns.push({ _lineBreak: true });
+        }
+      });
+
+      if (allRuns.length === 0) return;
+
+      // Determine dominant font size for heading detection
+      const fontSizes = allRuns.filter(r => !r._lineBreak).map(r => r.fontSize);
+      const maxFontSize = Math.max(...fontSizes);
+      const hasBold = allRuns.some(r => !r._lineBreak && r.bold);
+
+      let heading = null;
+      if (maxFontSize >= 24) heading = HeadingLevel.HEADING_1;
+      else if (maxFontSize >= 18) heading = HeadingLevel.HEADING_2;
+      else if (maxFontSize >= 14 && hasBold) heading = HeadingLevel.HEADING_3;
+
+      const children = allRuns.map(run => {
+        if (run._lineBreak) return new TextRun({ break: 1 });
+        const color = hexToDocxColor(run.color);
+        return new TextRun({
+          text: run.text,
+          bold: run.bold,
+          italics: run.italic,
+          size: Math.round(run.fontSize * 2), // half-points in docx
+          color: color,
+        });
+      });
+
+      docxParagraphs.push(new Paragraph({
+        heading: heading || undefined,
+        children,
+        spacing: { after: 120 },
+      }));
+    });
+  });
+
+  return docxParagraphs;
 }
 
 function getUploadedFile(req, fieldNames = ['file', 'pdf']) {
@@ -329,40 +459,64 @@ router.post('/to-word', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'p
     const file = getUploadedFile(req);
     if (!file) return res.status(400).json({ success: false, error: 'PDF file required' });
 
-    let text = '';
+    let docxParagraphs = [];
+    let numpages = 0;
+
     try {
-      const parsed = await extractTextFromPDF(file.buffer);
-      text = parsed.text || '';
+      const structured = await extractStructuredFromPDF(file.buffer);
+      numpages = structured.numpages;
+      if (structured.pages && structured.pages.length > 0) {
+        docxParagraphs = buildDocxParagraphs(structured.pages);
+      }
     } catch (e) {
-      text = 'Could not extract text from this PDF.';
+      // ignore and fall through
     }
 
-    const paragraphs = text.split(/\n{2,}/).filter(p => p.trim().length > 0);
+    // Fallback: if structured extraction yielded nothing, use plain text
+    if (docxParagraphs.length === 0) {
+      try {
+        const parsed = await extractTextFromPDF(file.buffer);
+        numpages = parsed.numpages;
+        const paragraphs = (parsed.text || '').split(/\n{2,}/).filter(p => p.trim().length > 0);
+        docxParagraphs = paragraphs.map(para => new Paragraph({
+          children: [new TextRun({ text: para.trim().replace(/\n/g, ' '), size: 24 })],
+          spacing: { after: 120 },
+        }));
+      } catch (e) {
+        docxParagraphs = [new Paragraph({ children: [new TextRun({ text: 'Could not extract text from this PDF.' })] })];
+      }
+    }
 
     const doc = new Document({
+      styles: {
+        default: {
+          document: {
+            run: { font: 'Arial', size: 24 },
+          },
+        },
+      },
       sections: [{
-        properties: {},
-        children: [
-          new Paragraph({
-            text: 'Converted from PDF',
-            heading: HeadingLevel.HEADING_1,
-          }),
-          ...paragraphs.map(para => new Paragraph({
-            children: [
-              new TextRun({
-                text: para.trim().replace(/\n/g, ' '),
-                size: 24,
-              }),
-            ],
-          })),
-        ],
+        properties: {
+          page: {
+            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
+          },
+        },
+        children: docxParagraphs,
       }],
     });
 
     const buffer = await Packer.toBuffer(doc);
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-    res.setHeader('Content-Disposition', 'attachment; filename="converted.docx"');
-    res.send(buffer);
+    const base64 = buffer.toString('base64');
+    const originalName = file.originalname || 'document.pdf';
+    const outName = originalName.replace(/\.pdf$/i, '.docx');
+
+    res.json({
+      success: true,
+      file: base64,
+      filename: outName,
+      pages: numpages,
+      message: 'PDF converted to Word with formatting preserved',
+    });
   } catch (err) {
     next(err);
   }

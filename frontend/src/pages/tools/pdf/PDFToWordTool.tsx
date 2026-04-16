@@ -99,14 +99,25 @@ const PDFToWordTool = () => {
       const result = await response.json();
 
       if (result.success) {
-        setDocxData(result.file || result.docx);
-        setConversionResult(result);
+        // Convert base64 to a blob URL for downloading
+        const base64 = result.file || result.docx;
+        const byteChars = atob(base64);
+        const byteNums = new Array(byteChars.length);
+        for (let i = 0; i < byteChars.length; i++) {
+          byteNums[i] = byteChars.charCodeAt(i);
+        }
+        const blob = new Blob([new Uint8Array(byteNums)], {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        });
+        const blobUrl = URL.createObjectURL(blob);
+
+        setDocxData(blobUrl);
+        setConversionResult({ ...result, filename: result.filename });
         toast({
           title: "Success!",
           description: "PDF converted to Word document successfully",
         });
-        
-        // Auto-scroll to download section after a short delay
+
         setTimeout(() => {
           const downloadSection = document.getElementById('download-section');
           if (downloadSection) {
