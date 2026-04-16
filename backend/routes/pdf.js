@@ -73,29 +73,92 @@ async function extractWithPdfjs(buffer) {
     const pageHeight = viewport.height;
     const pageWidth = viewport.width;
 
-    // Map common icon font PUA codepoints to readable Unicode equivalents
+    // Map common icon font PUA codepoints to readable Unicode equivalents (FontAwesome 4 + others)
     const PUA_MAP = {
-      0xF095: '\u260E', // phone
-      0xF0E0: '\u2709', // email envelope
-      0xF08C: '\u1F4BC', // briefcase (LinkedIn fallback)
-      0xF09B: '\u2B55', // github circle
-      0xF015: '\u2302', // home
-      0xF007: '\u25CF', // user
-      0xF041: '\u25CF', // map marker
-      0xF0AC: '\u25CF', // globe
-      0xF0C0: '\u25CF', // group/users
-      0xF023: '\u25CF', // lock
-      0xF13C: '\u25CF', // file
-      0xF016: '\u25CF', // file-o
-      0xF017: '\u25CF', // clock
-      0xF019: '\u25CF', // download
-      0xF01A: '\u25CF', // upload
-      0xF024: '\u25CF', // flag
-      0xF025: '\u25CF', // headphones
+      // FontAwesome 4 common icons
+      0xF000: '\u2022', 0xF001: '\u266A', 0xF002: '\uD83D\uDD0D', 0xF003: '\u2709',
+      0xF004: '\u2665', 0xF005: '\u2605', 0xF006: '\u2606', 0xF007: '\u25CF',
+      0xF008: '\uD83C\uDFAC', 0xF009: '\uD83C\uDFB5', 0xF00A: '\u22EE',
+      0xF00B: '\u22EF', 0xF00C: '\u2713', 0xF00D: '\u2715', 0xF00E: '\u2315',
+      0xF010: '\u2212', 0xF011: '\u23FB', 0xF012: '\u25AA',
+      0xF013: '\u2699', 0xF014: '\uD83D\uDDD1', 0xF015: '\u2302',
+      0xF016: '\uD83D\uDCC4', 0xF017: '\u23F0', 0xF018: '\uD83D\uDEE3',
+      0xF019: '\u2B07', 0xF01A: '\u2B06', 0xF01B: '\uD83D\uDCE5',
+      0xF01C: '\uD83D\uDCE5', 0xF01D: '\u25B6', 0xF01E: '\u21BA',
+      0xF021: '\u21BA', 0xF022: '\uD83D\uDCCB', 0xF023: '\uD83D\uDD12',
+      0xF024: '\uD83D\uDEA9', 0xF025: '\uD83C\uDFA7', 0xF026: '\uD83D\uDD07',
+      0xF027: '\uD83D\uDD08', 0xF028: '\uD83D\uDD0A', 0xF029: '\u29C9',
+      0xF02A: '\u2261', 0xF02B: '\uD83C\uDFF7', 0xF02C: '\uD83C\uDFF7',
+      0xF02D: '\uD83D\uDCDA', 0xF02E: '\uD83D\uDD16', 0xF02F: '\u25A3',
+      0xF030: '\uD83D\uDCF7', 0xF031: '\u24B6', 0xF032: '\uD83C\uDDE7',
+      0xF033: '\uD83C\uDDEE', 0xF034: '\uD83D\uDCCA', 0xF035: '\u25C4',
+      0xF036: '\u2248', 0xF037: '\u2248', 0xF038: '\u2248',
+      0xF039: '\u2248', 0xF03A: '\u2261', 0xF03B: '\u2261',
+      0xF03C: '\u2261', 0xF03D: '\u2261', 0xF03E: '\uD83D\uDDBC',
+      0xF040: '\u270F', 0xF041: '\uD83D\uDCCD', 0xF042: '\u25D0',
+      0xF043: '\uD83D\uDCA7', 0xF044: '\uD83D\uDCDD', 0xF045: '\u270A',
+      0xF046: '\u2611', 0xF047: '\u2194', 0xF048: '\u23EE',
+      0xF049: '\u23ED', 0xF04A: '\u23EA', 0xF04B: '\u25B6',
+      0xF04C: '\u23F8', 0xF04D: '\u23F9', 0xF04E: '\u23ED',
+      0xF050: '\u23ED', 0xF051: '\u23EE', 0xF052: '\u23EB',
+      0xF053: '\u276E', 0xF054: '\u276F', 0xF055: '\u2295',
+      0xF056: '\u2296', 0xF057: '\u2297', 0xF058: '\u2299',
+      0xF059: '\u2753', 0xF05A: '\u2139', 0xF05B: '\u2316',
+      0xF05C: '\u2296', 0xF05D: '\u2295', 0xF05E: '\u20E0',
+      0xF060: '\u2190', 0xF061: '\u2192', 0xF062: '\u2191',
+      0xF063: '\u2193', 0xF064: '\u21A9', 0xF065: '\u2922',
+      0xF066: '\u2921', 0xF067: '\u002B', 0xF068: '\u2212',
+      0xF069: '\u2731', 0xF06A: '\u2757', 0xF06B: '\uD83C\uDF81',
+      0xF06C: '\uD83C\uDF43', 0xF06D: '\uD83D\uDD25', 0xF06E: '\uD83D\uDC41',
+      0xF070: '\uD83D\uDEAB', 0xF071: '\u26A0', 0xF072: '\u2708',
+      0xF073: '\uD83D\uDCC5', 0xF074: '\u21C4', 0xF075: '\uD83D\uDCAC',
+      0xF076: '\u20D7', 0xF077: '\u2303', 0xF078: '\u2304',
+      0xF079: '\u21BA', 0xF07A: '\uD83D\uDECD', 0xF07B: '\uD83D\uDCC1',
+      0xF07C: '\uD83D\uDCC2', 0xF080: '\uD83D\uDCCA', 0xF081: '\uD83D\uDC26',
+      0xF082: '\uD83D\uDC24', 0xF083: '\uD83D\uDCF7', 0xF084: '\uD83D\uDD11',
+      0xF085: '\u2699', 0xF086: '\uD83D\uDCAC', 0xF087: '\uD83D\uDC4D',
+      0xF088: '\uD83D\uDC4E', 0xF089: '\u2605', 0xF08A: '\u2665',
+      0xF08B: '\uD83D\uDCCC', 0xF08C: '\uD83D\uDCBC', // LinkedIn
+      0xF08D: '\uD83D\uDCCC', 0xF08E: '\u21AA',
+      0xF090: '\u21AA', 0xF091: '\uD83C\uDFC6', 0xF092: '\uD83D\uDCBB',
+      0xF093: '\u2B06', 0xF094: '\uD83D\uDCCB', 0xF095: '\u260E', // phone
+      0xF096: '\u2610', 0xF097: '\uD83D\uDD16', 0xF098: '\uD83D\uDCDE',
+      0xF099: '\uD83D\uDC26', // Twitter bird
+      0xF09A: '\u0066', // Facebook f
+      0xF09B: '\uD83D\uDCBB', // GitHub
+      0xF09C: '\uD83D\uDD13', 0xF09D: '\uD83D\uDCB3', 0xF09E: '\uD83D\uDCE1',
+      0xF0A0: '\uD83D\uDCBF', 0xF0A1: '\uD83D\uDCE2', 0xF0A2: '\uD83D\uDD14',
+      0xF0A3: '\uD83C\uDF96', 0xF0A4: '\u261E', 0xF0A5: '\u261C',
+      0xF0A6: '\u261D', 0xF0A7: '\u261F', 0xF0A8: '\u27A4',
+      0xF0A9: '\u27A1', 0xF0AA: '\u2B05', 0xF0AB: '\u2B06',
+      0xF0AC: '\uD83C\uDF10', // globe
+      0xF0AD: '\uD83D\uDD27', 0xF0AE: '\uD83D\uDCCA',
+      0xF0B0: '\uD83D\uDD28', 0xF0B1: '\uD83D\uDCBC', 0xF0B2: '\u2922',
+      0xF0C0: '\uD83D\uDC65', // users/group
+      0xF0C1: '\uD83D\uDD17', 0xF0C2: '\u2601', 0xF0C3: '\uD83D\uDEC1',
+      0xF0C4: '\u2702', 0xF0C5: '\uD83D\uDCC4', 0xF0C6: '\uD83D\uDCCE',
+      0xF0C7: '\uD83D\uDCBE', 0xF0C8: '\u25A1', 0xF0C9: '\u2630',
+      0xF0CA: '\u2630', 0xF0CB: '\u2630', 0xF0CC: '\u2630',
+      0xF0CD: '\u2014', 0xF0CE: '\uD83D\uDCCB',
+      0xF0D0: '\u2604', 0xF0D1: '\uD83D\uDE9A', 0xF0D2: '\uD83D\uDCCC',
+      0xF0D3: '\uD83D\uDCCC', 0xF0D4: '\u26BD', 0xF0D5: '\uD83D\uDC07',
+      0xF0D6: '\uD83D\uDCB0', 0xF0D7: '\u25BC', 0xF0D8: '\u25B2',
+      0xF0D9: '\u25C4', 0xF0DA: '\u25BA', 0xF0DB: '\uD83C\uDFDB',
+      0xF0DC: '\u2195', 0xF0DD: '\u2193', 0xF0DE: '\u2191',
+      0xF0E0: '\u2709', // envelope/email
+      0xF0E1: '\uD83D\uDCCB', 0xF0E2: '\u21B6', 0xF0E3: '\u2696',
+      0xF0E4: '\u2388', 0xF0E5: '\uD83D\uDCAC', 0xF0E6: '\uD83D\uDCAC',
+      0xF0E7: '\u26A1', 0xF0E8: '\uD83D\uDD03', 0xF0E9: '\u2602',
+      0xF0EA: '\uD83D\uDCCB', 0xF0EB: '\uD83D\uDCA1', 0xF0EC: '\u21C6',
+      0xF0ED: '\uD83D\uDCE5', 0xF0EE: '\uD83D\uDCE4',
+      0xF0F0: '\uD83D\uDC8A', 0xF0F1: '\u2695', 0xF0F2: '\uD83D\uDCBC',
+      0xF0F3: '\uD83D\uDD14', 0xF0F4: '\u2615', 0xF0F5: '\uD83C\uDF74',
+      0xF0F6: '\uD83D\uDCC4', 0xF0F7: '\uD83C\uDFE5', 0xF0F8: '\uD83C\uDFE5',
+      0xF0F9: '\uD83D\uDE91', 0xF0FA: '\u2697', 0xF0FB: '\uD83C\uDF32',
+      0xF0FC: '\uD83C\uDF7A', 0xF0FD: '\uD83D\uDD2E', 0xF0FE: '\u2611',
     };
 
     function normalizeIconGlyph(str, fontName) {
-      // If it's a known icon font, try to replace PUA chars
       const isIconFont = /icon|symbol|awesome|wingding|zapf|webding|fontello|material|glyph|pictograph|emoji/i.test(fontName);
       let result = '';
       for (const ch of str) {
@@ -105,7 +168,7 @@ async function extractWithPdfjs(buffer) {
           if (PUA_MAP[cp]) {
             result += PUA_MAP[cp];
           } else if (isIconFont) {
-            // Unknown icon: skip (renders as box in Word)
+            // Unknown icon in a known icon font: skip to avoid rendering as box
           } else {
             result += ch;
           }
@@ -114,6 +177,61 @@ async function extractWithPdfjs(buffer) {
         }
       }
       return result;
+    }
+
+    // Get link annotations to mark underlines
+    let linkRects = [];
+    try {
+      const annotations = await page.getAnnotations();
+      linkRects = annotations
+        .filter(a => a.subtype === 'Link')
+        .map(a => {
+          const [x1, y1, x2, y2] = a.rect;
+          return {
+            x1: Math.min(x1, x2),
+            y1: pageHeight - Math.max(y1, y2),
+            x2: Math.max(x1, x2),
+            y2: pageHeight - Math.min(y1, y2),
+          };
+        });
+    } catch (e) { /* annotations optional */ }
+
+    function isUnderlined(x, y, width) {
+      return linkRects.some(r =>
+        x >= r.x1 - 4 && (x + width) <= r.x2 + 4 &&
+        y >= r.y1 - 4 && y <= r.y2 + 4
+      );
+    }
+
+    // Compute per-font character-width-to-fontSize ratio for bold detection heuristic
+    // Bold fonts have consistently wider characters relative to their declared size
+    const fontWidthStats = {};
+    for (const item of textContent.items) {
+      if (!item.str || !item.str.trim() || !item.fontName) continue;
+      const [a,, , d] = item.transform;
+      const fs = Math.abs(d) || Math.abs(a) || 12;
+      if (fs < 1) continue;
+      const ratio = item.str.length > 0 ? (item.width / item.str.length) / fs : 0;
+      if (ratio <= 0 || ratio > 2) continue;
+      if (!fontWidthStats[item.fontName]) fontWidthStats[item.fontName] = [];
+      fontWidthStats[item.fontName].push(ratio);
+    }
+    // Compute median width-ratio per font
+    const fontMedianRatio = {};
+    for (const [fn, ratios] of Object.entries(fontWidthStats)) {
+      const sorted = [...ratios].sort((a, b) => a - b);
+      fontMedianRatio[fn] = sorted[Math.floor(sorted.length / 2)];
+    }
+    // Find the overall page median to compare against
+    const allRatios = Object.values(fontMedianRatio);
+    const sortedAll = [...allRatios].sort((a, b) => a - b);
+    const pageMedianRatio = sortedAll.length > 0 ? sortedAll[Math.floor(sortedAll.length / 2)] : 0.55;
+
+    function isBoldByWidth(fontName) {
+      const r = fontMedianRatio[fontName];
+      if (!r) return false;
+      // A font whose chars are >13% wider than the page median is likely bold
+      return r > pageMedianRatio * 1.13;
     }
 
     const rawItems = textContent.items
@@ -125,6 +243,8 @@ async function extractWithPdfjs(buffer) {
         const fontSize = Math.abs(d) || Math.abs(a) || 12;
         const x = tx;
         const y = pageHeight - ty; // flip to top-down
+        const boldByName = /bold|black|heavy|demi|semibold/i.test(item.fontName || '');
+        const boldByW = isBoldByWidth(item.fontName || '');
         return {
           x,
           y,
@@ -134,6 +254,9 @@ async function extractWithPdfjs(buffer) {
           fontSize,
           fontName: item.fontName || '',
           hasEOL: item.hasEOL || false,
+          bold: boldByName || boldByW,
+          italic: /italic|oblique/i.test(item.fontName || ''),
+          underline: isUnderlined(x, y, item.width || 0),
         };
       });
 
@@ -188,14 +311,12 @@ async function extractWithPdfjs(buffer) {
           }
         }
 
-        const bold = /bold|black|heavy/i.test(item.fontName);
-        const italic = /italic|oblique/i.test(item.fontName);
-
         runs.push({
           text: item.text,
           fontSize: item.fontSize,
-          bold,
-          italic,
+          bold: item.bold || false,
+          italic: item.italic || false,
+          underline: item.underline || false,
           x: item.x,
           width: item.width,
         });
@@ -281,12 +402,14 @@ function runsToChildren(runs, defaultSize) {
     .filter(r => r.text !== undefined && r.text !== '')
     .map(run => {
       if (run.isTab) return new TextRun({ text: '\t' });
-      return new TextRun({
+      const props = {
         text: run.text,
         bold: run.bold || false,
         italics: run.italic || false,
         size: Math.max(16, Math.round((run.fontSize || defaultSize || 11) * 2)),
-      });
+      };
+      if (run.underline) props.underline = {};
+      return new TextRun(props);
     });
 }
 
