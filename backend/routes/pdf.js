@@ -73,8 +73,28 @@ async function extractWithPdfjs(buffer) {
     const pageHeight = viewport.height;
     const pageWidth = viewport.width;
 
+    // Helper: detect icon/symbol font glyphs that render as boxes
+    function isIconGlyph(str, fontName) {
+      // Known icon font name patterns
+      if (/icon|symbol|awesome|wingding|zapf|webding|fontello|material|glyph|pictograph|emoji/i.test(fontName)) return true;
+      // Characters in the Unicode Private Use Area (common for embedded icon fonts)
+      for (const ch of str) {
+        const cp = ch.codePointAt(0);
+        if (cp >= 0xE000 && cp <= 0xF8FF) return true;
+        if (cp >= 0xF0000 && cp <= 0xFFFFF) return true;
+      }
+      // Lone replacement characters or single chars that are clearly icon placeholders
+      if (str.length <= 2 && /^[\uFFFD\u25A0\u25CF\u25AA\uF000-\uFFFF]$/.test(str)) return true;
+      return false;
+    }
+
     const rawItems = textContent.items
-      .filter(item => item.str && item.str.trim() !== '')
+      .filter(item => {
+        if (!item.str || item.str.trim() === '') return false;
+        // Drop icon/symbol font glyphs — they render as boxes in Word
+        if (isIconGlyph(item.str, item.fontName || '')) return false;
+        return true;
+      })
       .map(item => {
         const [a, b, c, d, tx, ty] = item.transform;
         const fontSize = Math.abs(d) || Math.abs(a) || 12;
@@ -192,6 +212,37 @@ async function extractWithPdfjs(buffer) {
   return { pages, numpages: numPages };
 }
 
+const BULLET_PATTERN = /^([•·●▪▸◆►▶\u2022\u2023\u25AA\u25AB\u25CF\u25CB]|\-\s|\*\s)/;
+
+function stripLeadingBullet(runs) {
+  // Clone runs and strip the leading bullet character from the first non-tab run
+  const cloned = runs.map(r => ({ ...r }));
+  for (let i = 0; i < cloned.length; i++) {
+    const r = cloned[i];
+    if (r.isTab) continue;
+    const stripped = r.text.replace(/^([•·●▪▸◆►▶\u2022\u2023\u25AA\u25CF\u25CB]|\-\s|\*\s)\s*/, '');
+    if (stripped !== r.text) {
+      cloned[i] = { ...r, text: stripped };
+      break;
+    }
+  }
+  return cloned.filter(r => r.text !== '');
+}
+
+function runsToChildren(runs, defaultSize) {
+  return runs
+    .filter(r => r.text !== undefined)
+    .map(run => {
+      if (run.isTab) return new TextRun({ text: '\t' });
+      return new TextRun({
+        text: run.text,
+        bold: run.bold || false,
+        italics: run.italic || false,
+        size: Math.max(16, Math.round((run.fontSize || defaultSize || 12) * 2)),
+      });
+    });
+}
+
 function buildDocxFromPages(pages) {
   const docxParagraphs = [];
 
@@ -200,49 +251,82 @@ function buildDocxFromPages(pages) {
       docxParagraphs.push(new Paragraph({ pageBreakBefore: true, children: [] }));
     }
 
-    (page.paragraphs || []).forEach(para => {
-      para.lines.forEach((line, lineIdx) => {
-        if (line.runs.length === 0) return;
+    const leftMargin = page.pageWidth * 0.08; // ~8% from left = normal margin
+    const bulletIndentMin = page.pageWidth * 0.12; // indented if x > 12%
 
+    (page.paragraphs || []).forEach(para => {
+      // Merge continuation lines: if a line is not a new bullet/heading and follows
+      // a bullet line at similar indentation, it's a continuation of that bullet
+      const mergedLines = [];
+      for (const line of para.lines) {
+        if (line.runs.length === 0) continue;
+        const lineText = line.runs.map(r => r.text).join('');
+        const trimmed = lineText.trim();
+        if (!trimmed) continue;
+
+        const isBulletLine = BULLET_PATTERN.test(trimmed);
+        const isIndented = line.firstX > bulletIndentMin;
+
+        // Check if this line is a continuation of the previous merged line
+        const prev = mergedLines[mergedLines.length - 1];
+        if (
+          prev &&
+          !isBulletLine &&
+          isIndented &&
+          prev.isBullet &&
+          !prev.isHeading &&
+          Math.abs(line.firstX - prev.firstX) < page.pageWidth * 0.15
+        ) {
+          // Continuation: add a space + merge runs
+          prev.runs.push({ text: ' ', fontSize: line.fontSize });
+          prev.runs.push(...line.runs);
+        } else {
+          mergedLines.push({
+            runs: [...line.runs],
+            fontSize: line.fontSize,
+            isCentered: line.isCentered,
+            firstX: line.firstX,
+            isBullet: isBulletLine,
+            isIndented,
+            isHeading: false,
+          });
+        }
+      }
+
+      mergedLines.forEach((line) => {
         const lineText = line.runs.map(r => r.text).join('');
         const trimmed = lineText.trim();
         if (!trimmed) return;
 
-        // Detect bullet
-        const isBullet = /^[•·●▪▸\-\*]\s/.test(trimmed);
-        const indentLevel = line.firstX > page.pageWidth * 0.15 ? 1 : 0;
-
-        // Determine heading
         const hasBold = line.runs.some(r => r.bold);
         let heading = undefined;
         if (line.fontSize >= 20) heading = HeadingLevel.HEADING_1;
         else if (line.fontSize >= 16) heading = HeadingLevel.HEADING_2;
         else if (line.fontSize >= 13 && hasBold) heading = HeadingLevel.HEADING_3;
+        line.isHeading = !!heading;
 
-        // Build text runs
-        const children = line.runs.map(run => {
-          if (run.isTab) {
-            return new TextRun({ text: '\t' });
-          }
-          return new TextRun({
-            text: run.text,
-            bold: run.bold,
-            italics: run.italic,
-            size: Math.max(16, Math.round((run.fontSize || line.fontSize || 12) * 2)),
-          });
-        });
+        let runs = line.runs;
+        let isBullet = line.isBullet && !heading;
+
+        if (isBullet) {
+          // Remove the bullet character so Word doesn't show "● •" doubled
+          runs = stripLeadingBullet(runs);
+        }
+
+        const children = runsToChildren(runs, line.fontSize);
+        if (children.length === 0) return;
 
         const paraProps = {
           heading,
           children,
           alignment: line.isCentered ? AlignmentType.CENTER : AlignmentType.LEFT,
-          spacing: { after: lineIdx < para.lines.length - 1 ? 0 : 100, line: 276 },
+          spacing: { after: isBullet ? 0 : 80, line: 276 },
         };
 
         if (isBullet) {
           paraProps.bullet = { level: 0 };
-        } else if (indentLevel > 0 && !heading) {
-          paraProps.indent = { left: 360 * indentLevel };
+        } else if (line.isIndented && !heading) {
+          paraProps.indent = { left: 360 };
         }
 
         docxParagraphs.push(new Paragraph(paraProps));
