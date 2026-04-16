@@ -171,7 +171,7 @@ async function extractWithPdfjs(buffer) {
 
           if (gap > spaceWidth) {
             // Large gap = tab stop (right-aligned element like a date)
-            if (gap > pageWidth * 0.25) {
+            if (gap > pageWidth * 0.15) {
               runs.push({ text: '\t', fontSize: item.fontSize, bold: false, italic: false, isTab: true });
             } else if (gap > spaceWidth * 2) {
               runs.push({ text: '  ', fontSize: item.fontSize, bold: false, italic: false });
@@ -237,20 +237,33 @@ async function extractWithPdfjs(buffer) {
   return { pages, numpages: numPages };
 }
 
-const BULLET_PATTERN = /^([•·●▪▸◆►▶\u2022\u2023\u25AA\u25AB\u25CF\u25CB\-][\s\u00A0])/;
+// Matches a line that STARTS with a bullet char (with or without trailing space)
+const BULLET_CHARS = '•·●▪▸◆►▶\u2022\u2023\u25AA\u25AB\u25CF\u25CB';
+const BULLET_PATTERN = new RegExp(`^[${BULLET_CHARS}\\-]([\\s\u00A0]|$)`);
 
 function stripLeadingBullet(runs) {
   const cloned = runs.map(r => ({ ...r }));
   for (let i = 0; i < cloned.length; i++) {
     const r = cloned[i];
     if (r.isTab) continue;
-    const stripped = r.text.replace(/^([•·●▪▸◆►▶\u2022\u2023\u25AA\u25CF\u25CB\-][\s\u00A0])\s*/, '');
+    // Strip bullet char at start, with or without trailing space
+    const stripped = r.text.replace(new RegExp(`^[${BULLET_CHARS}\\-][\\s\u00A0]?\\s*`), '');
     if (stripped !== r.text) {
       cloned[i] = { ...r, text: stripped };
       break;
     }
+    // Also handle the case where the entire run is just a bullet char
+    if (new RegExp(`^[${BULLET_CHARS}]$`).test(r.text.trim())) {
+      cloned[i] = { ...r, text: '' };
+      break;
+    }
   }
-  return cloned.filter(r => r.text !== '');
+  // Also strip a leading space from the next run after stripping bullet
+  const result = cloned.filter(r => r.text !== '');
+  if (result.length > 0 && result[0].text.startsWith(' ')) {
+    result[0] = { ...result[0], text: result[0].text.trimStart() };
+  }
+  return result;
 }
 
 // No-border table borders (invisible grid)
@@ -401,15 +414,18 @@ function buildDocxFromPages(pages) {
 
       // --- Heading detection ---
       let heading = undefined;
+      let isSectionHeader = false;
       if (line.fontSize >= 20) {
         heading = HeadingLevel.HEADING_1;
       } else if (line.fontSize >= 16) {
         heading = HeadingLevel.HEADING_2;
+        isSectionHeader = true;
       } else if (allCaps && hasBold) {
-        // Section headers like EDUCATION, EXPERIENCE, PROJECTS
         heading = HeadingLevel.HEADING_2;
+        isSectionHeader = true;
       } else if (allCaps && line.fontSize >= 12) {
         heading = HeadingLevel.HEADING_2;
+        isSectionHeader = true;
       } else if (line.fontSize >= 13 && hasBold && !line.isBullet) {
         heading = HeadingLevel.HEADING_3;
       }
@@ -429,14 +445,30 @@ function buildDocxFromPages(pages) {
         children,
         alignment: line.isCentered ? AlignmentType.CENTER : AlignmentType.LEFT,
         spacing: {
-          after: heading ? 60 : isBullet ? 0 : 60,
-          before: heading ? 80 : 0,
+          after: isSectionHeader ? 40 : isBullet ? 20 : 60,
+          before: isSectionHeader ? 100 : 0,
           line: 276,
         },
       };
 
+      // Section headers get a bottom border (horizontal rule like ilovepdf)
+      if (isSectionHeader) {
+        paraProps.border = {
+          bottom: { style: BorderStyle.SINGLE, size: 6, color: '000000', space: 1 },
+        };
+      }
+
+      // Bullets: use dash prefix + hanging indent (avoids Word native bullet doubling)
       if (isBullet) {
-        paraProps.bullet = { level: 0 };
+        paraProps.indent = { left: 440, hanging: 220 };
+        // Prepend "–  " dash as the bullet marker
+        paraProps.children = [
+          new TextRun({
+            text: '\u2013  ',
+            size: Math.max(16, Math.round((line.fontSize || 11) * 2)),
+          }),
+          ...children,
+        ];
       } else if (line.isIndented && !heading) {
         paraProps.indent = { left: 360 };
       }
