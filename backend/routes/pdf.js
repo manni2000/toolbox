@@ -3,7 +3,7 @@ const multer = require('multer');
 const { PDFDocument, degrees, StandardFonts, rgb } = require('pdf-lib');
 const PDFParser = require('pdf2json');
 const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } = require('docx');
-const XLSX = require('xlsx');
+const ExcelJS = require('exceljs');
 const { uploadLimiter } = require('../middleware/security');
 
 const router = express.Router();
@@ -1056,7 +1056,12 @@ router.post('/to-excel', upload.fields([{ name: 'file', maxCount: 1 }, { name: '
       text = parsed.text || '';
       numpages = parsed.numpages || 0;
     } catch (e) {
+      console.error('PDF text extraction error:', e);
       text = 'Could not extract text from this PDF.';
+    }
+
+    if (!text || text.trim().length === 0) {
+      return res.status(400).json({ success: false, error: 'No text could be extracted from the PDF' });
     }
 
     const lines = text.split('\n').filter(l => l.trim().length > 0);
@@ -1065,12 +1070,16 @@ router.post('/to-excel', upload.fields([{ name: 'file', maxCount: 1 }, { name: '
       return cells.length > 0 ? cells : [line.trim()];
     });
 
-    const worksheet = XLSX.utils.aoa_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'PDF Content');
+    if (rows.length === 0) {
+      return res.status(400).json({ success: false, error: 'No content found to convert to Excel' });
+    }
 
-    const excelBuffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-    const base64 = excelBuffer.toString('base64');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('PDF Content');
+    worksheet.addRows(rows);
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const base64 = buffer.toString('base64');
     const originalName = file.originalname || 'document.pdf';
     const outName = originalName.replace(/\.pdf$/i, '.xlsx');
 
@@ -1082,6 +1091,7 @@ router.post('/to-excel', upload.fields([{ name: 'file', maxCount: 1 }, { name: '
       message: 'PDF converted to Excel successfully',
     });
   } catch (err) {
+    console.error('PDF to Excel conversion error:', err);
     next(err);
   }
 });
