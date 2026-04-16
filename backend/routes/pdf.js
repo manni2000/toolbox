@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const { PDFDocument, degrees, StandardFonts, rgb } = require('pdf-lib');
 const PDFParser = require('pdf2json');
-const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, ShadingType } = require('docx');
+const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } = require('docx');
 const XLSX = require('xlsx');
 const { uploadLimiter } = require('../middleware/security');
 
@@ -73,28 +73,53 @@ async function extractWithPdfjs(buffer) {
     const pageHeight = viewport.height;
     const pageWidth = viewport.width;
 
-    // Helper: detect icon/symbol font glyphs that render as boxes
-    function isIconGlyph(str, fontName) {
-      // Known icon font name patterns
-      if (/icon|symbol|awesome|wingding|zapf|webding|fontello|material|glyph|pictograph|emoji/i.test(fontName)) return true;
-      // Characters in the Unicode Private Use Area (common for embedded icon fonts)
+    // Map common icon font PUA codepoints to readable Unicode equivalents
+    const PUA_MAP = {
+      0xF095: '\u260E', // phone
+      0xF0E0: '\u2709', // email envelope
+      0xF08C: '\u1F4BC', // briefcase (LinkedIn fallback)
+      0xF09B: '\u2B55', // github circle
+      0xF015: '\u2302', // home
+      0xF007: '\u25CF', // user
+      0xF041: '\u25CF', // map marker
+      0xF0AC: '\u25CF', // globe
+      0xF0C0: '\u25CF', // group/users
+      0xF023: '\u25CF', // lock
+      0xF13C: '\u25CF', // file
+      0xF016: '\u25CF', // file-o
+      0xF017: '\u25CF', // clock
+      0xF019: '\u25CF', // download
+      0xF01A: '\u25CF', // upload
+      0xF024: '\u25CF', // flag
+      0xF025: '\u25CF', // headphones
+    };
+
+    function normalizeIconGlyph(str, fontName) {
+      // If it's a known icon font, try to replace PUA chars
+      const isIconFont = /icon|symbol|awesome|wingding|zapf|webding|fontello|material|glyph|pictograph|emoji/i.test(fontName);
+      let result = '';
       for (const ch of str) {
         const cp = ch.codePointAt(0);
-        if (cp >= 0xE000 && cp <= 0xF8FF) return true;
-        if (cp >= 0xF0000 && cp <= 0xFFFFF) return true;
+        const isPUA = (cp >= 0xE000 && cp <= 0xF8FF) || (cp >= 0xF0000 && cp <= 0xFFFFF);
+        if (isPUA) {
+          if (PUA_MAP[cp]) {
+            result += PUA_MAP[cp];
+          } else if (isIconFont) {
+            // Unknown icon: skip (renders as box in Word)
+          } else {
+            result += ch;
+          }
+        } else {
+          result += ch;
+        }
       }
-      // Lone replacement characters or single chars that are clearly icon placeholders
-      if (str.length <= 2 && /^[\uFFFD\u25A0\u25CF\u25AA\uF000-\uFFFF]$/.test(str)) return true;
-      return false;
+      return result;
     }
 
     const rawItems = textContent.items
-      .filter(item => {
-        if (!item.str || item.str.trim() === '') return false;
-        // Drop icon/symbol font glyphs — they render as boxes in Word
-        if (isIconGlyph(item.str, item.fontName || '')) return false;
-        return true;
-      })
+      .filter(item => item.str && item.str.trim() !== '')
+      .map(item => ({ ...item, str: normalizeIconGlyph(item.str, item.fontName || '') }))
+      .filter(item => item.str.trim() !== '')
       .map(item => {
         const [a, b, c, d, tx, ty] = item.transform;
         const fontSize = Math.abs(d) || Math.abs(a) || 12;
@@ -212,15 +237,14 @@ async function extractWithPdfjs(buffer) {
   return { pages, numpages: numPages };
 }
 
-const BULLET_PATTERN = /^([•·●▪▸◆►▶\u2022\u2023\u25AA\u25AB\u25CF\u25CB]|\-\s|\*\s)/;
+const BULLET_PATTERN = /^([•·●▪▸◆►▶\u2022\u2023\u25AA\u25AB\u25CF\u25CB\-][\s\u00A0])/;
 
 function stripLeadingBullet(runs) {
-  // Clone runs and strip the leading bullet character from the first non-tab run
   const cloned = runs.map(r => ({ ...r }));
   for (let i = 0; i < cloned.length; i++) {
     const r = cloned[i];
     if (r.isTab) continue;
-    const stripped = r.text.replace(/^([•·●▪▸◆►▶\u2022\u2023\u25AA\u25CF\u25CB]|\-\s|\*\s)\s*/, '');
+    const stripped = r.text.replace(/^([•·●▪▸◆►▶\u2022\u2023\u25AA\u25CF\u25CB\-][\s\u00A0])\s*/, '');
     if (stripped !== r.text) {
       cloned[i] = { ...r, text: stripped };
       break;
@@ -229,112 +253,199 @@ function stripLeadingBullet(runs) {
   return cloned.filter(r => r.text !== '');
 }
 
+// No-border table borders (invisible grid)
+const NO_BORDER = {
+  top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+  bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+  left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+  right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+  insideHorizontal: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+  insideVertical: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+};
+
 function runsToChildren(runs, defaultSize) {
   return runs
-    .filter(r => r.text !== undefined)
+    .filter(r => r.text !== undefined && r.text !== '')
     .map(run => {
       if (run.isTab) return new TextRun({ text: '\t' });
       return new TextRun({
         text: run.text,
         bold: run.bold || false,
         italics: run.italic || false,
-        size: Math.max(16, Math.round((run.fontSize || defaultSize || 12) * 2)),
+        size: Math.max(16, Math.round((run.fontSize || defaultSize || 11) * 2)),
       });
     });
 }
 
+function makeTwoColumnTable(leftRuns, rightRuns, fontSize) {
+  const leftChildren = runsToChildren(leftRuns, fontSize);
+  const rightChildren = runsToChildren(rightRuns, fontSize);
+
+  return new Table({
+    borders: NO_BORDER,
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    rows: [
+      new TableRow({
+        children: [
+          new TableCell({
+            borders: NO_BORDER,
+            width: { size: 70, type: WidthType.PERCENTAGE },
+            children: [new Paragraph({
+              children: leftChildren,
+              spacing: { after: 0, line: 276 },
+            })],
+          }),
+          new TableCell({
+            borders: NO_BORDER,
+            width: { size: 30, type: WidthType.PERCENTAGE },
+            children: [new Paragraph({
+              children: rightChildren,
+              alignment: AlignmentType.RIGHT,
+              spacing: { after: 0, line: 276 },
+            })],
+          }),
+        ],
+      }),
+    ],
+  });
+}
+
+function isAllCaps(text) {
+  const letters = text.replace(/[^a-zA-Z]/g, '');
+  return letters.length >= 3 && letters === letters.toUpperCase();
+}
+
 function buildDocxFromPages(pages) {
-  const docxParagraphs = [];
+  const docxChildren = [];
 
   pages.forEach((page, pageIndex) => {
     if (pageIndex > 0) {
-      docxParagraphs.push(new Paragraph({ pageBreakBefore: true, children: [] }));
+      docxChildren.push(new Paragraph({ pageBreakBefore: true, children: [] }));
     }
 
-    const leftMargin = page.pageWidth * 0.08; // ~8% from left = normal margin
-    const bulletIndentMin = page.pageWidth * 0.12; // indented if x > 12%
+    const pageWidth = page.pageWidth;
+    const bulletIndentMin = pageWidth * 0.12;
 
-    (page.paragraphs || []).forEach(para => {
-      // Merge continuation lines: if a line is not a new bullet/heading and follows
-      // a bullet line at similar indentation, it's a continuation of that bullet
-      const mergedLines = [];
-      for (const line of para.lines) {
-        if (line.runs.length === 0) continue;
-        const lineText = line.runs.map(r => r.text).join('');
-        const trimmed = lineText.trim();
-        if (!trimmed) continue;
+    // Flatten all lines across paragraphs on this page
+    const allLines = [];
+    for (const para of page.paragraphs || []) {
+      for (const line of para.lines || []) {
+        if (line.runs.length > 0) allLines.push(line);
+      }
+    }
 
-        const isBulletLine = BULLET_PATTERN.test(trimmed);
-        const isIndented = line.firstX > bulletIndentMin;
+    // Merge bullet continuation lines (wrapped bullet text)
+    const mergedLines = [];
+    for (const line of allLines) {
+      const lineText = line.runs.map(r => r.text).join('');
+      const trimmed = lineText.trim();
+      if (!trimmed) continue;
 
-        // Check if this line is a continuation of the previous merged line
-        const prev = mergedLines[mergedLines.length - 1];
-        if (
-          prev &&
-          !isBulletLine &&
-          isIndented &&
-          prev.isBullet &&
-          !prev.isHeading &&
-          Math.abs(line.firstX - prev.firstX) < page.pageWidth * 0.15
-        ) {
-          // Continuation: add a space + merge runs
-          prev.runs.push({ text: ' ', fontSize: line.fontSize });
-          prev.runs.push(...line.runs);
-        } else {
-          mergedLines.push({
-            runs: [...line.runs],
-            fontSize: line.fontSize,
-            isCentered: line.isCentered,
-            firstX: line.firstX,
-            isBullet: isBulletLine,
-            isIndented,
-            isHeading: false,
-          });
+      // Check if this line has a tab (= two-column)
+      const hasTwoCol = line.runs.some(r => r.isTab);
+      const isBulletLine = BULLET_PATTERN.test(trimmed);
+      const isIndented = line.firstX > bulletIndentMin;
+
+      const prev = mergedLines[mergedLines.length - 1];
+      // Continuation: non-bullet indented line following a bullet at similar indent
+      if (
+        prev &&
+        !isBulletLine &&
+        !hasTwoCol &&
+        isIndented &&
+        prev.isBullet &&
+        !prev.hasTwoCol &&
+        Math.abs(line.firstX - prev.firstX) < pageWidth * 0.15
+      ) {
+        prev.runs.push({ text: ' ', fontSize: line.fontSize });
+        prev.runs.push(...line.runs);
+      } else {
+        mergedLines.push({
+          runs: [...line.runs],
+          fontSize: line.fontSize,
+          isCentered: line.isCentered,
+          firstX: line.firstX,
+          isBullet: isBulletLine,
+          isIndented,
+          hasTwoCol,
+        });
+      }
+    }
+
+    for (const line of mergedLines) {
+      const lineText = line.runs.map(r => r.text).join('');
+      const trimmed = lineText.trim();
+      if (!trimmed) continue;
+
+      const hasBold = line.runs.some(r => r.bold);
+      const allCaps = isAllCaps(trimmed);
+
+      // --- Two-column line: split at tab and render as table ---
+      if (line.hasTwoCol) {
+        const tabIdx = line.runs.findIndex(r => r.isTab);
+        const leftRuns = line.runs.slice(0, tabIdx).filter(r => !r.isTab && r.text);
+        const rightRuns = line.runs.slice(tabIdx + 1).filter(r => !r.isTab && r.text);
+
+        if (leftRuns.length > 0 && rightRuns.length > 0) {
+          docxChildren.push(makeTwoColumnTable(leftRuns, rightRuns, line.fontSize));
+          continue;
         }
+        // Fallback: just drop the tab and render as one line
+        const allRuns = [...leftRuns, ...rightRuns];
+        const children = runsToChildren(allRuns, line.fontSize);
+        if (children.length > 0) {
+          docxChildren.push(new Paragraph({ children, spacing: { after: 60, line: 276 } }));
+        }
+        continue;
       }
 
-      mergedLines.forEach((line) => {
-        const lineText = line.runs.map(r => r.text).join('');
-        const trimmed = lineText.trim();
-        if (!trimmed) return;
+      // --- Heading detection ---
+      let heading = undefined;
+      if (line.fontSize >= 20) {
+        heading = HeadingLevel.HEADING_1;
+      } else if (line.fontSize >= 16) {
+        heading = HeadingLevel.HEADING_2;
+      } else if (allCaps && hasBold) {
+        // Section headers like EDUCATION, EXPERIENCE, PROJECTS
+        heading = HeadingLevel.HEADING_2;
+      } else if (allCaps && line.fontSize >= 12) {
+        heading = HeadingLevel.HEADING_2;
+      } else if (line.fontSize >= 13 && hasBold && !line.isBullet) {
+        heading = HeadingLevel.HEADING_3;
+      }
 
-        const hasBold = line.runs.some(r => r.bold);
-        let heading = undefined;
-        if (line.fontSize >= 20) heading = HeadingLevel.HEADING_1;
-        else if (line.fontSize >= 16) heading = HeadingLevel.HEADING_2;
-        else if (line.fontSize >= 13 && hasBold) heading = HeadingLevel.HEADING_3;
-        line.isHeading = !!heading;
+      const isBullet = line.isBullet && !heading;
+      let runs = line.runs;
 
-        let runs = line.runs;
-        let isBullet = line.isBullet && !heading;
+      if (isBullet) {
+        runs = stripLeadingBullet(runs);
+      }
 
-        if (isBullet) {
-          // Remove the bullet character so Word doesn't show "● •" doubled
-          runs = stripLeadingBullet(runs);
-        }
+      const children = runsToChildren(runs, line.fontSize);
+      if (children.length === 0) continue;
 
-        const children = runsToChildren(runs, line.fontSize);
-        if (children.length === 0) return;
+      const paraProps = {
+        heading,
+        children,
+        alignment: line.isCentered ? AlignmentType.CENTER : AlignmentType.LEFT,
+        spacing: {
+          after: heading ? 60 : isBullet ? 0 : 60,
+          before: heading ? 80 : 0,
+          line: 276,
+        },
+      };
 
-        const paraProps = {
-          heading,
-          children,
-          alignment: line.isCentered ? AlignmentType.CENTER : AlignmentType.LEFT,
-          spacing: { after: isBullet ? 0 : 80, line: 276 },
-        };
+      if (isBullet) {
+        paraProps.bullet = { level: 0 };
+      } else if (line.isIndented && !heading) {
+        paraProps.indent = { left: 360 };
+      }
 
-        if (isBullet) {
-          paraProps.bullet = { level: 0 };
-        } else if (line.isIndented && !heading) {
-          paraProps.indent = { left: 360 };
-        }
-
-        docxParagraphs.push(new Paragraph(paraProps));
-      });
-    });
+      docxChildren.push(new Paragraph(paraProps));
+    }
   });
 
-  return docxParagraphs;
+  return docxChildren;
 }
 
 function getUploadedFile(req, fieldNames = ['file', 'pdf']) {
@@ -656,15 +767,15 @@ router.post('/to-word', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'p
     const doc = new Document({
       styles: {
         default: {
-          document: { run: { font: 'Calibri', size: 24 } },
-          heading1: { run: { bold: true, size: 36 } },
-          heading2: { run: { bold: true, size: 28 } },
-          heading3: { run: { bold: true, size: 24 } },
+          document: { run: { font: 'Calibri', size: 22 } },
+          heading1: { run: { bold: true, size: 40, font: 'Calibri' } },
+          heading2: { run: { bold: true, size: 24, font: 'Calibri', allCaps: true } },
+          heading3: { run: { bold: true, size: 22, font: 'Calibri' } },
         },
       },
       sections: [{
         properties: {
-          page: { margin: { top: 1080, right: 1080, bottom: 1080, left: 1080 } },
+          page: { margin: { top: 900, right: 900, bottom: 900, left: 900 } },
         },
         children: docxParagraphs,
       }],
