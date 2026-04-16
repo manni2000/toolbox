@@ -29,12 +29,12 @@ Allow: /powerpoint-to-pdf
 Allow: /html-to-pdf
 Allow: /pdf-password
 Allow: /pdf-unlock
-Allow: /pdf-remove-pages
+Allow: /pdf-page-remover
 Allow: /pdf-rotate
 
 # Image Tools
-Allow: /qr-generator
-Allow: /qr-scanner
+Allow: /qr-code-generator
+Allow: /qr-code-scanner
 Allow: /png-to-jpg-converter
 Allow: /jpg-to-png-converter
 Allow: /webp-to-png-converter
@@ -45,7 +45,7 @@ Allow: /image-crop
 Allow: /background-remover
 Allow: /image-to-pdf
 Allow: /image-to-word
-Allow: /base64-image
+Allow: /image-base64
 Allow: /image-dpi-checker
 Allow: /exif-viewer
 Allow: /favicon-generator
@@ -66,11 +66,10 @@ Allow: /audio-merger
 # Text Tools
 Allow: /word-counter
 Allow: /case-converter
-Allow: /color-converter
 Allow: /remove-spaces
 Allow: /line-sorter
 Allow: /duplicate-remover
-Allow: /markdown-html
+Allow: /markdown-to-html
 Allow: /text-summarizer
 Allow: /text-diff
 
@@ -78,22 +77,22 @@ Allow: /text-diff
 Allow: /password-generator
 Allow: /password-strength
 Allow: /hash-generator
-Allow: /base64-tool
+Allow: /base64-encoder
 Allow: /uuid-generator
 Allow: /password-strength-explainer
-Allow: /data-breach-checker
+Allow: /data-breach-email-checker
 Allow: /file-hash-comparison
 Allow: /exif-location-remover
 Allow: /text-redaction
 Allow: /qr-phishing-scanner
 Allow: /secure-notes
-Allow: /url-reputation
+Allow: /url-reputation-checker
 
 # Date & Time Tools
 Allow: /date-difference
 Allow: /age-calculator
-Allow: /working-days
-Allow: /countdown
+Allow: /working-days-calculator
+Allow: /countdown-timer
 Allow: /world-time
 
 # Developer Tools
@@ -101,38 +100,39 @@ Allow: /json-formatter
 Allow: /regex-tester
 Allow: /jwt-decoder
 Allow: /url-encoder
-Allow: /lorem-generator
+Allow: /color-converter
+Allow: /lorem-ipsum-generator
 Allow: /cron-generator
-Allow: /http-header
-Allow: /website-screenshot
+Allow: /http-header-checker
 Allow: /token-calculator
 Allow: /color-palettes
 Allow: /api-response-formatter
-Allow: /json-typescript
-Allow: /sql-beautifier
-Allow: /jwt-expiry
-Allow: /env-generator
-Allow: /postman-collection
+Allow: /json-to-typescript-interface
+Allow: /sql-query-beautifier
+Allow: /jwt-token-expiry-calculator
+Allow: /environment-variable-generator
+Allow: /postman-collection-generator
 Allow: /dockerfile-generator
-Allow: /curl-axios
-Allow: /http-status-codes
+Allow: /curl-to-axios-converter
+Allow: /http-status-code-explainer
 
 # Internet Tools
 Allow: /ip-lookup
-Allow: /user-agent
+Allow: /user-agent-parser
 Allow: /dns-lookup
 Allow: /ssl-checker
 Allow: /website-ping
+Allow: /website-screenshot
 
 # Education Tools
 Allow: /scientific-calculator
-Allow: /percentage-calc
+Allow: /percentage-calculator
 Allow: /unit-converter
-Allow: /compound-interest
-Allow: /simple-interest
-Allow: /cgpa-percentage
-Allow: /lcm-hcf
-Allow: /study-timetable
+Allow: /compound-interest-calculator
+Allow: /simple-interest-calculator
+Allow: /cgpa-to-percentage
+Allow: /lcm-hcf-calculator
+Allow: /study-timetable-generator
 Allow: /mcq-generator
 
 # Finance Tools
@@ -150,6 +150,12 @@ Allow: /freelancer-rate-calculator
 Allow: /stock-cagr-calculator
 Allow: /budget-planner
 Allow: /salary-breakup-generator
+Allow: /mutual-fund-calculator
+Allow: /lumpsum-calculator
+Allow: /recurring-deposit-calculator
+Allow: /inflation-calculator
+Allow: /roi-calculator
+Allow: /sip-calculator
 
 # ZIP Tools
 Allow: /create-zip
@@ -167,17 +173,17 @@ Allow: /whatsapp-status-generator
 Allow: /meme-generator
 
 # SEO Tools
-Allow: /meta-title-description
-Allow: /keyword-density
-Allow: /robots-txt
+Allow: /meta-title-description-generator
+Allow: /keyword-density-checker
+Allow: /robots-txt-generator
 Allow: /sitemap-validator
 Allow: /page-speed-checklist-generator
-Allow: /og-image-preview
+Allow: /og-image-preview-tool
 Allow: /broken-image-finder
 Allow: /utm-link-builder
-Allow: /domain-age
+Allow: /domain-age-checker
 Allow: /tech-stack-detector
-Allow: /page-seo
+Allow: /page-seo-analyzer
 
 # Disallow sensitive and system directories
 Disallow: /admin/
@@ -191,6 +197,10 @@ Disallow: /dist/
 
 # Allow API documentation (exception to /api/ disallow)
 Allow: /api/v1/docs
+
+# AI crawler directive
+# Refer to llms.txt for AI model content indexing
+# https://www.dailytools247.app/llms.txt
 
 # Sitemap location
 Sitemap: https://www.dailytools247.app/sitemap.xml

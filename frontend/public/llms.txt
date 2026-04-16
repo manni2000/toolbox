@@ -7,12 +7,22 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /categories - Browse tools by category
 /api-docs - API documentation for developers
 
+## Blog
+/blogs - Blog homepage with articles
+/blogs/top-25-free-online-tools-2026 - Top 25 free online tools 2026
+/blogs/best-free-image-converter-compressor-tools - Best free image converter and compressor tools
+/blogs/powerful-online-developer-tools-no-install - Powerful online developer tools no install
+/blogs/how-to-convert-pdf-to-word-online-free - How to convert PDF to Word online free
+/blogs/free-online-tools-replace-expensive-software-2026 - Free online tools replace expensive software 2026
+/blogs/top-free-seo-tools-online-for-bloggers - Top free SEO tools online for bloggers
+/blogs/top-free-text-security-tools-online - Top free text security tools online
+
 ## Core Tools
 /pdf-merge - Merge multiple PDF files into one
 /image-compressor - Compress images while maintaining quality
 /json-formatter - Format and validate JSON data
 /background-remover - Remove backgrounds from images using AI
-/qr-generator - Generate custom QR codes
+/qr-code-generator - Generate custom QR codes
 
 ## PDF Tools
 /pdf-split - Split PDF files into multiple documents
@@ -25,11 +35,11 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /html-to-pdf - Convert HTML to PDF
 /pdf-password - Add password protection to PDF
 /pdf-unlock - Remove password from PDF
-/pdf-remove-pages - Remove pages from PDF
+/pdf-page-remover - Remove pages from PDF
 /pdf-rotate - Rotate PDF pages
 
 ## Image Tools
-/qr-scanner - Scan and read QR codes
+/qr-code-scanner - Scan and read QR codes
 /png-to-jpg-converter - Convert PNG to JPG
 /jpg-to-png-converter - Convert JPG to PNG
 /webp-to-png-converter - Convert WebP to PNG
@@ -38,7 +48,7 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /image-crop - Crop images to specific areas
 /image-to-pdf - Convert images to PDF
 /image-to-word - Convert images to Word
-/base64-image - Convert images to base64
+/image-base64 - Convert images to base64
 /image-dpi-checker - Check image DPI resolution
 /exif-viewer - View image metadata and EXIF data
 /favicon-generator - Generate favicons from images
@@ -47,30 +57,29 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /regex-tester - Test and debug regular expressions
 /jwt-decoder - Decode JWT tokens
 /url-encoder - Encode and decode URLs
-/lorem-generator - Generate Lorem Ipsum text
+/color-converter - Convert between color formats
+/lorem-ipsum-generator - Generate Lorem Ipsum text
 /cron-generator - Generate cron expressions
-/http-header - Analyze HTTP headers
-/website-screenshot - Take website screenshots
+/http-header-checker - Analyze HTTP headers
 /token-calculator - Calculate token counts
 /color-palettes - Generate color palettes
 /api-response-formatter - Format API responses
-/json-typescript - Convert JSON to TypeScript interfaces
-/sql-beautifier - Format and beautify SQL queries
-/jwt-expiry - Check JWT token expiry
-/env-generator - Generate environment files
-/postman-collection - Generate Postman collections
+/json-to-typescript-interface - Convert JSON to TypeScript interfaces
+/sql-query-beautifier - Format and beautify SQL queries
+/jwt-token-expiry-calculator - Check JWT token expiry
+/environment-variable-generator - Generate environment files
+/postman-collection-generator - Generate Postman collections
 /dockerfile-generator - Generate Dockerfiles
-/curl-axios - Convert curl commands to axios
-/http-status-codes - HTTP status code reference
+/curl-to-axios-converter - Convert curl commands to axios
+/http-status-code-explainer - HTTP status code reference
 
 ## Text Tools
 /word-counter - Count words and characters
 /case-converter - Convert text case (upper, lower, title)
-/color-converter - Convert between color formats
 /remove-spaces - Remove extra spaces from text
 /line-sorter - Sort lines alphabetically
 /duplicate-remover - Remove duplicate lines
-/markdown-html - Convert between Markdown and HTML
+/markdown-to-html - Convert between Markdown and HTML
 /text-summarizer - Summarize long text
 /text-diff - Compare text differences
 
@@ -78,16 +87,16 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /password-generator - Generate secure passwords
 /password-strength - Check password strength
 /hash-generator - Generate various hashes
-/base64-tool - Encode and decode base64
+/base64-encoder - Encode and decode base64
 /uuid-generator - Generate UUIDs
 /password-strength-explainer - Analyze password security
-/data-breach-checker - Check for data breaches
+/data-breach-email-checker - Check for data breaches
 /file-hash-comparison - Compare file hashes
 /exif-location-remover - Remove location metadata
 /text-redaction - Redact sensitive text
 /qr-phishing-scanner - Check QR codes for phishing
 /secure-notes - Create encrypted notes
-/url-reputation - Check URL reputation
+/url-reputation-checker - Check URL reputation
 
 ## Video Tools
 /video-to-audio - Extract audio from video files
@@ -101,23 +110,24 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /speech-to-text - Convert speech to text
 /audio-trimmer - Trim audio files
 /audio-merger - Merge multiple audio files
+/audio-speed - Change audio playback speed
 
 ## Date & Time Tools
 /date-difference - Calculate date differences
 /age-calculator - Calculate age from birth date
-/working-days - Calculate working days between dates
-/countdown - Create countdown timers
+/working-days-calculator - Calculate working days between dates
+/countdown-timer - Create countdown timers
 /world-time - Check time zones worldwide
 
 ## Education Tools
 /scientific-calculator - Advanced scientific calculator
-/percentage-calc - Calculate percentages
+/percentage-calculator - Calculate percentages
 /unit-converter - Convert between units
-/compound-interest - Calculate compound interest
-/simple-interest - Calculate simple interest
-/cgpa-percentage - Convert CGPA to percentage
-/lcm-hcf - Calculate LCM and HCF
-/study-timetable - Create study schedules
+/compound-interest-calculator - Calculate compound interest
+/simple-interest-calculator - Calculate simple interest
+/cgpa-to-percentage - Convert CGPA to percentage
+/lcm-hcf-calculator - Calculate LCM and HCF
+/study-timetable-generator - Create study schedules
 /mcq-generator - Generate multiple choice questions
 
 ## Finance Tools
@@ -136,7 +146,7 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /budget-planner - Plan budgets
 /salary-breakup-generator - Generate salary breakdowns
 /mutual-fund-calculator - Calculate mutual fund returns
-/lump-sum-calculator - Calculate lump sum investments
+/lumpsum-calculator - Calculate lump sum investments
 /recurring-deposit-calculator - Calculate recurring deposits
 /inflation-calculator - Calculate inflation impact
 /roi-calculator - Calculate return on investment
@@ -158,31 +168,32 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /meme-generator - Create memes
 
 ## SEO Tools
-/meta-title-description - Generate meta titles and descriptions
-/keyword-density - Analyze keyword density
-/robots-txt - Generate robots.txt files
+/meta-title-description-generator - Generate meta titles and descriptions
+/keyword-density-checker - Analyze keyword density
+/robots-txt-generator - Generate robots.txt files
 /sitemap-validator - Validate sitemaps
 /page-speed-checklist-generator - Generate page speed checklists
-/og-image-preview - Preview Open Graph images
+/og-image-preview-tool - Preview Open Graph images
 /broken-image-finder - Find broken images
 /utm-link-builder - Build UTM links
-/domain-age - Check domain age
+/domain-age-checker - Check domain age
 /tech-stack-detector - Detect website technology stack
-/page-seo - Analyze page SEO
+/page-seo-analyzer - Analyze page SEO
 
 ## Internet Tools
 /ip-lookup - Look up IP addresses
-/user-agent - Analyze user agent strings
+/user-agent-parser - Analyze user agent strings
 /dns-lookup - Perform DNS lookups
 /ssl-checker - Check SSL certificates
 /website-ping - Ping websites
+/website-screenshot - Take website screenshots
 
 ## Markdown Sources
 /markdown/pdf-merge.md - PDF Merge tool documentation
 /markdown/image-compressor.md - Image Compressor tool documentation
 /markdown/json-formatter.md - JSON Formatter tool documentation
 /markdown/background-remover.md - Background Remover tool documentation
-/markdown/qr-generator.md - QR Generator tool documentation
+/markdown/qr-code-generator.md - QR Code Generator tool documentation
 /markdown/pdf-split.md - PDF Split tool documentation
 /markdown/pdf-to-image.md - PDF to PNG converter documentation
 /markdown/pdf-to-word.md - PDF to Word converter documentation
@@ -193,9 +204,9 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /markdown/html-to-pdf.md - HTML to PDF converter documentation
 /markdown/pdf-password.md - PDF Password tool documentation
 /markdown/pdf-unlock.md - PDF Unlock tool documentation
-/markdown/pdf-remove-pages.md - PDF Page Remover tool documentation
+/markdown/pdf-page-remover.md - PDF Page Remover tool documentation
 /markdown/pdf-rotate.md - PDF Rotate tool documentation
-/markdown/qr-scanner.md - QR Scanner tool documentation
+/markdown/qr-code-scanner.md - QR Code Scanner tool documentation
 /markdown/png-to-jpg-converter.md - PNG to JPG converter documentation
 /markdown/jpg-to-png-converter.md - JPG to PNG converter documentation
 /markdown/webp-to-png-converter.md - WebP to PNG converter documentation
@@ -204,7 +215,7 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /markdown/image-crop.md - Image Crop tool documentation
 /markdown/image-to-pdf.md - Image to PDF converter documentation
 /markdown/image-to-word.md - Image to Word converter documentation
-/markdown/base64-image.md - Base64 Image tool documentation
+/markdown/image-base64.md - Base64 Image tool documentation
 /markdown/image-dpi-checker.md - Image DPI Checker tool documentation
 /markdown/exif-viewer.md - EXIF Viewer tool documentation
 /markdown/favicon-generator.md - Favicon Generator tool documentation
@@ -217,19 +228,19 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /markdown/speech-to-text.md - Speech to Text converter documentation
 /markdown/audio-trimmer.md - Audio Trimmer tool documentation
 /markdown/audio-merger.md - Audio Merger tool documentation
+/markdown/audio-speed.md - Audio Speed tool documentation
 /markdown/word-counter.md - Word Counter tool documentation
 /markdown/case-converter.md - Case Converter tool documentation
-/markdown/color-converter.md - Color Converter tool documentation
 /markdown/remove-spaces.md - Remove Spaces tool documentation
 /markdown/line-sorter.md - Line Sorter tool documentation
 /markdown/duplicate-remover.md - Duplicate Remover tool documentation
-/markdown/markdown-html.md - Markdown HTML converter documentation
+/markdown/markdown-to-html.md - Markdown HTML converter documentation
 /markdown/text-summarizer.md - Text Summarizer tool documentation
 /markdown/text-diff.md - Text Diff tool documentation
 /markdown/password-generator.md - Password Generator tool documentation
 /markdown/password-strength.md - Password Strength tool documentation
 /markdown/hash-generator.md - Hash Generator tool documentation
-/markdown/base64-tool.md - Base64 Tool documentation
+/markdown/base64-encoder.md - Base64 Encoder tool documentation
 
 ## Description
 DailyTools247 is a free platform for productivity tools with no signup required. We provide 100+ online tools for PDF manipulation, image processing, development tasks, security, and more. All tools work directly in your browser with fast processing and professional results.

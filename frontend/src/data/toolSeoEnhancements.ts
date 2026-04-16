@@ -10,6 +10,15 @@ export interface ToolSeoMetadata {
   category: string;
   faqs?: Array<{ question: string; answer: string }>;
   relatedTools?: string[];
+  howTo?: {
+    name: string;
+    description: string;
+    steps: Array<{
+      name: string;
+      text: string;
+      image?: string;
+    }>;
+  };
   schema?: {
     type: 'SoftwareApplication' | 'Product' | 'WebPage';
     appCategory?: string;
@@ -32,6 +41,38 @@ export const universalToolFaqs: Array<{ question: string; answer: string }> = [
     question: 'Is my data secure and private when using this tool?',
     answer: 'Absolutely. All processing happens locally in your browser. Your files and data never leave your device and are not stored on any server. We do not collect any personal information.',
   },
+  {
+    question: 'Do I need to install any software or create an account?',
+    answer: 'No installation or account required. All tools work directly in your web browser. Just visit the tool page and start using it instantly.',
+  },
+  {
+    question: 'What file formats are supported?',
+    answer: 'Support varies by tool. Most image tools support PNG, JPG, WebP, and GIF. PDF tools handle standard PDF files. Check the specific tool page for detailed format support.',
+  },
+  {
+    question: 'Is there a file size limit?',
+    answer: 'Most tools support files up to 50MB. For larger files, the processing may take slightly longer but will still complete successfully.',
+  },
+  {
+    question: 'Can I use this tool on mobile devices?',
+    answer: 'Yes, all tools are fully responsive and work perfectly on smartphones, tablets, and desktop computers.',
+  },
+  {
+    question: 'How fast is the processing?',
+    answer: 'Processing is instant for most files. Large files may take a few seconds depending on your internet speed and device performance.',
+  },
+  {
+    question: 'Can I use this tool for commercial purposes?',
+    answer: 'Yes, all tools are free for both personal and commercial use. No restrictions on usage.',
+  },
+  {
+    question: 'What happens if the tool doesn\'t work?',
+    answer: 'Try refreshing the page or using a different browser. If issues persist, ensure your file format is supported and the file isn\'t corrupted.',
+  },
+  {
+    question: 'Are there any watermarks or limitations?',
+    answer: 'No watermarks, no limitations, and no quality loss. All tools provide professional results without any restrictions.',
+  },
 ];
 
 export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
@@ -47,6 +88,12 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'free pdf to word',
       'convert pdf document',
       'edit pdf as word',
+      'pdf docx converter',
+      'pdf to editable word',
+      'word document from pdf',
+      'pdf to doc converter free',
+      'convert pdf file to word',
+      'pdf to word document online',
     ],
     longTailKeywords: [
       'convert pdf to editable word document',
@@ -55,6 +102,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'best pdf to word converter',
       'fast pdf to word conversion tool',
       'convert scanned pdf to word',
+      'pdf to docx online free',
+      'convert pdf to word without losing formatting',
+      'pdf to word converter for mac',
+      'pdf to word converter for windows',
     ],
     category: 'PDF Tools',
     faqs: [
@@ -70,7 +121,41 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
         question: 'Can I convert scanned PDFs?',
         answer: 'Scanned PDFs are images. For best results, use our OCR-enabled converter for better text recognition.',
       },
+      {
+        question: 'What is the file size limit?',
+        answer: 'Files up to 50MB are supported. Larger files may take longer but will still convert successfully.',
+      },
+      {
+        question: 'Is my document secure?',
+        answer: 'Yes, conversion happens locally in your browser. Your PDF is never uploaded to any server.',
+      },
+      {
+        question: 'Can I convert multiple PDFs?',
+        answer: 'Yes, you can convert multiple PDFs one at a time. Each conversion is independent and maintains quality.',
+      },
     ],
+    howTo: {
+      name: 'How to Convert PDF to Word',
+      description: 'Step-by-step guide to convert PDF documents to editable Word files',
+      steps: [
+        {
+          name: 'Upload PDF File',
+          text: 'Click the upload button or drag and drop your PDF file into the converter area. Files up to 50MB are supported.',
+        },
+        {
+          name: 'Start Conversion',
+          text: 'Click the convert button to begin the conversion process. Most files convert in 10-30 seconds.',
+        },
+        {
+          name: 'Preview Result',
+          text: 'View the converted document preview to ensure formatting is preserved correctly.',
+        },
+        {
+          name: 'Download Word File',
+          text: 'Download your converted DOCX file. The document is fully editable in Microsoft Word and Google Docs.',
+        },
+      ],
+    },
     relatedTools: ['pdf-merge', 'pdf-split', 'word-to-pdf', 'pdf-compress'],
     schema: {
       type: 'SoftwareApplication',
@@ -97,6 +182,11 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'jpg compressor',
       'webp compressor',
       'image optimization',
+      'image file size reducer',
+      'compress png images',
+      'compress jpg images',
+      'image size optimizer',
+      'reduce image file size online',
     ],
     longTailKeywords: [
       'compress image without losing quality',
@@ -105,6 +195,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'reduce image file size fast',
       'online tool to compress images',
       'how to compress images for social media',
+      'compress images for website',
+      'reduce image size for email',
+      'image compression tool for seo',
+      'optimize images for google pagespeed',
     ],
     category: 'Image Tools',
     faqs: [
@@ -120,7 +214,41 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
         question: 'Is my image secure?',
         answer: 'Yes. Images are processed locally in your browser and never stored on our servers.',
       },
+      {
+        question: 'Can I compress multiple images at once?',
+        answer: 'Yes, you can upload and compress multiple images in a batch. Each image will be processed individually with your selected quality settings.',
+      },
+      {
+        question: 'What quality level should I choose?',
+        answer: 'For web use, 70-80% quality is recommended. For print, use 90-100%. The preview shows real-time compression results.',
+      },
+      {
+        question: 'Will compression affect image quality?',
+        answer: 'Our smart compression algorithm maintains visual quality while reducing file size. You can adjust the quality slider to balance size and quality.',
+      },
     ],
+    howTo: {
+      name: 'How to Compress Images',
+      description: 'Step-by-step guide to compress images online',
+      steps: [
+        {
+          name: 'Upload Image',
+          text: 'Click the upload button or drag and drop your image file into the designated area. Supported formats include PNG, JPG, WebP, and GIF.',
+        },
+        {
+          name: 'Select Quality',
+          text: 'Adjust the quality slider to your preferred compression level. Higher quality means less compression but better image clarity.',
+        },
+        {
+          name: 'Preview Results',
+          text: 'View the before/after comparison to see the compression ratio and file size reduction in real-time.',
+        },
+        {
+          name: 'Download Compressed Image',
+          text: 'Click the download button to save your compressed image. The file will be ready instantly with optimal size reduction.',
+        },
+      ],
+    },
     relatedTools: ['image-converter', 'image-resize', 'png-to-jpg-converter', 'background-remover'],
     schema: {
       type: 'SoftwareApplication',
@@ -130,8 +258,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'qr-generator': {
-    slug: 'qr-generator',
+  'qr-code-generator': {
+    slug: 'qr-code-generator',
     title: 'QR Code Generator - Create Custom QR Codes Online Free',
     description: 'Generate custom QR codes instantly from URLs, text, or contact info. Adjust size and error correction level. Perfect for marketing, packaging, and digital campaigns. Download as PNG or SVG.',
     keywords: [
@@ -143,6 +271,11 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'qr code creator',
       'qr code maker',
       'dynamic qr code',
+      'qr code generator for url',
+      'wifi qr code generator',
+      'vcard qr code generator',
+      'qr code with logo',
+      'qr code generator free',
     ],
     longTailKeywords: [
       'how to generate qr code for free',
@@ -151,9 +284,61 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'qr code generator for wifi',
       'advanced qr code generator with logo',
       'batch qr code generator',
+      'qr code generator for business',
+      'create qr code for social media',
+      'qr code generator with custom design',
+      'generate qr code for website',
     ],
     category: 'Image Tools',
-    relatedTools: ['qr-scanner', 'barcode-generator', 'png-to-jpg-converter'],
+    faqs: [
+      {
+        question: 'What can I encode in a QR code?',
+        answer: 'You can encode URLs, text, phone numbers, email addresses, WiFi credentials, vCards, and location coordinates.',
+      },
+      {
+        question: 'What error correction level should I use?',
+        answer: 'Use Medium (15%) for general use. High (25%) or Very High (30%) for environments where QR might get damaged or dirty.',
+      },
+      {
+        question: 'Can I add a logo to the QR code?',
+        answer: 'Yes, you can upload a logo. The QR code will be generated with the logo embedded in the center while maintaining scannability.',
+      },
+      {
+        question: 'What size should my QR code be?',
+        answer: 'Minimum 2x2cm for print. For digital use, 200x200 pixels or larger. Larger QR codes are easier to scan.',
+      },
+      {
+        question: 'Are the QR codes dynamic or static?',
+        answer: 'We generate static QR codes that encode your data directly. For dynamic tracking, use a URL shortener service first.',
+      },
+      {
+        question: 'Can I customize QR code colors?',
+        answer: 'Yes, you can change foreground and background colors. Ensure high contrast for reliable scanning.',
+      },
+    ],
+    howTo: {
+      name: 'How to Generate QR Codes',
+      description: 'Step-by-step guide to create custom QR codes',
+      steps: [
+        {
+          name: 'Choose Content Type',
+          text: 'Select what you want to encode: URL, text, WiFi, vCard, email, or phone number from the dropdown menu.',
+        },
+        {
+          name: 'Enter Your Data',
+          text: 'Type or paste your content. For URLs, include https:// for automatic linking. For WiFi, enter network details.',
+        },
+        {
+          name: 'Customize Design',
+          text: 'Adjust size, error correction level, colors, and optionally add a logo to the center of your QR code.',
+        },
+        {
+          name: 'Generate and Download',
+          text: 'Click generate to create your QR code. Download as PNG for images or SVG for scalable vector graphics.',
+        },
+      ],
+    },
+    relatedTools: ['qr-code-scanner', 'barcode-generator', 'png-to-jpg-converter'],
     schema: {
       type: 'SoftwareApplication',
       appCategory: 'Code Generator',
@@ -175,6 +360,12 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'json prettifier',
       'minify json',
       'json debugger',
+      'json viewer',
+      'json editor online',
+      'json syntax checker',
+      'json parser online',
+      'pretty print json',
+      'json format tool',
     ],
     longTailKeywords: [
       'online json formatter and validator',
@@ -183,18 +374,61 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'validate json structure instantly',
       'convert json to different formats',
       'beautify minified json',
+      'json syntax error checker',
+      'json to xml converter',
+      'json to csv converter',
+      'format nested json online',
+      'validate json api response',
     ],
     category: 'Developer Tools',
     faqs: [
       {
         question: 'Can it detect JSON errors?',
-        answer: 'Yes, our formatter highlights syntax errors and shows exact line numbers.',
+        answer: 'Yes, our formatter highlights syntax errors and shows exact line numbers with error descriptions.',
       },
       {
         question: 'Is there a file size limit?',
-        answer: 'No hard limit, but very large files may take a moment to process.',
+        answer: 'No hard limit, but very large files may take a moment to process. Most files under 10MB format instantly.',
+      },
+      {
+        question: 'Can I minify JSON?',
+        answer: 'Yes, use the minify option to compress JSON by removing whitespace and formatting.',
+      },
+      {
+        question: 'Does it support JSONPath or querying?',
+        answer: 'The formatter shows the full structure. For advanced querying, use our JSONPath tool or filter manually.',
+      },
+      {
+        question: 'Can I copy the formatted output?',
+        answer: 'Yes, one-click copy button is available. You can also download the formatted JSON as a file.',
+      },
+      {
+        question: 'What JSON standards are supported?',
+        answer: 'We support RFC 8259 JSON standard, including objects, arrays, strings, numbers, booleans, and null values.',
       },
     ],
+    howTo: {
+      name: 'How to Format JSON',
+      description: 'Step-by-step guide to format and validate JSON data',
+      steps: [
+        {
+          name: 'Paste or Upload JSON',
+          text: 'Paste your JSON code into the editor or upload a JSON file. The tool will auto-detect the format.',
+        },
+        {
+          name: 'Format and Validate',
+          text: 'Click the format button to beautify the JSON. Errors will be highlighted with line numbers and descriptions.',
+        },
+        {
+          name: 'Customize Options',
+          text: 'Adjust indentation (2-4 spaces), sort keys alphabetically, or choose to minify the output.',
+        },
+        {
+          name: 'Copy or Download',
+          text: 'Use the copy button for clipboard or download the formatted JSON as a .json file.',
+        },
+      ],
+    },
     relatedTools: ['regex-tester', 'jwt-decoder', 'url-encoder'],
     schema: {
       type: 'SoftwareApplication',
@@ -215,6 +449,12 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'random password generator',
       'online password maker',
       'password strength generator',
+      'generate random password',
+      'create strong password',
+      'password maker online',
+      'secure password creator',
+      'password generator for accounts',
+      'complex password generator',
     ],
     longTailKeywords: [
       'generate secure passwords online free',
@@ -223,8 +463,60 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'random secure password maker',
       'customizable password generator',
       'password generator with special characters',
+      'generate password for wifi',
+      'password generator for banking',
+      'create uncrackable password',
+      'password generator 16 characters',
     ],
     category: 'Security Tools',
+    faqs: [
+      {
+        question: 'How secure are the generated passwords?',
+        answer: 'Our passwords use cryptographically secure random number generation, making them virtually impossible to guess or crack.',
+      },
+      {
+        question: 'What password length should I use?',
+        answer: 'For maximum security, use 16+ characters. Minimum 12 characters is recommended for most accounts. Longer is always better.',
+      },
+      {
+        question: 'Should I include special characters?',
+        answer: 'Yes, including symbols (!@#$%) significantly increases password strength and makes it harder to crack.',
+      },
+      {
+        question: 'Are passwords stored or saved anywhere?',
+        answer: 'No, passwords are generated locally in your browser and never transmitted or stored on any server.',
+      },
+      {
+        question: 'Can I generate multiple passwords at once?',
+        answer: 'Yes, you can generate up to 50 passwords at once. Each password is unique and randomly generated.',
+      },
+      {
+        question: 'What makes a password strong?',
+        answer: 'A strong password has 12+ characters, mixes uppercase/lowercase, includes numbers and symbols, and avoids common words or patterns.',
+      },
+    ],
+    howTo: {
+      name: 'How to Generate Secure Passwords',
+      description: 'Step-by-step guide to create strong passwords',
+      steps: [
+        {
+          name: 'Set Password Length',
+          text: 'Choose your desired password length using the slider. We recommend 16+ characters for maximum security.',
+        },
+        {
+          name: 'Select Character Types',
+          text: 'Enable uppercase, lowercase, numbers, and symbols for the strongest passwords. More character types = better security.',
+        },
+        {
+          name: 'Generate Passwords',
+          text: 'Click the generate button to create random secure passwords. You can generate multiple at once.',
+        },
+        {
+          name: 'Copy and Use',
+          text: 'Click the copy button to copy your password to clipboard. Use it immediately for your account registration.',
+        },
+      ],
+    },
     relatedTools: ['password-strength', 'hash-generator', 'uuid-generator'],
     schema: {
       type: 'SoftwareApplication',
@@ -246,6 +538,11 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'online word counter',
       'text statistics',
       'reading time calculator',
+      'count words in text',
+      'character count online',
+      'word count checker',
+      'text analysis tool',
+      'paragraph counter',
     ],
     longTailKeywords: [
       'count words and characters online',
@@ -253,6 +550,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'instant word counting software',
       'calculate reading time online',
       'word counter for seo content',
+      'character count with spaces',
+      'word count for essays',
+      'text length counter',
+      'count words in document',
     ],
     category: 'Text Tools',
     relatedTools: ['case-converter', 'text-summarizer', 'duplicate-remover'],
@@ -307,6 +608,11 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'join pdf files',
       'online pdf merger',
       'free pdf merger',
+      'merge pdf files online',
+      'combine pdf documents',
+      'pdf joiner',
+      'merge multiple pdfs',
+      'pdf merger tool free',
     ],
     longTailKeywords: [
       'merge multiple pdf files online',
@@ -314,8 +620,60 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'how to combine pdf files instantly',
       'join pdf documents online free',
       'pdf merger with page reordering',
+      'combine pdf files into one',
+      'merge pdf without software',
+      'pdf merger for mac',
+      'pdf merger for windows',
     ],
     category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'How many PDFs can I merge at once?',
+        answer: 'You can merge up to 20 PDF files in a single operation. For more files, merge them in batches.',
+      },
+      {
+        question: 'Can I reorder pages before merging?',
+        answer: 'Yes, you can drag and drop pages to reorder them before the final merge. The interface shows a clear page preview.',
+      },
+      {
+        question: 'Will the merged PDF maintain original quality?',
+        answer: 'Absolutely. The merge process preserves the original quality, formatting, and resolution of all source PDFs.',
+      },
+      {
+        question: 'Can I remove specific pages during merge?',
+        answer: 'Yes, you can remove unwanted pages before merging. Simply click the X button on any page thumbnail to exclude it.',
+      },
+      {
+        question: 'Is there a file size limit for merging?',
+        answer: 'Individual files up to 50MB are supported. The merged document size depends on the combined size of all files.',
+      },
+      {
+        question: 'Are bookmarks and links preserved?',
+        answer: 'Basic bookmarks and internal links are preserved. Complex navigation elements may require manual adjustment.',
+      },
+    ],
+    howTo: {
+      name: 'How to Merge PDF Files',
+      description: 'Step-by-step guide to combine PDF documents',
+      steps: [
+        {
+          name: 'Upload PDF Files',
+          text: 'Click the upload button or drag and drop multiple PDF files into the upload area. You can select 2-20 files at once.',
+        },
+        {
+          name: 'Arrange Order',
+          text: 'Drag and drop the PDF thumbnails to reorder them. This determines the page order in the final merged document.',
+        },
+        {
+          name: 'Remove Unwanted Pages',
+          text: 'Click the X button on any page thumbnail to remove it from the merge. Only selected pages will be included.',
+        },
+        {
+          name: 'Merge and Download',
+          text: 'Click the merge button to combine all selected PDFs. The merged document will be ready for download instantly.',
+        },
+      ],
+    },
     relatedTools: ['pdf-split', 'pdf-to-word', 'pdf-compress'],
     schema: {
       type: 'SoftwareApplication',
@@ -336,6 +694,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'image converter',
       'online image converter',
       'batch image converter',
+      'png jpg converter',
+      'convert png image',
+      'png to jpeg free',
+      'image format converter',
     ],
     longTailKeywords: [
       'convert png to jpg online free',
@@ -396,6 +758,11 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'hash calculator',
       'online hash generator',
       'secure hash function',
+      'create hash online',
+      'hash text generator',
+      'file hash generator',
+      'sha1 generator',
+      'sha512 generator',
     ],
     longTailKeywords: [
       'generate hashes online securely',
@@ -403,6 +770,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'sha256 hash generator',
       'md5 hash generator online',
       'bcrypt hash calculator',
+      'generate file hash',
+      'hash string online',
+      'create checksum hash',
+      'hash password generator',
     ],
     category: 'Security Tools',
     relatedTools: ['password-generator', 'base64-tool', 'uuid-generator'],
@@ -426,6 +797,11 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'percent encoder',
       'url encoding',
       'online url encoder',
+      'url encode decode',
+      'percent encoding',
+      'url safe encoder',
+      'encode special characters',
+      'url decoder online',
     ],
     longTailKeywords: [
       'encode url online instantly',
@@ -433,6 +809,9 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'how to encode urls with special characters',
       'percent encoding online',
       'url safe encoding tool',
+      'decode url parameters',
+      'url encode for api',
+      'encode url for social media',
     ],
     category: 'Developer Tools',
     relatedTools: ['jwt-decoder', 'json-formatter', 'base64-tool'],
@@ -456,6 +835,11 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'remove background from image',
       'online background remover',
       'ai background removal',
+      'background remover online',
+      'remove image background',
+      'make background transparent',
+      'background removal tool',
+      'ai background eraser',
     ],
     longTailKeywords: [
       'remove image background online free',
@@ -463,8 +847,60 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'how to remove background from photos',
       'transparent background generator',
       'batch background removal online',
+      'remove background from product photos',
+      'background remover for ecommerce',
+      'ai background remover free',
+      'remove background from portraits',
     ],
     category: 'Image Tools',
+    faqs: [
+      {
+        question: 'How does the AI background removal work?',
+        answer: 'Our AI analyzes your image to identify the subject and separates it from the background using advanced machine learning algorithms.',
+      },
+      {
+        question: 'What image formats are supported?',
+        answer: 'We support PNG, JPG, JPEG, WebP, and GIF formats. The output is always PNG to support transparency.',
+      },
+      {
+        question: 'Is the background removal accurate?',
+        answer: 'Our AI achieves 95%+ accuracy on most images. Complex backgrounds like hair or transparent objects may need manual touch-up.',
+      },
+      {
+        question: 'Can I remove backgrounds from multiple images?',
+        answer: 'Yes, you can process multiple images. Each image is processed individually with the same high-quality AI algorithm.',
+      },
+      {
+        question: 'Is my image data private?',
+        answer: 'Yes, images are processed locally in your browser. Your photos never leave your device or are stored on any server.',
+      },
+      {
+        question: 'What resolution images work best?',
+        answer: 'Images 500x500 pixels or higher work best. Lower resolution images may have reduced accuracy in edge detection.',
+      },
+    ],
+    howTo: {
+      name: 'How to Remove Image Backgrounds',
+      description: 'Step-by-step guide to remove backgrounds with AI',
+      steps: [
+        {
+          name: 'Upload Image',
+          text: 'Click the upload button or drag and drop your image. PNG, JPG, WebP, and GIF formats are supported.',
+        },
+        {
+          name: 'AI Processing',
+          text: 'Our AI automatically detects the subject and removes the background. This takes 2-5 seconds depending on image size.',
+        },
+        {
+          name: 'Preview and Adjust',
+          text: 'Preview the result with transparent background. Use the eraser tool to manually refine edges if needed.',
+        },
+        {
+          name: 'Download PNG',
+          text: 'Download your image as a PNG file with transparent background. Perfect for design projects and product photos.',
+        },
+      ],
+    },
     relatedTools: ['image-compressor', 'image-resize', 'png-to-jpg-converter'],
     schema: {
       type: 'SoftwareApplication',
@@ -485,6 +921,12 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'monthly installment calculator',
       'home loan calculator',
       'emi computation',
+      'emi loan calculator',
+      'car loan emi calculator',
+      'personal loan emi',
+      'emi calculator online free',
+      'calculate monthly payment',
+      'loan payment calculator',
     ],
     longTailKeywords: [
       'calculate emi online instantly',
@@ -492,6 +934,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'home loan emi calculator',
       'personal loan emi calculator',
       'how to calculate emi manually',
+      'emi calculator for car loan',
+      'emi formula calculator',
+      'emi calculator with interest',
+      'calculate loan emi in excel',
     ],
     category: 'Finance Tools',
     relatedTools: ['gst-calculator', 'salary-calculator', 'currency-converter'],
@@ -636,6 +1082,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'free sip calculator',
       'monthly investment calculator',
       'sip maturity calculator',
+      'sip investment calculator',
+      'mutual fund sip calculator',
+      'sip plan calculator',
+      'calculate sip returns',
     ],
     longTailKeywords: [
       'calculate sip returns online',
@@ -644,6 +1094,9 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'sip investment returns calculator',
       'monthly sip calculator',
       'how to calculate sip returns',
+      'sip calculator for mutual funds',
+      'sip calculator with inflation',
+      'step up sip calculator',
     ],
     category: 'Finance Tools',
     relatedTools: ['lump-sum-calculator', 'mutual-fund-calculator', 'emi-calculator'],
@@ -667,6 +1120,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'free gst calculator',
       'gst inclusive exclusive calculator',
       'indian gst calculator',
+      'calculate gst amount',
+      'gst percentage calculator',
+      'gst calculation tool',
+      'add gst calculator',
     ],
     longTailKeywords: [
       'calculate gst tax online',
@@ -675,6 +1132,9 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'indian goods services tax calculator',
       'how to calculate gst amount',
       'gst percentage calculator',
+      'gst calculator for business',
+      'gst calculation formula',
+      'reverse gst calculator',
     ],
     category: 'Finance Tools',
     relatedTools: ['vat-calculator', 'tax-calculator', 'roi-calculator'],
@@ -2904,3 +3364,5 @@ export const getToolSeoMetadata = (toolSlug: string): ToolSeoMetadata | null => 
 export const getAllToolSlugs = (): string[] => {
   return Object.keys(toolSeoEnhancements);
 };
+
+

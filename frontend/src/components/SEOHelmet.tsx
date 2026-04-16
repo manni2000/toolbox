@@ -12,6 +12,15 @@ interface SEOHelmetProps {
   toolSlug?: string;
   category?: string;
   faqs?: Array<{ question: string; answer: string }>;
+  howTo?: {
+    name: string;
+    description: string;
+    steps: Array<{
+      name: string;
+      text: string;
+      image?: string;
+    }>;
+  };
   schema?: any;
   ogImage?: string;
   ogType?: string;
@@ -29,6 +38,7 @@ const SEOHelmet = ({
   toolSlug,
   category,
   faqs = [],
+  howTo,
   schema,
   ogImage = '/dailytools247.png',
   ogType = 'website',
@@ -47,6 +57,7 @@ const SEOHelmet = ({
   const finalKeywords = keywords.length > 0 ? keywords : (toolMetadata?.keywords || []);
   const finalCategory = category || toolMetadata?.category || 'Online Tools';
   const finalFaqs = faqs.length > 0 ? faqs : toolMetadata?.faqs || [];
+  const finalHowTo = howTo || toolMetadata?.howTo;
   const finalSchema = schema || toolMetadata?.schema;
 
   const siteUrl = 'https://www.dailytools247.app';
@@ -94,7 +105,7 @@ const SEOHelmet = ({
 
     // Add FAQ schema if FAQs exist
     if (finalFaqs.length > 0) {
-      return [
+      const schemas = [
         baseSchema,
         {
           '@context': 'https://schema.org',
@@ -106,6 +117,43 @@ const SEOHelmet = ({
               '@type': 'Answer',
               text: faq.answer
             }
+          }))
+        }
+      ];
+
+      // Add HowTo schema if available
+      if (finalHowTo) {
+        schemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: finalHowTo.name,
+          description: finalHowTo.description,
+          step: finalHowTo.steps.map(step => ({
+            '@type': 'HowToStep',
+            name: step.name,
+            text: step.text,
+            image: step.image
+          }))
+        });
+      }
+
+      return schemas;
+    }
+
+    // Add HowTo schema even without FAQs
+    if (finalHowTo) {
+      return [
+        baseSchema,
+        {
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: finalHowTo.name,
+          description: finalHowTo.description,
+          step: finalHowTo.steps.map(step => ({
+            '@type': 'HowToStep',
+            name: step.name,
+            text: step.text,
+            image: step.image
           }))
         }
       ];
