@@ -11,25 +11,38 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 
 
 router.use(uploadLimiter);
 
+function safeDecodeURIComponent(str) {
+  if (!str) return '';
+  try {
+    return decodeURIComponent(str);
+  } catch (e) {
+    return str;
+  }
+}
+
 async function extractTextFromPDF(buffer) {
   return new Promise((resolve) => {
     const pdfParser = new PDFParser();
     pdfParser.on('pdfParser_dataError', () => resolve({ text: '', numpages: 0 }));
     pdfParser.on('pdfParser_dataReady', (pdfData) => {
-      let fullText = '';
-      if (pdfData && pdfData.Pages) {
-        pdfData.Pages.forEach(page => {
-          if (page.Texts) {
-            page.Texts.forEach(text => {
-              if (text.R) {
-                text.R.forEach(r => { fullText += decodeURIComponent(r.T) + ' '; });
-              }
-            });
-            fullText += '\n';
-          }
-        });
+      try {
+        let fullText = '';
+        if (pdfData && pdfData.Pages) {
+          pdfData.Pages.forEach(page => {
+            if (page.Texts) {
+              page.Texts.forEach(text => {
+                if (text.R) {
+                  text.R.forEach(r => { fullText += safeDecodeURIComponent(r.T) + ' '; });
+                }
+              });
+              fullText += '\n';
+            }
+          });
+        }
+        resolve({ text: fullText.trim(), numpages: pdfData.Pages ? pdfData.Pages.length : 0 });
+      } catch (e) {
+        resolve({ text: '', numpages: 0 });
       }
-      resolve({ text: fullText.trim(), numpages: pdfData.Pages ? pdfData.Pages.length : 0 });
     });
     pdfParser.parseBuffer(buffer);
   });
@@ -40,6 +53,7 @@ async function extractStructuredFromPDF(buffer) {
     const pdfParser = new PDFParser(null, 1);
     pdfParser.on('pdfParser_dataError', () => resolve({ pages: [], numpages: 0 }));
     pdfParser.on('pdfParser_dataReady', (pdfData) => {
+      try {
       if (!pdfData || !pdfData.Pages) return resolve({ pages: [], numpages: 0 });
 
       const pages = pdfData.Pages.map((page) => {
@@ -51,7 +65,7 @@ async function extractStructuredFromPDF(buffer) {
           const y = textBlock.y || 0;
           if (!textBlock.R) return;
           textBlock.R.forEach(run => {
-            const text = decodeURIComponent(run.T || '');
+            const text = safeDecodeURIComponent(run.T || '');
             if (!text.trim()) return;
             const ts = run.TS || [0, 12, 0, 0];
             const fontSize = ts[1] || 12;
@@ -102,6 +116,9 @@ async function extractStructuredFromPDF(buffer) {
       });
 
       resolve({ pages, numpages: pages.length });
+      } catch (e) {
+        resolve({ pages: [], numpages: 0 });
+      }
     });
     pdfParser.parseBuffer(buffer);
   });
