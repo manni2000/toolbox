@@ -263,6 +263,93 @@ async function extractWithPdfjs(buffer) {
     // Sort top-to-bottom, left-to-right
     rawItems.sort((a, b) => (Math.abs(a.y - b.y) < 2 ? a.x - b.x : a.y - b.y));
 
+    // --- Icon placeholder detection via font-switching ---
+    // PDFs often embed custom icon fonts where ASCII chars (like "#", "|") visually
+    // render as icons. Detect these by: (a) font differs from the dominant font on
+    // the line, (b) text is 1-2 non-alphanumeric chars. Replace contextually.
+    {
+      // Build set of "likely icon fonts": fonts used ONLY for short (≤2 char) items
+      const fontUsageStats = {};
+      for (const item of rawItems) {
+        if (!item.fontName) continue;
+        if (!fontUsageStats[item.fontName]) fontUsageStats[item.fontName] = { short: 0, long: 0 };
+        const stripped = item.text.replace(/\s/g, '');
+        if (stripped.length <= 2) fontUsageStats[item.fontName].short++;
+        else fontUsageStats[item.fontName].long++;
+      }
+      const likelyIconFonts = new Set(
+        Object.entries(fontUsageStats)
+          .filter(([, v]) => v.long === 0 && v.short >= 1)
+          .map(([fn]) => fn)
+      );
+
+      // Group rawItems into rough lines (by y-coordinate) for context lookup
+      const iconLines = [];
+      for (const item of rawItems) {
+        const thresh = (item.fontSize || 12) * 0.8;
+        const existing = iconLines.find(l => Math.abs(l.y - item.y) < thresh);
+        if (existing) existing.items.push(item);
+        else iconLines.push({ y: item.y, items: [item] });
+      }
+
+      for (const line of iconLines) {
+        line.items.sort((a, b) => a.x - b.x);
+        if (line.items.length < 2) continue;
+
+        // Find the dominant fontName on this line (by total character count)
+        const fontCharCount = {};
+        for (const it of line.items) {
+          fontCharCount[it.fontName] = (fontCharCount[it.fontName] || 0) + it.text.length;
+        }
+        const dominantFont = Object.entries(fontCharCount).sort((a, b) => b[1] - a[1])[0]?.[0];
+
+        for (let i = 0; i < line.items.length; i++) {
+          const item = line.items[i];
+          const stripped = item.text.trim();
+
+          // Icon candidate: different font from dominant (or known icon font) + 1-2 chars
+          const isDiffFont = item.fontName !== dominantFont;
+          const isIconFont = likelyIconFonts.has(item.fontName);
+          const isShort = stripped.length <= 2;
+          const hasNoAlpha = !/[a-zA-Z0-9]{2,}/.test(stripped);
+
+          if (!((isDiffFont || isIconFont) && isShort && hasNoAlpha)) continue;
+
+          // Look at next and previous substantial items for context
+          const next = line.items.slice(i + 1).find(it => it.text.trim().length >= 2);
+          const prev = line.items.slice(0, i).reverse().find(it => it.text.trim().length >= 2);
+          const nextTxt = (next?.text || '').toLowerCase().trim();
+          const prevTxt = (prev?.text || '').toLowerCase().trim();
+          const combined = nextTxt + ' ' + prevTxt;
+
+          let replacement = '';
+          if (nextTxt.includes('@') || combined.includes('@')) {
+            replacement = '\u2709'; // ✉ envelope
+          } else if (nextTxt.includes('linkedin') || prevTxt.includes('linkedin')) {
+            replacement = 'in';
+          } else if (nextTxt.includes('github') || prevTxt.includes('github')) {
+            replacement = '\u2B55'; // ⊕ circle
+          } else if (nextTxt.includes('portfolio') || prevTxt.includes('portfolio')) {
+            replacement = '\u2606'; // ☆ star
+          } else if (nextTxt.includes('twitter') || prevTxt.includes('twitter')) {
+            replacement = '\uD83D\uDC26'; // 🐦 bird
+          } else if (/^\+?[\d]/.test(nextTxt) || /^[\d\-\s]{4,}/.test(nextTxt)) {
+            replacement = '\u260E'; // ☎ phone
+          } else if (isIconFont) {
+            replacement = ''; // Unknown icon in known icon font: drop it
+          } else {
+            replacement = item.text; // Keep as-is (might be legitimate punctuation)
+          }
+
+          item.text = replacement;
+        }
+      }
+
+      // Remove items that became empty after icon replacement
+      const toRemove = new Set(rawItems.filter(it => it.text === '' || it.text.trim() === ''));
+      rawItems.splice(0, rawItems.length, ...rawItems.filter(it => !toRemove.has(it)));
+    }
+
     // Group into lines: items with y within fontSize/2 of each other
     const lines = [];
     for (const item of rawItems) {
