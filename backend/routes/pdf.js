@@ -230,8 +230,8 @@ async function extractWithPdfjs(buffer) {
     function isBoldByWidth(fontName) {
       const r = fontMedianRatio[fontName];
       if (!r) return false;
-      // A font whose chars are >13% wider than the page median is likely bold
-      return r > pageMedianRatio * 1.13;
+      // A font whose chars are >7% wider than the page median is likely bold
+      return r > pageMedianRatio * 1.07;
     }
 
     const rawItems = textContent.items
@@ -338,7 +338,11 @@ async function extractWithPdfjs(buffer) {
           } else if (isIconFont) {
             replacement = ''; // Unknown icon in known icon font: drop it
           } else {
-            replacement = item.text; // Keep as-is (might be legitimate punctuation)
+            // Keep standard ASCII punctuation (dashes, slashes, pipes, etc.) but
+            // drop decorative Unicode symbols (♪ ♦ ▲ ★ etc.) that are clearly
+            // ornamental glyphs rendered via a non-standard font
+            const isAscii = stripped.split('').every(ch => ch.codePointAt(0) < 128);
+            replacement = isAscii ? item.text : '';
           }
 
           item.text = replacement;
