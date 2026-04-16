@@ -1046,9 +1046,11 @@ router.post('/to-excel', upload.fields([{ name: 'file', maxCount: 1 }, { name: '
     if (!file) return res.status(400).json({ success: false, error: 'PDF file required' });
 
     let text = '';
+    let numpages = 0;
     try {
       const parsed = await extractTextFromPDF(file.buffer);
       text = parsed.text || '';
+      numpages = parsed.numpages || 0;
     } catch (e) {
       text = 'Could not extract text from this PDF.';
     }
@@ -1064,9 +1066,17 @@ router.post('/to-excel', upload.fields([{ name: 'file', maxCount: 1 }, { name: '
     XLSX.utils.book_append_sheet(workbook, worksheet, 'PDF Content');
 
     const excelBuffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename="converted.xlsx"');
-    res.send(excelBuffer);
+    const base64 = excelBuffer.toString('base64');
+    const originalName = file.originalname || 'document.pdf';
+    const outName = originalName.replace(/\.pdf$/i, '.xlsx');
+
+    res.json({
+      success: true,
+      file: base64,
+      filename: outName,
+      pages: numpages,
+      message: 'PDF converted to Excel successfully',
+    });
   } catch (err) {
     next(err);
   }
@@ -1087,30 +1097,44 @@ router.post('/to-powerpoint', upload.fields([{ name: 'file', maxCount: 1 }, { na
       text = 'Could not extract text from this PDF.';
     }
 
-    const paragraphs = text.split(/\n{2,}/).filter(p => p.trim().length > 0).slice(0, 50);
+    const PptxGenJS = require('pptxgenjs');
+    const prs = new PptxGenJS();
+    prs.layout = 'LAYOUT_WIDE';
 
-    const doc = new Document({
-      sections: [{
-        properties: {},
-        children: [
-          new Paragraph({
-            text: 'PDF Content (Extracted Text)',
-            heading: HeadingLevel.HEADING_1,
-          }),
-          new Paragraph({
-            children: [new TextRun({ text: `Source: ${pageCount} page(s)`, italics: true })],
-          }),
-          ...paragraphs.map(para => new Paragraph({
-            children: [new TextRun({ text: para.trim().replace(/\n/g, ' ').substring(0, 500), size: 22 })],
-          })),
-        ],
-      }],
+    const allLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const LINES_PER_SLIDE = 18;
+    const slideGroups = [];
+    for (let i = 0; i < allLines.length; i += LINES_PER_SLIDE) {
+      slideGroups.push(allLines.slice(i, i + LINES_PER_SLIDE));
+    }
+    if (slideGroups.length === 0) slideGroups.push(['(No content extracted)']);
+
+    slideGroups.forEach((group, idx) => {
+      const slide = prs.addSlide();
+      slide.addText(`Page ${idx + 1} of ${slideGroups.length}`, {
+        x: 0.3, y: 0.1, w: '90%', h: 0.4,
+        fontSize: 10, color: '888888', italic: true,
+      });
+      const bodyText = group.map(line => ({ text: line + '\n', options: { fontSize: 14, color: '333333' } }));
+      slide.addText(bodyText, {
+        x: 0.5, y: 0.6, w: '92%', h: '85%',
+        valign: 'top', wrap: true,
+      });
     });
 
-    const buffer = await Packer.toBuffer(doc);
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-    res.setHeader('Content-Disposition', 'attachment; filename="slides-content.docx"');
-    res.send(buffer);
+    const pptxBuffer = await prs.write({ outputType: 'nodebuffer' });
+    const base64 = pptxBuffer.toString('base64');
+    const originalName = file.originalname || 'document.pdf';
+    const outName = originalName.replace(/\.pdf$/i, '.pptx');
+
+    res.json({
+      success: true,
+      file: base64,
+      filename: outName,
+      pages: pageCount,
+      slides: slideGroups.length,
+      message: 'PDF converted to PowerPoint successfully',
+    });
   } catch (err) {
     next(err);
   }
@@ -1120,41 +1144,123 @@ router.post('/word-to-pdf', upload.single('file'), async (req, res, next) => {
   try {
     if (!req.file) return res.status(400).json({ success: false, error: 'File required' });
 
-    if (req.file.mimetype === 'text/plain' || (req.file.originalname && req.file.originalname.endsWith('.txt'))) {
-      const text = req.file.buffer.toString('utf-8');
-      const lines = text.split('\n');
+    const isDocx = req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      || (req.file.originalname && req.file.originalname.toLowerCase().endsWith('.docx'));
+    const isTxt = req.file.mimetype === 'text/plain'
+      || (req.file.originalname && req.file.originalname.toLowerCase().endsWith('.txt'));
 
-      const pdfDoc = await PDFDocument.create();
-      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-      const pageWidth = 595, pageHeight = 842, margin = 50;
-      const lineHeight = 18;
+    let paragraphLines = [];
 
-      let page = pdfDoc.addPage([pageWidth, pageHeight]);
-      let y = pageHeight - margin;
+    if (isDocx) {
+      try {
+        const JSZip = require('jszip');
+        const zip = await JSZip.loadAsync(req.file.buffer);
+        const docXmlFile = zip.file('word/document.xml');
+        if (!docXmlFile) throw new Error('Invalid docx: word/document.xml not found');
+        const docXml = await docXmlFile.async('string');
 
-      for (const line of lines) {
+        const paraRegex = /<w:p[ >]([\s\S]*?)<\/w:p>/g;
+        let paraMatch;
+        while ((paraMatch = paraRegex.exec(docXml)) !== null) {
+          const paraXml = paraMatch[1];
+          const isBoldPara = /<w:b\/>|<w:b w:val="true"/i.test(paraXml);
+          const isHeading = /<w:pStyle w:val="Heading|<w:pStyle w:val="heading/i.test(paraXml);
+
+          const textParts = [];
+          const runRegex = /<w:r[ >]([\s\S]*?)<\/w:r>/g;
+          let runMatch;
+          while ((runMatch = runRegex.exec(paraXml)) !== null) {
+            const runXml = runMatch[1];
+            const tMatches = [...runXml.matchAll(/<w:t(?:[^>]*)>([\s\S]*?)<\/w:t>/g)];
+            for (const tm of tMatches) {
+              textParts.push(tm[1]);
+            }
+          }
+          const lineText = textParts.join('');
+          if (lineText.trim().length > 0) {
+            paragraphLines.push({ text: lineText, bold: isBoldPara || isHeading, heading: isHeading });
+          } else {
+            paragraphLines.push({ text: '', bold: false, heading: false });
+          }
+        }
+      } catch (parseErr) {
+        paragraphLines = [{ text: 'Could not parse Word document content.', bold: false, heading: false }];
+      }
+    } else if (isTxt) {
+      const raw = req.file.buffer.toString('utf-8');
+      paragraphLines = raw.split('\n').map(line => ({ text: line, bold: false, heading: false }));
+    } else {
+      return res.status(422).json({
+        success: false,
+        error: 'Unsupported file type. Please upload a .docx or .txt file.',
+        supported: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'],
+      });
+    }
+
+    const pdfDoc = await PDFDocument.create();
+    const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const pageWidth = 595, pageHeight = 842, margin = 50;
+    const maxWidth = pageWidth - margin * 2;
+
+    function wrapText(text, font, fontSize, maxW) {
+      const words = text.split(' ');
+      const wrappedLines = [];
+      let current = '';
+      for (const word of words) {
+        const test = current ? current + ' ' + word : word;
+        const width = font.widthOfTextAtSize(test, fontSize);
+        if (width > maxW && current) {
+          wrappedLines.push(current);
+          current = word;
+        } else {
+          current = test;
+        }
+      }
+      if (current) wrappedLines.push(current);
+      return wrappedLines.length > 0 ? wrappedLines : [''];
+    }
+
+    let page = pdfDoc.addPage([pageWidth, pageHeight]);
+    let y = pageHeight - margin;
+
+    for (const para of paragraphLines) {
+      const fontSize = para.heading ? 15 : 12;
+      const font = (para.bold || para.heading) ? boldFont : regularFont;
+      const lineHeight = fontSize * 1.5;
+      const paraSpacing = para.heading ? 8 : 4;
+
+      if (!para.text.trim()) {
+        y -= lineHeight * 0.5;
+        if (y < margin) { page = pdfDoc.addPage([pageWidth, pageHeight]); y = pageHeight - margin; }
+        continue;
+      }
+
+      const safeText = para.text.substring(0, 500);
+      const wrapped = wrapText(safeText, font, fontSize, maxWidth);
+
+      for (const wLine of wrapped) {
         if (y < margin + lineHeight) {
           page = pdfDoc.addPage([pageWidth, pageHeight]);
           y = pageHeight - margin;
         }
-        const safeLine = (line || '').substring(0, 120);
-        if (safeLine) {
-          page.drawText(safeLine, { x: margin, y, size: 12, font, color: rgb(0, 0, 0) });
-        }
+        page.drawText(wLine, { x: margin, y, size: fontSize, font, color: rgb(0, 0, 0) });
         y -= lineHeight;
       }
-
-      const bytes = await pdfDoc.save();
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename="converted.pdf"');
-      res.send(Buffer.from(bytes));
-    } else {
-      res.status(422).json({
-        success: false,
-        error: 'Word (.docx) to PDF conversion requires LibreOffice which is not available. Upload a .txt file for plain text to PDF conversion.',
-        supported: ['text/plain', '.txt'],
-      });
+      y -= paraSpacing;
     }
+
+    const bytes = await pdfDoc.save();
+    const base64 = Buffer.from(bytes).toString('base64');
+    const originalName = req.file.originalname || 'document.docx';
+    const outName = originalName.replace(/\.(docx|txt)$/i, '.pdf');
+
+    res.json({
+      success: true,
+      file: base64,
+      filename: outName,
+      message: 'Word converted to PDF successfully',
+    });
   } catch (err) {
     next(err);
   }
