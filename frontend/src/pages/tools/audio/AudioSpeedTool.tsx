@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Gauge, Upload, Play, Pause, RotateCcw, Volume2, Sparkles } from "lucide-react";
+import { Gauge, Upload, Play, Pause, RotateCcw, Volume2, Sparkles, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
@@ -25,6 +25,7 @@ const AudioSpeedTool = () => {
   const [duration, setDuration] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -124,30 +125,39 @@ const AudioSpeedTool = () => {
 
   const downloadProcessed = async () => {
     if (!audioFile) return;
+    setIsProcessing(true);
+    setProcessedUrl(null);
 
-    toast({
-      title: "Processing",
-      description: `Preparing audio at ${speed}x speed...`,
-    });
+    try {
+      const formData = new FormData();
+      formData.append('audio', audioFile);
+      formData.append('speed', String(speed));
 
-    // Note: Actual speed change with pitch preservation requires backend processing
-    // For now, we'll create an info file with the settings
-    const info = {
-      originalFile: audioFile.name,
-      speed: speed,
-      preservePitch: preservePitch,
-      estimatedDuration: duration / speed,
-      note: "Full speed processing with pitch preservation requires backend processing with FFmpeg"
-    };
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.AUDIO_SPEED}`, {
+        method: 'POST',
+        body: formData,
+      });
 
-    const blob = new Blob([JSON.stringify(info, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    setProcessedUrl(url);
+      const result = await response.json();
 
-    toast({
-      title: "Note",
-      description: "Full audio processing requires backend. Preview works with browser playback.",
-    });
+      if (result.success) {
+        setProcessedUrl(result.audio);
+        toast({
+          title: "Success!",
+          description: `Audio processed at ${speed}x speed`,
+        });
+      } else {
+        throw new Error(result.error || 'Failed to process audio');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to process audio",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const reset = () => {
@@ -315,32 +325,38 @@ const AudioSpeedTool = () => {
             </div>
 
             {/* Download */}
-            <Button onClick={downloadProcessed} variant="secondary" className="w-full text-sm sm:text-base py-3 sm:py-4">
-              <Gauge className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-              <span className="hidden sm:inline">Process Audio Speed</span>
-              <span className="sm:hidden">Process</span>
+            <Button
+              onClick={downloadProcessed}
+              variant="secondary"
+              className="w-full text-sm sm:text-base py-3 sm:py-4"
+              disabled={isProcessing}
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Gauge className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                  <span className="hidden sm:inline">Process & Download at {speed}x</span>
+                  <span className="sm:hidden">Process</span>
+                </>
+              )}
             </Button>
 
             {processedUrl && (
               <div className="flex justify-center mt-6">
                 <EnhancedDownload
                   data={processedUrl}
-                  fileName={`${audioFile.name.replace(/\.[^.]+$/, "")}_${speed}x_info.json`}
-                  fileType="zip"
-                  title="Audio Speed Processing Info Ready"
-                  description={`Audio speed change settings for ${speed}x playback with pitch preservation: ${preservePitch ? 'enabled' : 'disabled'}`}
+                  fileName={`${audioFile.name.replace(/\.[^.]+$/, "")}_${speed}x.mp3`}
+                  fileType="audio"
+                  title="Speed-Adjusted Audio Ready"
+                  description={`Audio processed at ${speed}x speed`}
                   fileSize={audioFile ? `${(audioFile.size / 1024).toFixed(1)} KB` : 'Unknown size'}
                 />
               </div>
             )}
-
-            {/* Info */}
-            <Card className="p-4 bg-muted/50">
-              <p className="text-sm text-muted-foreground">
-                <strong>Preview:</strong> Use the player above to hear how your audio sounds at different speeds. 
-                The browser's built-in pitch preservation keeps the voice natural even at 2x speed.
-              </p>
-            </Card>
           </>
         )}
 

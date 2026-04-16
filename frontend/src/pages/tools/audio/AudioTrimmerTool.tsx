@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Scissors, Upload, Play, Pause, RotateCcw, Sparkles } from "lucide-react";
+import { Scissors, Upload, Play, Pause, RotateCcw, Sparkles, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
@@ -26,7 +26,8 @@ const AudioTrimmerTool = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [trimmedUrl, setTrimmedUrl] = useState<string | null>(null);
-  
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -137,31 +138,41 @@ const AudioTrimmerTool = () => {
 
   const downloadTrimmed = async () => {
     if (!audioFile) return;
+    setIsProcessing(true);
+    setTrimmedUrl(null);
 
-    toast({
-      title: "Trimming Audio",
-      description: `Trimming from ${formatTime(startTime)} to ${formatTime(endTime)}`,
-    });
+    try {
+      const formData = new FormData();
+      formData.append('audio', audioFile);
+      formData.append('startTime', String(startTime));
+      formData.append('endTime', String(endTime));
+      formData.append('duration', String(endTime - startTime));
 
-    // Note: Full audio trimming requires Web Audio API or backend
-    // This is a simplified demo that downloads the original
-    toast({
-      title: "Note",
-      description: "Full audio trimming requires backend processing. Download includes trim markers.",
-    });
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.AUDIO_TRIMMER}`, {
+        method: 'POST',
+        body: formData,
+      });
 
-    // Create a metadata file with trim info
-    const trimInfo = {
-      originalFile: audioFile.name,
-      startTime: startTime,
-      endTime: endTime,
-      duration: endTime - startTime,
-      trimMarkers: `${formatTime(startTime)} - ${formatTime(endTime)}`
-    };
+      const result = await response.json();
 
-    const blob = new Blob([JSON.stringify(trimInfo, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    setTrimmedUrl(url);
+      if (result.success) {
+        setTrimmedUrl(result.audio);
+        toast({
+          title: "Success!",
+          description: `Audio trimmed from ${formatTime(startTime)} to ${formatTime(endTime)}`,
+        });
+      } else {
+        throw new Error(result.error || 'Failed to trim audio');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to trim audio",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const reset = () => {
@@ -347,31 +358,36 @@ const AudioTrimmerTool = () => {
             </div>
 
             {/* Download */}
-            <Button onClick={downloadTrimmed} className="w-full text-sm sm:text-base py-3 sm:py-4">
-              <Scissors className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-              Trim Audio
+            <Button
+              onClick={downloadTrimmed}
+              className="w-full text-sm sm:text-base py-3 sm:py-4"
+              disabled={isProcessing}
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 mr-2 animate-spin" />
+                  Trimming...
+                </>
+              ) : (
+                <>
+                  <Scissors className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                  Trim Audio
+                </>
+              )}
             </Button>
 
             {trimmedUrl && (
               <div className="flex justify-center mt-6">
                 <EnhancedDownload
                   data={trimmedUrl}
-                  fileName={`${audioFile.name.replace(/\.[^.]+$/, "")}_trim_info.json`}
-                  fileType="zip"
-                  title="Audio Trim Info Ready"
-                  description={`Trim markers for ${formatTime(startTime)} to ${formatTime(endTime)}`}
+                  fileName={`${audioFile.name.replace(/\.[^.]+$/, "")}_trimmed.mp3`}
+                  fileType="audio"
+                  title="Trimmed Audio Ready"
+                  description={`Trimmed from ${formatTime(startTime)} to ${formatTime(endTime)}`}
                   fileSize={audioFile ? `${(audioFile.size / 1024).toFixed(1)} KB` : 'Unknown size'}
                 />
               </div>
             )}
-
-            {/* Info */}
-            <Card className="p-4 bg-muted/50">
-              <p className="text-sm text-muted-foreground">
-                <strong>Note:</strong> Full audio trimming with actual file cutting requires 
-                backend processing with FFmpeg. This demo provides the UI and preview functionality.
-              </p>
-            </Card>
           </>
         )}
 

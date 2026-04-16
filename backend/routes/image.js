@@ -354,9 +354,16 @@ router.post('/image-to-word', upload.fields([{ name: 'image', maxCount: 1 }, { n
     });
 
     const buffer = await Packer.toBuffer(doc);
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-    res.setHeader('Content-Disposition', 'attachment; filename="image-extracted.docx"');
-    res.send(buffer);
+    const base64 = buffer.toString('base64');
+    const originalName = file.originalname || 'image.jpg';
+    const outName = originalName.replace(/\.[^.]+$/, '.docx');
+
+    res.json({
+      success: true,
+      file: base64,
+      filename: outName,
+      message: 'Image converted to Word document successfully',
+    });
   } catch (err) {
     next(err);
   }
