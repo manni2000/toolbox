@@ -322,17 +322,45 @@ router.post('/tech-stack-detector', async (req, res, next) => {
     const lhtml = html.toLowerCase();
 
     // ── Script sources ──────────────────────────────────────────────────────────
-    const scriptSrcs = [...html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)].map(m => m[1].toLowerCase());
-    const allScripts = scriptSrcs.join(' ');
+    const scriptSrcs = [...html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)].map(m => m[1]);
+    const allScripts = scriptSrcs.join(' ').toLowerCase();
 
     // ── Meta generator ──────────────────────────────────────────────────────────
     const metaGen = (html.match(/<meta[^>]+name=["']generator["'][^>]+content=["']([^"']+)["']/i) ||
                      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']generator["']/i));
     const generatorTag = metaGen ? metaGen[1].toLowerCase() : '';
 
+    // ── Fetch main JS bundle (Vite/CRA/webpack SPAs hide frameworks in bundles) ─
+    let bundleContent = '';
+    try {
+      const base = new URL(targetUrl);
+      // Find the main entry script: <script type="module" src="..."> or largest /assets/*.js
+      const moduleScript = html.match(/<script[^>]+type=["']module["'][^>]+src=["']([^"']+)["']/i) ||
+                           html.match(/<script[^>]+src=["']([^"']+\/(?:index|main|app)[^"']*\.js)["']/i) ||
+                           html.match(/<script[^>]+src=["']([^"']+\/assets\/[^"']+\.js)["']/i);
+      if (moduleScript) {
+        let bundleUrl = moduleScript[1];
+        if (!bundleUrl.startsWith('http')) {
+          bundleUrl = bundleUrl.startsWith('/') ? `${base.protocol}//${base.host}${bundleUrl}` : `${base.protocol}//${base.href}${bundleUrl}`;
+        }
+        const bundleRes = await fetch(bundleUrl, {
+          timeout: 8000,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Range': 'bytes=0-49999',
+          },
+        });
+        bundleContent = await bundleRes.text();
+        detectedMethods.add('bundle_analysis');
+      }
+    } catch (_) { /* bundle fetch optional */ }
+
     // ══════════════════════════════════════════════════════════════════════════════
     // FRONTEND FRAMEWORKS & LIBRARIES
     // ══════════════════════════════════════════════════════════════════════════════
+
+    // Combined search targets: HTML + partial bundle
+    const htmlAndBundle = html + ' ' + bundleContent;
 
     // Next.js
     if (/__NEXT_DATA__|_next\/static|_next\/image|__next/i.test(html) || allScripts.includes('/_next/')) {
@@ -362,28 +390,50 @@ router.post('/tech-stack-detector', async (req, res, next) => {
     // SvelteKit
     if (/__sveltekit|sveltekit|svelte-kit/i.test(html) || allScripts.includes('svelte')) {
       addTech('frontend', 'SvelteKit', 90, 'html_pattern');
-    } else if (/svelte/i.test(html)) {
-      addTech('frontend', 'Svelte', 78, 'html_pattern');
+    } else if (/svelte/i.test(htmlAndBundle)) {
+      addTech('frontend', 'Svelte', 82, 'bundle_analysis');
     }
 
-    // React (careful not to double-add if Next.js already implies it)
-    if (/data-reactroot|__react|react-root|reactjs|react\.development|react\.production/i.test(html) ||
-        allScripts.match(/react(\.min|\.development|\.production)?\.js/) ||
-        allScripts.includes('react-dom') || allScripts.includes('/react@')) {
-      addTech('frontend', 'React', 90, 'html_pattern');
+    // React — HTML markers first, then bundle analysis
+    const reactInHtml = /data-reactroot|__react|react-root|react\.development|react\.production/i.test(html) ||
+        /react-dom|react\.min\.js|\/react@\d/i.test(allScripts);
+    // In minified bundles React signals: createRoot(, ReactDOM, createElement(, useState, useEffect, "react", 'react'
+    const reactInBundle = bundleContent && (
+        /createRoot\(|ReactDOM\.render\(|React\.createElement\(/.test(bundleContent) ||
+        /\.createElement\(|\.useState\(|\.useEffect\(|\.useRef\(/.test(bundleContent) ||
+        /useState\b|useEffect\b|useRef\b|useCallback\b|useMemo\b/.test(bundleContent) ||
+        /"react"|'react'|from"react"|from 'react'/.test(bundleContent) ||
+        /\{createElement:/.test(bundleContent)
+    );
+    const divRoot = /<div\s+id=["']root["']/.test(html);
+    if (reactInHtml) {
+      addTech('frontend', 'React', 92, 'html_pattern');
+    } else if (reactInBundle) {
+      addTech('frontend', 'React', 90, 'bundle_analysis');
     } else if (result.frontend.includes('Next.js') || result.frontend.includes('Gatsby') || result.frontend.includes('Remix')) {
       addTech('frontend', 'React', 88, 'framework_inference');
+    } else if (divRoot && bundleContent) {
+      addTech('frontend', 'React', 78, 'html_pattern');
     }
 
-    // Vue.js
-    if (/vue-app|__vue__|data-v-|vue\.js|vue\.min\.js|vue\.runtime/i.test(html) ||
-        allScripts.match(/vue(\.min|\.esm)?\.js/) || allScripts.includes('/vue@')) {
-      addTech('frontend', 'Vue.js', 90, 'html_pattern');
+    // Vue.js — HTML markers + bundle
+    const vueInHtml = /vue-app|__vue__|data-v-[a-f0-9]{7,}|vue\.js|vue\.min\.js|vue\.runtime/i.test(html) ||
+        /\/vue@\d|\/vue\.(?:min|esm)\.js/i.test(allScripts);
+    const vueInBundle = bundleContent && /(createApp\s*\(|defineComponent\s*\(|ref\s*\(|reactive\s*\(|computed\s*\()/.test(bundleContent) &&
+        /Vue|"vue"|'vue'/.test(bundleContent);
+    const divApp = /<div\s+id=["']app["']/.test(html);
+    if (vueInHtml) {
+      addTech('frontend', 'Vue.js', 92, 'html_pattern');
+    } else if (vueInBundle) {
+      addTech('frontend', 'Vue.js', 90, 'bundle_analysis');
+    } else if (divApp && bundleContent && /createApp|defineComponent/.test(bundleContent) && !reactInBundle) {
+      addTech('frontend', 'Vue.js', 78, 'bundle_analysis');
     }
 
-    // Angular
-    if (/ng-version=|ng-app|angular\.js|angular\.min\.js|zone\.js/i.test(html) ||
-        html.includes('ng-') || allScripts.includes('angular')) {
+    // Angular — strict patterns only (no generic ng- check)
+    if (/ng-version=["'][0-9]|ng-app=|angular\.js|angular\.min\.js|zone\.js/i.test(html) ||
+        /\bangular\b/.test(bundleContent) && /NgModule|Component\s*\(|Injectable\s*\(/.test(bundleContent) ||
+        allScripts.includes('angular.min.js') || allScripts.includes('angular.js')) {
       addTech('frontend', 'Angular', 90, 'html_pattern');
     }
 
@@ -403,18 +453,21 @@ router.post('/tech-stack-detector', async (req, res, next) => {
     }
 
     // Preact
-    if (/preact(\.min)?\.js/i.test(html) || allScripts.includes('preact')) {
-      addTech('frontend', 'Preact', 88, 'script_src');
+    if (/preact(\.min)?\.js/i.test(html) || allScripts.includes('preact') ||
+        (bundleContent && /preact/.test(bundleContent))) {
+      addTech('frontend', 'Preact', 88, 'bundle_analysis');
     }
 
     // Solid.js
-    if (/solid-js|solidjs/i.test(html) || allScripts.includes('solid-js')) {
-      addTech('frontend', 'Solid.js', 88, 'html_pattern');
+    if (/solid-js|solidjs/i.test(html) || allScripts.includes('solid-js') ||
+        (bundleContent && /solid-js|createSignal\s*\(|createEffect\s*\(/.test(bundleContent))) {
+      addTech('frontend', 'Solid.js', 88, 'bundle_analysis');
     }
 
     // jQuery
     if (/jquery(\.min)?\.js|window\.jquery|\$\.fn\.jquery/i.test(html) ||
-        allScripts.match(/jquery[\-\.]?\d|\/jquery(\.min)?\.js/)) {
+        /jquery[\-\.]?\d|\/jquery(\.min)?\.js/.test(allScripts) ||
+        (bundleContent && /jQuery\.fn\.jquery|window\.jQuery/.test(bundleContent))) {
       addTech('frontend', 'jQuery', 90, 'script_src');
     }
 
@@ -467,8 +520,13 @@ router.post('/tech-stack-detector', async (req, res, next) => {
       addTech('frameworks', 'Webpack', 88, 'html_pattern');
     }
 
-    if (/\/@vite\/|vite\.config|__vite__|from 'vite'/i.test(html) || allScripts.includes('/@vite/') || allScripts.includes('vite')) {
-      addTech('frameworks', 'Vite', 88, 'html_pattern');
+    // Vite: type="module" + /assets/index-[hash].js is its signature output
+    const isVite = /\/@vite\/|__vite__|from 'vite'/i.test(html) ||
+        allScripts.includes('/@vite/') ||
+        /\/assets\/[a-zA-Z0-9_\-]+\-[a-zA-Z0-9_\-]{7,}\.(js|css)/.test(html) ||
+        (html.includes('type="module"') && /\/assets\/index[\-\.]/.test(html));
+    if (isVite) {
+      addTech('frameworks', 'Vite', 90, 'html_pattern');
     }
 
     if (/parcel-bundle|parcelrequire/i.test(html) || allScripts.includes('parcel')) {
@@ -690,6 +748,12 @@ router.post('/tech-stack-detector', async (req, res, next) => {
 
     if (result.frontend.includes('Next.js') && !result.backend.includes('Node.js')) {
       addTech('backend', 'Node.js', 85, 'framework_inference');
+    }
+
+    // Vite/React/Vue SPAs are built with Node.js toolchain
+    if ((result.frameworks.includes('Vite') || result.frameworks.includes('Webpack')) &&
+        !result.backend.length) {
+      addTech('backend', 'Node.js', 75, 'framework_inference');
     }
 
     if (result.cms.includes('WordPress') && !result.backend.includes('PHP')) {
