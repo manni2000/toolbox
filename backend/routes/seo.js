@@ -285,31 +285,555 @@ router.post('/tech-stack-detector', async (req, res, next) => {
     if (!url || !isValidUrl(url)) return res.status(400).json({ success: false, error: 'Valid URL required' });
 
     const targetUrl = url.startsWith('http') ? url : 'https://' + url;
-    const response = await fetchWithTimeout(targetUrl);
+    const response = await fetch(targetUrl, {
+      timeout: 15000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+      },
+    });
     const html = await response.text();
     const headers = {};
     response.headers.forEach((v, k) => { headers[k] = v; });
 
-    const tech = [];
+    const detectedMethods = new Set();
+    const confidence = {};
 
-    if (/<meta[^>]+next\.js|__NEXT_DATA__|_next\/static/i.test(html)) tech.push('Next.js');
-    if (/react|__react|data-reactroot/i.test(html)) tech.push('React');
-    if (/vue\.js|__vue/i.test(html)) tech.push('Vue.js');
-    if (/ng-version|angular/i.test(html)) tech.push('Angular');
-    if (/wordpress|wp-content|wp-includes/i.test(html)) tech.push('WordPress');
-    if (/shopify/i.test(html)) tech.push('Shopify');
-    if (/gatsby/i.test(html)) tech.push('Gatsby');
-    if (/nuxt/i.test(html)) tech.push('Nuxt.js');
-    if (/bootstrap/i.test(html)) tech.push('Bootstrap');
-    if (/tailwind/i.test(html)) tech.push('Tailwind CSS');
-    if (/jquery/i.test(html)) tech.push('jQuery');
+    function addTech(category, name, score, method) {
+      if (!result[category]) result[category] = [];
+      if (!result[category].includes(name)) result[category].push(name);
+      confidence[name] = Math.max(confidence[name] || 0, score);
+      detectedMethods.add(method);
+    }
 
-    const server = headers['server'];
-    if (server) tech.push(`Server: ${server}`);
-    if (headers['x-powered-by']) tech.push(`Powered by: ${headers['x-powered-by']}`);
-    if (headers['x-generator']) tech.push(`Generator: ${headers['x-generator']}`);
+    const result = {
+      url: targetUrl,
+      frontend: [],
+      backend: [],
+      database: [],
+      server: [],
+      cms: [],
+      analytics: [],
+      frameworks: [],
+      other: [],
+    };
 
-    res.json({ success: true, result: { url: targetUrl, technologies: [...new Set(tech)], headers } });
+    const lhtml = html.toLowerCase();
+
+    // ── Script sources ──────────────────────────────────────────────────────────
+    const scriptSrcs = [...html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)].map(m => m[1].toLowerCase());
+    const allScripts = scriptSrcs.join(' ');
+
+    // ── Meta generator ──────────────────────────────────────────────────────────
+    const metaGen = (html.match(/<meta[^>]+name=["']generator["'][^>]+content=["']([^"']+)["']/i) ||
+                     html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']generator["']/i));
+    const generatorTag = metaGen ? metaGen[1].toLowerCase() : '';
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // FRONTEND FRAMEWORKS & LIBRARIES
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    // Next.js
+    if (/__NEXT_DATA__|_next\/static|_next\/image|__next/i.test(html) || allScripts.includes('/_next/')) {
+      addTech('frontend', 'Next.js', 95, 'html_pattern');
+    }
+
+    // Nuxt.js
+    if (/__nuxt__|_nuxt\/|window\.__NUXT__|nuxt\.js/i.test(html) || allScripts.includes('/_nuxt/')) {
+      addTech('frontend', 'Nuxt.js', 95, 'html_pattern');
+    }
+
+    // Gatsby
+    if (/___gatsby|gatsby-image|gatsby\.js|window\.gatsby/i.test(html) || allScripts.includes('gatsby')) {
+      addTech('frontend', 'Gatsby', 92, 'html_pattern');
+    }
+
+    // Remix
+    if (/__remixContext|remix\.run|@remix-run/i.test(html)) {
+      addTech('frontend', 'Remix', 92, 'html_pattern');
+    }
+
+    // Astro
+    if (/astro-island|astro:page-load|astro\.js/i.test(html) || allScripts.includes('astro')) {
+      addTech('frontend', 'Astro', 92, 'html_pattern');
+    }
+
+    // SvelteKit
+    if (/__sveltekit|sveltekit|svelte-kit/i.test(html) || allScripts.includes('svelte')) {
+      addTech('frontend', 'SvelteKit', 90, 'html_pattern');
+    } else if (/svelte/i.test(html)) {
+      addTech('frontend', 'Svelte', 78, 'html_pattern');
+    }
+
+    // React (careful not to double-add if Next.js already implies it)
+    if (/data-reactroot|__react|react-root|reactjs|react\.development|react\.production/i.test(html) ||
+        allScripts.match(/react(\.min|\.development|\.production)?\.js/) ||
+        allScripts.includes('react-dom') || allScripts.includes('/react@')) {
+      addTech('frontend', 'React', 90, 'html_pattern');
+    } else if (result.frontend.includes('Next.js') || result.frontend.includes('Gatsby') || result.frontend.includes('Remix')) {
+      addTech('frontend', 'React', 88, 'framework_inference');
+    }
+
+    // Vue.js
+    if (/vue-app|__vue__|data-v-|vue\.js|vue\.min\.js|vue\.runtime/i.test(html) ||
+        allScripts.match(/vue(\.min|\.esm)?\.js/) || allScripts.includes('/vue@')) {
+      addTech('frontend', 'Vue.js', 90, 'html_pattern');
+    }
+
+    // Angular
+    if (/ng-version=|ng-app|angular\.js|angular\.min\.js|zone\.js/i.test(html) ||
+        html.includes('ng-') || allScripts.includes('angular')) {
+      addTech('frontend', 'Angular', 90, 'html_pattern');
+    }
+
+    // Ember.js
+    if (/ember-application|ember\.js|ember\.min\.js|Ember\.VERSION/i.test(html) || allScripts.includes('ember')) {
+      addTech('frontend', 'Ember.js', 88, 'html_pattern');
+    }
+
+    // Alpine.js
+    if (/x-data=|x-init=|alpine\.js|alpinejs/i.test(html) || allScripts.includes('alpine')) {
+      addTech('frontend', 'Alpine.js', 88, 'html_pattern');
+    }
+
+    // Backbone.js
+    if (/backbone\.js|backbone\.min\.js/i.test(html) || allScripts.includes('backbone')) {
+      addTech('frontend', 'Backbone.js', 85, 'script_src');
+    }
+
+    // Preact
+    if (/preact(\.min)?\.js/i.test(html) || allScripts.includes('preact')) {
+      addTech('frontend', 'Preact', 88, 'script_src');
+    }
+
+    // Solid.js
+    if (/solid-js|solidjs/i.test(html) || allScripts.includes('solid-js')) {
+      addTech('frontend', 'Solid.js', 88, 'html_pattern');
+    }
+
+    // jQuery
+    if (/jquery(\.min)?\.js|window\.jquery|\$\.fn\.jquery/i.test(html) ||
+        allScripts.match(/jquery[\-\.]?\d|\/jquery(\.min)?\.js/)) {
+      addTech('frontend', 'jQuery', 90, 'script_src');
+    }
+
+    // htmx
+    if (/hx-get=|hx-post=|htmx\.js/i.test(html) || allScripts.includes('htmx')) {
+      addTech('frontend', 'htmx', 88, 'html_pattern');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // CSS / UI FRAMEWORKS
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    const cssSrcs = [...html.matchAll(/<link[^>]+href=["']([^"']+)["']/gi)].map(m => m[1].toLowerCase()).join(' ');
+
+    if (/bootstrap(\.min)?\.css|bootstrap(\.min)?\.js|class=["'][^"']*\b(container|row|col-|btn btn-)/i.test(html) ||
+        cssSrcs.includes('bootstrap') || allScripts.includes('bootstrap')) {
+      addTech('frameworks', 'Bootstrap', 85, 'html_pattern');
+    }
+
+    if (/tailwindcss|tw-|class=["'][^"']*(flex|grid|px-|py-|text-sm|font-bold|rounded-|bg-)[^"']*/i.test(html) ||
+        cssSrcs.includes('tailwind') || allScripts.includes('tailwind')) {
+      addTech('frameworks', 'Tailwind CSS', 82, 'html_pattern');
+    }
+
+    if (/@mui|material-ui|MuiButton|MuiAppBar/i.test(html) || allScripts.includes('@mui') || allScripts.includes('material-ui')) {
+      addTech('frameworks', 'Material UI', 88, 'html_pattern');
+    }
+
+    if (/ant-design|antd|ant-btn|ant-layout/i.test(html) || allScripts.includes('antd')) {
+      addTech('frameworks', 'Ant Design', 85, 'html_pattern');
+    }
+
+    if (/chakra-ui|ChakraProvider/i.test(html) || allScripts.includes('chakra')) {
+      addTech('frameworks', 'Chakra UI', 85, 'html_pattern');
+    }
+
+    if (/bulma(\.min)?\.css|class=["'][^"']*\b(is-primary|is-danger|hero is-)/i.test(html) || cssSrcs.includes('bulma')) {
+      addTech('frameworks', 'Bulma', 82, 'html_pattern');
+    }
+
+    if (/foundation(\.min)?\.css/i.test(html) || cssSrcs.includes('foundation')) {
+      addTech('frameworks', 'Foundation', 82, 'css_pattern');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // BUILD TOOLS / BUNDLERS
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    if (/__webpack_require__|webpackJsonp|webpack-runtime|webpackChunk/i.test(html) || allScripts.includes('webpack')) {
+      addTech('frameworks', 'Webpack', 88, 'html_pattern');
+    }
+
+    if (/\/@vite\/|vite\.config|__vite__|from 'vite'/i.test(html) || allScripts.includes('/@vite/') || allScripts.includes('vite')) {
+      addTech('frameworks', 'Vite', 88, 'html_pattern');
+    }
+
+    if (/parcel-bundle|parcelrequire/i.test(html) || allScripts.includes('parcel')) {
+      addTech('frameworks', 'Parcel', 82, 'html_pattern');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // CMS PLATFORMS
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    if (/wp-content|wp-includes|wordpress|xmlrpc\.php|\/wp-json\//i.test(html) || generatorTag.includes('wordpress')) {
+      addTech('cms', 'WordPress', 95, 'html_pattern');
+    }
+
+    if (/shopify\.com\/s\/files|cdn\.shopify\.com|Shopify\.theme|shopify-section/i.test(html)) {
+      addTech('cms', 'Shopify', 95, 'html_pattern');
+    }
+
+    if (/squarespace\.com|static1\.squarespace|squarespace-cdn/i.test(html)) {
+      addTech('cms', 'Squarespace', 95, 'html_pattern');
+    }
+
+    if (/wixcode|static\.wixstatic\.com|wix\.com\/|parastorage\.com/i.test(html)) {
+      addTech('cms', 'Wix', 95, 'html_pattern');
+    }
+
+    if (/webflow\.com|webflow-badge|WebFlow/i.test(html) || generatorTag.includes('webflow')) {
+      addTech('cms', 'Webflow', 92, 'html_pattern');
+    }
+
+    if (/drupal\.settings|sites\/all\/|Drupal\.behaviors|drupal\.js/i.test(html) || generatorTag.includes('drupal')) {
+      addTech('cms', 'Drupal', 92, 'html_pattern');
+    }
+
+    if (/joomla!|\/components\/com_|joomla\.js/i.test(html) || generatorTag.includes('joomla')) {
+      addTech('cms', 'Joomla', 92, 'html_pattern');
+    }
+
+    if (/ghost-sdk|ghost\.io|content\.ghost\.io|ghost\.js/i.test(html)) {
+      addTech('cms', 'Ghost', 90, 'html_pattern');
+    }
+
+    if (/prestashop|\/modules\/ps_|Prestashop/i.test(html)) {
+      addTech('cms', 'PrestaShop', 90, 'html_pattern');
+    }
+
+    if (/Mage\.Cookies|Mage\.Customer|magento|magento2|\/skin\/frontend\/|\/mage\/|require\(['"]Magento/i.test(html) || generatorTag.includes('magento')) {
+      addTech('cms', 'Magento', 90, 'html_pattern');
+    }
+
+    if (/bigcommerce\.com|cdn11\.bigcommerce/i.test(html)) {
+      addTech('cms', 'BigCommerce', 92, 'html_pattern');
+    }
+
+    if (/contentful\.com|ctfassets\.net/i.test(html) || allScripts.includes('contentful')) {
+      addTech('cms', 'Contentful', 88, 'script_src');
+    }
+
+    if (/strapi|strapi\.io/i.test(html)) {
+      addTech('cms', 'Strapi', 80, 'html_pattern');
+    }
+
+    if (/sanity\.io|\.sanity\.studio/i.test(html) || allScripts.includes('sanity')) {
+      addTech('cms', 'Sanity', 85, 'script_src');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // ANALYTICS & MARKETING
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    if (/google-analytics\.com|googletagmanager\.com\/gtag|gtag\(|ga\('create'|_gaq\.push/i.test(html) ||
+        allScripts.includes('google-analytics') || allScripts.includes('gtag/js')) {
+      addTech('analytics', 'Google Analytics', 95, 'script_src');
+    }
+
+    if (/googletagmanager\.com\/gtm\.js|GTM-[A-Z0-9]+|gtm\.js/i.test(html) ||
+        allScripts.includes('googletagmanager.com/gtm')) {
+      addTech('analytics', 'Google Tag Manager', 95, 'script_src');
+    }
+
+    if (/hotjar\.com|_hjSettings|hjid:/i.test(html) || allScripts.includes('hotjar')) {
+      addTech('analytics', 'Hotjar', 92, 'script_src');
+    }
+
+    if (/cdn\.mixpanel\.com|mixpanel\.init|mixpanel\.track/i.test(html) || allScripts.includes('mixpanel')) {
+      addTech('analytics', 'Mixpanel', 92, 'script_src');
+    }
+
+    if (/cdn\.segment\.com|analytics\.identify|analytics\.track/i.test(html) || allScripts.includes('segment.com/analytics')) {
+      addTech('analytics', 'Segment', 92, 'script_src');
+    }
+
+    if (/amplitude\.com\/libs|amplitude\.getInstance/i.test(html) || allScripts.includes('amplitude')) {
+      addTech('analytics', 'Amplitude', 90, 'script_src');
+    }
+
+    if (/connect\.facebook\.net|fbq\(|_fbq|facebook-jssdk/i.test(html) || allScripts.includes('connect.facebook.net')) {
+      addTech('analytics', 'Facebook Pixel', 92, 'script_src');
+    }
+
+    if (/hs-scripts\.com|hubspot\.com|_hsq\.push|HubSpotForms/i.test(html) ||
+        allScripts.includes('hs-scripts.com') || allScripts.includes('hubspot')) {
+      addTech('analytics', 'HubSpot', 92, 'script_src');
+    }
+
+    if (/intercomcdn\.com|window\.Intercom|intercom\.io/i.test(html) || allScripts.includes('intercom')) {
+      addTech('analytics', 'Intercom', 92, 'script_src');
+    }
+
+    if (/crisp\.chat|window\.\$crisp|crisp-client/i.test(html) || allScripts.includes('crisp.chat')) {
+      addTech('analytics', 'Crisp Chat', 92, 'script_src');
+    }
+
+    if (/heapanalytics\.com|heap\.load/i.test(html) || allScripts.includes('heapanalytics')) {
+      addTech('analytics', 'Heap Analytics', 90, 'script_src');
+    }
+
+    if (/plausible\.io\/js|plausible\.io\/api/i.test(html) || allScripts.includes('plausible.io')) {
+      addTech('analytics', 'Plausible Analytics', 95, 'script_src');
+    }
+
+    if (/matomo\.js|piwik\.js|_paq\.push/i.test(html) || allScripts.includes('matomo') || allScripts.includes('piwik')) {
+      addTech('analytics', 'Matomo', 92, 'script_src');
+    }
+
+    if (/clarity\.ms\/tag|clarity\.ms\/c\//i.test(html) || allScripts.includes('clarity.ms')) {
+      addTech('analytics', 'Microsoft Clarity', 92, 'script_src');
+    }
+
+    if (/cdn\.fullstory\.com|window\[_fs_namespace\]/i.test(html) || allScripts.includes('fullstory')) {
+      addTech('analytics', 'FullStory', 90, 'script_src');
+    }
+
+    if (/static\.zdassets\.com|zendesk\.com|zESettings/i.test(html) || allScripts.includes('zendesk')) {
+      addTech('analytics', 'Zendesk', 90, 'script_src');
+    }
+
+    if (/static\.klaviyo\.com|_learnq\.push|klaviyo/i.test(html) || allScripts.includes('klaviyo')) {
+      addTech('analytics', 'Klaviyo', 90, 'script_src');
+    }
+
+    if (/cdn\.jsdelivr\.net\/npm\/cookieyes|cookieyes\.com/i.test(html) || allScripts.includes('cookieyes')) {
+      addTech('analytics', 'CookieYes', 85, 'script_src');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // PAYMENT / E-COMMERCE
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    if (/js\.stripe\.com|Stripe\(|stripe-js/i.test(html) || allScripts.includes('js.stripe.com')) {
+      addTech('other', 'Stripe', 95, 'script_src');
+    }
+
+    if (/paypal\.com\/sdk\/js|PayPalCheckout|paypal-button/i.test(html) || allScripts.includes('paypal.com')) {
+      addTech('other', 'PayPal', 92, 'script_src');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // BACKEND (from headers + cookies + HTML signals)
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    const poweredBy = (headers['x-powered-by'] || '').toLowerCase();
+    const serverHeader = (headers['server'] || '').toLowerCase();
+    const setCookie = (headers['set-cookie'] || '').toLowerCase();
+    const xGenerator = (headers['x-generator'] || '').toLowerCase();
+
+    if (poweredBy.includes('php') || html.includes('.php') || setCookie.includes('phpsessid')) {
+      addTech('backend', 'PHP', poweredBy.includes('php') ? 95 : 75, 'response_header');
+    }
+
+    if (poweredBy.includes('express') || poweredBy.includes('node')) {
+      addTech('backend', 'Node.js', 95, 'response_header');
+      addTech('backend', 'Express.js', 90, 'response_header');
+    } else if (allScripts.includes('node_modules') || html.includes('express')) {
+      addTech('backend', 'Node.js', 70, 'html_pattern');
+    }
+
+    if (poweredBy.includes('asp.net') || html.includes('__viewstate') || headers['x-aspnet-version'] || headers['x-aspnetmvc-version']) {
+      addTech('backend', 'ASP.NET', 95, 'response_header');
+    }
+
+    if (/csrfmiddlewaretoken|django|djdt/i.test(html) || headers['x-django-request-id']) {
+      addTech('backend', 'Django', 90, 'html_pattern');
+      addTech('backend', 'Python', 88, 'framework_inference');
+    }
+
+    if (poweredBy.includes('flask') || html.includes('flask') || (headers['server'] || '').includes('werkzeug')) {
+      addTech('backend', 'Flask', 88, 'response_header');
+      addTech('backend', 'Python', 85, 'framework_inference');
+    }
+
+    if (/X-Rails|_rails_session|csrf-token.*rails|data-remote/i.test(html) ||
+        setCookie.includes('_session_id') || headers['x-request-id']) {
+      if (/rubyonrails|rails/i.test(poweredBy + html)) {
+        addTech('backend', 'Ruby on Rails', 88, 'html_pattern');
+        addTech('backend', 'Ruby', 85, 'framework_inference');
+      }
+    }
+
+    if (/laravel_session|__laravel|laravel/i.test(html + setCookie)) {
+      addTech('backend', 'Laravel', 90, 'html_pattern');
+      addTech('backend', 'PHP', 88, 'framework_inference');
+    }
+
+    if (/symfony|_symfony_|sf_admin/i.test(html + setCookie)) {
+      addTech('backend', 'Symfony', 88, 'html_pattern');
+      addTech('backend', 'PHP', 85, 'framework_inference');
+    }
+
+    if (/x-spring-version|spring-web|Spring Framework/i.test(Object.values(headers).join(' ') + html) ||
+        setCookie.includes('jsessionid')) {
+      addTech('backend', 'Spring Boot', 85, 'response_header');
+      addTech('backend', 'Java', 82, 'framework_inference');
+    }
+
+    if (/x-go-version|gorilla|gin-gonic/i.test(Object.values(headers).join(' '))) {
+      addTech('backend', 'Go', 88, 'response_header');
+    }
+
+    if (result.frontend.includes('Next.js') && !result.backend.includes('Node.js')) {
+      addTech('backend', 'Node.js', 85, 'framework_inference');
+    }
+
+    if (result.cms.includes('WordPress') && !result.backend.includes('PHP')) {
+      addTech('backend', 'PHP', 90, 'framework_inference');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // SERVER / HOSTING / CDN
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    if (headers['x-vercel-id'] || headers['x-vercel-cache'] || (serverHeader.includes('vercel'))) {
+      addTech('server', 'Vercel', 98, 'response_header');
+    }
+
+    if (headers['x-nf-request-id'] || serverHeader.includes('netlify') || headers['x-netlify']) {
+      addTech('server', 'Netlify', 98, 'response_header');
+    }
+
+    if (headers['cf-ray'] || headers['cf-cache-status'] || serverHeader.includes('cloudflare')) {
+      addTech('server', 'Cloudflare', 98, 'response_header');
+    }
+
+    if (headers['x-amz-request-id'] || headers['x-amz-cf-id'] || serverHeader.includes('amazons3') ||
+        (headers['server'] || '').includes('AmazonS3') || html.includes('.amazonaws.com')) {
+      addTech('server', 'AWS', 90, 'response_header');
+    }
+
+    if (headers['x-github-request-id'] || serverHeader.includes('github.com') ||
+        html.includes('github.io') || html.includes('github.com/')) {
+      if (html.includes('github.io') || headers['x-github-request-id']) {
+        addTech('server', 'GitHub Pages', 90, 'response_header');
+      }
+    }
+
+    if (serverHeader.includes('nginx')) {
+      addTech('server', 'Nginx', 95, 'response_header');
+    }
+
+    if (serverHeader.includes('apache')) {
+      addTech('server', 'Apache', 95, 'response_header');
+    }
+
+    if (serverHeader.includes('iis') || serverHeader.includes('microsoft')) {
+      addTech('server', 'IIS', 95, 'response_header');
+    }
+
+    if (serverHeader.includes('litespeed')) {
+      addTech('server', 'LiteSpeed', 95, 'response_header');
+    }
+
+    if (headers['x-fastly-request-id'] || headers['surrogate-key'] || serverHeader.includes('fastly')) {
+      addTech('server', 'Fastly CDN', 95, 'response_header');
+    }
+
+    if (headers['x-akamai-transformed'] || (headers['x-check-cacheable'])) {
+      addTech('server', 'Akamai', 88, 'response_header');
+    }
+
+    if (serverHeader.includes('heroku') || headers['via']?.includes('vegur')) {
+      addTech('server', 'Heroku', 90, 'response_header');
+    }
+
+    if (headers['x-goog-request-id'] || serverHeader.includes('gws') || html.includes('storage.googleapis.com')) {
+      addTech('server', 'Google Cloud', 85, 'response_header');
+    }
+
+    if (headers['x-azure-ref'] || serverHeader.includes('windows-azure')) {
+      addTech('server', 'Azure', 90, 'response_header');
+    }
+
+    // Generic server header fallback
+    if (headers['server'] && !result.server.length) {
+      addTech('server', headers['server'], 70, 'response_header');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // DATABASE (inferred from detected tech)
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    if (/firebase\.googleapis\.com|firebaseapp\.com|firebaseio\.com/i.test(html) || allScripts.includes('firebase')) {
+      addTech('database', 'Firebase', 92, 'script_src');
+    }
+
+    if (/supabase\.co|supabase-js/i.test(html) || allScripts.includes('supabase')) {
+      addTech('database', 'Supabase', 92, 'script_src');
+    }
+
+    if (/cdn\.auth0\.com|auth0\.com|auth0-js/i.test(html) || allScripts.includes('auth0')) {
+      addTech('other', 'Auth0', 92, 'script_src');
+    }
+
+    if (result.cms.includes('WordPress') || result.backend.includes('Laravel') || result.backend.includes('Symfony')) {
+      if (!result.database.includes('MySQL')) addTech('database', 'MySQL', 75, 'framework_inference');
+    }
+
+    if (result.backend.includes('Django') || result.backend.includes('Ruby on Rails')) {
+      if (!result.database.includes('PostgreSQL')) addTech('database', 'PostgreSQL', 72, 'framework_inference');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // OTHER USEFUL TECH
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    if (/recaptcha\.net|google\.com\/recaptcha/i.test(html) || allScripts.includes('recaptcha')) {
+      addTech('other', 'reCAPTCHA', 95, 'script_src');
+    }
+
+    if (/mapbox\.com|mapboxgl|mapbox\.js/i.test(html) || allScripts.includes('mapbox')) {
+      addTech('other', 'Mapbox', 92, 'script_src');
+    }
+
+    if (/maps\.googleapis\.com|google\.maps/i.test(html) || allScripts.includes('maps.googleapis.com')) {
+      addTech('other', 'Google Maps', 95, 'script_src');
+    }
+
+    if (/player\.vimeo\.com|vimeocdn\.com/i.test(html) || allScripts.includes('vimeo')) {
+      addTech('other', 'Vimeo', 92, 'script_src');
+    }
+
+    if (/youtube\.com\/embed|ytimg\.com/i.test(html)) {
+      addTech('other', 'YouTube', 92, 'html_pattern');
+    }
+
+    if (/twilio\.com|twilio-js/i.test(html) || allScripts.includes('twilio')) {
+      addTech('other', 'Twilio', 90, 'script_src');
+    }
+
+    // ── Summary ──────────────────────────────────────────────────────────────────
+    const allTech = [
+      ...result.frontend, ...result.backend, ...result.database,
+      ...result.server, ...result.cms, ...result.analytics,
+      ...result.frameworks, ...result.other
+    ];
+    const totalTechnologies = allTech.length;
+    const highConfidence = allTech.filter(t => (confidence[t] || 0) >= 85).length;
+    const mediumConfidence = allTech.filter(t => (confidence[t] || 0) >= 70 && (confidence[t] || 0) < 85).length;
+    const lowConfidence = allTech.filter(t => (confidence[t] || 0) < 70).length;
+
+    result.confidence = confidence;
+    result.detectionMethods = [...detectedMethods];
+    result.timestamp = new Date().toISOString();
+    result.summary = { totalTechnologies, highConfidence, mediumConfidence, lowConfidence };
+
+    res.json({ success: true, result });
   } catch (err) {
     next(err);
   }
