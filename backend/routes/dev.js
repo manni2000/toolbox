@@ -238,10 +238,10 @@ router.post('/curl-to-axios', (req, res) => {
   if (!curl) return res.status(400).json({ success: false, error: 'cURL command required' });
 
   try {
-    const urlMatch = curl.match(/curl\s+['"']?([^'"\s]+)['"']?/);
+    const urlMatch = curl.match(/['"']?(https?:\/\/[^'"\s]+)['"']?/);
     const methodMatch = curl.match(/-X\s+(\w+)/i);
-    const headerMatches = [...curl.matchAll(/-H\s+['"']([^'"']+)['"']/g)];
-    const dataMatch = curl.match(/-d\s+['"']([^'"']+)['"']/);
+    const headerMatches = [...curl.matchAll(/(?:-H|--header)\s+['"']([^'"']+)['"']/g)];
+    const dataMatch = curl.match(/(?:-d|--data(?:-raw)?)\s+['"']([^'"']+)['"']/);
 
     const url = urlMatch?.[1] || '';
     const method = (methodMatch?.[1] || 'GET').toLowerCase();
@@ -317,8 +317,9 @@ router.get('/http-status-codes', (req, res) => {
 router.post('/dockerfile-generator', (req, res) => {
   const { language = 'node', version = 'latest', appPort = 3000, startCommand } = req.body;
 
+  const nodeCmd = startCommand ? `CMD ["${startCommand}"]` : `CMD ["node", "server.js"]`;
   const templates = {
-    node: `FROM node:${version}-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\nCOPY . .\nEXPOSE ${appPort}\nCMD ["${startCommand || 'node', 'server.js'}"]`,
+    node: `FROM node:${version}-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\nCOPY . .\nEXPOSE ${appPort}\n${nodeCmd}`,
     python: `FROM python:${version}-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nEXPOSE ${appPort}\nCMD ["python", "${startCommand || 'app.py'}"]`,
     react: `FROM node:${version}-alpine AS build\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nRUN npm run build\n\nFROM nginx:alpine\nCOPY --from=build /app/dist /usr/share/nginx/html\nEXPOSE 80\nCMD ["nginx", "-g", "daemon off;"]`,
     go: `FROM golang:${version}-alpine AS build\nWORKDIR /app\nCOPY go.mod go.sum ./\nRUN go mod download\nCOPY . .\nRUN CGO_ENABLED=0 GOOS=linux go build -o main .\n\nFROM alpine:latest\nCOPY --from=build /app/main .\nEXPOSE ${appPort}\nCMD ["./main"]`,
@@ -400,6 +401,32 @@ function hslToRgb(h, s, l) {
   }
   return [r, g, b];
 }
+
+router.post('/uuid-generator', (req, res) => {
+  const { count = 1, version = 4 } = req.body;
+  const num = Math.min(Math.max(parseInt(count) || 1, 1), 100);
+
+  const generateUUIDv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      const v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  };
+
+  const generateUUIDv1 = () => {
+    const now = Date.now();
+    const timeHex = now.toString(16).padStart(12, '0');
+    const clockSeq = Math.floor(Math.random() * 0x3fff) | 0x8000;
+    const node = Array.from({ length: 6 }, () => Math.floor(Math.random() * 256).toString(16).padStart(2, '0')).join('');
+    return `${timeHex.slice(0, 8)}-${timeHex.slice(8, 12)}-1${timeHex.slice(9, 12)}-${clockSeq.toString(16)}-${node}`;
+  };
+
+  const generate = version === 1 ? generateUUIDv1 : generateUUIDv4;
+  const uuids = Array.from({ length: num }, generate);
+
+  res.json({ success: true, result: { uuids, count: num, version } });
+});
 
 // Add OPTIONS handler for all endpoints in this router
 router.options('*', (req, res) => {
