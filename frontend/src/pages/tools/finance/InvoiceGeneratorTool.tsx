@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -29,6 +30,7 @@ interface InvoiceData {
 }
 
 export default function InvoiceGeneratorTool() {
+  const toolSeoData = getToolSeoMetadata('invoice-generator');
   const [invoiceData, setInvoiceData] = useState<InvoiceData>({
     invoice_number: '',
     client_name: '',
@@ -178,6 +180,7 @@ export default function InvoiceGeneratorTool() {
       description="Create professional invoices with PDF download"
       category="Finance Tools"
       categoryPath="/category/finance"
+      toolSlug="invoice-generator"
     >
       <div className="mx-auto max-w-6xl space-y-6 md:space-y-8 px-4 md:px-0">
         {/* Invoice Details Section */}
@@ -490,11 +493,16 @@ export default function InvoiceGeneratorTool() {
           <div className="mt-4 flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
             <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
             <div className="text-sm">
-              <strong>Pro Tip:</strong> Always save a copy of generated invoices for your records 
+              <strong>Pro Tip:</strong> Always save a copy of generated invoices for your records
               and send a copy to your clients for their records.
             </div>
           </div>
         </div>
+
+        {/* FAQ Section */}
+        {toolSeoData?.faqs && toolSeoData.faqs.length > 0 && (
+          <ToolFAQ faqs={toolSeoData.faqs} />
+        )}
       </div>
     </ToolLayout>
   );

@@ -1,12 +1,22 @@
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
-import { ChevronDown, HelpCircle, Shield } from "lucide-react";
+import { ChevronDown, HelpCircle, Shield, LucideIcon } from "lucide-react";
 import { useState } from "react";
 
-const ToolFAQ = () => {
+interface FAQWithIcon {
+  question: string;
+  answer: string;
+  icon?: LucideIcon;
+}
+
+interface ToolFAQProps {
+  faqs?: Array<{ question: string; answer: string }>;
+}
+
+const ToolFAQ = ({ faqs: propFaqs }: ToolFAQProps) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqs = [
+  const defaultFaqs: FAQWithIcon[] = [
     {
       question: "Is this tool completely free to use?",
       answer: "Yes, all our tools are completely free to use with no hidden charges, subscriptions, or limits. You can use them as many times as you need without any cost.",
@@ -18,6 +28,11 @@ const ToolFAQ = () => {
       icon: Shield
     }
   ];
+
+  // Combine prop FAQs with default icon if not provided
+  const faqs: FAQWithIcon[] = propFaqs
+    ? propFaqs.map(faq => ({ ...faq, icon: HelpCircle }))
+    : defaultFaqs;
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -43,7 +58,7 @@ const ToolFAQ = () => {
         className="max-w-3xl mx-auto space-y-3"
       >
         {faqs.map((faq, index) => {
-          const Icon = faq.icon;
+          const Icon = faq.icon || HelpCircle;
           return (
             <motion.div
               key={index}
@@ -68,7 +83,7 @@ const ToolFAQ = () => {
                   <ChevronDown className="h-5 w-5 text-muted-foreground" />
                 </motion.div>
               </button>
-              
+
               <motion.div
                 initial={false}
                 animate={{

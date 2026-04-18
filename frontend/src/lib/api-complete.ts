@@ -44,15 +44,11 @@ export const API_URLS = {
   AUDIO_SPEED: `/api/audio/speed`,
   SPEECH_TO_TEXT: `/api/audio/speech-to-text`,
 
-  VIDEO_DOWNLOADER: `/api/video/download`,
   VIDEO_TO_AUDIO: `/api/video/to-audio`,
   VIDEO_TRIM: `/api/video/trim`,
   VIDEO_SPEED: `/api/video/speed`,
   VIDEO_THUMBNAIL: `/api/video/thumbnail`,
   VIDEO_RESOLUTION: `/api/video/resolution`,
-  VIDEO_CONVERT: `/api/video/convert`,
-  VIDEO_COMPRESS: `/api/video/compress`,
-  VIDEO_INFO: `/api/video/info`,
 
   PASSWORD_GENERATOR: `/api/security/password-generator`,
   PASSWORD_STRENGTH: `/api/security/password-strength`,
