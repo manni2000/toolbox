@@ -92,13 +92,43 @@ export const EnhancedDownload = ({
   const downloadFile = (url: string, name: string) => {
     try {
       const link = document.createElement('a');
-      link.href = url;
+      
+      // Handle base64 data for document files
+      if (fileType === 'word') {
+        // Handle both data URL and raw base64 formats
+        const base64Data = url.startsWith('data:') ? url.split(',')[1] : url;
+        const binaryString = atob(base64Data);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        link.href = URL.createObjectURL(blob);
+      } else if (fileType === 'pdf') {
+        // Handle both data URL and raw base64 formats for PDF
+        const base64Data = url.startsWith('data:') ? url.split(',')[1] : url;
+        const binaryString = atob(base64Data);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        link.href = URL.createObjectURL(blob);
+      } else {
+        link.href = url;
+      }
+      
       link.download = name;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      
+      // Clean up blob URL if created
+      if (link.href.startsWith('blob:')) {
+        URL.revokeObjectURL(link.href);
+      }
     } catch (error) {
-      console.error('Download error:', error);
+      // console.error('Download error:', error);
       toast({
         title: "Download failed",
         description: "Could not download file. Please try again.",

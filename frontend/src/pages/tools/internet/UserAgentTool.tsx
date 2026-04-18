@@ -86,7 +86,7 @@ const UserAgentTool = () => {
         }
       }
     } catch (apiError) {
-      console.warn("Backend API failed, using client-side parsing:", apiError.message);
+      // console.warn("Backend API failed, using client-side parsing:", apiError.message);
     }
 
     // Fallback to enhanced client-side parsing

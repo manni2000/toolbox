@@ -116,7 +116,7 @@ export default function SalaryBreakupGeneratorTool() {
         monthly_take_home: takeHome / 12
       });
     } catch (error) {
-      console.error('Error generating salary breakup:', error);
+      // console.error('Error generating salary breakup:', error);
     } finally {
       setLoading(false);
     }

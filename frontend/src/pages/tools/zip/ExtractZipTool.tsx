@@ -89,7 +89,7 @@ const ExtractZipTool = () => {
       setExtractedFiles(files);
       setExtractedUrls(urls);
     } catch (error) {
-      console.error("Error extracting ZIP:", error);
+      // console.error("Error extracting ZIP:", error);
     } finally {
       setIsExtracting(false);
     }

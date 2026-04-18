@@ -45,7 +45,7 @@ export default function DataBreachEmailCheckerTool() {
         setResult(data);
       }
     } catch (error) {
-      console.error('Error checking breaches:', error);
+      // console.error('Error checking breaches:', error);
     } finally {
       setLoading(false);
     }

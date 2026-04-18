@@ -89,7 +89,7 @@ const CurrencyConverterTool = () => {
       setLastUpdated(new Date().toLocaleString());
     } catch (err) {
       setError('Unable to fetch live exchange rates. Please try again later.');
-      console.error('Error fetching exchange rates:', err);
+      // console.error('Error fetching exchange rates:', err);
     } finally {
       setIsLoading(false);
     }

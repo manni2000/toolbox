@@ -64,7 +64,7 @@ const PDFMergeTool = () => {
       const blob = new Blob([new Uint8Array(mergedBytes)], { type: "application/pdf" });
       setMergedUrl(URL.createObjectURL(blob));
     } catch (error) {
-      console.error("Error merging PDFs:", error);
+      // console.error("Error merging PDFs:", error);
     } finally {
       setIsProcessing(false);
     }

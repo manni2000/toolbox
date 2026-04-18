@@ -88,7 +88,7 @@ const PDFRotateTool = () => {
       const blob = new Blob([new Uint8Array(resultBytes)], { type: "application/pdf" });
       setResultUrl(URL.createObjectURL(blob));
     } catch (error) {
-      console.error("Error rotating pages:", error);
+      // console.error("Error rotating pages:", error);
     } finally {
       setIsProcessing(false);
     }

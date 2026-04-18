@@ -83,7 +83,7 @@ const APIDocs = () => {
       const data = await response.json();
       setApiDocs(data);
     } catch (error) {
-      console.error("Failed to fetch API docs:", error);
+      // console.error("Failed to fetch API docs:", error);
       toast.error("Failed to load API documentation");
     } finally {
       setLoading(false);

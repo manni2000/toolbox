@@ -67,14 +67,14 @@ const MCQGeneratorTool = () => {
   };
 
   const addCustomQuestion = () => {
-    console.log("addCustomQuestion called");
-    console.log("currentQuestion:", currentQuestion);
+    // console.log("addCustomQuestion called");
+    // console.log("currentQuestion:", currentQuestion);
 
     if (
       !currentQuestion.question ||
       currentQuestion.options.some((opt) => !opt.trim())
     ) {
-      console.log("Validation failed - missing question or empty options");
+      // console.log("Validation failed - missing question or empty options");
       return;
     }
 
@@ -85,7 +85,7 @@ const MCQGeneratorTool = () => {
       correctAnswer: currentQuestion.correctAnswer,
     };
 
-    console.log("Adding new question:", newQuestion);
+    // console.log("Adding new question:", newQuestion);
     setQuestions([...questions, newQuestion]);
     setCurrentQuestion({
       question: "",
@@ -209,7 +209,7 @@ const MCQGeneratorTool = () => {
         );
       })
       .catch((err) => {
-        console.error("Failed to copy text: ", err);
+        // console.error("Failed to copy text: ", err);
         alert("Failed to copy questions. Please copy them manually.");
       });
   };

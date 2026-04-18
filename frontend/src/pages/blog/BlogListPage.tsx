@@ -57,7 +57,7 @@ const BlogListPage = () => {
           setPosts(mergeBlogPosts(response.result.posts));
         }
       } catch (error) {
-        console.warn('Failed to fetch blog posts from API, using local data:', error);
+        // console.warn('Failed to fetch blog posts from API, using local data:', error);
         // Fallback to local data is already set
       } finally {
         setLoading(false);

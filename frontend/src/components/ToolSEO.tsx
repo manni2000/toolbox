@@ -26,9 +26,8 @@ export const ToolSEO = ({ toolName, toolDescription, category, keywords = [], to
     ? [...enhancedMetadata.keywords, ...enhancedMetadata.longTailKeywords]
     : [...defaultKeywords, ...keywords, toolName.toLowerCase()];
 
-  const allKeywords = toolKeywords
-    .filter((v, i, a) => a.indexOf(v) === i) // Remove duplicates
-    .join(', ');
+  const uniqueKeywords = toolKeywords
+    .filter((v, i, a) => a.indexOf(v) === i); // Remove duplicates
 
   // Use enhanced description if available
   const description = enhancedMetadata?.description || toolDescription;
@@ -38,7 +37,7 @@ export const ToolSEO = ({ toolName, toolDescription, category, keywords = [], to
     <SEOHelmet
       title={title}
       description={description}
-      keywords={allKeywords}
+      keywords={uniqueKeywords}
     />
   );
 };

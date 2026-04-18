@@ -8,7 +8,7 @@ const { PDFDocument } = require('pdf-lib');
 const { uploadLimiter } = require('../middleware/security');
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 
 router.use(uploadLimiter);
 
@@ -142,7 +142,31 @@ router.post('/exif-viewer', upload.single('image'), async (req, res, next) => {
     const image = sharp(req.file.buffer);
     const meta = await image.metadata();
 
-    res.json({
+    let exifData = {};
+    try {
+      const exifr = require('exifr');
+      
+      if (req.file.mimetype === 'image/png') {
+        exifData = {};
+      } else {
+        const parsedData = await exifr.parse(req.file.buffer, {
+          pick: ['Make', 'Model', 'Software', 'DateTime', 'DateTimeOriginal', 'LensModel', 'FocalLength', 'FNumber', 'ExposureTime', 'ISO', 'ISOSpeedRatings', 'latitude', 'longitude', 'Orientation'],
+          translateKeys: true,
+          reviveValues: true
+        });
+        
+        exifData = parsedData || {};
+        
+        if (exifData && Object.keys(exifData).length === 0) {
+          const allExif = await exifr.parse(req.file.buffer);
+          exifData = allExif || {};
+        }
+      }
+    } catch (exifError) {
+      exifData = {};
+    }
+
+    const responseData = {
       success: true,
       result: {
         format: meta.format,
@@ -158,8 +182,24 @@ router.post('/exif-viewer', upload.single('image'), async (req, res, next) => {
         mimeType: req.file.mimetype,
         space: meta.space,
         exif: meta.exif ? meta.exif.toString('hex').substring(0, 200) : null,
+        make: (exifData && exifData.Make) || null,
+        model: (exifData && exifData.Model) || null,
+        software: (exifData && exifData.Software) || meta.software || null,
+        dateTime: (exifData && (exifData.DateTime || exifData.DateTimeOriginal)) || null,
+        lensModel: (exifData && exifData.LensModel) || null,
+        focalLength: (exifData && exifData.FocalLength) ? `${exifData.FocalLength}mm` : null,
+        aperture: (exifData && exifData.FNumber) ? `f/${exifData.FNumber}` : null,
+        shutterSpeed: (exifData && exifData.ExposureTime) ? `1/${Math.round(1/exifData.ExposureTime)}s` : null,
+        iso: (exifData && (exifData.ISO || exifData.ISOSpeedRatings)) || null,
+        gps: (exifData && exifData.latitude && exifData.longitude) ? {
+          lat: exifData.latitude,
+          lng: exifData.longitude
+        } : null,
+        orientation: (exifData && exifData.Orientation) || meta.orientation || null,
       },
-    });
+    };
+    
+    res.json(responseData);
   } catch (err) {
     next(err);
   }
@@ -221,7 +261,6 @@ router.post('/background-remover', upload.single('image'), async (req, res, next
     const image = sharp(req.file.buffer);
     const meta = await image.metadata();
 
-    // Convert to RGBA for transparency support
     const { data, info } = await image
       .ensureAlpha()
       .raw()
@@ -229,34 +268,27 @@ router.post('/background-remover', upload.single('image'), async (req, res, next
 
     const { width, height, channels } = info;
 
-    // Sample background color from multiple edge points
     const samplePoints = [];
     const margin = 5;
     
-    // Top edge
     for (let x = margin; x < width - margin; x += Math.max(1, Math.floor(width / 10))) {
       samplePoints.push({ x, y: margin });
     }
-    // Bottom edge
     for (let x = margin; x < width - margin; x += Math.max(1, Math.floor(width / 10))) {
       samplePoints.push({ x, y: height - margin - 1 });
     }
-    // Left edge
     for (let y = margin; y < height - margin; y += Math.max(1, Math.floor(height / 10))) {
       samplePoints.push({ x: margin, y });
     }
-    // Right edge
     for (let y = margin; y < height - margin; y += Math.max(1, Math.floor(height / 10))) {
       samplePoints.push({ x: width - margin - 1, y });
     }
 
-    // Get colors from sample points
     const sampleColors = samplePoints.map(({ x, y }) => {
       const idx = (y * width + x) * channels;
       return { r: data[idx], g: data[idx + 1], b: data[idx + 2] };
     });
 
-    // Calculate average background color using median to handle outliers
     const sortedR = [...sampleColors].sort((a, b) => a.r - b.r);
     const sortedG = [...sampleColors].sort((a, b) => a.g - b.g);
     const sortedB = [...sampleColors].sort((a, b) => a.b - b.b);
@@ -266,16 +298,13 @@ router.post('/background-remover', upload.single('image'), async (req, res, next
     const bgG = sortedG[mid].g;
     const bgB = sortedB[mid].b;
 
-    // Create new buffer with transparency
     const newData = Buffer.from(data);
     
-    // Remove pixels similar to background color
     for (let i = 0; i < data.length; i += channels) {
       const r = data[i];
       const g = data[i + 1];
       const b = data[i + 2];
       
-      // Calculate color distance using weighted RGB (perceptual)
       const distance = Math.sqrt(
         Math.pow(r - bgR, 2) * 0.299 +
         Math.pow(g - bgG, 2) * 0.587 +
@@ -283,19 +312,15 @@ router.post('/background-remover', upload.single('image'), async (req, res, next
       );
 
       if (distance < threshold) {
-        newData[i + 3] = 0; // Set alpha to 0 (transparent)
+        newData[i + 3] = 0; 
       }
     }
 
-    // Convert back to image
     const result = await sharp(newData, {
       raw: { width, height, channels: 4 },
     }).png().toBuffer();
 
-    // Return as base64 in JSON response
-    const base64 = result.toString('base64');
-    console.log(`Background removal: ${width}x${height}, base64 length: ${base64.length}`);
-    
+    const base64 = result.toString('base64');    
     res.json({
       success: true,
       result: {
@@ -306,68 +331,10 @@ router.post('/background-remover', upload.single('image'), async (req, res, next
       }
     });
   } catch (err) {
-    console.error('Background removal error:', err);
     next(err);
   }
 });
 
-router.post('/image-to-word', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'file', maxCount: 1 }]), async (req, res, next) => {
-  try {
-    const file = getUploadedFile(req);
-    if (!file) return res.status(400).json({ success: false, error: 'Image file required' });
-
-    const meta = await sharp(file.buffer).metadata();
-
-    const { Document, Packer, Paragraph, TextRun } = require('docx');
-    const doc = new Document({
-      sections: [{
-        properties: {},
-        children: [
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: 'Image to Word Conversion',
-                bold: true,
-                size: 32,
-              }),
-            ],
-          }),
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: `Image Details: ${meta.width}x${meta.height} ${meta.format} (${(file.size / 1024).toFixed(1)} KB)`,
-                italics: true,
-                size: 20,
-              }),
-            ],
-          }),
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: 'Note: Full OCR (Optical Character Recognition) requires Tesseract.js or a cloud OCR service. This document contains metadata only.',
-                size: 18,
-              }),
-            ],
-          }),
-        ],
-      }],
-    });
-
-    const buffer = await Packer.toBuffer(doc);
-    const base64 = buffer.toString('base64');
-    const originalName = file.originalname || 'image.jpg';
-    const outName = originalName.replace(/\.[^.]+$/, '.docx');
-
-    res.json({
-      success: true,
-      file: base64,
-      filename: outName,
-      message: 'Image converted to Word document successfully',
-    });
-  } catch (err) {
-    next(err);
-  }
-});
 
 router.post('/image-to-pdf', upload.array('images', 20), async (req, res, next) => {
   try {

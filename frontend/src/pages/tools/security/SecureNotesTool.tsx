@@ -47,7 +47,7 @@ export default function SecureNotesTool() {
         setEncryptedNote(data.encrypted_note);
       }
     } catch (error) {
-      console.error('Error encrypting note:', error);
+      // console.error('Error encrypting note:', error);
     } finally {
       setLoading(false);
     }
@@ -71,7 +71,7 @@ export default function SecureNotesTool() {
         setDecryptedNote(data.decrypted_note);
       }
     } catch (error) {
-      console.error('Error decrypting note:', error);
+      // console.error('Error decrypting note:', error);
     } finally {
       setLoading(false);
     }

@@ -75,7 +75,7 @@ const PDFUnlockTool = () => {
         setError(errorData.error || 'Failed to unlock PDF');
       }
     } catch (err) {
-      console.error('Error unlocking PDF:', err);
+      // console.error('Error unlocking PDF:', err);
       setError('Network error. Please try again.');
     } finally {
       setIsLoading(false);

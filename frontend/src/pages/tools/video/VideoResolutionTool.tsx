@@ -189,7 +189,7 @@ const VideoResolutionTool = () => {
               onFileSelect={handleFile}
               multiple={false}
               title="Drop video file here or click to browse"
-              subtitle="Change resolution of MP4, AVI, MOV, WebM up to 500MB"
+              subtitle="Change resolution of MP4, AVI, MOV, WebM up to 50MB"
             />
             <label htmlFor="video-input" className="sr-only">
               Upload video file

@@ -53,7 +53,6 @@ export const toolCategories: ToolCategory[] = [
       { id: "image-crop", name: "Image Crop Tool", description: "Crop images with custom dimensions", path: "/image-crop", isAvailable: true },
       { id: "background-remover", name: "Background Remover", description: "Remove background from images", path: "/background-remover", isAvailable: true },
       { id: "image-to-pdf", name: "Image to PDF", description: "Convert multiple images to PDF document", path: "/image-to-pdf", isAvailable: true },
-      { id: "image-to-word", name: "Image to Word", description: "Convert images to Word with OCR", path: "/image-to-word", isAvailable: true },
       { id: "base64-image", name: "Image ↔ Base64", description: "Convert images to/from Base64", path: "/image-base64", isAvailable: true },
       { id: "image-dpi", name: "Image DPI Checker", description: "Check image DPI and print sizes", path: "/image-dpi-checker", isAvailable: true },
       { id: "exif-viewer", name: "EXIF Metadata Viewer", description: "View photo metadata and camera info", path: "/exif-viewer", isAvailable: true },

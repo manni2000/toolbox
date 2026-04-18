@@ -70,7 +70,7 @@ export default function FreelancerRateCalculatorTool() {
         effective_hourly: effectiveHourly
       });
     } catch (error) {
-      console.error('Error calculating rates:', error);
+      // console.error('Error calculating rates:', error);
     } finally {
       setLoading(false);
     }

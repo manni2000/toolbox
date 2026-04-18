@@ -108,7 +108,7 @@ function errorHandler(err, req, res, _next) {
   if (err.message === 'CORS policy violation') {
     return res.status(403).json({ success: false, error: 'CORS policy violation' });
   }
-  console.error('[Error]', err.message);
+  // console.error('[Error]', err.message);
   res.status(500).json({ success: false, error: 'Internal server error' });
 }
 

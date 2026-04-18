@@ -47,7 +47,7 @@ const PDFToWordTool = () => {
       const pdf = await PDFDocument.load(arrayBuffer);
       setPageCount(pdf.getPageCount());
     } catch (error) {
-      console.error("Error loading PDF:", error);
+      // console.error("Error loading PDF:", error);
       toast({
         title: "Error",
         description: "Failed to load PDF file",
@@ -237,7 +237,6 @@ const PDFToWordTool = () => {
           </div>
         )}
 
-        {/* FAQ Section */}
         <ToolFAQ />
       </div>
     </ToolLayout>

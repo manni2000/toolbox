@@ -72,7 +72,7 @@ const CompressionZipTool = () => {
       const url = URL.createObjectURL(blob);
       setZipUrl(url);
     } catch (error) {
-      console.error("Error creating ZIP:", error);
+      // console.error("Error creating ZIP:", error);
     } finally {
       setIsCreating(false);
     }

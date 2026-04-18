@@ -25,7 +25,7 @@ export const AudioUploadZone = ({
   onClick,
   onFileSelect,
   accept = "audio/*",
-  maxSize = "100MB",
+  maxSize = "50MB",
   multiple = false,
   title = "Drop audio file here or click to browse",
   subtitle = `Supports MP3, WAV, AAC, FLAC up to ${maxSize}`

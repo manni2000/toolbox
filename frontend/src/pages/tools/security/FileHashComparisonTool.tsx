@@ -46,7 +46,7 @@ export default function FileHashComparisonTool() {
         setResult(data);
       }
     } catch (error) {
-      console.error('Error comparing files:', error);
+      // console.error('Error comparing files:', error);
     } finally {
       setLoading(false);
     }

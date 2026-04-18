@@ -41,7 +41,7 @@ export default function QRPhishingScannerTool() {
         setResult(data);
       }
     } catch (error) {
-      console.error('Error analyzing QR code:', error);
+      // console.error('Error analyzing QR code:', error);
     } finally {
       setLoading(false);
     }

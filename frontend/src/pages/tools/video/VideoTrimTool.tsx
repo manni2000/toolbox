@@ -1,8 +1,5 @@
 import { useState, useRef } from "react";
-import { Scissors, X, Loader2, Video, Sparkles } from "lucide-react";
-import { motion } from "framer-motion";
-import { fadeInUp, scaleIn } from "@/lib/animations";
-import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
+import { Scissors, X, Loader2, Video } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
@@ -134,7 +131,7 @@ const VideoTrimTool = () => {
             onFileSelect={handleFile}
             multiple={false}
             title="Drop video file here or click to browse"
-            subtitle="Supports MP4, AVI, MOV, WebM up to 500MB"
+            subtitle="Supports MP4, AVI, MOV, WebM up to 50MB"
           />
         )}
 

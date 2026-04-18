@@ -21,32 +21,20 @@ const FAQSection = () => {
     },
     {
       question: "Does Dailytools247 work on mobile phones and tablets?",
-      answer: "Yes, Dailytools247 is fully responsive and works perfectly on all devices including phones, tablets, laptops, and desktops. All tools are optimized for touch interfaces."
+      answer: "Yes, Dailytools247 is fully supported and works perfectly on all devices including phones, tablets, laptops, and desktops. All tools are optimized for touch interfaces."
     },
     {
       question: "What types of tools are available on Dailytools247?",
       answer: "Dailytools247 offers 100+ free online tools across 14 categories: PDF tools, Image tools, Video tools, Audio tools, Text tools, Security tools, Finance tools, Developer tools, Education tools, Internet tools, SEO tools, Social media tools, ZIP tools, and Date/Time tools."
     },
     {
-      question: "Are there any file size limits or restrictions?",
-      answer: "File size limits depend on your browser and device capabilities. For best performance, we recommend files under 100MB for most tools. Large files are processed locally in your browser, so performance depends on your device's capabilities."
-    },
-    {
       question: "Do the tools require internet connection to work?",
       answer: "Most tools work offline once loaded. However, some advanced features might require internet for additional resources. The core functionality of all tools works without an internet connection after the initial page load."
-    },
-    {
-      question: "How fast are the tools and processing times?",
-      answer: "Processing times vary by tool and file size. Most tools process instantly or within seconds. Larger files or complex operations may take longer depending on your device's processing power."
     },
     {
       question: "Can I use Dailytools247 for commercial purposes?",
       answer: "Yes, all tools can be used for both personal and commercial purposes. There are no restrictions on usage for business applications."
     },
-    {
-      question: "What browsers are supported?",
-      answer: "Dailytools247 works on all modern browsers including Chrome, Firefox, Safari, Edge, and Opera. We recommend keeping your browser updated for the best experience."
-    }
   ];
 
   const toggleFAQ = (index: number) => {

@@ -37,5 +37,5 @@ Convert PowerPoint presentations to PDF format for easy sharing and printing.
 - Preserves slide content
 - Maintains image quality
 - Handles text and graphics
-- Maximum file size: 100MB
+- Maximum file size: 50MB
 - Standard PDF compatibility

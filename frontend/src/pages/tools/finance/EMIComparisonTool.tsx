@@ -85,7 +85,7 @@ export default function EMIComparisonTool() {
 
       setResults(loanResults);
     } catch (error) {
-      console.error('Error comparing loans:', error);
+      // console.error('Error comparing loans:', error);
     } finally {
       setLoading(false);
     }

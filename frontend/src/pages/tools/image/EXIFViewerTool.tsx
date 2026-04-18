@@ -6,6 +6,7 @@ import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { API_URLS } from "@/lib/api-complete";
 
 const categoryColor = "173 80% 40%";
 
@@ -38,21 +39,76 @@ const EXIFViewerTool = () => {
     setNoExif(false);
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const dataUrl = e.target?.result as string;
       setImage(dataUrl);
 
-      // For demo, show that EXIF parsing requires a library
-      // In production, use exif-js or similar
-      const img = new Image();
-      img.onload = () => {
-        setExifData({
-          width: img.width,
-          height: img.height,
+      // Call backend API for EXIF data
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+        
+        // console.log('Calling EXIF API:', `${API_URLS.BASE_URL}${API_URLS.EXIF_VIEWER}`);
+        
+        const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.EXIF_VIEWER}`, {
+          method: 'POST',
+          body: formData,
         });
-        setNoExif(true);
-      };
-      img.src = dataUrl;
+
+        // console.log('EXIF API response status:', response.status);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          const exifResult = result.result;
+          
+          setExifData({
+            width: exifResult.width,
+            height: exifResult.height,
+            orientation: exifResult.orientation ? String(exifResult.orientation) : undefined,
+            software: exifResult.software,
+            colorSpace: exifResult.space,
+            camera: exifResult.make && exifResult.model ? `${exifResult.make} ${exifResult.model}` : exifResult.model || exifResult.make,
+            lens: exifResult.lensModel,
+            aperture: exifResult.aperture,
+            shutter: exifResult.shutterSpeed,
+            iso: exifResult.iso ? `ISO ${exifResult.iso}` : undefined,
+            focalLength: exifResult.focalLength,
+            dateTime: exifResult.dateTime,
+            gps: exifResult.gps,
+          });
+          
+          // Only show "limited EXIF" if no detailed data is available
+          const hasDetailedExif = exifResult.make || exifResult.model || exifResult.software || 
+                                exifResult.dateTime || exifResult.lensModel || exifResult.aperture ||
+                                exifResult.shutterSpeed || exifResult.iso || exifResult.focalLength || exifResult.gps;
+          
+          // console.log('Has detailed EXIF:', hasDetailedExif);
+          // console.log('Setting noExif to:', !hasDetailedExif);
+          
+          if (!hasDetailedExif) {
+            setNoExif(true);
+          }
+        } else {
+          throw new Error(result.error || 'Failed to extract EXIF data');
+        }
+      } catch (error) {
+        // console.error('EXIF API Error:', error);
+        // Fallback to basic image info
+        const img = new Image();
+        img.onload = () => {
+          setExifData({
+            width: img.width,
+            height: img.height,
+          });
+          setNoExif(true);
+        };
+        img.src = dataUrl;
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -169,7 +225,10 @@ const EXIFViewerTool = () => {
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm">
                 <strong className="text-amber-600 dark:text-amber-400">Limited EXIF Data:</strong>
                 <span className="ml-2 text-muted-foreground">
-                  Full EXIF parsing requires the exif-js library. Basic image dimensions are shown below.
+                  {fileName.toLowerCase().endsWith('.png') 
+                    ? "PNG files typically don't contain EXIF metadata. Try uploading a JPEG photo from a camera or smartphone to see detailed EXIF information."
+                    : "This image doesn't contain detailed EXIF metadata. Basic image properties are shown below."
+                  }
                 </span>
               </div>
             )}
@@ -211,6 +270,14 @@ const EXIFViewerTool = () => {
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Camera</span>
                       <span className="font-medium">{exifData.camera || "Not available"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Lens</span>
+                      <span className="font-medium">{exifData.lens || "N/A"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Focal Length</span>
+                      <span className="font-medium">{exifData.focalLength || "N/A"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Aperture</span>

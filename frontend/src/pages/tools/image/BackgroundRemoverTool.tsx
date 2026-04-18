@@ -78,11 +78,11 @@ const BackgroundRemoverTool = () => {
       });
 
       const result = await response.json();
-      console.log('Background removal result:', result);
+      // console.log('Background removal result:', result);
 
       if (result.success && result.result?.image) {
         const imageDataUrl = `data:image/png;base64,${result.result.image}`;
-        console.log('Image data URL length:', imageDataUrl.length);
+        // console.log('Image data URL length:', imageDataUrl.length);
         setProcessedImage(imageDataUrl);
         toast({
           title: "Success!",
@@ -92,11 +92,11 @@ const BackgroundRemoverTool = () => {
           downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
       } else {
-        console.error('Background removal failed:', result);
+        // console.error('Background removal failed:', result);
         throw new Error(result.error || result.message || 'Failed to remove background');
       }
     } catch (error) {
-      console.error('Background removal error:', error);
+      // console.error('Background removal error:', error);
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Failed to remove background",

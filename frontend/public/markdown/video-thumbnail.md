@@ -37,5 +37,5 @@ Extract thumbnails from video files at any point.
 - Frame-accurate extraction
 - Multiple output sizes
 - JPG, PNG output formats
-- Maximum file size: 100MB
+- Maximum file size: 50MB
 - High-resolution thumbnails

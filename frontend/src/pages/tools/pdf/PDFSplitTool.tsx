@@ -167,7 +167,7 @@ const PDFSplitTool = () => {
         description: `Extracted ${pagesToCopy.length} page${pagesToCopy.length > 1 ? 's' : ''} from the original PDF`,
       });
     } catch (error) {
-      console.error("Error splitting PDF:", error);
+      // console.error("Error splitting PDF:", error);
       toast({
         title: "Split Failed",
         description: "Failed to split the PDF. Please try again.",

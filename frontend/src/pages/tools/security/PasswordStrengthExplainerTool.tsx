@@ -41,7 +41,7 @@ export default function PasswordStrengthExplainerTool() {
         setAnalysis(data);
       }
     } catch (error) {
-      console.error('Error analyzing password:', error);
+      // console.error('Error analyzing password:', error);
     } finally {
       setLoading(false);
     }

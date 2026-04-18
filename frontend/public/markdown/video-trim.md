@@ -37,5 +37,5 @@ Trim and cut video files to remove unwanted sections.
 - Frame-accurate trimming
 - Maintains original quality
 - Preview functionality
-- Maximum file size: 100MB
+- Maximum file size: 50MB
 - Standard video formats

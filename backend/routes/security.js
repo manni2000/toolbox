@@ -6,7 +6,7 @@ const multer = require('multer');
 const sharp = require('sharp');
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 
 function getUploadedFile(req, fieldNames = ['image', 'file']) {
   if (req.file) return req.file;

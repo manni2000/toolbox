@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export const API_URLS = {
   BASE_URL: API_BASE_URL,
@@ -30,7 +30,6 @@ export const API_URLS = {
   IMAGE_RESIZE: `/api/image/resize`,
   IMAGE_CROP: `/api/image/crop`,
   BACKGROUND_REMOVER: `/api/image/background-remover`,
-  IMAGE_TO_WORD: `/api/image/image-to-word`,
   IMAGE_TO_PDF: `/api/image/image-to-pdf`,
   QR_GENERATOR: `/api/image/qr-generator`,
   QR_SCANNER: `/api/image/qr-scanner`,

@@ -70,7 +70,7 @@ export default function SaaSPricingCalculatorTool() {
         ltv_cac_ratio: ltvCacRatio
       });
     } catch (error) {
-      console.error('Error calculating pricing:', error);
+      // console.error('Error calculating pricing:', error);
     } finally {
       setLoading(false);
     }

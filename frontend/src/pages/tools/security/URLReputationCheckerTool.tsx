@@ -49,7 +49,7 @@ export default function URLReputationCheckerTool() {
         setError(data.error || 'Failed to check URL reputation');
       }
     } catch (err) {
-      console.error('Error checking URL reputation:', err);
+      // console.error('Error checking URL reputation:', err);
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);

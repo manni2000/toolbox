@@ -158,7 +158,7 @@ const AudioConverterTool = () => {
             onFileSelect={handleFile}
             multiple={false}
             title="Drop audio file here or click to browse"
-            subtitle="Supports MP3, WAV, AAC, OGG, FLAC up to 100MB"
+            subtitle="Supports MP3, WAV, AAC, OGG, FLAC up to 50MB"
           />
         )}
 

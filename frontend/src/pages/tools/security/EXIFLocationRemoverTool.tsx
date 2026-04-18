@@ -53,7 +53,7 @@ export default function EXIFLocationRemoverTool() {
         setResult(data);
       }
     } catch (error) {
-      console.error('Error removing EXIF data:', error);
+      // console.error('Error removing EXIF data:', error);
     } finally {
       setLoading(false);
     }

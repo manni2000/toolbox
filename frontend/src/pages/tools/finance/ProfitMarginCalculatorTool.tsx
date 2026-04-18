@@ -51,7 +51,7 @@ export default function ProfitMarginCalculatorTool() {
         markup: markup
       });
     } catch (error) {
-      console.error('Error calculating margins:', error);
+      // console.error('Error calculating margins:', error);
     } finally {
       setLoading(false);
     }

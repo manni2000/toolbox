@@ -123,7 +123,7 @@ const VideoSpeedTool = () => {
             onFileSelect={handleFile}
             multiple={false}
             title="Drop video file here or click to browse"
-            subtitle="Supports MP4, AVI, MOV, WebM up to 500MB"
+            subtitle="Supports MP4, AVI, MOV, WebM up to 50MB"
           />
         )}
 

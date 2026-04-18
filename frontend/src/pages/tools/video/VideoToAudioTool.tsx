@@ -32,6 +32,18 @@ const VideoToAudioTool = () => {
       });
       return;
     }
+    
+    // Check file size limit (50MB)
+    const fileSizeMB = f.size / (1024 * 1024);
+    if (fileSizeMB > 50) {
+      toast({
+        title: "File too large",
+        description: `Maximum file size is 50MB. Your file is ${fileSizeMB.toFixed(2)}MB.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setFile(f);
     setFileName(f.name);
     setAudioData(null);
@@ -75,10 +87,21 @@ const VideoToAudioTool = () => {
     formData.append('format', audioFormat);
 
     try {
-      const response = await fetch(`${API_URLS.BASE_URL}/api/video/to-audio/`, {
+      const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.VIDEO_TO_AUDIO}`, {
         method: 'POST',
         body: formData,
       });
+
+      // Handle file size limit error specifically
+      if (response.status === 413) {
+        const result = await response.json();
+        toast({
+          title: "File too large",
+          description: result.error || "Maximum file size is 50MB",
+          variant: "destructive",
+        });
+        return;
+      }
 
       const result = await response.json();
 
@@ -129,7 +152,6 @@ const VideoToAudioTool = () => {
       categoryPath="/category/video"
     >
       <div className="space-y-6">
-        {/* Upload Area */}
         {!file && (
           <VideoUploadZone
             isDragging={isDragging}
@@ -141,7 +163,7 @@ const VideoToAudioTool = () => {
             onFileSelect={handleFile}
             multiple={false}
             title="Drop video file here or click to browse"
-            subtitle="Extract audio from MP4, AVI, MOV, WebM up to 500MB"
+            subtitle="Extract audio from MP4, AVI, MOV, WebM up to 50MB"
           />
         )}
 

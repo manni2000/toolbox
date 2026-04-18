@@ -176,7 +176,7 @@ const ImageToPDFTool = () => {
         downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     } catch (error) {
-      console.error("Error converting to PDF:", error);
+      // console.error("Error converting to PDF:", error);
       alert("Error converting images to PDF. Please try with JPG or PNG images.");
     } finally {
       setIsConverting(false);

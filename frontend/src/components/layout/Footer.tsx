@@ -102,7 +102,6 @@ const Footer = () => {
     { name: "Image Crop", path: "/image-crop" },
     { name: "Background Remover", path: "/background-remover" },
     { name: "Image to PDF", path: "/image-to-pdf" },
-    { name: "Image to Word", path: "/image-to-word" },
     { name: "Image DPI Checker", path: "/image-dpi-checker" },
     { name: "Favicon Generator", path: "/favicon-generator" },
     { name: "EXIF Viewer", path: "/exif-viewer" },

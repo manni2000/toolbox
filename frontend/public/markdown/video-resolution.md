@@ -37,5 +37,5 @@ Change video resolution and quality for different platforms.
 - Resolution presets: 360p, 480p, 720p, 1080p
 - Custom resolution input
 - Quality bitrate control
-- Maximum file size: 100MB
+- Maximum file size: 50MB
 - Standard video codecs

@@ -52,7 +52,7 @@ const DomainAgeTool = () => {
         };
       }
     } catch (error) {
-      console.error('Error checking domain:', error);
+      // console.error('Error checking domain:', error);
       return {
         domain: domain,
         creationDate: '',
@@ -81,7 +81,7 @@ const DomainAgeTool = () => {
       );
       setDomains(results);
     } catch (error) {
-      console.error('Error checking domains:', error);
+      // console.error('Error checking domains:', error);
     } finally {
       setIsChecking(false);
     }

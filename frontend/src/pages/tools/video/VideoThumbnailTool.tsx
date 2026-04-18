@@ -124,7 +124,7 @@ const VideoThumbnailTool = () => {
             onFileSelect={handleFile}
             multiple={false}
             title="Drop video file here or click to browse"
-            subtitle="Generate thumbnails from MP4, AVI, MOV, WebM up to 500MB"
+            subtitle="Generate thumbnails from MP4, AVI, MOV, WebM up to 50MB"
           />
         )}
 

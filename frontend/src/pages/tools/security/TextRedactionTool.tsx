@@ -50,7 +50,7 @@ export default function TextRedactionTool() {
         setResult(data);
       }
     } catch (error) {
-      console.error('Error redacting text:', error);
+      // console.error('Error redacting text:', error);
     } finally {
       setLoading(false);
     }

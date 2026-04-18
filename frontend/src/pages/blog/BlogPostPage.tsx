@@ -51,7 +51,7 @@ const BlogPostPage = () => {
           }
         }
       } catch (error) {
-        console.warn('Failed to load blog post:', error);
+        // console.warn('Failed to load blog post:', error);
       } finally {
         setLoading(false);
       }

@@ -35,7 +35,7 @@ export class ApiClient {
 
       return result;
     } catch (error) {
-      console.error('API Error:', error);
+      // console.error('API Error:', error);
       throw error;
     }
   }
@@ -52,7 +52,7 @@ export class ApiClient {
 
       return result;
     } catch (error) {
-      console.error('API Error:', error);
+      // console.error('API Error:', error);
       throw error;
     }
   }

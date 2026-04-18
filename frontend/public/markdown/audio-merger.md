@@ -37,5 +37,5 @@ Merge multiple audio files into one continuous track.
 - Custom file ordering
 - Crossfade options
 - Maintains audio quality
-- Maximum file size: 100MB total
+- Maximum file size: 50MB total
 - Standard audio output

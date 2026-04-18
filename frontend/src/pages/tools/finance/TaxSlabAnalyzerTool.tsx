@@ -56,7 +56,7 @@ export default function TaxSlabAnalyzerTool() {
         setResult(data);
       }
     } catch (error) {
-      console.error('Error analyzing tax:', error);
+      // console.error('Error analyzing tax:', error);
     } finally {
       setLoading(false);
     }

@@ -44,7 +44,6 @@ Allow: /image-resize
 Allow: /image-crop
 Allow: /background-remover
 Allow: /image-to-pdf
-Allow: /image-to-word
 Allow: /image-base64
 Allow: /image-dpi-checker
 Allow: /exif-viewer

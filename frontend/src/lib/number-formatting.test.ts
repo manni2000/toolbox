@@ -12,7 +12,7 @@ import {
 } from './number-formatting';
 import { describe, expect, it } from "vitest";
 
-console.log('=== Indian Number Formatting Tests ===\n');
+// console.log('=== Indian Number Formatting Tests ===\n');
 
 // Test cases with expected outputs
 const testCases = [
@@ -29,68 +29,68 @@ const testCases = [
   { value: 0, desc: 'Zero' },
 ];
 
-console.log('1. formatIndianCurrency() - Main formatter');
-console.log('─'.repeat(60));
+// console.log('1. formatIndianCurrency() - Main formatter');
+// console.log('─'.repeat(60));
 testCases.forEach(({ value, desc }) => {
   const result = formatIndianCurrency(value);
-  console.log(`${desc.padEnd(35)} → ${result}`);
+  // console.log(`${desc.padEnd(35)} → ${result}`);
 });
 
-console.log('\n2. formatIndianCurrency() with compact mode');
-console.log('─'.repeat(60));
+// console.log('\n2. formatIndianCurrency() with compact mode');
+// console.log('─'.repeat(60));
 testCases.slice(5, 9).forEach(({ value, desc }) => {
   const result = formatIndianCurrency(value, { compact: true, decimals: 1 });
-  console.log(`${desc.padEnd(35)} → ${result}`);
+  // console.log(`${desc.padEnd(35)} → ${result}`);
 });
 
-console.log('\n3. formatIndianCurrency() with 0 decimals');
-console.log('─'.repeat(60));
+// console.log('\n3. formatIndianCurrency() with 0 decimals');
+// console.log('─'.repeat(60));
 testCases.slice(2, 6).forEach(({ value, desc }) => {
   const result = formatIndianCurrency(value, { decimals: 0 });
-  console.log(`${desc.padEnd(35)} → ${result}`);
+  // console.log(`${desc.padEnd(35)} → ${result}`);
 });
 
-console.log('\n4. formatIndianNumber() - Without currency symbol');
-console.log('─'.repeat(60));
+// console.log('\n4. formatIndianNumber() - Without currency symbol');
+// console.log('─'.repeat(60));
 testCases.slice(3, 8).forEach(({ value, desc }) => {
   const result = formatIndianNumber(value);
-  console.log(`${desc.padEnd(35)} → ${result}`);
+  // console.log(`${desc.padEnd(35)} → ${result}`);
 });
 
-console.log('\n5. formatIndianCurrencyWithCommas() - Traditional format');
-console.log('─'.repeat(60));
+// console.log('\n5. formatIndianCurrencyWithCommas() - Traditional format');
+// console.log('─'.repeat(60));
 [100000, 1000000, 5372829203].forEach(value => {
   const result = formatIndianCurrencyWithCommas(value);
-  console.log(`${value.toString().padEnd(35)} → ${result}`);
+  // console.log(`${value.toString().padEnd(35)} → ${result}`);
 });
 
-console.log('\n6. formatSmartIndianCurrency() - Auto-switching');
-console.log('─'.repeat(60));
+// console.log('\n6. formatSmartIndianCurrency() - Auto-switching');
+// console.log('─'.repeat(60));
 [5000, 50000, 100000, 500000, 10000000].forEach(value => {
   const result = formatSmartIndianCurrency(value);
-  console.log(`${value.toString().padEnd(35)} → ${result}`);
+  // console.log(`${value.toString().padEnd(35)} → ${result}`);
 });
 
-console.log('\n7. formatAmount() - Multi-currency support');
-console.log('─'.repeat(60));
+// console.log('\n7. formatAmount() - Multi-currency support');
+// console.log('─'.repeat(60));
 const amount = 5372829203;
-console.log(`INR (Indian format):        ${formatAmount(amount, { currency: 'INR', format: 'indian' })}`);
-console.log(`USD (International):        ${formatAmount(amount, { currency: 'USD', format: 'international' })}`);
-console.log(`USD (Compact):              ${formatAmount(amount, { currency: 'USD', format: 'compact' })}`);
-console.log(`EUR (International):        ${formatAmount(amount, { currency: 'EUR', format: 'international' })}`);
+// console.log(`INR (Indian format):        ${formatAmount(amount, { currency: 'INR', format: 'indian' })}`);
+// console.log(`USD (International):        ${formatAmount(amount, { currency: 'USD', format: 'international' })}`);
+// console.log(`USD (Compact):              ${formatAmount(amount, { currency: 'USD', format: 'compact' })}`);
+// console.log(`EUR (International):        ${formatAmount(amount, { currency: 'EUR', format: 'international' })}`);
 
-console.log('\n8. Edge cases');
-console.log('─'.repeat(60));
-console.log(`NaN:                        ${formatIndianCurrency(NaN)}`);
-console.log(`null (as 0):                ${formatIndianCurrency(null as any)}`);
-console.log(`undefined (as 0):           ${formatIndianCurrency(undefined as any)}`);
-console.log(`Very small (0.5):           ${formatIndianCurrency(0.5)}`);
-console.log(`Large negative:             ${formatIndianCurrency(-5372829203)}`);
+// console.log('\n8. Edge cases');
+// console.log('─'.repeat(60));
+// console.log(`NaN:                        ${formatIndianCurrency(NaN)}`);
+// console.log(`null (as 0):                ${formatIndianCurrency(null as any)}`);
+// console.log(`undefined (as 0):           ${formatIndianCurrency(undefined as any)}`);
+// console.log(`Very small (0.5):           ${formatIndianCurrency(0.5)}`);
+// console.log(`Large negative:             ${formatIndianCurrency(-5372829203)}`);
 
-console.log('\n✅ All tests completed!\n');
-console.log('Usage examples for components:');
-console.log('─'.repeat(60));
-console.log(`
+// console.log('\n✅ All tests completed!\n');
+// console.log('Usage examples for components:');
+// console.log('─'.repeat(60));
+// console.log(`
 import { formatIndianCurrency } from '@/lib/number-formatting';
 
 // In your component:

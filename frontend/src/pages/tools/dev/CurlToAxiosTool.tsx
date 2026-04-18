@@ -126,7 +126,7 @@ const CurlToAxiosTool = () => {
     code += '    const response = await axios(config);\n';
     code += '    return response.data;\n';
     code += '  } catch (error) {\n';
-    code += '    console.error("Error:", error);\n';
+    code += '    // console.error("Error:", error);\n';
     code += '    throw error;\n';
     code += '  }\n';
     code += '};\n\n';
@@ -159,7 +159,7 @@ const CurlToAxiosTool = () => {
     code += '    const data = await response.json();\n';
     code += '    return data;\n';
     code += '  } catch (error) {\n';
-    code += '    console.error("Error:", error);\n';
+    code += '    // console.error("Error:", error);\n';
     code += '    throw error;\n';
     code += '  }\n';
     code += '};\n\n';
@@ -192,7 +192,7 @@ const CurlToAxiosTool = () => {
     code += '    const data = await response.json();\n';
     code += '    return data;\n';
     code += '  } catch (error) {\n';
-    code += '    console.error("Error:", error);\n';
+    code += '    // console.error("Error:", error);\n';
     code += '    throw error;\n';
     code += '  }\n';
     code += '};\n\n';

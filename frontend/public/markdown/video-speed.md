@@ -37,5 +37,5 @@ Change the playback speed of your videos with quality preservation.
 - Speed range: 0.25x to 4x
 - Audio pitch preservation
 - Frame interpolation
-- Maximum file size: 100MB
+- Maximum file size: 50MB
 - High-quality output

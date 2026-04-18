@@ -34,7 +34,7 @@ const cacheMiddleware = (prefix, ttl = 3600, keyGenerator = null) => {
         // Only cache successful responses
         if (data && data.success !== false) {
           cache.set(cacheKey, data, ttl).catch(err => {
-            console.error('Cache set error:', err);
+            // console.error('Cache set error:', err);
           });
         }
         return originalJson(data);
@@ -42,7 +42,7 @@ const cacheMiddleware = (prefix, ttl = 3600, keyGenerator = null) => {
 
       next();
     } catch (error) {
-      console.error('Cache middleware error:', error);
+      // console.error('Cache middleware error:', error);
       next();
     }
   };
@@ -63,7 +63,7 @@ const invalidateCache = (pattern) => {
       // Only invalidate on successful responses
       if (data && data.success !== false) {
         cache.clearPattern(pattern).catch(err => {
-          console.error('Cache invalidation error:', err);
+          // console.error('Cache invalidation error:', err);
         });
       }
       return originalJson(data);

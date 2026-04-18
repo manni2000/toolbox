@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Search, Sparkles, Zap, Shield, ArrowRight, TrendingUp,
+  Search, Sparkles, Shield, ArrowRight, TrendingUp,
   Code2, Image, FileText, FileType2, Lock, RefreshCw, Globe, Palette,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
@@ -16,22 +16,13 @@ const ORBS = [
   { icon: Globe,     color: "#4ade80", bg: "rgba(74,222,128,0.15)",  top: "65%", right: "7%",  size: 52, delay: 0.4  },
 ];
 
-const FEATURES = [
-  { icon: Zap,      title: "Lightning Fast",  sub: "Instant results, no waiting"         },
-  { icon: Shield,   title: "Privacy First",   sub: "Your data never leaves your browser" },
-  { icon: Globe,    title: "Works Offline",   sub: "Many tools work without internet"    },
-  { icon: Sparkles, title: "Always Free",     sub: "Free forever, no hidden costs"       },
-];
-
-const CATEGORIES = [
-  { icon: Code2,      label: "Developer", count: "25+ tools", color: "#22d3ee" },
-  { icon: Image,      label: "Image",     count: "20+ tools", color: "#a78bfa" },
-  { icon: FileType2,  label: "Text",      count: "15+ tools", color: "#fb923c" },
-  { icon: FileText,   label: "PDF",       count: "10+ tools", color: "#f87171" },
-  { icon: Lock,       label: "Security",  count: "10+ tools", color: "#38bdf8" },
-  { icon: RefreshCw,  label: "Converter", count: "15+ tools", color: "#facc15" },
-  { icon: TrendingUp, label: "SEO",       count: "8+ tools",  color: "#34d399" },
-  { icon: Palette,    label: "Design",    count: "6+ tools",  color: "#f472b6" },
+const POPULAR_TOOLS = [
+  { icon: Image,     title: "Image Tools",     sub: "Compress, convert, resize and edit images easily",    path: "/category/image" },
+  { icon: FileText,  title: "PDF Tools",       sub: "Merge, split, compress and convert PDF files",         path: "/category/pdf" },
+  { icon: TrendingUp, title: "Education Tools", sub: "Calculators, converters and learning utilities",      path: "/category/education" },
+  { icon: RefreshCw, title: "Developer Tools", sub: "Code formatting, minification, and more",    path: "/category/developer" },
+  { icon: TrendingUp, title: "SEO Tools",       sub: "Meta tags, robots.txt, sitemap, keyword analysis",    path: "/category/seo" },
+  { icon: Lock,      title: "Zip Tools",       sub: "Create, extract and manage compressed files",        path: "/category/zip" },
 ];
 
 const STATS = [
@@ -41,7 +32,6 @@ const STATS = [
   { icon: TrendingUp, value: "100M+", label: "Total Users"    },
 ];
 
-/* LOGOS removed */
 
 const FloatingOrb = ({
   icon: Icon, color, bg, top, left, right, size, delay,
@@ -120,12 +110,6 @@ const HeroSection = () => {
     document.addEventListener("mousedown", h);
     return () => document.removeEventListener("mousedown", h);
   }, []);
-
-  const quickTools = [
-    { name: "PDF to Image",     path: "/pdf-to-image"     },
-    { name: "QR Code Generator",   path: "/qr-code-generator"   },
-    { name: "PDF to Word",        path: "/pdf-to-word"        }
-  ];
 
   return (
     <div style={{ background: "#080d18", minHeight: "100vh", fontFamily: "'Sora','DM Sans',system-ui,sans-serif", color: "#e2e8f0", overflowX: "hidden" }}>
@@ -247,18 +231,8 @@ const HeroSection = () => {
         .hero-orb { display: none; }
         @media (min-width: 1200px) { .hero-orb { display: flex; } }
 
-        /* ── Feature bar ── */
-        .feature-grid {
-          display: grid; grid-template-columns: repeat(4, 1fr);
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
-          border-radius: 16px; overflow: hidden;
-        }
-        .feature-cell {
-          padding: 22px 22px; display: flex; align-items: flex-start; gap: 13px;
-          border-right: 1px solid rgba(255,255,255,0.07);
-        }
-        .feature-cell:last-child { border-right: none; }
+        /* ── Popular tools grid ── */
+        .popular-tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
         /* ── Category grid ── */
         .cat-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; }
@@ -298,12 +272,8 @@ const HeroSection = () => {
         /* Tablet landscape / small desktop: ≤1024px */
         @media (max-width: 1024px) {
           .cat-grid { grid-template-columns: repeat(4, 1fr); }
-          .feature-grid { grid-template-columns: repeat(2, 1fr); }
-          .feature-cell { border-right: 1px solid rgba(255,255,255,0.07) !important; }
-          .feature-cell:nth-child(2) { border-right: none !important; }
-          .feature-cell:nth-child(3) { border-top: 1px solid rgba(255,255,255,0.07); }
-          .feature-cell:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.07); border-right: none !important; }
           .stats-grid { grid-template-columns: repeat(2, 1fr); }
+          .popular-tools-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
         }
 
         /* Tablet portrait: ≤768px */
@@ -315,25 +285,20 @@ const HeroSection = () => {
           .search-submit-btn .btn-label { display: none; }
           .search-submit-btn { padding: 10px 14px; }
           .hero-h1 { letter-spacing: -0.015em !important; }
+          .popular-tools-grid { grid-template-columns: repeat(1, 1fr); gap: 16px; }
         }
 
         /* Mobile: ≤480px */
         @media (max-width: 480px) {
           .hero-section-inner { padding: 52px 16px 40px !important; }
           .section-wrap { padding-left: 16px !important; padding-right: 16px !important; }
-          .feature-grid { grid-template-columns: 1fr !important; }
-          .feature-cell { border-right: none !important; border-top: 1px solid rgba(255,255,255,0.07) !important; }
-          .feature-cell:first-child { border-top: none !important; }
           .cat-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 7px; }
           .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
           .stat-card { padding: 24px 14px 20px; border-radius: 16px; }
           .search-input { font-size: 13px; padding: 13px 8px; }
           .search-submit-btn { padding: 9px 12px; font-size: 13px; }
-          .pill { font-size: 11px; padding: 4px 10px; }
-          .popular-row { gap: 6px !important; }
-          /* Trust logos removed */
-          /* Trust bar removed */
           .badge-pill { font-size: 11.5px !important; padding: 6px 14px !important; }
+          .popular-tools-grid { grid-template-columns: repeat(1, 1fr); gap: 12px; }
         }
 
         /* Large desktop: ≥1440px */
@@ -481,52 +446,95 @@ const HeroSection = () => {
                 )}
               </AnimatePresence>
             </motion.div>
-
-            {/* Popular pills */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.45 }}
-              className="popular-row"
-              style={{ marginTop: 16, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: 8 }}
-            >
-              <span style={{ fontSize: 13, color: "rgba(226,232,240,0.4)", flexShrink: 0 }}>Popular:</span>
-              {quickTools.map((t) => (
-                <button
-                  key={t.path}
-                  className="pill"
-                  onClick={() => navigate(t.path)}
-                  aria-label={`Navigate to ${t.name}`}
-                >
-                  {t.name}
-                </button>
-              ))}
-            </motion.div>
           </div>
         </div>
 
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 80, background: "linear-gradient(to top, #080d18, transparent)", pointerEvents: "none" }} />
       </section>
 
-      {/* ══ FEATURE BAR ════════════════════════════════════════════════ */}
+      {/* ══ POPULAR TOOLS ════════════════════════════════════════════════ */}
       <section className="section-wrap" style={{ padding: "0 32px 44px" }}>
         <div className="section-max" style={{ maxWidth: 1080, margin: "0 auto" }}>
-          <div className="feature-grid">
-            {FEATURES.map(({ icon: Icon, title, sub }) => (
-              <div key={title} className="feature-cell">
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: 700, marginBottom: 8, fontFamily: "'Sora', sans-serif" }}>
+              Popular Tools
+            </h2>
+            <p style={{ fontSize: "clamp(14px, 2vw, 16px)", color: "rgba(226,232,240,0.6)" }}>
+              The most used tools by thousands of users daily
+            </p>
+          </div>
+          <div className="popular-tools-grid">
+            {POPULAR_TOOLS.map(({ icon: Icon, title, sub, path }) => (
+              <motion.div
+                key={title}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                onClick={() => navigate(path)}
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: 16,
+                  padding: 24,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 16,
+                  transition: "all 0.2s ease",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                  e.currentTarget.style.borderColor = "rgba(45,212,191,0.28)";
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.3)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
                 <div style={{
-                  width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+                  width: 48, height: 48, borderRadius: 12,
                   background: "rgba(45,212,191,0.1)",
                   display: "flex", alignItems: "center", justifyContent: "center",
                 }}>
-                  <Icon size={17} style={{ color: "#2dd4bf" }} />
+                  <Icon size={22} style={{ color: "#2dd4bf" }} />
                 </div>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 3 }}>{title}</div>
-                  <div style={{ fontSize: 12, color: "rgba(226,232,240,0.47)", lineHeight: 1.45 }}>{sub}</div>
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>{title}</h3>
+                  <p style={{ fontSize: 13, color: "rgba(226,232,240,0.5)", lineHeight: 1.5 }}>{sub}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
+          </div>
+          <div style={{ textAlign: "center", marginTop: 32 }}>
+            <button
+              onClick={() => navigate("/categories")}
+              style={{
+                padding: "12px 32px",
+                borderRadius: 12,
+                border: "1px solid rgba(45,212,191,0.4)",
+                background: "transparent",
+                color: "#2dd4bf",
+                fontWeight: 600,
+                fontSize: 14,
+                cursor: "pointer",
+                fontFamily: "inherit",
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(45,212,191,0.1)";
+                e.currentTarget.style.borderColor = "rgba(45,212,191,0.6)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.borderColor = "rgba(45,212,191,0.4)";
+              }}
+            >
+              View All Tools
+            </button>
           </div>
         </div>
       </section>

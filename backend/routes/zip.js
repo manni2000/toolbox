@@ -132,7 +132,7 @@ router.post('/password', upload.array('files', 20), async (req, res) => {
 
       } catch (zipError) {
         // Fallback to system 7zip if available
-        console.log('node-7zip failed, trying system 7zip:', zipError.message);
+        // console.log('node-7zip failed, trying system 7zip:', zipError.message);
 
         await new Promise((resolve, reject) => {
           const cmd = `7z a -p${password} -mem=AES256 -mx9 "${outputPath}" ${fileNames.map(f => `"${f}"`).join(' ')}`;
@@ -170,7 +170,7 @@ router.post('/password', upload.array('files', 20), async (req, res) => {
     }
 
   } catch (error) {
-    console.error('ZIP password protection error:', error);
+    // console.error('ZIP password protection error:', error);
 
     // Provide helpful error message with alternatives
     res.status(500).json({

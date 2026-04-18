@@ -53,7 +53,7 @@ const HTTPHeaderTool = () => {
         setError(data.error || data.message || 'Failed to fetch headers');
       }
     } catch (err) {
-      console.error('Error checking headers:', err);
+      // console.error('Error checking headers:', err);
       setError('Network error. Please try again.');
     } finally {
       setIsLoading(false);

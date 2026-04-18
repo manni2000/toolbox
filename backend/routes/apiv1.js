@@ -1263,7 +1263,7 @@ router.post('/keys/generate', strictLimiter, async (req, res) => {
     const cacheKey = cache.generateKey('api', 'keys', email);
     await cache.del(cacheKey);
   } catch (error) {
-    console.error('Cache invalidation error in /keys/generate:', error);
+    // console.error('Cache invalidation error in /keys/generate:', error);
   }
 
   res.json({
@@ -1315,7 +1315,7 @@ router.post('/keys/list', async (req, res) => {
 
     res.json(response);
   } catch (error) {
-    console.error('Cache error in /keys/list:', error);
+    // console.error('Cache error in /keys/list:', error);
     // Fallback to direct response if cache fails
     const keys = [...apiKeys.values()]
       .filter(k => k.email === email)
@@ -1356,7 +1356,7 @@ router.get('/docs', async (req, res) => {
 
     res.json(response);
   } catch (error) {
-    console.error('Cache error in /docs:', error);
+    // console.error('Cache error in /docs:', error);
     // Fallback to direct response if cache fails
     res.json({
       success: true,
@@ -1372,7 +1372,7 @@ router.post('/docs/clear-cache', async (req, res) => {
     await cache.del(cacheKey);
     res.json({ success: true, message: 'API docs cache cleared successfully' });
   } catch (error) {
-    console.error('Cache clear error:', error);
+    // console.error('Cache clear error:', error);
     res.status(500).json({ success: false, error: 'Failed to clear cache' });
   }
 });

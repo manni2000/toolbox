@@ -7,7 +7,7 @@ const os = require('os');
 const { uploadLimiter } = require('../middleware/security');
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 200 * 1024 * 1024 } });
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 let ffmpegAvailabilityPromise;
 const ffmpegCandidates = [
   process.env.FFMPEG_PATH,
@@ -85,6 +85,14 @@ router.post('/to-audio', upload.single('video'), async (req, res, next) => {
   if (!req.file) return res.status(400).json({ success: false, error: 'Video file required' });
   if (!validateVideoFile(req.file)) return res.status(400).json({ success: false, error: 'Invalid video file' });
   if (!(await ensureFfmpegAvailable(res, 'Video to audio conversion'))) return;
+  
+  const fileSizeMB = req.file.size / (1024 * 1024);
+  if (fileSizeMB > 50) {
+    return res.status(413).json({ 
+      success: false, 
+      error: `File size limit exceeded. Maximum allowed size is 50MB, but your file is ${fileSizeMB.toFixed(2)}MB.` 
+    });
+  }
 
   const { format = 'mp3', bitrate = '192k' } = req.body;
   const allowedFormats = ['mp3', 'wav', 'ogg', 'aac', 'flac'];
@@ -256,8 +264,18 @@ router.post('/resolution', upload.single('video'), async (req, res, next) => {
   }
 });
 
-// Add OPTIONS handler for all endpoints in this router
 router.options('*', (req, res) => {
   res.sendStatus(204);
 });
+
+router.use((err, req, res, next) => {
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({ 
+      success: false, 
+      error: 'File size limit exceeded. Maximum allowed size is 50MB.' 
+    });
+  }
+  next(err);
+});
+
 module.exports = router;

@@ -290,7 +290,7 @@ const APIPlayground = ({
       setRequestHistory(prev => [historyItem, ...prev].slice(0, 50)); // Keep last 50 requests
 
     } catch (error) {
-      console.error("Request failed:", error);
+      // console.error("Request failed:", error);
       
       let errorMessage = "An unexpected error occurred";
       if (error instanceof Error) {
@@ -365,7 +365,7 @@ const APIPlayground = ({
 });
 
 const data = await response.json();
-console.log(data);`;
+// console.log(data);`;
         return jsCode;
 
       case "python":
@@ -414,7 +414,7 @@ const req = https.request(options, (res) => {
     responseData += chunk;
   });
   res.on('end', () => {
-    console.log(responseData);
+    // console.log(responseData);
   });
 });
 

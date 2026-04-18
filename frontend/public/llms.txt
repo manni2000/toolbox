@@ -47,7 +47,6 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /image-resize - Resize images to desired dimensions
 /image-crop - Crop images to specific areas
 /image-to-pdf - Convert images to PDF
-/image-to-word - Convert images to Word
 /image-base64 - Convert images to base64
 /image-dpi-checker - Check image DPI resolution
 /exif-viewer - View image metadata and EXIF data
@@ -214,7 +213,6 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /markdown/image-resize.md - Image Resize tool documentation
 /markdown/image-crop.md - Image Crop tool documentation
 /markdown/image-to-pdf.md - Image to PDF converter documentation
-/markdown/image-to-word.md - Image to Word converter documentation
 /markdown/image-base64.md - Base64 Image tool documentation
 /markdown/image-dpi-checker.md - Image DPI Checker tool documentation
 /markdown/exif-viewer.md - EXIF Viewer tool documentation

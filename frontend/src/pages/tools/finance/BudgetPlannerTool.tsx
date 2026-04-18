@@ -119,7 +119,7 @@ export default function BudgetPlannerTool() {
         }
       });
     } catch (error) {
-      console.error('Error analyzing budget:', error);
+      // console.error('Error analyzing budget:', error);
     } finally {
       setLoading(false);
     }

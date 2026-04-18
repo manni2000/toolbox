@@ -165,7 +165,7 @@ const SpeechToTextTool = () => {
     };
 
     recognition.onerror = (error: SpeechRecognitionErrorEvent) => {
-      console.error('Speech recognition error:', error.error);
+      // console.error('Speech recognition error:', error.error);
       setIsRecording(false);
       toast({
         title: "Error",

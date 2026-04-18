@@ -83,7 +83,7 @@ export default function StockCAGRCalculatorTool() {
         }
       });
     } catch (error) {
-      console.error('Error calculating CAGR:', error);
+      // console.error('Error calculating CAGR:', error);
     } finally {
       setLoading(false);
     }

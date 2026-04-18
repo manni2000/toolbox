@@ -58,7 +58,7 @@ export default function StartupBurnRateCalculatorTool() {
         recommendations
       });
     } catch (error) {
-      console.error('Error calculating burn rate:', error);
+      // console.error('Error calculating burn rate:', error);
     } finally {
       setLoading(false);
     }

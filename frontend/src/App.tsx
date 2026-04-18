@@ -43,7 +43,6 @@ const ImageDPITool = lazy(() => import("./pages/tools/image/ImageDPITool"));
 const EXIFViewerTool = lazy(() => import("./pages/tools/image/EXIFViewerTool"));
 const FaviconGeneratorTool = lazy(() => import("./pages/tools/image/FaviconGeneratorTool"));
 const ImageToPDFTool = lazy(() => import("./pages/tools/image/ImageToPDFTool"));
-const ImageToWordTool = lazy(() => import("./pages/tools/image/ImageToWordTool"));
 
 // PDF Tools - Lazy loaded
 const PDFMergeTool = lazy(() => import("./pages/tools/pdf/PDFMergeTool"));
@@ -229,7 +228,6 @@ const AnimatedRoutes = () => {
           <Route path="/exif-viewer" element={<Suspense fallback={<PageLoader />}><EXIFViewerTool /></Suspense>} />
           <Route path="/favicon-generator" element={<Suspense fallback={<PageLoader />}><FaviconGeneratorTool /></Suspense>} />
           <Route path="/image-to-pdf" element={<Suspense fallback={<PageLoader />}><ImageToPDFTool /></Suspense>} />
-          <Route path="/image-to-word" element={<Suspense fallback={<PageLoader />}><ImageToWordTool /></Suspense>} />
           
           {/* PDF Tools */}
           <Route path="/pdf-merge" element={<Suspense fallback={<PageLoader />}><PDFMergeTool /></Suspense>} />

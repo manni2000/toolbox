@@ -125,7 +125,7 @@ export default function InvoiceGeneratorTool() {
         alert(`Error: ${errorData.error || 'Failed to generate invoice'}`);
       }
     } catch (error) {
-      console.error('Error generating invoice:', error);
+      // console.error('Error generating invoice:', error);
       alert('Failed to generate invoice. Please try again.');
     } finally {
       setLoading(false);

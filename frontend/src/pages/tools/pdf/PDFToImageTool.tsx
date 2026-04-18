@@ -160,7 +160,7 @@ const PDFToImageTool = () => {
         downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     } catch (error) {
-      console.error('PDF to image conversion error:', error);
+      // console.error('PDF to image conversion error:', error);
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Failed to convert PDF to images",

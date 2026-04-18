@@ -7,7 +7,7 @@ const { corsOptions, generalLimiter, helmetOptions, requestSanitizer, errorHandl
 const { cacheMiddleware } = require('./middleware/cache');
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = 8000;
 
 app.set('trust proxy', 1);
 
@@ -20,7 +20,6 @@ app.use(requestSanitizer);
 app.use(generalLimiter);
 
 app.use((req, _res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
 });
 
@@ -29,12 +28,10 @@ app.get('/api/health', cacheMiddleware('health', 30), (_req, res) => {
   res.json({ success: true, status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Health checkup for all endpoints
 app.get('/api/health/all', async (_req, res) => {
-  // List of endpoints to check (POST endpoints will be checked with OPTIONS)
   const endpoints = [
     '/api/pdf/html-to-pdf', '/api/pdf/to-image', '/api/pdf/to-word', '/api/pdf/to-excel', '/api/pdf/to-powerpoint', '/api/pdf/word-to-pdf', '/api/pdf/powerpoint-to-pdf', '/api/pdf/merge', '/api/pdf/split', '/api/pdf/password', '/api/pdf/unlock', '/api/pdf/remove-pages', '/api/pdf/rotate', '/api/pdf/compress', '/api/pdf/info',
-    '/api/image/compress', '/api/image/convert', '/api/image/resize', '/api/image/crop', '/api/image/background-remover', '/api/image/image-to-word', '/api/image/image-to-pdf', '/api/image/qr-generator', '/api/image/qr-scanner', '/api/image/base64', '/api/image/exif-viewer', '/api/image/favicon-generator', '/api/image/dpi-checker',
+    '/api/image/compress', '/api/image/convert', '/api/image/resize', '/api/image/crop', '/api/image/background-remover', '/api/image/image-to-pdf', '/api/image/qr-generator', '/api/image/qr-scanner', '/api/image/base64', '/api/image/exif-viewer', '/api/image/favicon-generator', '/api/image/dpi-checker',
     '/api/audio/convert', '/api/audio/merge', '/api/audio/trim', '/api/audio/speed', '/api/audio/speech-to-text',
     '/api/video/download', '/api/video/to-audio', '/api/video/trim', '/api/video/speed', '/api/video/thumbnail', '/api/video/resolution', '/api/video/convert', '/api/video/compress', '/api/video/info',
     '/api/security/password-generator', '/api/security/password-strength', '/api/security/hash-generator', '/api/security/base64', '/api/security/uuid-generator', '/api/security/password-strength-explainer', '/api/security/data-breach-checker', '/api/security/file-hash-comparison', '/api/security/exif-location-remover', '/api/security/text-redaction', '/api/security/qr-phishing-scanner', '/api/security/secure-notes', '/api/security/url-reputation-checker',
@@ -50,7 +47,6 @@ app.get('/api/health/all', async (_req, res) => {
     '/api/blog', '/api/blog/search', '/api/blog/categories'
   ];
 
-  // Use OPTIONS to check if endpoint exists (does not execute logic)
   const fetch = require('node-fetch');
   const base = `http://localhost:${PORT}`;
   const results = await Promise.all(endpoints.map(async (ep) => {
@@ -81,7 +77,6 @@ app.use('/api/education', require('./routes/education'));
 app.use('/api/date-time', require('./routes/datetime'));
 app.use('/api/blog', require('./routes/blog'));
 
-// Serve frontend static files in production
 if (process.env.NODE_ENV === 'production') {
   const staticPath = path.join(__dirname, 'public');
   app.use(express.static(staticPath));

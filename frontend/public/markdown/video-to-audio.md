@@ -37,5 +37,5 @@ Extract audio from video files with high quality output.
 - Output: MP3, WAV, M4A formats
 - High-quality extraction
 - Maintains original audio bitrate
-- Maximum file size: 100MB
+- Maximum file size: 50MB
 - Standard audio formats

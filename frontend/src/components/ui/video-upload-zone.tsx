@@ -25,7 +25,7 @@ export const VideoUploadZone = ({
   onClick,
   onFileSelect,
   accept = "video/*",
-  maxSize = "500MB",
+  maxSize = "50MB",
   multiple = false,
   title = "Drop video file here or click to browse",
   subtitle = `Supports MP4, AVI, MOV, WebM up to ${maxSize}`

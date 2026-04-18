@@ -66,7 +66,7 @@ const WebsiteScreenshotTool = () => {
         setError(data.error || "Failed to capture screenshot");
       }
     } catch (err) {
-      console.error("Error capturing screenshot:", err);
+      // console.error("Error capturing screenshot:", err);
       setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);

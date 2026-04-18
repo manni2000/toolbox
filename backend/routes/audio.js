@@ -85,6 +85,15 @@ router.post('/convert', upload.single('audio'), async (req, res, next) => {
   if (!req.file) return res.status(400).json({ success: false, error: 'Audio file required' });
   if (!validateAudioFile(req.file)) return res.status(400).json({ success: false, error: 'Invalid audio file type' });
   if (!(await ensureFfmpegAvailable(res, 'Audio conversion'))) return;
+  
+  // Check file size limit
+  const fileSizeMB = req.file.size / (1024 * 1024);
+  if (fileSizeMB > 50) {
+    return res.status(413).json({ 
+      success: false, 
+      error: `File size limit exceeded. Maximum allowed size is 50MB, but your file is ${fileSizeMB.toFixed(2)}MB.` 
+    });
+  }
 
   const { format = 'mp3', bitrate = '128k' } = req.body;
   const allowedFormats = ['mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a'];
@@ -117,6 +126,15 @@ router.post('/convert', upload.single('audio'), async (req, res, next) => {
 router.post('/trim', upload.single('audio'), async (req, res, next) => {
   if (!req.file) return res.status(400).json({ success: false, error: 'Audio file required' });
   if (!(await ensureFfmpegAvailable(res, 'Audio trimming'))) return;
+  
+  // Check file size limit
+  const fileSizeMB = req.file.size / (1024 * 1024);
+  if (fileSizeMB > 50) {
+    return res.status(413).json({ 
+      success: false, 
+      error: `File size limit exceeded. Maximum allowed size is 50MB, but your file is ${fileSizeMB.toFixed(2)}MB.` 
+    });
+  }
 
   const { startTime = 0, endTime, duration } = req.body;
   const inputExt = req.file.originalname.split('.').pop() || 'mp3';
@@ -148,6 +166,15 @@ router.post('/trim', upload.single('audio'), async (req, res, next) => {
 router.post('/speed', upload.single('audio'), async (req, res, next) => {
   if (!req.file) return res.status(400).json({ success: false, error: 'Audio file required' });
   if (!(await ensureFfmpegAvailable(res, 'Audio speed adjustment'))) return;
+  
+  // Check file size limit
+  const fileSizeMB = req.file.size / (1024 * 1024);
+  if (fileSizeMB > 50) {
+    return res.status(413).json({ 
+      success: false, 
+      error: `File size limit exceeded. Maximum allowed size is 50MB, but your file is ${fileSizeMB.toFixed(2)}MB.` 
+    });
+  }
 
   const speed = Math.min(Math.max(parseFloat(req.body.speed) || 1.0, 0.5), 4.0);
   const inputExt = req.file.originalname.split('.').pop() || 'mp3';
@@ -179,6 +206,17 @@ router.post('/merge', upload.array('audio', 10), async (req, res, next) => {
     return res.status(400).json({ success: false, error: 'At least 2 audio files required' });
   }
   if (!(await ensureFfmpegAvailable(res, 'Audio merging'))) return;
+  
+  // Check file size limit for each file
+  for (const file of req.files) {
+    const fileSizeMB = file.size / (1024 * 1024);
+    if (fileSizeMB > 50) {
+      return res.status(413).json({ 
+        success: false, 
+        error: `File size limit exceeded. Maximum allowed size is 50MB per file. File "${file.originalname}" is ${fileSizeMB.toFixed(2)}MB.` 
+      });
+    }
+  }
 
   const tmpDir = os.tmpdir();
   const ts = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -233,4 +271,16 @@ router.post('/speech-to-text', upload.single('audio'), async (req, res) => {
 router.options('*', (req, res) => {
   res.sendStatus(204);
 });
+
+// Error handler for multer file size limit
+router.use((err, req, res, next) => {
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({ 
+      success: false, 
+      error: 'File size limit exceeded. Maximum allowed size is 50MB.' 
+    });
+  }
+  next(err);
+});
+
 module.exports = router;
