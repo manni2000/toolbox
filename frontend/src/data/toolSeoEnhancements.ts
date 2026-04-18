@@ -6807,4 +6807,9 @@ export const getAllToolSlugs = (): string[] => {
   return Object.keys(toolSeoEnhancements);
 };
 
+export const getToolCategory = (slug: string): string | undefined => {
+  const toolData = toolSeoEnhancements[slug];
+  return toolData?.category;
+};
+
 

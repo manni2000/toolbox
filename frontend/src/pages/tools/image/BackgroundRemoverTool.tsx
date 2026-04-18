@@ -259,7 +259,7 @@ const BackgroundRemoverTool = () => {
         </div>
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ toolCategory="Image Tools" />
       </div>
     </ToolLayout>
   );
