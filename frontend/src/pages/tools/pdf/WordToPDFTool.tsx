@@ -165,8 +165,76 @@ const WordToPDFTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileOutput className="h-5 w-5 text-blue-500" />
+            What is Word to PDF Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Word to PDF conversion transforms Microsoft Word documents into PDF format. This ensures documents maintain consistent formatting across all devices and platforms, making them ideal for sharing, printing, and archiving.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your Word document</li>
+            <li>The tool converts to PDF format</li>
+            <li>Layout and formatting are preserved</li>
+            <li>Download the PDF document</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Formatting preserved</li>
+                <li>• Fonts embedded</li>
+                <li>• Images included</li>
+                <li>• Tables converted</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Document sharing</li>
+                <li>• Print preparation</li>
+                <li>• Legal documents</li>
+                <li>• Resume submission</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Will the PDF look exactly like my Word document?",
+            answer: "PDF conversion preserves most formatting including fonts, colors, and layout. However, very complex layouts or advanced Word features may have slight differences in the PDF."
+          },
+          {
+            question: "Can I convert password-protected Word documents?",
+            answer: "You'll need to unlock password-protected Word files first. The resulting PDF won't have the original password unless you specifically add PDF protection."
+          },
+          {
+            question: "What happens to track changes and comments?",
+            answer: "Track changes and comments are typically not included in standard PDF conversion. The PDF shows the document as it would appear with all changes accepted and comments hidden."
+          },
+          {
+            question: "Will the PDF be searchable?",
+            answer: "Yes, text in the PDF remains searchable and selectable. The PDF preserves the text layer from the Word document, allowing you to search, copy, and extract text."
+          },
+          {
+            question: "What's the difference between DOC and DOCX conversion?",
+            answer: "Both DOC (older format) and DOCX (newer XML-based format) can be converted to PDF. DOCX is the modern standard and generally converts more reliably with better quality."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

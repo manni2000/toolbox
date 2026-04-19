@@ -272,8 +272,76 @@ const BioGeneratorTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <User className="h-5 w-5 text-blue-500" />
+            What is Bio Generation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Bio generation creates professional social media bios for profiles across platforms. These short descriptions help introduce you or your brand to your audience, making a strong first impression in limited character space.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your name or brand name</li>
+            <li>Add relevant keywords and interests</li>
+            <li>Select tone (professional, casual, creative)</li>
+            <li>Generate optimized bios for platforms</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Bio Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Platform-optimized length</li>
+                <li>• Multiple tone options</li>
+                <li>• Keyword integration</li>
+                <li>• Character limit awareness</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Social profiles</li>
+                <li> Professional introductions</li>
+                <li> Brand descriptions</li>
+                <li> Personal branding</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the ideal bio length?",
+            answer: "Ideal length varies by platform: Twitter (160 chars), Instagram (150 chars), LinkedIn (200 chars), TikTok (80 chars). Keep it concise and impactful."
+          },
+          {
+            question: "Should I use emojis in my bio?",
+            answer: "Emojis can add personality but use them strategically. Professional platforms like LinkedIn prefer minimal emojis. Creative platforms like Instagram allow more expressive use."
+          },
+          {
+            question: "How do I make my bio stand out?",
+            answer: "Be authentic, highlight unique value, use specific keywords, include a call-to-action or link, and show personality while staying relevant to your audience."
+          },
+          {
+            question: "Can I use the same bio everywhere?",
+            answer: "You can use a core bio but adapt it for each platform's character limit and audience. Tailor the tone and focus to fit each social media context."
+          },
+          {
+            question: "Should I include hashtags in my bio?",
+            "answer": "Some platforms like Instagram allow hashtags in bios. Use 1-3 relevant hashtags. Avoid hashtag stuffing as it can appear unprofessional."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

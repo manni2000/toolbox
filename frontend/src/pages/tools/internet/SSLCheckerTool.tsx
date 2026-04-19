@@ -30,6 +30,35 @@ interface SSLCheckResult {
   note?: string;
 }
 
+const ResultCard = ({
+  title,
+  value,
+  danger,
+  small
+}: {
+  title: string;
+  value: string;
+  danger?: boolean;
+  small?: boolean;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="rounded-xl border border-border bg-card p-5 shadow-lg hover:shadow-xl transition-shadow duration-500"
+  >
+    <p className="text-sm text-muted-foreground">
+      {title}
+    </p>
+    <p
+      className={`font-medium ${
+        danger ? "text-red-500" : ""
+      } ${small ? "text-sm" : ""}`}
+    >
+      {value}
+    </p>
+  </motion.div>
+);
+
 const SSLCheckerTool = () => {
 
   const [domain, setDomain] = useState("");
@@ -357,46 +386,13 @@ const SSLCheckerTool = () => {
 
         )}
 
-        {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+          {/* FAQ Section */}
+          <ToolFAQ />
+        </div>
       </div>
     </ToolLayout>
   );
 };
-
-
-const ResultCard = ({
-  title,
-  value,
-  danger,
-  small
-}: {
-  title: string;
-  value: string;
-  danger?: boolean;
-  small?: boolean;
-}) => (
-
-  <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    className="rounded-xl border border-border bg-card p-5 shadow-lg hover:shadow-xl transition-shadow duration-500"
-  >
-
-    <p className="text-sm text-muted-foreground">
-      {title}
-    </p>
-
-    <p
-      className={`font-medium ${
-        danger ? "text-red-500" : ""
-      } ${small ? "text-sm" : ""}`}
-    >
-      {value}
-    </p>
-
-  </motion.div>
-
-);
 
 export default SSLCheckerTool;

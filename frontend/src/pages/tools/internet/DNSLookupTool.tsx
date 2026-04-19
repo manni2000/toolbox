@@ -329,11 +329,81 @@ const DNSLookupTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Server className="h-5 w-5 text-blue-500" />
+            What is DNS Lookup?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            DNS (Domain Name System) lookup translates human-readable domain names into IP addresses. When you visit a website, DNS resolves the domain to its corresponding IP address, allowing your browser to connect to the correct server.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter a domain name to query</li>
+            <li>Select the DNS record type (A, AAAA, MX, etc.)</li>
+            <li>The tool queries DNS servers</li>
+            <li>View the returned DNS records</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Record Types</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• A: IPv4 addresses</li>
+                <li>• AAAA: IPv6 addresses</li>
+                <li>• MX: Mail servers</li>
+                <li>• CNAME: Alias records</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Troubleshooting DNS</li>
+                <li>• Verifying DNS records</li>
+                <li>• Email configuration</li>
+                <li>• Domain research</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is DNS and why is it important?",
+            answer: "DNS is the phonebook of the internet. It translates domain names (like google.com) to IP addresses that computers use to communicate. Without DNS, you'd need to remember numeric IP addresses for every website."
+          },
+          {
+            question: "What DNS record types can I lookup?",
+            answer: "Common types include A (IPv4), AAAA (IPv6), MX (mail servers), CNAME (aliases), TXT (text records), NS (name servers), and SOA (start of authority)."
+          },
+          {
+            question: "How long do DNS changes take to propagate?",
+            answer: "DNS changes typically take 5 minutes to 48 hours to propagate globally. This depends on the TTL (Time To Live) setting of the DNS records and caching by ISPs."
+          },
+          {
+            question: "Why might DNS lookup fail?",
+            answer: "DNS lookup can fail due to incorrect domain names, misconfigured DNS records, DNS server issues, or network connectivity problems. Check the domain spelling and try different DNS servers."
+          },
+          {
+            question: "What is the difference between A and AAAA records?",
+            answer: "A records map domains to IPv4 addresses (e.g., 192.0.2.1). AAAA records map domains to IPv6 addresses (e.g., 2001:db8::1). Both can coexist for dual-stack networks."
+          }
+        ]} />
+
       </div>
-    </ToolLayout>
-  );
+
+    </div>
+  </ToolLayout>
+);
 };
 
 export default DNSLookupTool;

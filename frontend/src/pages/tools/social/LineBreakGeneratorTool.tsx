@@ -125,8 +125,76 @@ const LineBreakGeneratorTool = () => {
           </ul>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <SeparatorHorizontal className="h-5 w-5 text-blue-500" />
+            What is Line Break Generation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Line break generation creates formatted line breaks for social media captions. This helps structure your content for better readability, as social platforms often remove manual line breaks when posting.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your caption text</li>
+            <li>The tool adds proper line breaks</li>
+            <li>Select line break style (dots, emojis)</li>
+            <li>Copy the formatted caption</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Break Styles</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Simple line breaks</li>
+                <li>• Dot separators</li>
+                <li> Emoji dividers</li>
+                <li> Custom patterns</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Readability Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Better scannability</li>
+                <li>• Improved engagement</li>
+                <li>• Clearer structure</li>
+                <li>• Mobile-friendly</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why do social platforms remove line breaks?",
+            answer: "Platforms remove line breaks to create clean, continuous text. This works for some content but breaks up longer captions that need structure."
+          },
+          {
+            question: "What line break styles work best?",
+            answer: "Simple line breaks are cleanest. Dots and emojis can add visual interest but may appear cluttered. Choose based on your brand aesthetic."
+          },
+          {
+            question: "Should I use line breaks in every post?",
+            answer: "Use line breaks for longer posts (100+ words). Short posts may not need them. Use judgment based on content length and complexity."
+          },
+          {
+            question: "Do line breaks affect engagement?",
+            answer: "Properly formatted posts with line breaks often have higher engagement because they're easier to read and digest on mobile devices."
+          },
+          {
+            question: "Can I use line breaks in Twitter threads?",
+            answer: "Yes, line breaks work great in Twitter threads to separate thoughts. Each tweet in a thread can have its own structure."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

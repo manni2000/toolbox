@@ -335,7 +335,30 @@ const HTTPHeaderTool = () => {
         )}
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "What are HTTP headers?",
+            answer: "HTTP headers are key-value pairs sent between clients and servers. They contain metadata about the request or response, including content type, caching, authentication, and more."
+          },
+          {
+            question: "Why inspect HTTP headers?",
+            answer: "Header inspection helps debug API issues, verify security configurations, check CORS settings, analyze caching policies, and ensure proper content delivery."
+          },
+          {
+            question: "What common headers should I check?",
+            answer: "Important headers include Content-Type, Cache-Control, CORS headers (Access-Control-*), Security headers (CSP, X-Frame-Options), and authentication headers."
+          },
+          {
+            question: "Can I inspect any URL?",
+            answer: "You can inspect most public URLs. Some sites may block automated requests or require authentication. The tool makes a standard HTTP GET request."
+          },
+          {
+            question: "What does response time indicate?",
+            answer: "Response time measures how long the server took to respond. It helps identify performance issues, network latency, or server problems affecting your application."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

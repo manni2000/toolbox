@@ -418,7 +418,8 @@ export default function EMIComparisonTool() {
                 <li>• Total interest cost over tenure</li>
                 <li>• Loan tenure and age considerations</li>
                 <li>• Prepayment charges and flexibility</li>
-                <li>• Processing fees and other costs</li>
+                <li>• Processing fees</li>
+                <li>• and other costs</li>
               </ul>
             </div>
             
@@ -432,6 +433,77 @@ export default function EMIComparisonTool() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-blue-500" />
+            What is EMI Comparison?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            EMI comparison allows you to compare loan offers from different lenders side by side. It helps you evaluate interest rates, tenures, and total costs to choose the most cost-effective loan option for your needs.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Add multiple loan offers from different lenders</li>
+            <li>Compare interest rates, tenure, and processing fees</li>
+            <li>View the total cost including principal and interest</li>
+            <li>Choose the offer with the lowest total cost</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Comparison Factors</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Interest rate percentage</li>
+                <li>• Loan tenure period</li>
+                <li>• Processing fees</li>
+                <li>• Prepayment charges</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Decision Factors</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Total interest payable</li>
+                <li>• Monthly EMI affordability</li>
+                <li>• Prepayment flexibility</li>
+                <li>• Customer service quality</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "What should I compare when choosing a loan?",
+            answer: "Compare interest rates, tenure, processing fees, prepayment charges, and total interest payable. The lowest EMI isn't always the best if the total cost is higher."
+          },
+          {
+            question: "How do I calculate the total cost of a loan?",
+            answer: "Total Cost = Principal + Total Interest. A lower interest rate with longer tenure may result in higher total interest paid than a higher rate with shorter tenure."
+          },
+          {
+            question: "Should I choose the lowest EMI?",
+            answer: "Not necessarily. A lower EMI over a longer tenure often means paying more total interest. Consider your budget and total cost together."
+          },
+          {
+            question: "What are prepayment charges?",
+            answer: "Prepayment charges are fees for paying off a loan early. Some lenders charge this to recover interest income. Check before choosing a loan if early repayment is planned."
+          },
+          {
+            question: "How can I get a better interest rate?",
+            answer: "Improve your credit score, show stable income, reduce debt-to-income ratio, compare multiple lenders, and negotiate based on competitive offers."
+          }
+        ]} />
         </div>
       </div>
     </ToolLayout>

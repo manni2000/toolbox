@@ -372,8 +372,76 @@ const LCMHCFTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Hash className="h-5 w-5 text-blue-500" />
+            What are LCM and HCF?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            LCM (Least Common Multiple) and HCF (Highest Common Factor), also known as GCD (Greatest Common Divisor), are fundamental mathematical concepts. LCM finds the smallest number divisible by given numbers, while HCF finds the largest number that divides them exactly.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter two or more numbers</li>
+            <li>Click calculate to find LCM and HCF</li>
+            <li>View the step-by-step calculation process</li>
+            <li>Understand the mathematical relationship</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Mathematical Concepts</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• LCM: Smallest common multiple</li>
+                <li>• HCF/GCD: Largest common factor</li>
+                <li>• Relationship: LCM × HCF = a × b</li>
+                <li>• Prime factorization method</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Fraction simplification</li>
+                <li>• Solving word problems</li>
+                <li>• Period calculations</li>
+                <li>• Number theory</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is the difference between LCM and HCF?",
+            answer: "LCM (Least Common Multiple) is the smallest number that all given numbers divide into evenly. HCF (Highest Common Factor) is the largest number that divides all given numbers evenly."
+          },
+          {
+            question: "How are LCM and HCF related?",
+            answer: "For two numbers a and b: LCM(a,b) × HCF(a,b) = a × b. This relationship helps verify calculations and understand the mathematical connection."
+          },
+          {
+            question: "What methods are used for calculation?",
+            answer: "Common methods include prime factorization, division method, and using the relationship formula. The tool shows step-by-step calculations for learning."
+          },
+          {
+            question: "Can I calculate LCM/HCF for more than 2 numbers?",
+            answer: "Yes, you can add multiple numbers and calculate LCM and HCF for all of them simultaneously. The tool handles any number of inputs."
+          },
+          {
+            question: "Why are LCM and HCF important?",
+            answer: "They're essential for simplifying fractions, solving ratio problems, finding common periods in time-based scenarios, and are foundational in number theory and algebra."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

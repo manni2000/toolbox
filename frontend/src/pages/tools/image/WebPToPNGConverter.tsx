@@ -287,9 +287,77 @@ const WebPToPNGConverter = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Zap className="h-5 w-5 text-blue-500" />
+            What is WebP to PNG Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            WebP to PNG conversion transforms WebP images into PNG format. This is useful when you need compatibility with older systems or applications that don't support WebP, while maintaining lossless quality.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your WebP image</li>
+            <li>The tool converts it to PNG format</li>
+            <li>Transparency is preserved</li>
+            <li>Download the PNG file</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Reasons</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Legacy compatibility</li>
+                <li>• Editing software support</li>
+                <li>• Print requirements</li>
+                <li>• Universal format</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">PNG Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Universal support</li>
+                <li>• Lossless quality</li>
+                <li>• Transparency support</li>
+                <li>• Editing-friendly</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why convert WebP to PNG?",
+            answer: "Convert to PNG for compatibility with older systems, editing software, or applications that don't support WebP. PNG has universal support and is required in many workflows."
+          },
+          {
+            question: "Will file size increase?",
+            answer: "Yes, PNG files are typically larger than WebP because WebP uses more efficient compression. The trade-off is universal compatibility at the cost of file size."
+          },
+          {
+            question: "Is transparency preserved?",
+            answer: "Yes, PNG supports transparency just like WebP. The conversion preserves alpha channel data, so transparent areas remain transparent."
+          },
+          {
+            question: "When should I use PNG over WebP?",
+            answer: "Use PNG when you need compatibility with older systems, for print work, or when using software that doesn't support WebP. Use WebP for web optimization."
+          },
+          {
+            question: "Can I convert back to WebP?",
+            answer: "Yes, you can convert PNG back to WebP. However, the WebP file will be larger than the original since you're converting from PNG's lossless format to WebP's compressed format."
+          }
+        ]} />
       </div>
+    </div>
     </ToolLayout>
   );
 };

@@ -363,11 +363,79 @@ const ImageToPDFTool = () => {
           </div>
         )}
 
-        {/* FAQ Section */}
-        <ToolFAQ />
-      </div>
-    </ToolLayout>
-  );
-};
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-500" />
+            What is Image to PDF Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Image to PDF conversion transforms image files into PDF documents. This is useful for creating documents from images, sharing multiple images as a single file, or preparing images for printing and archival purposes.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload one or more images</li>
+            <li>Arrange the image order (drag to reorder)</li>
+            <li>The tool converts them to PDF</li>
+            <li>Download the PDF document</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Multiple image support</li>
+                <li>• Drag to reorder pages</li>
+                <li>• Automatic page sizing</li>
+                <li>• High-quality output</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Document creation</li>
+                <li>• Image archiving</li>
+                <li>• Print preparation</li>
+                <li>• File sharing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+{/* FAQ Section */}
+<ToolFAQ faqs={[
+  {
+    question: "Can I convert multiple images to one PDF?",
+    answer: "Yes, you can upload multiple images and they will be combined into a single PDF document. You can drag to reorder the pages before conversion."
+  },
+  {
+    question: "What image formats are supported?",
+    answer: "Common image formats including JPG, PNG, WebP, and others are supported. The tool will convert any compatible image format to PDF."
+  },
+  {
+    question: "How is page size determined?",
+    answer: "The PDF page size is automatically set to match the image dimensions. For multiple images, each page matches its respective image size."
+  },
+  {
+    question: "Can I set custom page sizes?",
+    answer: "This tool automatically sizes pages to match images. For custom page sizes, you would need to resize images before converting or use specialized PDF software."
+  },
+  {
+    question: "Is the output PDF searchable?",
+    answer: "The PDF created from images contains the images as visual content. For searchable text, you would need OCR (Optical Character Recognition) software to extract text from images."
+  }
+]} />
+</div>
+</div>
+</ToolLayout>
+);
+}
 
 export default ImageToPDFTool;

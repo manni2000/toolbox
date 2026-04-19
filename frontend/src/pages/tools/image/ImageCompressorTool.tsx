@@ -358,8 +358,76 @@ const ImageCompressorTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Zap className="h-5 w-5 text-blue-500" />
+            What is Image Compression?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Image compression reduces file size while maintaining acceptable visual quality. It optimizes images for web use by removing unnecessary data, improving page load times and reducing bandwidth usage without significant quality loss.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your image (JPG, PNG, WebP)</li>
+            <li>Adjust the quality slider (1-100)</li>
+            <li>The tool compresses the image</li>
+            <li>Download the optimized image</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Compression Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Quality control slider</li>
+                <li>• Size reduction preview</li>
+                <li>• Multiple format support</li>
+                <li>• Batch processing</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Web Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Faster page loads</li>
+                <li>• Reduced bandwidth</li>
+                <li>• Better SEO ranking</li>
+                <li>• Improved UX</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What quality should I use for web images?",
+            answer: "For web images, quality 70-85% is typically sufficient. This provides good visual quality while significantly reducing file size. Higher quality (85-95%) for important images."
+          },
+          {
+            question: "Does compression affect image quality?",
+            answer: "Compression can affect quality, especially at low settings. At quality 70%+, most images show minimal visible difference. Always preview before finalizing."
+          },
+          {
+            question: "What's the difference between lossy and lossless compression?",
+            answer: "Lossy compression (JPG) removes data permanently for smaller size. Lossless compression (PNG) preserves all data but results in larger files. Choose based on image type."
+          },
+          {
+            question: "Can I compress PNG images?",
+            answer: "Yes, PNG compression is available but less effective than JPG since PNG is lossless. For photos, convert to JPG first for better compression ratios."
+          },
+          {
+            question: "How much can I reduce file size?",
+            answer: "Typical compression reduces file size by 50-80% for JPG images at quality 80%. PNG images may see 10-30% reduction. Results vary by image content."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

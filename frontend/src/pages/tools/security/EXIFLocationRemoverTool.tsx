@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, Upload, Image, CheckCircle, AlertTriangle, Download, Sparkles, Settings } from 'lucide-react';
+import { Copy, Check, Upload, Image, CheckCircle, AlertTriangle, Download, Shield, Sparkles, Settings } from 'lucide-react';
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -293,8 +293,76 @@ export default function EXIFLocationRemoverTool() {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is EXIF Location Removal?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            EXIF location removal strips GPS coordinates and location metadata from image files. This protects your privacy when sharing photos online, preventing others from tracking where photos were taken.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your image file</li>
+            <li>The tool scans for EXIF metadata</li>
+            <li>Removes GPS and location data</li>
+            <li>Download the cleaned image</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Metadata Removed</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• GPS coordinates</li>
+                <li>• Location names</li>
+                <li>• Device information</li>
+                <li>• Timestamps</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Privacy Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Location privacy</li>
+                <li>• Safe sharing</li>
+                <li>• Identity protection</li>
+                <li>• Tracking prevention</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What EXIF data is removed?",
+            answer: "GPS coordinates, camera device info, location names, and timestamps are removed. The tool specifically targets location-related metadata while preserving image quality and visual content."
+          },
+          {
+            question: "Will this affect image quality?",
+            answer: "No, removing EXIF metadata doesn't affect the visual quality or resolution of the image. Only the metadata stored in the file header is modified, not the actual image data."
+          },
+          {
+            question: "Why is EXIF removal important?",
+            answer: "EXIF data can reveal your location, device type, and when a photo was taken. This information can be used to track you, profile your habits, or compromise your privacy when sharing photos online."
+          },
+          {
+            question: "Can I remove EXIF from multiple images?",
+            answer: "Yes, you can process multiple images individually or in batches. Each image will have its EXIF metadata stripped before you download the cleaned versions."
+          },
+          {
+            question: "Is all metadata removed or just location?",
+            answer: "This tool focuses on location-related metadata (GPS, location names). Some other metadata like image dimensions may remain. For complete metadata removal, use a dedicated metadata cleaner."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

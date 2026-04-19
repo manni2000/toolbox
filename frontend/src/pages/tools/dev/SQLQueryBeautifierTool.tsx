@@ -375,8 +375,76 @@ const SQLQueryBeautifierTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Database className="h-5 w-5 text-blue-500" />
+            What is SQL Beautification?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            SQL beautification formats SQL queries with proper indentation, line breaks, and keyword casing to improve readability. It transforms minified or poorly formatted SQL into clean, structured code that's easier to understand, debug, and maintain.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste or type your SQL query into the input area</li>
+            <li>Choose indentation size and keyword casing options</li>
+            <li>Click format to beautify the SQL query</li>
+            <li>Copy or download the formatted result</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Formatting Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Customizable indentation</li>
+                <li>• Keyword casing (upper/lower)</li>
+                <li>• Minify option</li>
+                <li>• Download support</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Code review</li>
+                <li>• Documentation</li>
+                <li>• Debugging queries</li>
+                <li>• Team collaboration</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What SQL dialects are supported?",
+            answer: "The tool supports standard SQL syntax common across most databases including MySQL, PostgreSQL, SQL Server, and Oracle. Complex dialect-specific features may not be fully supported."
+          },
+          {
+            question: "Can I minify SQL queries?",
+            answer: "Yes, the tool includes a minify option that removes unnecessary whitespace and line breaks to compress SQL into a single line for storage or transmission."
+          },
+          {
+            question: "What is keyword casing?",
+            answer: "Keyword casing converts SQL keywords (SELECT, FROM, WHERE, etc.) to uppercase or lowercase. This improves consistency and readability according to your coding style."
+          },
+          {
+            question: "How does indentation work?",
+            answer: "Indentation adds spaces or tabs to show the hierarchical structure of SQL queries. You can choose 2, 4, or 8 spaces per indentation level."
+          },
+          {
+            question: "Is my SQL data stored?",
+            answer: "No, all formatting happens locally in your browser. Your SQL queries are never sent to any server, ensuring complete privacy for your database code."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

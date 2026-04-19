@@ -276,7 +276,30 @@ const PercentageCalculatorTool = () => {
         )}
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "What is the percentage formula?",
+            answer: "The basic formula is: (Part / Whole) × 100 = Percentage. For example, if you scored 80 out of 100, the percentage is (80/100) × 100 = 80%."
+          },
+          {
+            question: "How do I calculate percentage increase?",
+            answer: "Percentage increase = ((New Value - Original Value) / Original Value) × 100. This shows how much a value has grown relative to its original value."
+          },
+          {
+            question: "What is percentage decrease?",
+            answer: "Percentage decrease = ((Original Value - New Value) / Original Value) × 100. This shows how much a value has reduced relative to its original value."
+          },
+          {
+            question: "Can I calculate X is what % of Y?",
+            answer: "Yes, use the 'X is what % of Y' mode. Enter X as the part and Y as the whole. The formula is (X / Y) × 100 to find what percentage X is of Y."
+          },
+          {
+            question: "How do I calculate a percentage of a number?",
+            answer: "Use the 'X% of Y' mode. Enter the percentage and the number. Multiply the number by the percentage divided by 100: (Percentage / 100) × Number."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

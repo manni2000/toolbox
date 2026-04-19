@@ -403,9 +403,77 @@ const LumpsumCalculatorTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <PiggyBank className="h-5 w-5 text-blue-500" />
+            What is Lumpsum Investment?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Lumpsum investment is a one-time investment of a significant amount rather than regular small investments. It's suitable when you have a large sum available and want to invest it immediately to benefit from compounding over a longer period.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your one-time investment amount</li>
+            <li>Set the expected annual return rate</li>
+            <li>Choose the investment tenure in years</li>
+            <li>View the maturity amount and wealth gained</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Lumpsum Benefits</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Longer compounding period</li>
+                <li>• Higher growth potential</li>
+                <li>• No regular commitment</li>
+                <li>• Simple management</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Bonus deployment</li>
+                <li>• Inheritance investment</li>
+                <li>• Retirement corpus</li>
+                <li>• Sale proceeds</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "When should I choose lumpsum over SIP?",
+            answer: "Choose lumpsum when you have a large sum available (bonus, inheritance) and market conditions are favorable. SIP is better for regular income and rupee cost averaging."
+          },
+          {
+            question: "Is lumpsum better than SIP?",
+            answer: "Lumpsum can generate higher returns if invested at the right time due to longer compounding period. However, SIP reduces timing risk through rupee cost averaging."
+          },
+          {
+            question: "How does compounding work in lumpsum?",
+            answer: "With lumpsum, your entire amount starts compounding immediately. Over long periods, this can generate significantly higher wealth compared to phased investments."
+          },
+          {
+            question: "What is the ideal time for lumpsum investment?",
+            answer: "The ideal time is when markets are undervalued or when you have a lumpsum available. However, timing the market is difficult, so consider your risk tolerance."
+          },
+          {
+            question: "Can I convert lumpsum to SIP?",
+            answer: "Yes, you can invest a lumpsum in a mutual fund and start systematic withdrawal plans (SWP) or systematic transfer plans (STP) to manage your investments systematically."
+          }
+        ]} />
       </div>
+    </div>
     </ToolLayout>
   );
 };

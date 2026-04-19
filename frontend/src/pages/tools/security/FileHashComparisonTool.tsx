@@ -405,9 +405,78 @@ export default function FileHashComparisonTool() {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Hash className="h-5 w-5 text-blue-500" />
+            What is File Hash Comparison?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            File hash comparison calculates and compares cryptographic hashes of files to verify they're identical. This ensures file integrity, detects changes, confirms downloads, and verifies data hasn't been corrupted or tampered with.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload or select files to compare</li>
+            <li>The tool calculates hash for each file</li>
+            <li>Hashes are compared for equality</li>
+            <li>View match status and hash values</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Hash Algorithms</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• MD5 (fast checksums)</li>
+                <li>• SHA-1 (basic verification)</li>
+                <li>• SHA-256 (recommended)</li>
+                <li>• SHA-512 (high security)</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Download verification</li>
+                <li>• File integrity checks</li>
+                <li>• Duplicate detection</li>
+                <li>• Change detection</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why compare file hashes instead of content?",
+            answer: "Hash comparison is much faster for large files and provides a unique fingerprint. Even a single bit change results in a completely different hash, making it perfect for detecting any modification."
+          },
+          {
+            question: "Which hash algorithm should I use?",
+            answer: "SHA-256 is recommended for most purposes. MD5 is faster but not cryptographically secure. Use SHA-256 or SHA-512 for security-critical applications."
+          },
+          {
+            question: "Can different files have the same hash?",
+            answer: "Theoretically possible (collision), but extremely unlikely with SHA-256. MD5 has known vulnerabilities making collisions feasible. For practical purposes, SHA-256 guarantees uniqueness."
+          },
+          {
+            question: "How does this verify downloads?",
+            answer: "Many download sites provide file hashes. Calculate the hash of your downloaded file and compare it to the official hash. If they match, your download is authentic and uncorrupted."
+          },
+          {
+            question: "Can I compare more than two files?",
+            answer: "Yes, you can upload multiple files and compare all their hashes simultaneously. This is useful for checking if files in a directory are identical or identifying duplicates."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );
-}
+};

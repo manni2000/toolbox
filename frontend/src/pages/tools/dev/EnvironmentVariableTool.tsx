@@ -557,8 +557,76 @@ const EnvironmentVariableTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Settings className="h-5 w-5 text-blue-500" />
+            What is Environment Variable Management?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Environment variable management creates and organizes configuration variables for applications. It helps developers define, document, and export environment variables across different environments (development, staging, production) in a structured format.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Add environment variables with names and values</li>
+            <li>Set variable types and descriptions</li>
+            <li>Mark required variables for validation</li>
+            <li>Export as .env file or other formats</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Variable Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Type validation</li>
+                <li>• Required field marking</li>
+                <li>• Description support</li>
+                <li>• Multiple export formats</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Application configuration</li>
+                <li>• API key management</li>
+                <li>• Environment setup</li>
+                <li>• Team documentation</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What are environment variables?",
+            answer: "Environment variables are dynamic values that affect process behavior without changing code. They're used for configuration like API keys, database URLs, and feature flags."
+          },
+          {
+            question: "What formats can I export to?",
+            answer: "The tool supports exporting to .env files, JSON, YAML, and shell scripts, making it easy to use across different platforms and deployment systems."
+          },
+          {
+            question: "Why mark variables as required?",
+            answer: "Marking variables as required helps ensure critical configuration isn't forgotten. This is especially important for production deployments where missing config causes failures."
+          },
+          {
+            question: "What variable types are supported?",
+            answer: "The tool supports string, number, boolean, JSON, URL, and email types. Type validation helps catch configuration errors before deployment."
+          },
+          {
+            question: "Is this secure for sensitive data?",
+            answer: "While the tool helps organize variables, sensitive data like API keys should be stored securely. Use .env files locally and use secrets management in production."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

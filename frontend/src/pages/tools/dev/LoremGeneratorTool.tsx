@@ -270,8 +270,76 @@ const LoremGeneratorTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-500" />
+            What is Lorem Ipsum?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Lorem Ipsum is placeholder text used in publishing and graphic design to demonstrate visual form without distracting from meaningful content. It helps designers and developers test layouts, typography, and spacing before final content is available.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Select the output type (paragraphs, sentences, or words)</li>
+            <li>Choose the quantity you need</li>
+            <li>Click generate to create placeholder text</li>
+            <li>Copy the generated text for your project</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Generation Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Paragraphs, sentences, words</li>
+                <li>• Customizable quantity</li>
+                <li>• One-click regeneration</li>
+                <li>• Copy to clipboard</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Website mockups</li>
+                <li>• Print design testing</li>
+                <li>• Typography testing</li>
+                <li>• Layout prototyping</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is Lorem Ipsum?",
+            answer: "Lorem Ipsum is dummy text derived from Cicero's De Finibus Bonorum et Malorum. It has been the standard placeholder text in printing and typesetting since the 1500s."
+          },
+          {
+            question: "Can I generate different amounts?",
+            answer: "Yes, you can generate specific numbers of paragraphs, sentences, or words. Adjust the quantity slider to get exactly the amount of placeholder text you need."
+          },
+          {
+            question: "Is the text random each time?",
+            answer: "Yes, each generation creates a new random arrangement of Lorem Ipsum words, providing variety while maintaining the classic placeholder text style."
+          },
+          {
+            question: "Why use placeholder text?",
+            answer: "Placeholder text allows you to focus on design and layout without being distracted by actual content. It provides a realistic representation of how text will fill the space."
+          },
+          {
+            question: "Can I use this for commercial projects?",
+            answer: "Yes, Lorem Ipsum is public domain and free to use for any purpose, including commercial projects, websites, and print materials."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

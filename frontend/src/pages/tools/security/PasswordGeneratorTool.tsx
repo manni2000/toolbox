@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Copy, Check, RefreshCw, Shield, Eye, EyeOff, Sparkles, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
@@ -7,7 +7,25 @@ import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 80% 55%";
 
-const PasswordGeneratorTool = () => {
+interface ToggleOptionProps {
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}
+
+const ToggleOption = ({ label, checked, onChange }: ToggleOptionProps) => (
+  <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted/50">
+    <input
+      type="checkbox"
+      checked={checked}
+      onChange={(e) => onChange(e.target.checked)}
+      className="h-5 w-5 rounded border-border accent-primary"
+    />
+    <span className="text-sm">{label}</span>
+  </label>
+);
+
+function PasswordGeneratorTool() {
   const [password, setPassword] = useState("");
   const [length, setLength] = useState(16);
   const [includeUppercase, setIncludeUppercase] = useState(true);
@@ -241,29 +259,79 @@ const PasswordGeneratorTool = () => {
           Generate Password
         </motion.button>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is Password Generation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Password generation creates strong, random passwords that are difficult to guess or crack. This is essential for securing accounts, protecting sensitive data, and maintaining good security practices across all your online services.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Set password length requirements</li>
+            <li>Choose character types (letters, numbers, symbols)</li>
+            <li>The tool generates random passwords</li>
+            <li>Copy and use your secure password</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Generation Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Customizable length</li>
+                <li>• Character selection</li>
+                <li>• Avoid ambiguous chars</li>
+                <li>• Multiple generation</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Security Best Practices</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Use unique passwords</li>
+                <li>• Minimum 12 characters</li>
+                <li>• Mix character types</li>
+                <li>• Use password managers</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What makes a password strong?",
+            answer: "Strong passwords are long (12+ characters), use a mix of uppercase, lowercase, numbers, and symbols, avoid common words or patterns, and are unique for each account."
+          },
+          {
+            question: "How long should my password be?",
+            answer: "Minimum 12 characters is recommended. For high-security accounts, 16+ characters provide significantly better security against brute-force attacks."
+          },
+          {
+            question: "Should I use special characters?",
+            answer: "Yes, special characters significantly increase password strength by expanding the character set. However, ensure the systems you use support them."
+          },
+          {
+            question: "Can I remember these complex passwords?",
+            answer: "Strong passwords are hard to remember. Use a reputable password manager to securely store them. Never write passwords down or reuse them across accounts."
+          },
+          {
+            question: "Are randomly generated passwords better?",
+            answer: "Yes, randomly generated passwords are more secure than human-created ones because they lack patterns, words, or personal information that could make them easier to guess."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );
 };
-
-interface ToggleOptionProps {
-  label: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}
-
-const ToggleOption = ({ label, checked, onChange }: ToggleOptionProps) => (
-  <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted/50">
-    <input
-      type="checkbox"
-      checked={checked}
-      onChange={(e) => onChange(e.target.checked)}
-      className="h-5 w-5 rounded border-border accent-primary"
-    />
-    <span className="text-sm">{label}</span>
-  </label>
-);
 
 export default PasswordGeneratorTool;

@@ -281,8 +281,76 @@ const FaviconGeneratorTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Package className="h-5 w-5 text-blue-500" />
+            What is a Favicon Generator?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            A favicon generator creates website favicons in multiple sizes from a single image. Favicons appear in browser tabs, bookmarks, and mobile home screens. This tool ensures your favicon looks crisp across all devices and platforms.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your logo or image (square recommended)</li>
+            <li>The tool generates favicons in multiple sizes</li>
+            <li>Download individual favicons or as a ZIP package</li>
+            <li>Upload to your website's root directory</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Favicon Sizes</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• 16x16 (browser tab)</li>
+                <li>• 32x32 (taskbar)</li>
+                <li>• 180x180 (Apple touch)</li>
+                <li>• 192x192 (Android/Chrome)</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Platform Support</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Desktop browsers</li>
+                <li>• Mobile devices</li>
+                <li>• iOS/Android apps</li>
+                <li>• PWA icons</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What image format should I use for favicons?",
+            answer: "PNG is recommended for favicons as it supports transparency and scales well. SVG is ideal for simple logos as it's resolution-independent. ICO is traditional but less flexible."
+          },
+          {
+            question: "What size should my original image be?",
+            answer: "Use a square image at least 512x512 pixels. Higher resolution ensures quality when scaled down to smaller favicon sizes. Simple designs work best at small sizes."
+          },
+          {
+            question: "Do I need all the favicon sizes?",
+            answer: "Yes, different devices and browsers require different sizes. Having all sizes ensures your favicon looks crisp everywhere. The tool generates the most common sizes automatically."
+          },
+          {
+            question: "How do I add favicons to my website?",
+            answer: "Upload favicons to your website root directory and add HTML link tags in your head section. The tool may provide the HTML code snippet for easy implementation."
+          },
+          {
+            question: "Can I use a photo as a favicon?",
+            answer: "Photos can work but often look cluttered at small sizes. Simple logos or icons with minimal detail work best. Consider simplifying your design for better favicon visibility."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

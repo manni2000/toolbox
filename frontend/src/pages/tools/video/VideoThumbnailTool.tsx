@@ -213,8 +213,76 @@ const VideoThumbnailTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Camera className="h-5 w-5 text-blue-500" />
+            What is Video Thumbnail Extraction?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Video thumbnail extraction captures still images from videos at specific timestamps. These thumbnails are used as preview images, video posters, or for sharing on social media platforms.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your video file</li>
+            <li>Select timestamp for capture</li>
+            <li>The tool extracts the frame</li>
+            <li>Download the thumbnail image</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Thumbnail Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Frame capture at timestamp</li>
+                <li>• Multiple format support</li>
+                <li>• High-quality output</li>
+                <li>• Custom timestamp selection</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Video posters</li>
+                <li>• Social media sharing</li>
+                <li>• Video previews</li>
+                <li>• Content thumbnails</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What makes a good video thumbnail?",
+            answer: "Good thumbnails are clear, high-contrast, and show the main subject. Use bright colors, readable text, and choose a frame that represents the video's content well."
+          },
+          {
+            question: "What timestamp should I choose?",
+            answer: "Choose a timestamp with the most action or key moment. For introductions, use 1-3 seconds. For main content, use 10-30% into the video to avoid title screens."
+          },
+          {
+            question: "What resolution should thumbnails be?",
+            answer: "Thumbnails should be at least 1280x720 (16:9 aspect ratio). YouTube recommends 1280x720. Higher resolution (1920x1080) provides better quality on large screens."
+          },
+          {
+            question: "Can I extract multiple thumbnails?",
+            answer: "This tool extracts one thumbnail at a time. For multiple thumbnails, repeat the process with different timestamps or use batch processing tools."
+          },
+          {
+            question: "Do thumbnails affect video SEO?",
+            answer: "Yes, thumbnails significantly affect click-through rates. Compelling thumbnails with clear titles improve video visibility and engagement on platforms."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

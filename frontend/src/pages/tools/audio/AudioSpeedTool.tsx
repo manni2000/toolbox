@@ -360,8 +360,77 @@ const AudioSpeedTool = () => {
           </>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Gauge className="h-5 w-5 text-green-500" />
+            What is Audio Speed Adjustment?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Audio speed adjustment changes the playback rate of audio files without altering the pitch. This allows you to speed up slow content or slow down fast speech for better comprehension.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload an audio file (MP3, WAV, AAC, etc.)</li>
+            <li>Use the speed slider to adjust playback rate (0.5x to 2x)</li>
+            <li>Preview the audio at the selected speed</li>
+            <li>Process and download the speed-adjusted file</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Speed Options</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• 0.5x: Half speed (slow motion)</li>
+                <li>• 0.75x: 75% speed</li>
+                <li>• 1x: Normal speed</li>
+                <li>• 1.5x: 50% faster</li>
+                <li>• 2x: Double speed</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Speed up podcasts</li>
+                <li>• Slow down tutorials</li>
+                <li>• Adjust music tempo</li>
+                <li>• Language learning</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Does changing speed affect audio quality?",
+            answer: "Our speed adjustment preserves audio quality and maintains the original pitch. The audio is resampled to maintain clarity at different speeds."
+          },
+          {
+            question: "What speed range is supported?",
+            answer: "You can adjust speed from 0.5x (half speed) to 2x (double speed). This covers most use cases from slow motion to fast playback."
+          },
+          {
+            question: "Can I preview before downloading?",
+            answer: "Yes! Use the play button to preview the audio at the selected speed before processing and downloading the final file."
+          },
+          {
+            question: "What file formats are supported?",
+            answer: "MP3, WAV, AAC, OGG, FLAC, and other common audio formats are supported. The output will be in the same format as the input."
+          },
+          {
+            question: "Will the pitch change with speed?",
+            answer: "No, our tool preserves the original pitch while changing only the playback speed. This ensures natural-sounding audio at any speed."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

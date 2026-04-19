@@ -316,9 +316,77 @@ export default function PasswordStrengthExplainerTool() {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is Password Strength Explained?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Password strength explained breaks down the factors that make passwords secure or vulnerable. It educates on entropy, cracking methods, and best practices, helping you understand why certain password choices are safer than others.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter a password to analyze</li>
+            <li>The tool explains each strength factor</li>
+            <li>Shows cracking time estimates</li>
+            <li>Provides improvement recommendations</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Strength Concepts</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Entropy calculation</li>
+                <li>• Cracking methods</li>
+                <li>• Pattern analysis</li>
+                <li>• Character variety</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Educational Value</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Understand risks</li>
+                <li>• Learn best practices</li>
+                <li>• Improve habits</li>
+                <li>• Security awareness</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is password entropy?",
+            answer: "Entropy measures the randomness and unpredictability of a password. Higher entropy means more possible combinations, making passwords exponentially harder to crack through brute force."
+          },
+          {
+            question: "How are cracking times calculated?",
+            answer: "Cracking times estimate how long it would take to guess a password using current hardware and techniques. Times vary based on password length, complexity, and attacker resources."
+          },
+          {
+            question: "Why are patterns dangerous?",
+            answer: "Patterns (like substituting letters with numbers) reduce entropy because they're predictable. Attackers use pattern dictionaries, making patterned passwords much easier to crack than truly random ones."
+          },
+          {
+            question: "What's the role of character variety?",
+            answer: "Each character type (uppercase, lowercase, numbers, symbols) expands the character set. More character types mean exponentially more combinations, significantly increasing password strength."
+          },
+          {
+            question: "How does length affect cracking time?",
+            answer: "Cracking time grows exponentially with length. Each additional character multiplies the combinations by the character set size. Going from 8 to 12 characters can increase cracking time by millions of years."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );
-}
+};

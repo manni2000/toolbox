@@ -300,8 +300,76 @@ const PDFToImageTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileImage className="h-5 w-5 text-blue-500" />
+            What is PDF to Image Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PDF to image conversion transforms PDF pages into image files (JPG, PNG). This is useful for extracting pages as images, creating thumbnails, sharing PDF content as images, or using PDF content in image-based workflows.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PDF file</li>
+            <li>Select pages to convert</li>
+            <li>Choose image format (JPG/PNG)</li>
+            <li>Download the image files</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• JPG or PNG format</li>
+                <li>• Select page ranges</li>
+                <li>• High resolution output</li>
+                <li>• Individual or ZIP download</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Thumbnail creation</li>
+                <li>• Image extraction</li>
+                <li>• Social media sharing</li>
+                <li>• Web display</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between JPG and PNG output?",
+            answer: "JPG is smaller and better for photographs. PNG supports transparency and is better for text, graphics, or when you need lossless quality. Choose based on your content type."
+          },
+          {
+            question: "Can I convert all pages or specific pages?",
+            answer: "You can convert all pages or select specific page ranges. This is useful when you only need certain pages as images or want to process large PDFs in batches."
+          },
+          {
+            question: "What resolution are the output images?",
+            answer: "Output resolution typically matches the PDF page resolution. Higher resolution PDFs produce higher quality images. You can usually specify DPI settings if needed."
+          },
+          {
+            question: "Will text be selectable in the output images?",
+            answer: "No, converted images are raster graphics. Text becomes part of the image and is no longer selectable or searchable. For editable text, use PDF to Word conversion instead."
+          },
+          {
+            question: "Can I convert password-protected PDFs?",
+            answer: "Password-protected PDFs must be unlocked first. Use the PDF Unlock tool to remove the password, then convert the unlocked PDF to images."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

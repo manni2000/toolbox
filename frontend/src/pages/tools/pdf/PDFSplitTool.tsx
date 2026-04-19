@@ -398,8 +398,76 @@ const PDFSplitTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <SplitSquareHorizontal className="h-5 w-5 text-blue-500" />
+            What is PDF Splitting?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PDF splitting separates a single PDF document into multiple files. This allows you to extract specific pages, split by page ranges, or separate sections for easier sharing, editing, or organization of document content.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PDF file</li>
+            <li>Specify split method (range, extract, etc.)</li>
+            <li>The tool separates the pages</li>
+            <li>Download the split PDF files</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Split Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Extract specific pages</li>
+                <li>• Split by page ranges</li>
+                <li>• Separate every N pages</li>
+                <li>• Remove specific pages</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Extract chapters</li>
+                <li>• Separate attachments</li>
+                <li>• Create smaller files</li>
+                <li>• Share specific sections</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What split methods are available?",
+            answer: "Common methods include extracting specific pages, splitting by page ranges (e.g., 1-5, 6-10), separating every N pages, or removing specific pages from the document."
+          },
+          {
+            question: "Will splitting affect the quality of pages?",
+            answer: "No, splitting preserves the original quality of each page. Text, images, and formatting remain unchanged in the extracted PDF files."
+          },
+          {
+            question: "Can I split password-protected PDFs?",
+            answer: "You'll need to unlock password-protected PDFs first. Use the PDF Unlock tool to remove the password, then you can split the unlocked document."
+          },
+          {
+            question: "How do I specify page ranges?",
+            answer: "Page ranges can be specified using formats like '1-5' for pages 1 through 5, '1,3,5' for specific pages, or '1-' for page 1 to the end."
+          },
+          {
+            question: "What happens to bookmarks and links?",
+            answer: "Bookmarks and internal links within split sections are preserved. However, links that reference pages outside the split section may become invalid."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

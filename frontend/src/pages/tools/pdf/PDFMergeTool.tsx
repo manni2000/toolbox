@@ -208,8 +208,76 @@ const PDFMergeTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Layers className="h-5 w-5 text-blue-500" />
+            What is PDF Merging?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PDF merging combines multiple PDF files into a single document. This is useful for organizing related documents, creating comprehensive reports, or consolidating files for easier sharing and archiving.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload multiple PDF files</li>
+            <li>Arrange the order by dragging</li>
+            <li>The tool merges them into one PDF</li>
+            <li>Download the combined document</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Merge Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Drag to reorder pages</li>
+                <li>• Multiple file support</li>
+                <li>• Original quality preserved</li>
+                <li>• Fast processing</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Report compilation</li>
+                <li>• Document organization</li>
+                <li>• Contract assembly</li>
+                <li>• Archive creation</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Is there a limit to how many PDFs I can merge?",
+            answer: "You can merge multiple PDFs together. The exact limit depends on file sizes and system resources. For very large merges, consider doing them in batches."
+          },
+          {
+            question: "Will the quality of my PDFs be affected?",
+            answer: "No, the merging process preserves the original quality of all PDFs. Text, images, and formatting remain unchanged in the merged document."
+          },
+          {
+            question: "Can I change the order of pages after uploading?",
+            answer: "Yes, you can drag and drop the uploaded PDFs to rearrange their order before merging. The final merged PDF will follow the order you specify."
+          },
+          {
+            question: "What happens to bookmarks and metadata?",
+            answer: "Bookmarks and metadata from individual PDFs may be preserved or combined depending on the merging method. Complex bookmarks may need manual adjustment."
+          },
+          {
+            question: "Can I merge password-protected PDFs?",
+            answer: "You'll need to unlock password-protected PDFs first before merging. Use the PDF Unlock tool to remove passwords, then merge the unlocked files."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

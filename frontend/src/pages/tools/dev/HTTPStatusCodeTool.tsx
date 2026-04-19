@@ -490,7 +490,30 @@ const HTTPStatusCodeTool = () => {
         </motion.div>
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "What do the status code numbers mean?",
+            answer: "The first digit indicates the response class: 1xx (informational), 2xx (success), 3xx (redirection), 4xx (client error), 5xx (server error). The last two digits provide specific details."
+          },
+          {
+            question: "What is the most common success code?",
+            answer: "200 OK is the most common success code, indicating the request was successful and the response contains the requested resource."
+          },
+          {
+            question: "What's the difference between 404 and 500?",
+            answer: "404 Not Found is a client error (4xx) meaning the requested resource doesn't exist. 500 Internal Server Error is a server error (5xx) meaning the server encountered an unexpected condition."
+          },
+          {
+            question: "When should I use 301 vs 302?",
+            answer: "Use 301 Moved Permanently for permanent redirects (SEO-friendly). Use 302 Found for temporary redirects when the resource may move back to the original location."
+          },
+          {
+            question: "How do I handle 401 vs 403?",
+            answer: "401 Unauthorized means authentication is required but missing. 403 Forbidden means authentication was provided but the user lacks permission to access the resource."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

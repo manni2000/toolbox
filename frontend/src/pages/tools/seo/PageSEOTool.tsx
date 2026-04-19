@@ -944,8 +944,76 @@ const PageSEOTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Globe className="h-5 w-5 text-blue-500" />
+            What is Page SEO Analysis?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Page SEO analysis evaluates how well a webpage is optimized for search engines. It checks technical SEO factors, on-page elements, content quality, and provides actionable recommendations to improve search rankings.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your page URL to analyze</li>
+            <li>The tool crawls and analyzes the page</li>
+            <li>Checks multiple SEO factors</li>
+            <li>Get comprehensive optimization report</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Analysis Factors</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Meta tags analysis</li>
+                <li>• Heading structure</li>
+                <li>• Content quality</li>
+                <li>• Technical SEO checks</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Optimization Areas</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Title optimization</li>
+                <li>• Description improvement</li>
+                <li>• Content enhancement</li>
+                <li>• Technical fixes</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What does page SEO analysis check?",
+            answer: "Analysis checks title tags, meta descriptions, headings, content quality, internal links, images, page speed, mobile-friendliness, and technical SEO factors."
+          },
+          {
+            question: "How often should I analyze my pages?",
+            answer: "Analyze pages when creating new content, making major updates, or if rankings drop. Regular audits (quarterly) help maintain optimal SEO performance."
+          },
+          {
+            question: "What's the most important on-page SEO factor?",
+            answer: "Content quality and relevance are most important. Technical SEO and on-page optimization support good content but can't compensate for poor or irrelevant content."
+          },
+          {
+            question: "Does page speed affect SEO?",
+            answer: "Yes, page speed is a ranking factor, especially for mobile. Faster pages provide better user experience and rank higher in search results."
+          },
+          {
+            question: "Should I focus on single keywords or topics?",
+            answer: "Focus on topics and user intent rather than single keywords. Modern SEO rewards comprehensive content that covers topics thoroughly rather than keyword stuffing."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

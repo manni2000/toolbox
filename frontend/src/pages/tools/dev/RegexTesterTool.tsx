@@ -291,8 +291,76 @@ const RegexTesterTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Code className="h-5 w-5 text-blue-500" />
+            What is Regex Testing?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Regular expressions (regex) are patterns used to match character combinations in strings. Regex testing allows you to validate patterns against test text, find matches, and debug complex regex expressions for data validation and extraction.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your regex pattern in the pattern field</li>
+            <li>Set flags (g for global, i for case-insensitive, m for multiline)</li>
+            <li>Enter test text to match against the pattern</li>
+            <li>View all matches, groups, and capture results</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Regex Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Pattern matching</li>
+                <li>• Capture groups</li>
+                <li>• Flag support (g, i, m)</li>
+                <li>• Real-time testing</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Email validation</li>
+                <li>• Data extraction</li>
+                <li>• String replacement</li>
+                <li>• Input validation</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What are regex flags?",
+            answer: "Flags modify how regex patterns match. Common flags: g (global - find all matches), i (case-insensitive), m (multiline - match across line breaks)."
+          },
+          {
+            question: "How do capture groups work?",
+            answer: "Capture groups are parts of the pattern enclosed in parentheses (). They allow you to extract specific portions of matches for further processing."
+          },
+          {
+            question: "What does the 'g' flag do?",
+            answer: "The 'g' (global) flag finds all matches in the string, not just the first one. Without it, regex stops after the first match."
+          },
+          {
+            question: "Can I test complex regex patterns?",
+            answer: "Yes, the tool supports complex patterns including lookaheads, lookbehinds, character classes, quantifiers, and all standard regex features."
+          },
+          {
+            question: "Does this support JavaScript regex syntax?",
+            answer: "Yes, this tool uses JavaScript's RegExp engine, supporting all JavaScript regex syntax and features."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

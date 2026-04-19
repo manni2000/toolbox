@@ -219,8 +219,76 @@ export default function TextRedactionTool() {
           </div>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is Text Redaction?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Text redaction removes or obscures sensitive information from documents before sharing. This protects personal data, confidential information, and private details while maintaining document structure and readability.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste text or upload a document</li>
+            <li>Define patterns to redact (emails, phones, SSN)</li>
+            <li>The tool finds and masks sensitive data</li>
+            <li>Download the redacted document</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Redaction Types</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Email addresses</li>
+                <li>• Phone numbers</li>
+                <li>• Credit card numbers</li>
+                <li>• Custom patterns</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Document sanitization</li>
+                <li>• Privacy compliance</li>
+                <li>• Legal document prep</li>
+                <li>• Data sharing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What types of data can be redacted?",
+            answer: "Common patterns include emails, phone numbers, credit cards, social security numbers, dates, addresses, and custom regex patterns you define."
+          },
+          {
+            question: "Is redacted data recoverable?",
+            answer: "Proper redaction replaces data with masking characters or removes it entirely. Once redacted, the original data cannot be recovered from the output document."
+          },
+          {
+            question: "Why not just use find and replace?",
+            answer: "Find and replace can miss variations, partial matches, or inconsistent formatting. Redaction tools use pattern matching to catch all instances reliably."
+          },
+          {
+            question: "Can I redact custom patterns?",
+            answer: "Yes, you can define custom regex patterns to match specific formats like internal IDs, reference numbers, or organization-specific data formats."
+          },
+          {
+            question: "Is redaction required for compliance?",
+            answer: "Yes, regulations like GDPR, HIPAA, and PCI-DSS require redaction of personal data before sharing documents. Redaction helps ensure compliance with privacy laws."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

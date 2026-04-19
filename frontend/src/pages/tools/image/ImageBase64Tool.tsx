@@ -266,8 +266,68 @@ const ImageBase64Tool = () => {
           </>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileCode className="h-5 w-5 text-blue-500" />
+            What is Base64 Encoding?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Base64 encoding converts binary data (like images) into ASCII text format. This allows images to be embedded directly in HTML, CSS, or JSON without needing separate files. It's commonly used for data URIs and API responses.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your image for encoding</li>
+            <li>The tool converts it to Base64 string</li>
+            <li>Copy the Base64 string for use</li>
+            <li>Or paste Base64 to decode back to image</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Base64 Uses</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Inline images in HTML</li>
+                <li>• CSS background images</li>
+                <li>• JSON API responses</li>
+                <li>• Email attachments</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Encoding Features</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Image to Base64</li>
+                <li>• Base64 to Image</li>
+                <li>• Copy to clipboard</li>
+                <li>• Download as file</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+          <ToolFAQ faqs={[
+            {
+              question: "Why use Base64 for images?",
+              answer: "Base64 allows embedding images directly in code, reducing HTTP requests. Useful for small icons, logos, or when you can't use external files. However, it increases file size by ~33%."
+            },
+            {
+              question: "Does Base64 encoding increase file size?",
+              answer: "Yes, Base64 encoding increases file size by approximately 33%. Use it sparingly for small images. For large images, external files are more efficient."
+            },
+            {
+              question: "Can I use Base64 images in CSS?",
+              answer: "Yes, you can use Base64 in CSS with background-image: url('data:image/png;base64,...'). This is common for small icons and sprites."
+            },
+          ]} />
       </div>
     </ToolLayout>
   );

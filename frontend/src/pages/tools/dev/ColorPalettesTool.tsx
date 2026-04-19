@@ -821,8 +821,76 @@ const ColorPalettesTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Palette className="h-5 w-5 text-blue-500" />
+            What are Color Palettes?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Color palettes are curated collections of colors that work harmoniously together. They help designers and developers create visually appealing designs by providing pre-combined color schemes that ensure consistency and aesthetic balance across projects.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Browse pre-built palettes or generate custom ones</li>
+            <li>View colors in HEX, RGB, and HSL formats</li>
+            <li>Copy individual colors or entire palettes</li>
+            <li>Export palettes for use in your projects</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Palette Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Pre-built collections</li>
+                <li>• Custom generation</li>
+                <li>• Multiple formats</li>
+                <li>• Copy & export</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Web design</li>
+                <li>• Brand identity</li>
+                <li>• UI/UX design</li>
+                <li>• Print materials</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What types of color palettes are available?",
+            answer: "The tool offers various palette types including monochromatic, analogous, complementary, triadic, and nature-inspired palettes for different design needs."
+          },
+          {
+            question: "Can I create custom palettes?",
+            answer: "Yes, you can generate custom palettes based on a base color, or manually create palettes by selecting individual colors that work well together."
+          },
+          {
+            question: "What color formats are provided?",
+            answer: "Each color is displayed in HEX (e.g., #3b82f6), RGB (e.g., rgb(59, 130, 246)), and HSL (e.g., hsl(217, 91%, 60%)) formats for use in different tools."
+          },
+          {
+            question: "How do I choose the right palette?",
+            answer: "Consider the mood you want to convey, accessibility requirements, and brand guidelines. Test palettes in context to ensure they work well with your content."
+          },
+          {
+            question: "Can I export palettes?",
+            answer: "Yes, you can copy individual colors or export entire palettes in various formats for use in design tools like Figma, Sketch, or code editors."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

@@ -360,9 +360,77 @@ export default function SecureNotesTool() {
           </div>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Lock className="h-5 w-5 text-blue-500" />
+            What are Secure Notes?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Secure notes are encrypted text storage for sensitive information. Notes are encrypted with your password, ensuring only you can access the content. This is ideal for storing passwords, API keys, or private information securely.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Create a new note with your content</li>
+            <li>Set a master password for encryption</li>
+            <li>The tool encrypts your note locally</li>
+            <li>Decrypt with your password to view</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Security Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• AES-256 encryption</li>
+                <li>• Client-side only</li>
+                <li>• No server storage</li>
+                <li>• Password protected</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Password storage</li>
+                <li>• API keys</li>
+                <li>• Private notes</li>
+                <li>• Sensitive data</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Are my notes stored on a server?",
+            answer: "No, all encryption and decryption happens locally in your browser. Notes are stored in your browser's local storage, encrypted with your password. Nothing is sent to any server."
+          },
+          {
+            question: "What happens if I forget my password?",
+            answer: "Without your password, notes cannot be decrypted. This is intentional for security. Always remember your password or use a password manager to store it securely."
+          },
+          {
+            question: "How secure is the encryption?",
+            answer: "We use AES-256 encryption, which is the industry standard for secure data protection. Your password is used as the encryption key, making it cryptographically secure."
+          },
+          {
+            question: "Can I export my notes?",
+            answer: "Yes, you can export individual notes or all notes. Exported notes are still encrypted and can only be decrypted with your original password."
+          },
+          {
+            question: "Is this better than a password manager?",
+            answer: "Secure notes are great for quick, temporary storage. For comprehensive password management, use dedicated password managers with features like auto-fill and cross-device sync."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );
-}
+};

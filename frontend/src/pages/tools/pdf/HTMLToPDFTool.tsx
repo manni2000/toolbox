@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { FileText, X, Loader2, Link } from "lucide-react";
+import { motion } from "framer-motion";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
@@ -274,8 +275,76 @@ const HTMLToPDFTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-500" />
+            What is HTML to PDF Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            HTML to PDF conversion transforms web pages or HTML content into PDF documents. This is useful for creating printable versions of web content, archiving web pages, generating reports, or sharing formatted documents that maintain consistent appearance across devices.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your HTML file or enter HTML content</li>
+            <li>The tool renders the HTML and converts to PDF</li>
+            <li>Layout and styling are preserved</li>
+            <li>Download the generated PDF document</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• CSS styling preserved</li>
+                <li>• Layout maintained</li>
+                <li>• Images embedded</li>
+                <li>• Links clickable</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Invoice generation</li>
+                <li>• Report creation</li>
+                <li>• Web archiving</li>
+                <li>• Document sharing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Will CSS styling be preserved in the PDF?",
+            answer: "Yes, most CSS styling including colors, fonts, and layout is preserved. However, some advanced CSS features may not render perfectly. Use standard CSS for best results."
+          },
+          {
+            question: "Can I include images in the HTML?",
+            answer: "Yes, images embedded in the HTML will be included in the PDF. Use absolute URLs or base64-encoded images for reliable inclusion."
+          },
+          {
+            question: "What HTML features are supported?",
+            answer: "Standard HTML5 elements including headings, paragraphs, lists, tables, forms, and basic CSS are supported. JavaScript execution is typically disabled for security."
+          },
+          {
+            question: "How is page size determined?",
+            answer: "PDF page size is typically A4 by default. You can control page breaks using CSS page-break properties or by setting specific dimensions in your HTML."
+          },
+          {
+            question: "Can I convert a live website URL to PDF?",
+            answer: "This tool converts HTML files or content. For live URLs, first save the page as HTML or use a specialized web-to-PDF service that can render live websites."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

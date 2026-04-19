@@ -237,7 +237,76 @@ const PDFToWordTool = () => {
           </div>
         )}
 
-        <ToolFAQ />
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileType className="h-5 w-5 text-blue-500" />
+            What is PDF to Word Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PDF to Word conversion transforms PDF documents into editable Microsoft Word (.docx) files. This enables you to extract, edit, and reuse content from PDFs in Word processors, making documents easier to modify and update.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PDF file</li>
+            <li>The tool extracts text and formatting</li>
+            <li>Layout is converted to Word format</li>
+            <li>Download the editable Word document</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Text extraction</li>
+                <li>• Formatting preserved</li>
+                <li>• Tables converted</li>
+                <li>• Images included</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Document editing</li>
+                <li>• Content reuse</li>
+                <li>• Format conversion</li>
+                <li>• Text extraction</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "How accurate is the PDF to Word conversion?",
+            answer: "Conversion accuracy depends on the PDF structure. Text-based PDFs convert well with good formatting. Scanned PDFs need OCR for text extraction. Complex layouts may require manual adjustment."
+          },
+          {
+            question: "Will images be preserved in the Word document?",
+            answer: "Yes, images embedded in the PDF are typically extracted and included in the Word document. However, image positioning may need manual adjustment for complex layouts."
+          },
+          {
+            question: "Can I convert scanned PDFs to Word?",
+            answer: "Scanned PDFs require OCR (Optical Character Recognition) to extract text. This tool works best with text-based PDFs. For scanned documents, use an OCR tool first."
+          },
+          {
+            question: "What happens to tables in the PDF?",
+            answer: "Tables are converted to Word tables when possible. Complex or nested tables may convert to text or require manual reformatting in Word."
+          },
+          {
+            question: "Can I convert password-protected PDFs?",
+            answer: "Password-protected PDFs must be unlocked first. Use the PDF Unlock tool to remove the password, then convert the unlocked PDF to Word format."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

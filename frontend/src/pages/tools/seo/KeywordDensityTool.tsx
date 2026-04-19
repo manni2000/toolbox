@@ -405,8 +405,76 @@ const KeywordDensityTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Target className="h-5 w-5 text-blue-500" />
+            What is Keyword Density Analysis?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Keyword density analysis measures how frequently keywords appear in content relative to total word count. This helps optimize content for search engines without overusing keywords, which can be penalized as keyword stuffing.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste your content or enter URL</li>
+            <li>The tool analyzes word frequency</li>
+            <li>Calculate keyword density percentages</li>
+            <li>View optimization recommendations</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Analysis Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Word frequency count</li>
+                <li>• Density percentage</li>
+                <li>• Keyword positioning</li>
+                <li>• Readability score</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">SEO Best Practices</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Natural keyword usage</li>
+                <li>• Avoid stuffing</li>
+                <li>• Focus on relevance</li>
+                <li>• User experience priority</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is the ideal keyword density?",
+            answer: "There's no ideal percentage, but 1-3% is generally recommended. Focus on natural usage rather than hitting a specific number. Write for readers first, search engines second."
+          },
+          {
+            question: "Is keyword density still important for SEO?",
+            answer: "Keyword density is less important than it used to be. Search engines now focus on context, intent, and natural language. Over-optimizing for density can actually hurt your rankings."
+          },
+          {
+            question: "What is keyword stuffing?",
+            answer: "Keyword stuffing is unnaturally repeating keywords to manipulate rankings. It's penalized by search engines. Use keywords naturally and focus on providing valuable content."
+          },
+          {
+            question: "Should I use variations of my keyword?",
+            answer: "Yes, using keyword variations, synonyms, and related terms helps search engines understand context and improves readability. It also helps rank for related searches."
+          },
+          {
+            question: "How often should I include my main keyword?",
+            answer: "Include your main keyword in important places: title, first paragraph, headings, and naturally throughout the content. Don't force it where it doesn't belong."
+          }
+        ]} />
+
       </div>
     </ToolLayout>
   );

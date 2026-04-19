@@ -89,8 +89,76 @@ const CaseConverterTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <ArrowUpDown className="h-5 w-5 text-blue-500" />
+            What is Case Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Case conversion transforms text between different letter cases (uppercase, lowercase, title case, sentence case). This is useful for formatting text consistently, correcting capitalization errors, and adhering to style guidelines.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter or paste your text</li>
+            <li>Select the desired case format</li>
+            <li>The tool converts the text</li>
+            <li>Copy the formatted result</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Case Types</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Uppercase (ALL CAPS)</li>
+                <li>• Lowercase (all lower)</li>
+                <li>• Title Case (Capitalize Words)</li>
+                <li>• Sentence case (Sentence case)</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Title formatting</li>
+                <li>• Name standardization</li>
+                <li>• Code formatting</li>
+                <li>• Data cleaning</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between title case and sentence case?",
+            answer: "Title case capitalizes the first letter of each word. Sentence case capitalizes only the first letter of sentences and proper nouns. Use title case for titles, sentence case for prose."
+          },
+          {
+            question: "Should I use uppercase for emphasis?",
+            answer: "Avoid using uppercase for emphasis—it's harder to read and can appear aggressive. Use bold or italics instead. Uppercase is appropriate for acronyms and headings."
+          },
+          {
+            question: "When should I use lowercase?",
+            answer: "Use lowercase for email addresses, URLs, hashtags, and casual text. It's also appropriate for code and technical identifiers that are case-sensitive."
+          },
+          {
+            question: "How do I handle proper nouns in title case?",
+            answer: "Title case should capitalize all major words including proper nouns. However, some style guides lowercase articles, conjunctions, and prepositions unless they're the first word."
+          },
+          {
+            question: "Can case conversion affect data?",
+            answer: "Yes, case conversion can affect data in systems that are case-sensitive. Be careful when converting database keys, URLs, or code identifiers that rely on specific casing."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

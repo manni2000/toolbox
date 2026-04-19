@@ -152,8 +152,72 @@ const UUIDGeneratorTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Key className="h-5 w-5 text-blue-500" />
+            What is UUID Generation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            UUID (Universally Unique Identifier) generation creates unique identifiers for data entities. UUIDs are 128-bit numbers represented as 36-character strings, ensuring uniqueness across systems without central coordination.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Select UUID version (v1, v4)</li>
+            <li>The tool generates unique IDs</li>
+ <li>Copy the UUID for use</li>
+            <li>Generate multiple if needed</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">UUID Versions</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• v1: Time-based</li>
+                <li>• v4: Random</li>
+                <li>• v3/v5: Namespace-based</li>
+                <li>• Standard format</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Database keys</li>
+                <li>• Session IDs</li>
+                <li>• Request tracking</li>
+                <li>• Unique identifiers</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between UUID v1 and v4?",
+            answer: "v1 UUIDs are time-based and include MAC address, making them time-sortable but potentially less private. v4 UUIDs are randomly generated and don't reveal creation time or machine identity, making them more private."
+          },
+          {
+            question: "Are UUIDs truly unique?",
+            answer: "UUIDs are statistically unique across all systems. The probability of collision is infinitesimally small (1 in 2^122 for v4), making them practically unique for all real-world applications."
+          },
+          {
+            question: "Why use UUIDs instead of auto-increment IDs?",
+            answer: "UUIDs don't require central coordination, making them ideal for distributed systems. They're harder to guess than sequential IDs and work across multiple databases without ID conflicts."
+          },
+          {
+            question: "Can UUIDs be reversed to reveal information?",
+            answer: "v1 UUIDs can reveal creation time and MAC address, potentially compromising privacy. v4 UUIDs are random and don't reveal information about the generating system."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

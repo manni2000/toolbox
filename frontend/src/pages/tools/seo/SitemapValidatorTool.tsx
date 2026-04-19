@@ -453,8 +453,77 @@ const SitemapValidatorTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Globe className="h-5 w-5 text-blue-500" />
+            What is Sitemap Validation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Sitemap validation checks XML sitemaps for errors and ensures they follow proper format. Valid sitemaps help search engines discover and index your website's pages more efficiently.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your sitemap URL or upload file</li>
+            <li>The tool validates XML structure</li>
+            <li>Checks for common errors and warnings</li>
+            <li>Get recommendations for improvement</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Validation Checks</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• XML syntax validation</li>
+                <li>• URL format checking</li>
+                <li>• Last modified dates</li>
+                <li>• Priority values</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">SEO Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Better crawling</li>
+                <li>• Faster indexing</li>
+                <li>• Error prevention</li>
+                <li>• Search visibility</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is an XML sitemap?",
+            answer: "An XML sitemap lists all important pages on your website, helping search engines discover and index them. It includes URLs, last modified dates, change frequency, and priority."
+          },
+          {
+            question: "Where should I put my sitemap?",
+            answer: "Place sitemap.xml in your website's root directory. Submit it to Google Search Console and Bing Webmaster Tools. Also reference it in robots.txt."
+          },
+          {
+            question: "How often should I update my sitemap?",
+            answer: "Update your sitemap whenever you add, remove, or significantly change pages. For dynamic sites, use automated sitemap generation to keep it current."
+          },
+          {
+            question: "What's the difference between priority and change frequency?",
+            answer: "Priority indicates page importance (0.0-1.0) relative to other pages. Change frequency suggests how often the page updates (always, daily, weekly, monthly). These are hints to crawlers."
+          },
+          {
+            question: "Do I need a sitemap for a small site?",
+            answer: "Even small sites benefit from sitemaps. They ensure all pages are discovered, help with new sites, and provide valuable metadata to search engines about your content."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

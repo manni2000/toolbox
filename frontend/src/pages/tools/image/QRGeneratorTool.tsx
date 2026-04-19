@@ -263,7 +263,30 @@ const QRGeneratorToolEnhanced = () => {
         </main>
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "What data can QR codes store?",
+            answer: "QR codes can store up to 2,953 bytes of data including URLs, text, contact info (vCards), WiFi credentials, and more. The capacity depends on the QR code version and error correction level."
+          },
+          {
+            question: "What are error correction levels?",
+            answer: "QR codes have 4 error correction levels: L (7%), M (15%), Q (25%), H (30%). Higher levels allow the QR to be read even if partially damaged but increase code size."
+          },
+          {
+            question: "Can QR codes be tracked?",
+            answer: "Yes, using URL shorteners with analytics. Each scan can be tracked for location, device, time, and more. This is useful for marketing campaigns and measuring engagement."
+          },
+          {
+            question: "What size should QR codes be printed?",
+            answer: "For reliable scanning, QR codes should be at least 2cm x 2cm. Ensure high contrast (dark on light) and sufficient quiet space around the code."
+          },
+          {
+            question: "Are QR codes secure?",
+            answer: "QR codes themselves aren't secure - they just contain data. The security depends on what they link to. Be cautious scanning unknown QR codes as they could lead to phishing sites."
+          }
+        ]} />
+        </div>
       </ToolLayout>
     </>
   );

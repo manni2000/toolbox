@@ -289,8 +289,76 @@ const ImageCropTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Crop className="h-5 w-5 text-blue-500" />
+            What is Image Cropping?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Image cropping removes unwanted outer portions of an image to focus on the main subject or improve composition. It's essential for creating profile pictures, product images, and removing distracting elements from photos.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your image</li>
+            <li>Drag to define the crop area</li>
+            <li>Adjust the selection as needed</li>
+            <li>Download the cropped image</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Cropping Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Drag selection area</li>
+                <li>• Visual preview</li>
+                <li>• Aspect ratio options</li>
+                <li>• Multiple formats</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Profile pictures</li>
+                <li>• Product photos</li>
+                <li>• Social media</li>
+                <li>• Removing backgrounds</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How do I get a perfect square crop?",
+            answer: "Most tools have aspect ratio lock options. Set it to 1:1 for square, or manually adjust until width equals height. Use grid overlays for precision."
+          },
+          {
+            question: "Can I undo a crop?",
+            answer: "Always keep your original image. If you make a mistake, reload the original and crop again. Cropping is destructive - always work from copies."
+          },
+          {
+            question: "What's the best aspect ratio for profile pictures?",
+            answer: "Most platforms prefer 1:1 (square) for profile pictures. Instagram uses 1:1, LinkedIn uses 1:1, Twitter uses 1:1 for avatars. Check specific platform guidelines."
+          },
+          {
+            question: "Does cropping reduce image quality?",
+            answer: "Cropping itself doesn't reduce quality, but if you then resize the cropped image significantly larger, it may appear pixelated. Always crop at original resolution."
+          },
+          {
+            question: "Can I crop to specific dimensions?",
+            answer: "Yes, many tools allow setting exact pixel dimensions. Enter your target width and height, and the crop tool will guide you to that exact size."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

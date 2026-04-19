@@ -571,8 +571,77 @@ Generated: ${new Date().toLocaleDateString()}
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Gauge className="h-5 w-5 text-blue-500" />
+            What is Page Speed Checklist?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Page speed checklist evaluates your website's loading performance and provides optimization recommendations. Fast loading improves user experience, SEO rankings, and conversion rates.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your website URL</li>
+            <li>The tool analyzes loading performance</li>
+            <li>Checks optimization factors</li>
+            <li>Get actionable improvement tips</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Performance Metrics</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Load time analysis</li>
+                <li>• Resource optimization</li>
+                <li>• Caching efficiency</li>
+                <li>• Mobile performance</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Optimization Tips</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Image compression</li>
+                <li>• Minification</li>
+                <li>• Browser caching</li>
+                <li>• CDN usage</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is a good page load time?",
+            answer: "Aim for under 3 seconds for full page load. Core Web Vitals target: LCP under 2.5s, FID under 100ms, CLS under 0.1. Faster is always better."
+          },
+          {
+            question: "Why is page speed important for SEO?",
+            answer: "Page speed is a direct ranking factor, especially for mobile. Fast sites provide better user experience, lower bounce rates, and rank higher in search results."
+          },
+          {
+            question: "What are Core Web Vitals?",
+            answer: "Core Web Vitals are Google's user experience metrics: Largest Contentful Paint (loading), First Input Delay (interactivity), and Cumulative Layout Shift (visual stability)."
+          },
+          {
+            question: "How can I improve page speed?",
+            answer: "Optimize images, minify CSS/JS, enable compression, use browser caching, reduce server response time, and use a CDN for faster content delivery."
+          },
+          {
+            question: "Does page speed affect conversions?",
+            answer: "Yes, faster pages have higher conversion rates. Every second of delay reduces conversions. A 1-second improvement can significantly boost conversion rates."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

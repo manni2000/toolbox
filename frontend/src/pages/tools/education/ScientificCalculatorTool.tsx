@@ -473,7 +473,30 @@ const ScientificCalculatorTool = () => {
       </Card>
 
       {/* FAQ Section */}
-      <ToolFAQ />
+      <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between basic and scientific calculators?",
+            answer: "Basic calculators perform arithmetic (+, -, ×, ÷). Scientific calculators add trigonometry, logarithms, exponents, roots, and other advanced mathematical functions."
+          },
+          {
+            question: "How do I use trigonometric functions?",
+            answer: "Enter the angle value, then select sin, cos, or tan. Ensure you're using the correct angle mode (degrees or radians) for your calculation."
+          },
+          {
+            question: "What do the memory functions do?",
+            answer: "Memory functions (M+, M-, MR, MC) allow you to store values for later use. M+ adds to memory, M- subtracts from memory, MR recalls memory, and MC clears memory."
+          },
+          {
+            question: "How do I calculate exponents?",
+            answer: "Use the exponent button (usually x^y or ^) to raise a number to a power. For square roots, use the √ button. For other roots, use the exponent with fractions."
+          },
+          {
+            question: "What is the difference between log and ln?",
+            answer: "log typically means base-10 logarithm (common logarithm). ln means natural logarithm (base-e logarithm, where e ≈ 2.71828). They're used in different mathematical contexts."
+          }
+        ]} />
+      </div>
     </ToolLayout>
   );
 };

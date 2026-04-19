@@ -509,8 +509,76 @@ const RobotsTxtTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is Robots.txt Management?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Robots.txt management creates and validates robots.txt files that control how search engines crawl your website. This file tells search bots which pages to crawl and which to avoid, optimizing crawl efficiency.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Define crawl rules for your site</li>
+            <li>The tool generates robots.txt syntax</li>
+            <li>Validate the file for errors</li>
+            <li>Download and upload to your server</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Control Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Allow/disallow rules</li>
+                <li>• Crawl delay settings</li>
+                <li>• Sitemap location</li>
+                <li>• Bot-specific rules</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">SEO Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Efficient crawling</li>
+                <li>• Crawl budget optimization</li>
+                <li>• Private content protection</li>
+                <li>• Better indexing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is robots.txt used for?",
+            answer: "Robots.txt tells search engine crawlers which pages they can access. It's used to prevent crawling of private pages, admin areas, or low-value content to optimize crawl budget."
+          },
+          {
+            question: "Where should robots.txt be placed?",
+            answer: "Robots.txt must be placed in the root directory of your website at yourdomain.com/robots.txt. Search bots look for it at this standard location."
+          },
+          {
+            question: "Can robots.txt hide pages from search results?",
+            answer: "No, robots.txt controls crawling, not indexing. To hide pages from search results, use noindex meta tags or password protection. Robots.txt is not for security."
+          },
+          {
+            question: "Should I block all bots?",
+            answer: "No, block only specific bots or pages you don't want crawled. Allow major search engines (Googlebot, Bingbot) to crawl your public content for indexing."
+          },
+          {
+            question: "How do I test my robots.txt?",
+            answer: "Use Google's Robots.txt Tester in Search Console, or validate with this tool. Test to ensure important pages are accessible and private pages are blocked."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

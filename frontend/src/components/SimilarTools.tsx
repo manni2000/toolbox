@@ -104,7 +104,7 @@ const SimilarTools = ({ currentToolSlug, excludeCurrent = true }: { currentToolS
       className="mt-12 pt-8 border-t border-border/50"
     >
       <div className="text-center mb-8">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Similar {currentCategory} Tools</h3>
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Similar {currentCategory}</h3>
         <p className="text-gray-600 dark:text-gray-400 text-sm">Explore more tools in this category</p>
       </div>
 

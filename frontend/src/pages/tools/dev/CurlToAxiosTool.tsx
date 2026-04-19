@@ -546,7 +546,30 @@ const CurlToAxiosTool = () => {
         </motion.div>
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "What is cURL?",
+            answer: "cURL is a command-line tool for transferring data with URLs. It supports various protocols including HTTP, HTTPS, FTP, and more, making it essential for API testing."
+          },
+          {
+            question: "What languages are supported?",
+            answer: "The tool generates code for Axios (JavaScript), Fetch API (JavaScript), vanilla JavaScript, and Python (using the requests library)."
+          },
+          {
+            question: "Does it handle authentication?",
+            answer: "Yes, the tool parses and converts authentication headers, Basic Auth, and API keys from the cURL command into the appropriate code format."
+          },
+          {
+            question: "Can it handle POST requests with data?",
+            answer: "Yes, the tool parses POST request bodies, form data, and JSON payloads from cURL commands and converts them to the appropriate code format."
+          },
+          {
+            question: "What about custom headers?",
+            answer: "Custom headers from the cURL command are automatically parsed and included in the generated code, maintaining all request configurations."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

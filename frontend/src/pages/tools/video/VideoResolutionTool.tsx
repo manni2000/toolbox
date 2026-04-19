@@ -341,8 +341,76 @@ const VideoResolutionTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Monitor className="h-5 w-5 text-blue-500" />
+            What is Video Resolution Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Video resolution conversion changes the resolution (size) of video files to different dimensions. This is useful for optimizing videos for different devices, platforms, or storage requirements.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your video file</li>
+            <li>Select target resolution</li>
+            <li>The tool converts the video</li>
+            <li>Download the converted video</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Resolution Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• 720p (HD)</li>
+                <li>• 1080p (Full HD)</li>
+                <li>• 4K (Ultra HD)</li>
+                <li>• Custom dimensions</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Mobile optimization</li>
+                <li>• Platform compatibility</li>
+                <li>• Storage optimization</li>
+                <li>• Bandwidth reduction</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What video resolution should I use?",
+            answer: "Use 720p for mobile and web, 1080p for most platforms, 4K for high-quality content. Consider your audience's devices and bandwidth when choosing resolution."
+          },
+          {
+            question: "Does changing resolution reduce quality?",
+            answer: "Lowering resolution can reduce quality, especially for detailed content. Raising resolution doesn't improve quality if the original is lower. Always work with the highest quality source."
+          },
+          {
+            question: "What's the difference between 720p and 1080p?",
+            answer: "720p is 1280x720 pixels (HD). 1080p is 1920x1080 pixels (Full HD). 1080p has 2.25 times more pixels than 720p, providing sharper detail."
+          },
+          {
+            question: "Can I change aspect ratio with resolution?",
+            answer: "Resolution conversion typically preserves aspect ratio. To change aspect ratio, you need cropping or scaling which may distort or cut parts of the video."
+          },
+          {
+            question: "How does resolution affect file size?",
+            answer: "Higher resolution increases file size significantly. 4K files are about 4x larger than 1080p. Lower resolution reduces file size and bandwidth requirements."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

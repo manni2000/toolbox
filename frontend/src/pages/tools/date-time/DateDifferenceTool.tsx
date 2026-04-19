@@ -134,8 +134,76 @@ const DateDifferenceTool = () => {
         )}
       </div>
 
-      {/* FAQ Section */}
-      <ToolFAQ />
+      {/* Tool Definition Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="rounded-xl border border-border bg-card p-6"
+      >
+        <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+          <Calendar className="h-5 w-5 text-blue-500" />
+          What is Date Difference?
+        </h3>
+        <p className="text-muted-foreground mb-4">
+          Date difference calculation determines the exact time elapsed between two dates. It provides comprehensive breakdowns in years, months, days, hours, minutes, and seconds, useful for project planning, age calculations, or tracking durations.
+        </p>
+
+        <h4 className="font-semibold mb-2">How It Works</h4>
+        <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+          <li>Select the start date using the date picker</li>
+          <li>Select the end date for your calculation</li>
+          <li>Click calculate to compute the difference</li>
+          <li>View results in multiple time units</li>
+        </ol>
+
+        <div className="grid sm:grid-cols-2 gap-4 mt-4">
+          <div className="p-3 bg-blue-50 rounded-lg">
+            <h5 className="font-semibold text-blue-900 mb-1">Difference Metrics</h5>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li>• Years, months, days</li>
+              <li>• Total days</li>
+              <li>• Total hours</li>
+              <li>• Business days</li>
+            </ul>
+          </div>
+          <div className="p-3 bg-green-50 rounded-lg">
+            <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+            <ul className="text-sm text-green-800 space-y-1">
+              <li>• Project duration</li>
+              <li>• Event planning</li>
+              <li>• Contract periods</li>
+              <li>• Age calculation</li>
+            </ul>
+          </div>
+        </div>
+      </motion.div>
+
+      <div className="mt-8">
+        {/* FAQ Section */}
+      <ToolFAQ faqs={[
+        {
+          question: "How accurate is the date difference calculation?",
+          answer: "The calculation is precise, accounting for leap years, varying month lengths, and exact time differences between the two dates."
+        },
+        {
+          question: "Can I calculate difference for past dates?",
+          answer: "Yes, you can calculate the difference between any two dates, whether both are in the past, future, or one in each."
+        },
+        {
+          question: "What are business days?",
+          answer: "Business days typically exclude weekends (Saturday and Sunday). This helps calculate working days between dates for business purposes."
+        },
+        {
+          question: "Does order of dates matter?",
+          answer: "The tool automatically handles date order. If the end date is before the start date, it will show a negative difference or swap the dates."
+        },
+        {
+          question: "Can I include time in the calculation?",
+          answer: "Currently, the tool calculates date differences. For time-specific calculations, you may need a tool that includes time components."
+        }
+      ]} />
+      </div>
     </ToolLayout>
   );
 };

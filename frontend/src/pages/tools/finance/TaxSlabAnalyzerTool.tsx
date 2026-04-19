@@ -323,6 +323,77 @@ export default function TaxSlabAnalyzerTool() {
           </div>
         </div>
       </div>
+
+      {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-500" />
+            What is Tax Slab Analysis?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Tax slab analysis helps individuals and businesses understand their tax liability based on income brackets. It breaks down taxable income into applicable tax slabs, showing how much tax is payable at each bracket rate for accurate financial planning.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your annual taxable income</li>
+            <li>Select the tax regime (old or new)</li>
+            <li>The tool applies applicable tax slabs</li>
+            <li>View the tax breakdown and effective tax rate</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Tax Regimes</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Old regime: Higher rates, deductions allowed</li>
+                <li>• New regime: Lower rates, no deductions</li>
+                <li>• Choose annually when filing returns</li>
+                <li>• Compare both for optimal savings</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Tax Planning</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Invest in 80C, 80D deductions</li>
+                <li>• Consider HRA exemption</li>
+                <li>• Optimize salary structure</li>
+                <li>• Plan investments tax-efficiently</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "What is the difference between old and new tax regime?",
+            answer: "Old regime has higher tax rates but allows deductions like 80C, HRA. New regime has lower tax rates but no deductions. Choose based on your salary structure and eligible deductions."
+          },
+          {
+            question: "Which tax regime should I choose?",
+            answer: "If you have significant deductions (home loan, investments), old regime may be better. If you have minimal deductions, new regime with lower rates is usually more beneficial."
+          },
+          {
+            question: "What are the current tax slab rates?",
+            answer: "For FY 2024-25, new regime slabs: 0-3L (nil), 3-7L (5%), 7-10L (10%), 10-12L (15%), 12-15L (20%), above 15L (30%). Old regime has different slab structure."
+          },
+          {
+            question: "Can I switch between regimes annually?",
+            answer: "Yes, you can choose the tax regime each financial year when filing returns. You're not locked into one regime, allowing flexibility based on changing circumstances."
+          },
+          {
+            question: "What is rebate under section 87A?",
+            answer: "Section 87A provides a rebate of up to ₹12,500 for taxpayers with taxable income up to ₹5L in the new regime, effectively making income up to ₹5L tax-free."
+          }
+        ]} />
+        </div>
     </ToolLayout>
   );
 }

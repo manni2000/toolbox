@@ -159,11 +159,74 @@ const AgeCalculatorTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <div className="rounded-xl border border-border bg-card p-6">
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-blue-500" />
+            What is Age Calculation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Age calculation determines the precise time elapsed between a birth date and a target date. It provides detailed breakdowns in years, months, days, hours, minutes, and seconds, plus interesting statistics like days until your next birthday.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your birth date using the date picker</li>
+            <li>Optionally set a target date (defaults to today)</li>
+            <li>The calculator computes exact age in multiple units</li>
+            <li>View detailed statistics including next birthday countdown</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Age Metrics</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Years, months, days</li>
+                <li>• Total days lived</li>
+                <li>• Total hours lived</li>
+                <li>• Next birthday countdown</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Birthday planning</li>
+                <li>• Age verification</li>
+                <li>• Milestone tracking</li>
+                <li>• Document preparation</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How accurate is the age calculation?",
+            answer: "The calculation is precise to the second, accounting for leap years and varying month lengths. It provides exact age based on the dates you enter."
+          },
+          {
+            question: "Can I calculate age for any date?",
+            answer: "Yes, you can calculate age between any two dates. Set your birth date and any target date to see the exact time difference."
+          },
+          {
+            question: "Does it account for leap years?",
+            answer: "Yes, the calculator automatically accounts for leap years and varying month lengths to provide accurate age calculations."
+          },
+          {
+            question: "What is the next birthday countdown?",
+            answer: "This feature shows exactly how many days are left until your next birthday, helping you plan celebrations in advance."
+          },
+          {
+            question: "Is my birth date stored?",
+            answer: "No, all calculations happen locally in your browser. Your birth date is never stored or sent to any server."
+          }
+        ]} />
       </div>
-    </ToolLayout>
-  );
+    </div>
+  </ToolLayout>
+);
 };
 
 const AgeUnit = ({ value, label }: { value: number; label: string }) => (

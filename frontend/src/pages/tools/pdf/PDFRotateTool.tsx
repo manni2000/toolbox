@@ -207,8 +207,76 @@ const PDFRotateTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <RotateCw className="h-5 w-5 text-blue-500" />
+            What is PDF Rotation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PDF rotation changes the orientation of pages in a PDF document. This corrects scanned documents that were saved in the wrong orientation, fixes upside-down pages, or adjusts pages for better viewing and printing.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PDF file</li>
+            <li>Select pages to rotate</li>
+            <li>Choose rotation direction (90°, 180°, 270°)</li>
+            <li>Download the rotated PDF</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Rotation Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• 90° clockwise</li>
+                <li>• 180° flip</li>
+                <li>• 270° counter-clockwise</li>
+                <li>• Rotate all or specific pages</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Fix scanned documents</li>
+                <li>• Correct orientation</li>
+                <li>• Prepare for printing</li>
+                <li>• Improve readability</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Can I rotate individual pages or all pages?",
+            answer: "You can rotate individual pages, specific page ranges, or all pages at once. Choose the pages you want to rotate and apply the rotation to just those pages."
+          },
+          {
+            question: "Will rotation affect the quality of the PDF?",
+            answer: "No, rotation doesn't affect image quality or text clarity. The content is simply reoriented without any loss of quality or resolution."
+          },
+          {
+            question: "Can I undo rotation?",
+            answer: "Yes, you can rotate pages back to their original orientation. Simply rotate them in the opposite direction or by the remaining degrees (e.g., rotate 270° to undo a 90° rotation)."
+          },
+          {
+            question: "What happens to page size when rotating?",
+            answer: "Page dimensions remain the same. A portrait page rotated 90° becomes landscape, but the actual page size doesn't change—only the content orientation does."
+          },
+          {
+            question: "Can I rotate password-protected PDFs?",
+            answer: "Password-protected PDFs must be unlocked first. Use the PDF Unlock tool to remove the password, then you can rotate the pages in the unlocked document."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

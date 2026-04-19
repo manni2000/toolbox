@@ -384,8 +384,76 @@ const CurrencyConverterTool = () => {
           </p>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-blue-500" />
+            What is Currency Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Currency conversion converts the value of money from one currency to another based on current exchange rates. It's essential for international travel, business transactions, online shopping, and financial planning across different countries and economic systems.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Select the source currency you want to convert from</li>
+            <li>Select the target currency you want to convert to</li>
+            <li>Enter the amount you wish to convert</li>
+            <li>View the converted amount based on live exchange rates</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Live exchange rates</li>
+                <li>• 150+ currencies supported</li>
+                <li>• Real-time updates</li>
+                <li>• Historical rates</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• International travel</li>
+                <li>• Business transactions</li>
+                <li>• Online shopping</li>
+                <li>• Financial planning</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How often are exchange rates updated?",
+            answer: "Exchange rates are updated every 10 minutes from live market data. This ensures you get the most current rates for accurate conversions."
+          },
+          {
+            question: "Are there fees for currency conversion?",
+            answer: "This tool shows mid-market exchange rates. Banks and financial institutions may add fees or use different rates, so actual conversion amounts may vary."
+          },
+          {
+            question: "What currencies are supported?",
+            answer: "The tool supports over 150 currencies including major currencies like USD, EUR, GBP, JPY, and many others from countries worldwide."
+          },
+          {
+            question: "Can I convert between any two currencies?",
+            answer: "Yes, you can convert between any two supported currencies. The tool automatically calculates the conversion rate based on the current market data."
+          },
+          {
+            question: "Why do exchange rates change?",
+            answer: "Exchange rates fluctuate due to factors like inflation, interest rates, economic stability, geopolitical events, and supply/demand for currencies in global markets."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

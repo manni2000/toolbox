@@ -299,7 +299,30 @@ const SalaryCalculatorTool = () => {
         )}
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "How are hourly and yearly rates calculated?",
+            answer: "Hourly to yearly assumes standard working hours (40 hours/week, 52 weeks/year). Yearly = Hourly × 2080. Adjust hours for different work arrangements."
+          },
+          {
+            question: "Should I include benefits in salary calculation?",
+            answer: "Base salary excludes benefits. Total compensation includes salary + benefits + perks. Use total compensation for accurate job comparisons."
+          },
+          {
+            question: "What is the standard work week?",
+            answer: "Standard full-time work week is 40 hours (8 hours/day, 5 days/week). Some jobs use different schedules, which should be reflected in calculations."
+          },
+          {
+            question: "How do I calculate hourly rate from annual salary?",
+            answer: "Hourly Rate = Annual Salary / (Hours per week × 52). For ₹12,00,000/year at 40 hours/week: ₹12,00,000 / 2080 = ₹577/hour."
+          },
+          {
+            question: "Does this account for taxes?",
+            answer: "No, this shows gross salary before taxes. Net (take-home) pay will be lower after income tax, social security, and other deductions."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

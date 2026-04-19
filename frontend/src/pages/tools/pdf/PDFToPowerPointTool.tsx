@@ -172,8 +172,76 @@ const PDFToPowerPointTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Presentation className="h-5 w-5 text-blue-500" />
+            What is PDF to PowerPoint Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PDF to PowerPoint conversion transforms PDF documents into editable PowerPoint presentations. This allows you to reuse PDF content in presentations, edit slides, and create presentations from existing documents.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PDF file</li>
+            <li>The tool extracts pages as slides</li>
+            <li>Content is converted to PPT format</li>
+            <li>Download the editable presentation</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Page to slide conversion</li>
+                <li>• Text extraction</li>
+                <li>• Images included</li>
+                <li>• Basic formatting</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Presentation creation</li>
+                <li>• Content reuse</li>
+                <li>• Slide deck generation</li>
+                <li>• Meeting materials</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How well does PDF convert to PowerPoint?",
+            answer: "Conversion quality depends on PDF structure. Text-based PDFs with clear layouts convert best. Complex layouts, images, or scanned PDFs may require manual adjustment in PowerPoint."
+          },
+          {
+            question: "Will images be preserved in the slides?",
+            answer: "Yes, images from the PDF are typically extracted and placed on the corresponding slides. However, image positioning and sizing may need manual adjustment."
+          },
+          {
+            question: "Can I convert scanned PDFs to PowerPoint?",
+            answer: "Scanned PDFs require OCR to extract text. This tool works best with native PDFs. For scanned documents, use an OCR tool first, then convert to PowerPoint."
+          },
+          {
+            question: "What about slide layouts and designs?",
+            answer: "The conversion creates basic slides with extracted content. Original slide designs, animations, or transitions from the PDF won't be preserved—you'll need to apply PowerPoint themes."
+          },
+          {
+            question: "Can I convert password-protected PDFs?",
+            answer: "Password-protected PDFs must be unlocked first. Use the PDF Unlock tool to remove the password, then convert the unlocked PDF to PowerPoint."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

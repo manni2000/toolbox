@@ -236,8 +236,76 @@ export default function QRPhishingScannerTool() {
           </div>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is QR Phishing Scanning?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            QR phishing scanning analyzes QR codes to detect malicious URLs before you scan them. This protects against QR code phishing attacks where malicious codes direct you to fake login pages, malware downloads, or scam sites.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload or paste a QR code image</li>
+            <li>The tool extracts the embedded URL</li>
+            <li>Checks URL against threat databases</li>
+            <li>View safety status and analysis</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Threat Detection</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Malicious URL detection</li>
+                <li>• Phishing identification</li>
+                <li>• Reputation checking</li>
+                <li>• Domain analysis</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Protection Tips</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Verify before scanning</li>
+                <li>• Check official sources</li>
+                <li>• Be suspicious of offers</li>
+                <li>• Use secure scanners</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How can QR codes be malicious?",
+            answer: "Malicious QR codes can direct you to phishing sites, download malware, steal credentials, or make unwanted payments. Attackers place them in public places to trick people into scanning them."
+          },
+          {
+            question: "What happens if I scan a malicious QR code?",
+            answer: "Scanning a malicious QR code can open a phishing site in your browser, download malware, or execute other attacks. Always verify QR codes before scanning, especially from unknown sources."
+          },
+          {
+            question: "Can the tool detect all malicious QR codes?",
+            answer: "The tool checks against known threat databases and analyzes URL patterns. However, new threats may not be detected yet. Always exercise caution even if a QR code scans as safe."
+          },
+          {
+            question: "What should I do if a QR code is flagged?",
+            answer: "Don't scan it. If you already did, close any opened pages immediately, scan your device for malware, and change any passwords you entered. Report the malicious QR code if possible."
+          },
+          {
+            question: "Are all QR codes from businesses safe?",
+            answer: "Not necessarily. Attackers can create fake QR codes that appear to be from legitimate businesses. Always verify the source and scan before trusting QR codes, especially in public places."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

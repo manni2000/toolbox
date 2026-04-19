@@ -384,8 +384,76 @@ const DomainAgeTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Globe className="h-5 w-5 text-blue-500" />
+            What is Domain Age Checking?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Domain age checking determines how long a domain has been registered. Older domains are often viewed as more trustworthy by search engines and can have SEO advantages. This tool helps you assess domain history and credibility.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter a domain name to check</li>
+            <li>The tool queries WHOIS databases</li>
+            <li>View registration date and age</li>
+            <li>Assess domain credibility</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Domain Information</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Registration date</li>
+                <li>• Domain age calculation</li>
+                <li>• Expiry information</li>
+                <li>• Registrar details</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">SEO Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Trust factor</li>
+                <li>• Authority building</li>
+                <li>• Search ranking</li>
+                <li>• Credibility assessment</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why does domain age matter for SEO?",
+            answer: "Older domains are often seen as more trustworthy by search engines. They have established history, backlinks, and authority. New domains start with no trust and need time to build credibility."
+          },
+          {
+            question: "How accurate is the domain age calculation?",
+            answer: "Domain age is calculated from the initial registration date shown in WHOIS records. This is generally accurate, though some domains may have changed hands without registration date changes."
+          },
+          {
+            question: "Can a new domain rank well in search results?",
+            answer: "Yes, new domains can rank well with quality content, good SEO practices, and backlinks. Domain age is one factor among many. Quality and relevance are more important than age alone."
+          },
+          {
+            question: "What's considered an old domain?",
+            answer: "Domains older than 3-5 years are typically considered established. Domains over 10 years old are seen as very established. However, the quality of the domain's history matters more than just age."
+          },
+          {
+            question: "Does buying an expired domain help SEO?",
+            answer: "Buying expired domains can help if they have clean history and existing backlinks. However, domains with spam history or penalties can hurt your SEO. Always check the domain's history before purchasing."
+          }
+        ]} />
 
       </div>
     </ToolLayout>

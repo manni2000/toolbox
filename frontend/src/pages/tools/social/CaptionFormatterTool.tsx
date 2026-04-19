@@ -161,8 +161,76 @@ const CaptionFormatterTool = () => {
           </ul>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Type className="h-5 w-5 text-blue-500" />
+            What is Caption Formatting?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Caption formatting optimizes social media captions for readability and engagement. It adjusts line breaks, character limits, and formatting to ensure your content looks great and fits platform constraints.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste your caption text</li>
+            <li>Select target social platform</li>
+            <li>The tool formats for line breaks</li>
+            <li>Copy the optimized caption</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Formatting Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Platform-specific limits</li>
+                <li>• Line break handling</li>
+                <li> Character count checking</li>
+                <li>• Emoji preservation</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Engagement Tips</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Use line breaks wisely</li>
+                <li>• Include relevant hashtags</li>
+                <li>• Add call-to-action</li>
+                <li>• Test readability</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why do line breaks matter in captions?",
+            answer: "Line breaks make captions more readable and scannable. Dense text blocks are hard to read on mobile. Proper formatting improves engagement and user experience."
+          },
+          {
+            question: "What's the best caption length?",
+            answer: "Optimal length varies: Instagram (2,200 chars), Twitter (280 chars), LinkedIn (3,000 chars). Aim for substance without overwhelming your audience."
+          },
+          {
+            question: "Should I use capitalization in captions?",
+            answer: "Use sentence case for readability. All caps is hard to read and can seem aggressive. Capitalize only first letters of sentences and proper nouns."
+          },
+          {
+            question: "How many hashtags should I use?",
+            answer: "Use 5-10 relevant hashtags on Instagram, 2-3 on Twitter, and 3-5 on LinkedIn. More isn't always better—focus on relevance."
+          },
+          {
+            question: "Can I use the same caption on all platforms?",
+            answer: "You can repurpose content but adapt captions for each platform's style, audience, and character limits. Tailor tone and formatting accordingly."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

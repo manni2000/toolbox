@@ -382,6 +382,77 @@ export default function FreelancerRateCalculatorTool() {
             </div>
           </div>
         </div>
+
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <DollarSign className="h-5 w-5 text-blue-500" />
+            What is Freelance Rate Calculation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Freelance rate calculation helps determine appropriate hourly or project-based rates that cover your business expenses, taxes, savings, and desired income. It ensures you charge enough to be profitable while remaining competitive in the market.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your desired annual income target</li>
+            <li>Add your business expenses (software, equipment, etc.)</li>
+            <li>Set your working hours per week</li>
+            <li>View calculated hourly, daily, weekly, and monthly rates</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Rate Calculation</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Annual income target</li>
+                <li>• Business expenses included</li>
+                <li>• Working hours considered</li>
+                <li>• Multiple rate formats</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Rate Factors</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Experience level</li>
+                <li>• Market demand</li>
+                <li>• Skill specialization</li>
+                <li>• Client budget range</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "How do I determine my annual income target?",
+            answer: "Calculate your personal expenses, add savings goals, then add business costs. A common formula: Personal Expenses + Savings + Business Costs + Taxes = Target Income."
+          },
+          {
+            question: "What expenses should I include?",
+            answer: "Include software subscriptions, hardware, internet, office space, insurance, accounting, marketing, self-employment taxes, and a buffer for unexpected costs."
+          },
+          {
+            question: "How much should I save as a freelancer?",
+            answer: "Aim for 20-30% of your income for savings and investments. This provides financial security and covers periods between projects."
+          },
+          {
+            question: "Should I charge hourly or project-based?",
+            answer: "Hourly is better for ongoing work with variable scope. Project-based works well for defined deliverables. Choose based on project type and client preference."
+          },
+          {
+            question: "How do I account for non-billable time?",
+            "answer": "Include time for admin, marketing, learning, and business development in your hourly rate. Non-billable time typically adds 20-30% to your billable rate."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

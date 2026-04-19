@@ -184,8 +184,76 @@ const PDFPageRemoverTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <MinusCircle className="h-5 w-5 text-blue-500" />
+            What is PDF Page Removal?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PDF page removal deletes specific pages from a PDF document. This is useful for removing unwanted pages, blank pages, or sensitive content from PDFs without needing to recreate the entire document.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PDF file</li>
+            <li>Select pages to remove</li>
+            <li>The tool deletes selected pages</li>
+            <li>Download the cleaned PDF</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Removal Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Select specific pages</li>
+                <li>• Preview before removal</li>
+                <li>• Quality preserved</li>
+                <li>• Fast processing</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Remove blank pages</li>
+                <li>• Delete sensitive content</li>
+                <li>• Clean up documents</li>
+                <li>• Reduce file size</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Can I undo page removal?",
+            answer: "No, page removal is permanent. Always keep a backup of your original PDF before removing pages. The tool creates a new file without the deleted pages."
+          },
+          {
+            question: "Will removing pages affect the remaining content?",
+            answer: "No, removing pages only affects the specified pages. All other pages remain unchanged with their original formatting and content intact."
+          },
+          {
+            question: "Can I remove multiple pages at once?",
+            answer: "Yes, you can select multiple pages to remove simultaneously. Select all the pages you want to delete before processing the document."
+          },
+          {
+            question: "What happens to bookmarks and links?",
+            answer: "Bookmarks and links pointing to removed pages become invalid. Bookmarks and links to remaining pages are preserved in the updated document."
+          },
+          {
+            question: "Can I remove pages from password-protected PDFs?",
+            answer: "Password-protected PDFs must be unlocked first. Use the PDF Unlock tool to remove the password, then you can delete pages from the unlocked document."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

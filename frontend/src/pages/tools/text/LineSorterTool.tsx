@@ -130,8 +130,76 @@ const LineSorterTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <ArrowUpDown className="h-5 w-5 text-blue-500" />
+            What is Line Sorting?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Line sorting arranges text lines in alphabetical order. This is useful for organizing lists, sorting names alphabetically, or ordering data in a consistent manner for easier reference.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste your text or list</li>
+            <li>Select sort order (ascending/descending)</li>
+            <li>The tool sorts the lines</li>
+            <li>Copy the sorted result</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Sort Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Ascending (A-Z)</li>
+                <li>• Descending (Z-A)</li>
+                <li>• Case-sensitive option</li>
+                <li>• Reverse order</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Name lists</li>
+                <li>• Data organization</li>
+                <li>• Bibliography sorting</li>
+                <li>• Inventory lists</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between ascending and descending?",
+            answer: "Ascending sorts from A to Z (a to z). Descending sorts from Z to A (z to a). Choose ascending for standard alphabetical order, descending for reverse order."
+          },
+          {
+            question: "Should I use case-sensitive sorting?",
+            answer: "Use case-sensitive when capitalization matters (e.g., code, technical data). Use case-insensitive for names or general text where 'Apple' and 'apple' should be treated the same."
+          },
+          {
+            question: "How are numbers sorted?",
+            answer: "Numbers are sorted as strings by default (1, 10, 2). For numeric sorting, ensure numbers are zero-padded or use a tool designed for numeric sorting."
+          },
+          {
+            question: "Can I sort by multiple criteria?",
+            answer: "This tool sorts lines as complete units. For multi-criteria sorting, you may need a more advanced tool or spreadsheet application that supports multi-column sorting."
+          },
+          {
+            question: "Does sorting change original data?",
+            answer: "Sorting rearranges lines but doesn't modify their content. The original data remains intact, only the order changes. Keep a backup of unsorted data if needed."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

@@ -36,7 +36,7 @@ export default function StartupBurnRateCalculatorTool() {
       const burnRate = expenses - revenue;
       const runwayMonths = burnRate > 0 ? cash / burnRate : Infinity;
 
-      const recommendations = [];
+      const recommendations: string[] = [];
       if (burnRate > 0) {
         recommendations.push("Consider reducing expenses to extend runway");
         recommendations.push("Focus on increasing revenue streams");
@@ -339,6 +339,77 @@ export default function StartupBurnRateCalculatorTool() {
           </div>
         </div>
       </div>
+
+      {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-blue-500" />
+            What is Startup Burn Rate?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Burn rate is the rate at which a startup spends its cash reserves before generating positive cash flow. It measures monthly cash depletion and helps determine how long the company can survive (runway) before needing additional funding.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your monthly expenses (salaries, rent, software, etc.)</li>
+            <li>Input monthly revenue if you have any</li>
+            <li>The tool calculates gross and net burn rate</li>
+            <li>View runway analysis and fundraising timeline</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Burn Metrics</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Gross burn (total expenses)</li>
+                <li>• Net burn (expenses - revenue)</li>
+                <li>• Runway (months of cash)</li>
+                <li>• Fundraising timeline</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Startup Health</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Healthy: 12+ months runway</li>
+                <li>• Warning: 6-12 months</li>
+                <li>• Critical: &lt;6 months</li>
+                <li>• Fundraising timeline</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "What is the difference between gross and net burn?",
+            answer: "Gross burn is total monthly expenses. Net burn is expenses minus revenue. Net burn shows actual cash depletion. Use net burn for runway calculations."
+          },
+          {
+            question: "How much runway should a startup have?",
+            answer: "Aim for 12+ months runway minimum. This gives time to iterate, raise funds, or reach profitability. Start fundraising when you have 6 months left."
+          },
+          {
+            question: "How do I reduce my burn rate?",
+            answer: "Reduce non-essential expenses, negotiate vendor contracts, use contractors instead of full-time hires where possible, delay office space, and focus on revenue-generating activities."
+          },
+          {
+            question: "When should I start fundraising?",
+            answer: "Start fundraising 6 months before you run out of money. The process typically takes 3-6 months. Don't wait until you're desperate - investors prefer growing companies."
+          },
+          {
+            question: "Does burn rate include salaries?",
+            answer: "Yes, burn rate includes all cash expenses: salaries, rent, software, marketing, and any other operating costs. It's the total cash leaving your bank account monthly."
+          }
+        ]} />
+        </div>
     </ToolLayout>
   );
 }

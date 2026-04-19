@@ -474,9 +474,76 @@ const TechStackDetectorTool = () => {
           )}
         </motion.div>
 
-        {/* FAQ Section */}
-        <ToolFAQ />
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Code className="h-5 w-5 text-blue-500" />
+            What is Tech Stack Detection?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Tech stack detection analyzes a website to identify the technologies, frameworks, and tools used to build it. This is useful for competitor analysis, technology research, and understanding site architecture.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter a website URL to analyze</li>
+            <li>The tool scans site code and headers</li>
+            <li>Identifies technologies and frameworks</li>
+            <li>Display detected tech stack details</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Detection Categories</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Frontend frameworks</li>
+                <li>• Backend technologies</li>
+                <li>• Analytics tools</li>
+                <li>• CMS and hosting</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Competitor analysis</li>
+                <li>• Technology research</li>
+                <li>• Architecture insights</li>
+                <li>• Stack comparison</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
 
+      <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "How does tech stack detection work?",
+            answer: "Detection analyzes HTTP headers, HTML source code, JavaScript files, CSS, and other responses to identify signatures of known technologies, frameworks, and libraries."
+          },
+          {
+            question: "Can detection find all technologies?",
+            answer: "Detection finds many common technologies but may miss custom or proprietary solutions. Server-side technologies without HTTP signatures may not be detectable."
+          },
+          {
+            question: "Why analyze competitor tech stacks?",
+            answer: "Understanding competitor tech stacks helps identify industry standards, discover new tools, inform technology decisions, and gain competitive insights."
+          },
+          {
+            question: "Is tech stack detection accurate?",
+            answer: "Detection is generally accurate for popular technologies but may have false positives or miss newer or custom solutions. Use results as a guide, not absolute truth."
+          },
+          {
+            question: "Can I hide my tech stack from detection?",
+            answer: "You can make detection harder by removing framework signatures, using custom server headers, and obfuscating code. However, complete hiding is difficult and often unnecessary."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

@@ -220,8 +220,76 @@ const JSONFormatterTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileJson className="h-5 w-5 text-blue-500" />
+            What is JSON Formatting?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            JSON formatting beautifies and structures JSON data for better readability. It adds proper indentation, line breaks, and spacing to make complex JSON data easier to read, debug, and share with other developers.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste or type your JSON data into the input area</li>
+            <li>Choose your preferred indentation size (2, 4, or 8 spaces)</li>
+            <li>Click format to beautify the JSON</li>
+            <li>Copy the formatted output or validate for errors</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Formatting Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Customizable indentation</li>
+                <li>• Syntax validation</li>
+                <li>• Error highlighting</li>
+                <li>• One-click copy</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Debugging API responses</li>
+                <li>• Code documentation</li>
+                <li>• Data inspection</li>
+                <li>• Configuration files</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is JSON?",
+            answer: "JSON (JavaScript Object Notation) is a lightweight data-interchange format that's easy for humans to read and write, and easy for machines to parse and generate."
+          },
+          {
+            question: "Can I format minified JSON?",
+            answer: "Yes, this tool can format minified (compressed) JSON into a readable, structured format with proper indentation and line breaks."
+          },
+          {
+            question: "Does it validate JSON syntax?",
+            answer: "Yes, the tool validates JSON syntax and will display error messages if the JSON is malformed, helping you identify and fix syntax issues."
+          },
+          {
+            question: "What indentation options are available?",
+            answer: "You can choose between 2, 4, or 8 spaces for indentation. This helps match your project's coding style or personal preference."
+          },
+          {
+            question: "Is my JSON data stored?",
+            answer: "No, all formatting happens locally in your browser. Your JSON data is never sent to any server, ensuring complete privacy."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

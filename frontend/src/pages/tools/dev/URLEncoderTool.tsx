@@ -215,7 +215,30 @@ const URLEncoderTool = () => {
         </motion.div>
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "Why do I need URL encoding?",
+            answer: "URL encoding ensures that special characters (like spaces, symbols, and non-ASCII characters) are safely transmitted in URLs without breaking the link or causing errors."
+          },
+          {
+            question: "What characters get encoded?",
+            answer: "Characters that are not allowed in URLs, such as spaces, quotes, angle brackets, and non-ASCII characters, are encoded. Letters, numbers, and some symbols like hyphen and underscore don't need encoding."
+          },
+          {
+            question: "Can I decode encoded URLs?",
+            answer: "Yes, switch to decode mode to convert encoded URLs back to their original, readable format. This is useful for debugging or reading encoded parameters."
+          },
+          {
+            question: "What is the encoding format?",
+            answer: "URL encoding uses percent-encoding, where each special character is replaced by a % sign followed by two hexadecimal digits representing the character's ASCII value."
+          },
+          {
+            question: "Is my data stored or sent to servers?",
+            answer: "No, all encoding and decoding happens locally in your browser. Your data is never sent to any server, ensuring complete privacy."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

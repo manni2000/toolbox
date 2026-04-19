@@ -260,8 +260,76 @@ const VideoToAudioTool = () => {
           </div>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Music className="h-5 w-5 text-blue-500" />
+            What is Video to Audio Extraction?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Video to audio extraction separates the audio track from video files, creating standalone audio files. This is useful for extracting music, podcasts, or audio content from video sources.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your video file</li>
+            <li>Select audio format (MP3, WAV)</li>
+            <li>The tool extracts audio track</li>
+            <li>Download the audio file</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Audio Formats</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• MP3 (compressed)</li>
+                <li>• WAV (uncompressed)</li>
+                <li>• Quality options</li>
+                <li>• Bitrate selection</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Music extraction</li>
+                <li>• Podcast creation</li>
+                <li>• Audio archiving</li>
+                <li>• Content repurposing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between MP3 and WAV?",
+            answer: "MP3 is compressed (smaller file size, lower quality). WAV is uncompressed (larger file size, higher quality). Use MP3 for sharing, WAV for professional audio work."
+          },
+          {
+            question: "Does extraction affect audio quality?",
+            answer: "Quality depends on the original video's audio. Converting to MP3 may lose some quality due to compression. WAV preserves original quality but creates larger files."
+          },
+          {
+            question: "Can I extract audio from any video format?",
+            answer: "Most common video formats (MP4, AVI, MOV, MKV) support audio extraction. Some formats may have audio in codecs that require special handling."
+          },
+          {
+            question: "What bitrate should I use for MP3?",
+            answer: "Use 128-192 kbps for standard quality, 256-320 kbps for high quality. Higher bitrate means better quality but larger file size."
+          },
+          {
+            question: "Is extracting audio from videos legal?",
+            answer: "Only extract audio from videos you own or have permission to use. Extracting copyrighted content without permission may violate copyright laws."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

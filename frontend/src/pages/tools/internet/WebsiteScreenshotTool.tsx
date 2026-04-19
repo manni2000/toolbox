@@ -391,8 +391,76 @@ const WebsiteScreenshotTool = () => {
           </ul>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Camera className="h-5 w-5 text-blue-500" />
+            What is Website Screenshot?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Website screenshot captures a visual image of a web page as it appears in a browser. This is useful for archiving web pages, creating thumbnails, documenting designs, or capturing page states for review and sharing.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter a website URL to capture</li>
+            <li>Choose viewport size (desktop/tablet/mobile)</li>
+            <li>Select full-page or viewport capture</li>
+            <li>Download the screenshot image</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Capture Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Multiple viewport sizes</li>
+                <li>• Full-page or viewport</li>
+                <li>• PNG or JPEG format</li>
+                <li>• Custom dimensions</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Website archiving</li>
+                <li>• Design documentation</li>
+                <li>• Thumbnail generation</li>
+                <li>• Quality assurance</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between viewport and full-page screenshots?",
+            answer: "Viewport captures only what's visible on screen without scrolling. Full-page captures the entire page including content below the fold, scrolling through to capture everything."
+          },
+          {
+            question: "Which image format should I use?",
+            answer: "PNG is lossless and best for screenshots with text or sharp edges. JPEG is smaller and better for photographic content. PNG is generally recommended for web screenshots."
+          },
+          {
+            question: "Can I capture mobile versions of websites?",
+            answer: "Yes, use mobile viewport presets (typically 320-414px wide) to capture how websites appear on mobile devices. This helps test responsive design."
+          },
+          {
+            question: "Why might screenshots look different from my browser?",
+            answer: "Screenshots use a headless browser which may have different rendering, fonts, or extensions. Differences can occur due to JavaScript execution timing, cookies, or browser settings."
+          },
+          {
+            question: "Are dynamic JavaScript elements captured?",
+            answer: "Yes, modern screenshot tools execute JavaScript before capturing. However, some complex animations or interactions may not render exactly as in a live browser."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

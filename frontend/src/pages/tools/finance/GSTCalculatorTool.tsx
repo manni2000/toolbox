@@ -315,8 +315,76 @@ const GSTCalculatorTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Receipt className="h-5 w-5 text-blue-500" />
+            What is GST Calculation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            GST (Goods and Services Tax) calculation determines the tax amount on goods and services based on the applicable tax rate. It helps businesses and consumers understand the tax component in pricing, ensuring compliance with tax regulations and accurate financial planning.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter the amount before or after GST</li>
+            <li>Select the GST rate (5%, 12%, 18%, or 28%)</li>
+            <li>Choose to add GST or remove GST</li>
+            <li>View the breakdown of base amount and GST</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">GST Rates in India</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• 5%: Essential items</li>
+                <li>• 12%: Standard goods</li>
+                <li>• 18%: Services</li>
+                <li>• 28%: Luxury items</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Invoice generation</li>
+                <li>• Price calculation</li>
+                <li>• Tax compliance</li>
+                <li>• Financial planning</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What are the standard GST rates?",
+            answer: "In India, GST rates are 5%, 12%, 18%, and 28%. Essential items are taxed at 0-5%, standard goods at 12-18%, and luxury items at 28%."
+          },
+          {
+            question: "How do I add GST to a price?",
+            answer: "Select 'Add GST' mode, enter the base amount, choose the GST rate. The tool calculates: GST Amount = Base × (GST Rate / 100), Total = Base + GST."
+          },
+          {
+            question: "How do I remove GST from a price?",
+            answer: "Select 'Remove GST' mode, enter the total amount (including GST), choose the GST rate. The tool calculates: Base Amount = Total / (1 + GST Rate / 100)."
+          },
+          {
+            question: "What is the difference between CGST and SGST?",
+            answer: "CGST (Central GST) and SGST (State GST) are components of GST. For intra-state transactions, GST is split equally between central and state governments."
+          },
+          {
+            question: "Can I use this for international GST?",
+            answer: "This tool is designed for Indian GST rates. Other countries have different tax systems (VAT, Sales Tax) with different rates and calculations."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

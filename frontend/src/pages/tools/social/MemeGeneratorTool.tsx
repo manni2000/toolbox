@@ -625,8 +625,76 @@ const MemeGeneratorTool = () => {
           </ul>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Smile className="h-5 w-5 text-blue-500" />
+            What is Meme Generation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Meme generation creates custom memes by combining images with text overlays. This tool lets you add captions to popular meme templates or your own images for social media sharing and content creation.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Choose a meme template or upload image</li>
+            <li>Add top and bottom text captions</li>
+            <li>Adjust text size and positioning</li>
+            <li>Download your custom meme</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Meme Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Popular templates</li>
+                <li> Custom image upload</li>
+                <li> Text customization</li>
+                <li>• Easy sharing</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Content Creation</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Social media posts</li>
+                <li> Marketing campaigns</li>
+                <li> Entertainment</li>
+                <li>• Viral content</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What makes a meme go viral?",
+            answer: "Viral memes combine relatable humor, perfect timing, cultural relevance, and shareability. Originality and emotional connection are key factors in viral potential."
+          },
+          {
+            question: "Should I use trending meme templates?",
+            answer: "Trending templates can help but can become oversaturated. Balance trending with evergreen content. Adapt templates to make them unique and fresh."
+          },
+          {
+            question: "What's the ideal meme text length?",
+            answer: "Keep text short and punchy. Top text typically under 5 words, bottom text under 7 words. Long text is hard to read on small images."
+          },
+          {
+            question: "Can I use my own images as templates?",
+            answer: "Yes, upload your own images to create custom memes. This helps with branding and creates unique content not using overused templates."
+          },
+          {
+            question: "Do memes work for business marketing?",
+            answer: "Yes, memes can be effective for marketing when done authentically. Use humor that aligns with your brand voice and audience preferences."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

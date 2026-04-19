@@ -223,8 +223,76 @@ const Base64Tool = () => {
           </button>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Lock className="h-5 w-5 text-blue-500" />
+            What is Base64 Encoding?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Base64 encoding converts binary data into ASCII text format for safe transmission over text-based protocols. It's commonly used for encoding data in URLs, email attachments, and storing binary data in text formats like JSON or XML.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter text or upload a file</li>
+            <li>The tool encodes to Base64 format</li>
+            <li>Copy the Base64 string</li>
+            <li>Or decode Base64 back to original</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Encoding Uses</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Data transmission</li>
+                <li>• Email attachments</li>
+                <li>• URL-safe encoding</li>
+                <li>• Data storage</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Security Features</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Client-side processing</li>
+                <li>• No data stored</li>
+                <li>• Instant results</li>
+                <li>• Privacy focused</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why use Base64 encoding?",
+            answer: "Base64 allows binary data to be transmitted over text-based protocols that don't support raw binary. It's essential for embedding images in HTML, sending files via email, and storing binary data in text formats."
+          },
+          {
+            question: "Does Base64 increase file size?",
+            answer: "Yes, Base64 encoding increases file size by approximately 33%. This is due to the encoding overhead. Use it when necessary for compatibility, but be aware of the size increase."
+          },
+          {
+            question: "Is Base64 encryption?",
+            answer: "No, Base64 is encoding, not encryption. It's easily reversible and provides no security. Anyone can decode Base64 data. For security, use proper encryption algorithms like AES."
+          },
+          {
+            question: "Can I encode large files with Base64?",
+            answer: "You can encode large files, but be aware of the 33% size increase. For very large files, the Base64 string may be too long for some applications. Consider chunking for large data."
+          },
+          {
+            question: "What's URL-safe Base64?",
+            answer: "URL-safe Base64 replaces characters that have special meaning in URLs (+ and /) with alternatives (- and _). This makes Base64 strings safe to use in URLs without encoding."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

@@ -165,8 +165,76 @@ const PowerPointToPDFTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Presentation className="h-5 w-5 text-blue-500" />
+            What is PowerPoint to PDF Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PowerPoint to PDF conversion transforms PowerPoint presentations into PDF documents. This preserves slide formatting for sharing, printing, or archiving presentations in a universally compatible format.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PowerPoint file</li>
+            <li>The tool converts slides to PDF pages</li>
+            <li>Layout and formatting are preserved</li>
+            <li>Download the PDF document</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Slide to page conversion</li>
+                <li>• Formatting preserved</li>
+                <li>• Images embedded</li>
+                <li>• Universal compatibility</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Presentation sharing</li>
+                <li>• Print preparation</li>
+                <li>• Document archiving</li>
+                <li>• Cross-platform viewing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Will animations be preserved in the PDF?",
+            answer: "No, PDFs don't support PowerPoint animations. The PDF will show the static state of each slide. Animations, transitions, and multimedia won't be included."
+          },
+          {
+            question: "Can I convert password-protected presentations?",
+            answer: "You'll need to unlock password-protected PowerPoint files first, then convert them to PDF. The resulting PDF won't have the original password unless you add one."
+          },
+          {
+            question: "What happens to speaker notes?",
+            answer: "Speaker notes are typically not included in standard PDF conversion. Some tools offer options to include notes, but the default conversion focuses on slide content only."
+          },
+          {
+            question: "Will the PDF be editable?",
+            answer: "No, the PDF will be a static representation of your slides. To edit the content, you'd need to convert back to PowerPoint or use a PDF editor. Use PDF to PowerPoint for re-editing."
+          },
+          {
+            question: "What's the difference between PPT and PPTX conversion?",
+            answer: "Both PPT (older format) and PPTX (newer XML-based format) can be converted to PDF. PPTX is the modern standard and generally converts more reliably with better quality."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

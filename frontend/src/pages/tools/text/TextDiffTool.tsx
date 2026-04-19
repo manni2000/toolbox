@@ -137,8 +137,76 @@ const TextDiffTool = () => {
           </>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Diff className="h-5 w-5 text-blue-500" />
+            What is Text Diffing?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Text diffing compares two versions of text to identify changes. It highlights additions, deletions, and modifications, making it easy to review document changes, track revisions, and understand what changed between versions.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste original and new text versions</li>
+            <li>The tool compares the texts line by line</li>
+            <li>Highlights differences visually</li>
+            <li>View change summary</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Diff Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Side-by-side comparison</li>
+                <li>• Color-coded changes</li>
+                <li>• Line-by-line diff</li>
+                <li>• Change statistics</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Code review</li>
+                <li>• Document comparison</li>
+                <li>• Version control</li>
+                <li>• Change tracking</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What do the colors mean in diff?",
+            answer: "Red typically indicates deletions (removed text). Green or blue indicates additions (new text). Different tools may use different color schemes."
+          },
+          {
+            question: "Can diff handle large files?",
+            answer: "Diff can handle large files but may be slower. For very large files, consider using command-line diff tools designed for performance with large datasets."
+          },
+          {
+            question: "What's the difference between unified and context diff?",
+            answer: "Unified diff shows changes in a single view with context. Context diff shows changes with surrounding lines. Unified is more compact, context provides more surrounding information."
+          },
+          {
+            question: "How do I ignore whitespace changes?",
+            answer: "Most diff tools have an option to ignore whitespace changes. This is useful when only formatting changed, not actual content. Enable this to focus on substantive changes."
+          },
+          {
+            question: "Can I compare binary files with diff?",
+            answer: "Standard text diff tools only work with text files. For binary files, use specialized binary diff tools that can handle binary data comparison."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

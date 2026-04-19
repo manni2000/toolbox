@@ -327,9 +327,77 @@ const IPLookupTool = () => {
           </motion.div>
         )}
 
-        {/* FAQ Section */}
-        <ToolFAQ />
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Globe className="h-5 w-5 text-blue-500" />
+            What is IP Lookup?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            IP lookup retrieves information about an IP address, including its geographical location, ISP, organization, and other metadata. This helps identify where internet traffic originates and provides insights about network connections.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter an IP address to lookup</li>
+            <li>The tool queries IP geolocation databases</li>
+            <li>View the location and network details</li>
+            <li>Get ISP and organization information</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Information Provided</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Geographical location</li>
+                <li>• ISP and organization</li>
+                <li>• Timezone</li>
+                <li>• Connection type</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Security analysis</li>
+                <li>• Fraud detection</li>
+                <li>• Content localization</li>
+                <li>• Network troubleshooting</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
 
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "How accurate is IP geolocation?",
+            answer: "IP geolocation accuracy varies by location type. City-level accuracy is typically 80-90% for IPv4 addresses. IPv6 and mobile IPs may have lower accuracy. It's generally accurate to within 25-50 miles."
+          },
+          {
+            question: "Can IP addresses be hidden or spoofed?",
+            answer: "Yes, IP addresses can be hidden using VPNs, proxies, or Tor. Spoofing is technically difficult for outbound connections but possible in certain network configurations. Always verify IP information for critical decisions."
+          },
+          {
+            question: "What's the difference between IPv4 and IPv6?",
+            answer: "IPv4 uses 32-bit addresses (e.g., 192.0.2.1) and has ~4.3 billion addresses. IPv6 uses 128-bit addresses (e.g., 2001:db8::1) providing virtually unlimited addresses for the growing internet."
+          },
+          {
+            question: "Why might IP lookup show wrong location?",
+            answer: "IP location is based on ISP registration, not physical device location. Mobile IPs may show carrier HQ, VPNs show server locations, and corporate networks may show proxy locations."
+          },
+          {
+            question: "Is IP lookup privacy-compliant?",
+            answer: "IP addresses are considered personal data in many jurisdictions. Geolocation databases aggregate public information. For compliance, avoid storing IP addresses without consent and follow data protection regulations."
+          }
+        ]} />
+
+      </div>
       </div>
     </ToolLayout>
   );

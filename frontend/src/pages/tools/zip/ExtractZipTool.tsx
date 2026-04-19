@@ -270,8 +270,76 @@ const ExtractZipTool = () => {
           </ul>
         </motion.div>
 
-        {/* FAQ Section */}
-        <ToolFAQ />
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FolderOpen className="h-5 w-5 text-blue-500" />
+            What is ZIP Extraction?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            ZIP extraction decompresses and retrieves files from ZIP archives. This restores files to their original state, allowing you to access the contents of compressed archives.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your ZIP file</li>
+            <li>The tool decompresses the archive</li>
+            <li>View extracted files</li>
+            <li>Download individual files or all</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Extraction Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Full archive extraction</li>
+                <li>• Selective file download</li>
+                <li>• Password-protected support</li>
+                <li>• File preview</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Opening downloaded archives</li>
+                <li>• Accessing backup files</li>
+                <li>• Software installation</li>
+                <li>• Document retrieval</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+          {/* FAQ Section */}
+          <ToolFAQ faqs={[
+            {
+              question: "Do I need special software to extract ZIP?",
+              answer: "No, ZIP is natively supported by Windows, macOS, and most operating systems. You can extract ZIP files without installing additional software."
+            },
+            {
+              question: "What if my ZIP is password-protected?",
+              answer: "You'll need the password to extract. Enter it when prompted. If you don't have the password, you cannot access the contents."
+            },
+            {
+              question: "Can I extract only certain files?",
+              answer: "Yes, this tool lets you preview and download individual files from the archive. You don't have to extract everything if you only need specific files."
+            },
+            {
+              question: "What if extraction fails?",
+              answer: "Extraction may fail if the ZIP is corrupted, password-protected without the correct password, or uses unsupported compression methods."
+            },
+            {
+              question: "Does extraction restore original quality?",
+              answer: "Yes, ZIP is lossless. Extracted files are identical to the originals before compression. No quality or data loss occurs."
+            }
+          ]} />
+        </div>
       </div>
     </ToolLayout>
   );

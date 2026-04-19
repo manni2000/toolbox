@@ -172,8 +172,77 @@ const CountdownTimerTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Clock className="h-5 w-5 text-blue-500" />
+            What is a Countdown Timer?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            A countdown timer counts down the time remaining until a specific date and time. It's perfect for tracking events, deadlines, product launches, or any occasion where you need to know exactly how much time is left.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Set your target date and time for the event</li>
+            <li>Optionally name your event for easy identification</li>
+            <li>Start the countdown to begin tracking</li>
+            <li>The timer updates in real-time showing days, hours, minutes, seconds</li>
+            <li>Get notified when the countdown reaches zero</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Timer Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Real-time updates</li>
+                <li>• Event naming</li>
+                <li>• Visual countdown display</li>
+                <li>• Time's up notification</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-purple-50 rounded-lg">
+              <h5 className="font-semibold text-purple-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-purple-800 space-y-1">
+                <li>• Event countdowns</li>
+                <li>• Deadline tracking</li>
+                <li>• Product launches</li>
+                <li>• Holiday countdowns</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Does the timer work when I close the browser?",
+            answer: "The timer requires the page to be open to update. If you close the browser, the timer will stop. However, you can set a target date and reopen the page to see the remaining time."
+          },
+          {
+            question: "Can I set multiple countdowns?",
+            answer: "Currently, the tool supports one active countdown at a time. You can reset and create new countdowns as needed."
+          },
+          {
+            question: "Will I get an alarm when time's up?",
+            answer: "When the countdown reaches zero, a visual notification appears on the screen. Audio notifications may require browser permissions."
+          },
+          {
+            question: "How precise is the countdown?",
+            answer: "The countdown updates every second with precise time calculation, accounting for your local timezone."
+          },
+          {
+            question: "Can I share my countdown?",
+            answer: "You can share the target date and event name with others. They can then set up the same countdown on their device."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

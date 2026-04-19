@@ -484,8 +484,77 @@ const BrokenImageFinderTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Image className="h-5 w-5 text-blue-500" />
+            What is Broken Image Finding?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Broken image finding scans your website for images that fail to load. Broken images hurt user experience, SEO rankings, and site credibility. This tool helps you identify and fix image issues quickly.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your website URL</li>
+            <li>The tool crawls your site for images</li>
+            <li>Checks each image for proper loading</li>
+            <li>Report broken images with details</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Detection Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Image status checking</li>
+                <li>• HTTP error detection</li>
+                <li>• Response time analysis</li>
+                <li>• Alt text verification</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">SEO Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Better user experience</li>
+                <li>• Improved rankings</li>
+                <li>• Faster page loads</li>
+                <li>• Enhanced credibility</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why are broken images bad for SEO?",
+            answer: "Broken images hurt user experience, increase bounce rates, and signal poor site quality to search engines. They also waste crawl budget and can negatively impact rankings."
+          },
+          {
+            question: "What causes broken images?",
+            answer: "Common causes: deleted images, incorrect URLs, server issues, permission problems, hotlinking protection, or changed file paths."
+          },
+          {
+            question: "How do I fix broken images?",
+            answer: "Replace broken images with valid alternatives, correct URLs, ensure files exist on server, check file permissions, or implement fallback images."
+          },
+          {
+            question: "Should I use alt text for all images?",
+            answer: "Yes, alt text is essential for accessibility and SEO. It describes images for screen readers and helps search engines understand image content."
+          },
+          {
+            question: "How often should I check for broken images?",
+            answer: "Check regularly, especially after site updates, content changes, or migrations. Automated monitoring can alert you to new broken images."
+          }
+        ]} />
+
       </div>
     </ToolLayout>
   );

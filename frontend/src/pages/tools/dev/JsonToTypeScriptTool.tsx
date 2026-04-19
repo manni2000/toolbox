@@ -366,8 +366,76 @@ const JsonToTypeScriptTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Code className="h-5 w-5 text-blue-500" />
+            What is JSON to TypeScript Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            JSON to TypeScript conversion automatically generates TypeScript interfaces from JSON data. It analyzes the structure of your JSON objects and creates type-safe interfaces, saving time and ensuring type safety in your TypeScript projects.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste or type your JSON data into the input area</li>
+            <li>Choose interface naming preferences</li>
+            <li>The tool analyzes the JSON structure</li>
+            <li>Generate and copy TypeScript interfaces</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Generation Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Automatic type inference</li>
+                <li>• Nested object support</li>
+                <li>• Array type detection</li>
+                <li>• Optional property marking</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• API response typing</li>
+                <li>• Configuration interfaces</li>
+                <li>• Data model definition</li>
+                <li>• Type-safe development</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What TypeScript types are generated?",
+            answer: "The tool generates basic types (string, number, boolean, null), arrays, nested objects, and marks optional properties with ?. Complex types like unions may need manual adjustment."
+          },
+          {
+            question: "How are nested objects handled?",
+            answer: "Nested objects are converted into separate interfaces or inline types, depending on the structure. Each nested level gets its own type definition for clarity."
+          },
+          {
+            question: "Can I customize interface names?",
+            answer: "Yes, you can specify the root interface name. Nested interfaces are automatically named based on their property names or structure."
+          },
+          {
+            question: "What if my JSON has inconsistent types?",
+            answer: "The tool uses union types (e.g., string | number) when it detects inconsistent types for the same property across different objects."
+          },
+          {
+            question: "Are arrays properly typed?",
+            answer: "Yes, arrays are typed as Array<T> or T[] where T is the inferred type of array elements. The tool analyzes array contents to determine the element type."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

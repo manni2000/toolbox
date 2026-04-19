@@ -235,8 +235,76 @@ const ImageDPITool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Ruler className="h-5 w-5 text-blue-500" />
+            What is DPI?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            DPI (Dots Per Inch) measures image resolution for printing. It determines print quality and size - higher DPI produces sharper prints but larger files. Understanding DPI ensures your images print at the desired size and quality.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your image to view its dimensions</li>
+            <li>Check the current DPI metadata (if available)</li>
+            <li>See print size at different DPI values</li>
+            <li>Understand how DPI affects print quality</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">DPI Standards</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Web: 72 DPI (standard)</li>
+                <li>• Print: 300 DPI (quality)</li>
+                <li>• High-end: 600 DPI (photo)</li>
+                <li>• Large format: 150 DPI</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Print Considerations</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Print size calculation</li>
+                <li>• Quality requirements</li>
+                <li>• File size impact</li>
+                <li>• Medium compatibility</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What DPI should I use for printing?",
+            answer: "For most printing, 300 DPI is recommended for quality results. For high-end photo printing, use 600 DPI. For large format prints (posters), 150 DPI is often sufficient."
+          },
+          {
+            question: "Does DPI affect web images?",
+            answer: "DPI doesn't affect web display - only pixel dimensions matter. However, embedded DPI metadata can affect how images print from browsers. Set to 72 DPI for web."
+          },
+          {
+            question: "Can I change the DPI of an image?",
+            answer: "You can change DPI metadata, but this doesn't actually change resolution. To truly change DPI, you need to resample the image at the new DPI, which changes pixel dimensions."
+          },
+          {
+            question: "Why do my prints look pixelated?",
+            answer: "Pixelated prints usually mean the image has insufficient resolution for the print size. Ensure your image has enough pixels (300 DPI × print size in inches) for quality output."
+          },
+          {
+            question: "What's the relationship between DPI and print size?",
+            answer: "Print size (inches) = Pixels / DPI. For example, a 2400px image at 300 DPI = 8 inches. Higher DPI = smaller print size for same pixel count."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

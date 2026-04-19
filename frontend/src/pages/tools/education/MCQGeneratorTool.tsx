@@ -420,7 +420,30 @@ const MCQGeneratorTool = () => {
         )}
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "How many answer options can I add?",
+            answer: "You can add as many answer options as needed for each question. Typically, MCQs have 4 options, but you can customize based on your requirements."
+          },
+          {
+            question: "Can I mark multiple correct answers?",
+            answer: "Currently, the tool supports single correct answer questions. For multiple correct answers, you can note it in the question text or create separate questions."
+          },
+          {
+            question: "What export formats are available?",
+            answer: "You can export your MCQs as a PDF document for printing or sharing. You can also copy the questions directly to use in other applications."
+          },
+          {
+            question: "Can I edit questions after adding them?",
+            answer: "Yes, you can delete any question and add it again with corrections. The tool allows you to manage your question list before exporting."
+          },
+          {
+            question: "Is there a limit on the number of questions?",
+            answer: "No, you can add as many questions as you need. There's no limit on the number of MCQs you can generate in a single session."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

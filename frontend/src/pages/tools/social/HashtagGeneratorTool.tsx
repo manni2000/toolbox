@@ -272,8 +272,76 @@ const HashtagGeneratorTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Hash className="h-5 w-5 text-blue-500" />
+            What is Hashtag Generation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Hashtag generation creates relevant, trending hashtags to increase social media visibility. These tags help categorize content, improve discoverability, and reach wider audiences interested in your topics.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your topic or keywords</li>
+            <li>The tool generates relevant hashtags</li>
+            <li>Filter by popularity or niche</li>
+            <li>Copy and use in your posts</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Hashtag Types</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Trending tags</li>
+                <li>• Niche-specific tags</li>
+                <li>• Branded hashtags</li>
+                <li>• Community tags</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Visibility Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Increased discoverability</li>
+                <li>• Better categorization</li>
+                <li>• Wider audience reach</li>
+                <li>• Trend participation</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How many hashtags should I use?",
+            answer: "Use 5-10 relevant hashtags on Instagram, 2-3 on Twitter, and 3-5 on LinkedIn. Quality over quantity—use only relevant tags."
+          },
+          {
+            question: "Should I use trending or niche hashtags?",
+            answer: "Mix both: 1-2 trending tags for reach, and 3-8 niche tags for targeted engagement. Trending tags give visibility, niche tags give relevance."
+          },
+          {
+            question: "Can I use the same hashtags every time?",
+            answer: "Vary your hashtags to avoid looking spammy. Create hashtag sets for different topics and rotate them. Use brand-specific tags consistently."
+          },
+          {
+            question: "Should I create my own hashtag?",
+            answer: "Yes, create a branded hashtag for your business or campaign. It helps track conversations and builds brand identity. Keep it unique and memorable."
+          },
+          {
+            question: "Do hashtags work on all platforms?",
+            answer: "Hashtags work on Instagram, Twitter, TikTok, LinkedIn, Facebook, and Pinterest. Each platform has different optimal practices and limits."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

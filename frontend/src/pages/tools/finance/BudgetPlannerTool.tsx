@@ -386,7 +386,30 @@ export default function BudgetPlannerTool() {
         )}
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "What is the 50/30/20 budgeting rule?",
+            answer: "The 50/30/20 rule allocates 50% of income to needs (rent, groceries), 30% to wants (entertainment, dining), and 20% to savings and debt repayment."
+          },
+          {
+            question: "How much should I save each month?",
+            answer: "Financial experts recommend saving at least 20% of your income. The tool shows your actual savings rate and compares it to recommended guidelines."
+          },
+          {
+            question: "Can I customize expense categories?",
+            answer: "Yes, you can add any expense categories that fit your lifestyle. Common categories include rent, food, transportation, utilities, entertainment, and more."
+          },
+          {
+            question: "What if my expenses exceed my income?",
+            answer: "The tool will show a negative savings amount. This indicates you need to reduce expenses or increase income. Review your spending to identify areas for cuts."
+          },
+          {
+            question: "How often should I update my budget?",
+            answer: "Review and update your budget monthly or whenever your income or major expenses change. Regular tracking ensures you stay on top of your finances."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

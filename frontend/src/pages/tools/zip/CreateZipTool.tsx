@@ -262,8 +262,76 @@ const CreateZipTool = () => {
           </ul>
         </motion.div>
 
-        {/* FAQ Section */}
-        <ToolFAQ />
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Archive className="h-5 w-5 text-blue-500" />
+            What is ZIP Creation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            ZIP creation bundles multiple files into a single archive. This simplifies file sharing, organizes related files together, and makes it easy to transfer multiple files at once.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload or drag multiple files</li>
+            <li>Arrange files if needed</li>
+            <li>The tool creates ZIP archive</li>
+            <li>Download the ZIP file</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">ZIP Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Multiple file support</li>
+                <li>• Drag and drop</li>
+                <li>• File organization</li>
+                <li>• Cross-platform compatible</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• File bundling</li>
+                <li>• Project archiving</li>
+                <li>• Email attachments</li>
+                <li>• Document sharing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+          {/* FAQ Section */}
+          <ToolFAQ faqs={[
+            {
+              question: "How many files can I put in a ZIP?",
+              answer: "ZIP files can contain thousands of files. The practical limit is file size rather than count. Most systems support ZIP files up to 4GB or larger."
+            },
+            {
+              question: "Does ZIP preserve folder structure?",
+              answer: "Yes, ZIP preserves folder structure. When you extract, files are restored to their original folder hierarchy, maintaining organization."
+            },
+            {
+              question: "Can I add files to an existing ZIP?",
+              answer: "This tool creates new ZIP files. To add files to existing ZIPs, use extraction software that supports updating archives."
+            },
+            {
+              question: "Are ZIP files secure?",
+              answer: "ZIP files can be password-protected for security. Use strong passwords when protecting sensitive archives. Standard ZIP encryption has limitations."
+            },
+            {
+              question: "Why use ZIP instead of sending files separately?",
+              answer: "ZIP simplifies sharing by bundling files, reduces total size through compression, and ensures files stay together. Much more convenient than multiple attachments."
+            }
+          ]} />
+        </div>
       </div>
     </ToolLayout>
   );

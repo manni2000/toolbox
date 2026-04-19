@@ -242,8 +242,77 @@ const CronGeneratorTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Clock className="h-5 w-5 text-blue-500" />
+            What is a Cron Expression?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            A cron expression is a time-based job scheduler in Unix-like systems. It uses five fields (minute, hour, day of month, month, day of week) to define when a task should run automatically, enabling automated recurring tasks.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Set values for each cron field using inputs or presets</li>
+            <li>Use * for any value, or specify ranges and intervals</li>
+            <li>View the generated cron expression</li>
+            <li>Copy the expression for use in your crontab or scheduler</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Cron Fields</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Minute (0-59)</li>
+                <li>• Hour (0-23)</li>
+                <li>• Day of month (1-31)</li>
+                <li>• Month (1-12)</li>
+                <li>• Day of week (0-6)</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Automated backups</li>
+                <li>• Scheduled reports</li>
+                <li>• System maintenance</li>
+                <li>• Data synchronization</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What does the asterisk (*) mean in cron?",
+            answer: "The asterisk (*) means 'every' or 'any value'. For example, * in the minute field means 'every minute'. It's a wildcard that matches all possible values."
+          },
+          {
+            question: "How do I run a task every 5 minutes?",
+            answer: "Use */5 in the minute field: */5 * * * *. This runs the task every 5 minutes, every hour, every day."
+          },
+          {
+            question: "How do I schedule a task for weekdays only?",
+            answer: "Use 1-5 in the day of week field: 0 9 * * 1-5. This runs at 9 AM Monday through Friday."
+          },
+          {
+            question: "What is the order of cron fields?",
+            answer: "The standard order is: minute (0-59), hour (0-23), day of month (1-31), month (1-12), day of week (0-6, where 0 is Sunday)."
+          },
+          {
+            question: "Can I use presets for common schedules?",
+            answer: "Yes, the tool provides common presets like 'every 15 minutes', 'every hour', 'daily at midnight', and 'every Monday' to quickly generate cron expressions."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

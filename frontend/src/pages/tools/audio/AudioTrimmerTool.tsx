@@ -391,8 +391,70 @@ const AudioTrimmerTool = () => {
           </>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Scissors className="h-5 w-5 text-orange-500" />
+            What is Audio Trimming?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Audio trimming removes unwanted sections from the beginning, middle, or end of audio files. This is perfect for removing silence, mistakes, or extracting specific segments from longer recordings.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload an audio file you want to trim</li>
+            <li>Set the start and end points using sliders or time input</li>
+            <li>Preview the selected segment to verify</li>
+            <li>Process and download the trimmed audio file</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-orange-50 rounded-lg">
+              <h5 className="font-semibold text-orange-900 mb-1">Common Use Cases</h5>
+              <ul className="text-sm text-orange-800 space-y-1">
+                <li>• Remove silence from recordings</li>
+                <li>• Extract audio clips</li>
+                <li>• Cut out mistakes</li>
+                <li>• Create ringtones</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-purple-50 rounded-lg">
+              <h5 className="font-semibold text-purple-900 mb-1">Trimming Features</h5>
+              <ul className="text-sm text-purple-800 space-y-1">
+                <li>• Precise time selection</li>
+                <li>• Visual waveform preview</li>
+                <li>• Real-time preview</li>
+                <li>• Frame-accurate cuts</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How precise can I make my cuts?",
+            answer: "You can trim with precision up to 0.1 seconds. Use the sliders or manually enter the exact start and end times for precise cutting."
+          },
+          {
+            question: "Can I trim multiple sections from one file?",
+            answer: "Currently, the tool trims a single continuous segment. For multiple cuts, you would need to process the file multiple times or use a dedicated audio editor."
+          },
+          {
+            question: "Will trimming affect audio quality?",
+            answer: "No, trimming is a lossless operation. The audio quality remains exactly the same as the original file within the selected segment."
+          },
+          {
+            question: "What file formats are supported?",
+            answer: "MP3, WAV, AAC, OGG, FLAC, and other common audio formats are supported. The output maintains the same format as the input."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

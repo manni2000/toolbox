@@ -605,7 +605,30 @@ const PostmanCollectionTool = () => {
         </motion.div>
 
         {/* FAQ Section */}
-        <ToolFAQ />
+        <div className="mt-8">
+        <ToolFAQ faqs={[
+          {
+            question: "What is a Postman collection?",
+            answer: "A Postman collection is a group of saved API requests that can be organized, documented, and shared. It's the standard way to manage and collaborate on API testing workflows."
+          },
+          {
+            question: "Can I import the generated collection?",
+            answer: "Yes, the exported JSON file can be directly imported into Postman using the Import feature. It will recreate all your requests, folders, and configurations."
+          },
+          {
+            question: "What HTTP methods are supported?",
+            answer: "The tool supports all common HTTP methods including GET, POST, PUT, DELETE, PATCH, HEAD, and OPTIONS for comprehensive API coverage."
+          },
+          {
+            question: "Can I organize requests into folders?",
+            answer: "Yes, you can create folders to organize related requests together, making large collections more manageable and logically structured."
+          },
+          {
+            question: "Does it support authentication?",
+            answer: "The tool allows you to add custom headers which can include authentication tokens, API keys, or other auth headers needed for your requests."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

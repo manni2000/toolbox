@@ -354,8 +354,76 @@ const UnitConverterTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Target className="h-5 w-5 text-blue-500" />
+            What is Unit Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Unit conversion transforms measurements from one unit to another within the same category (length, weight, temperature, etc.). It's essential for science, engineering, cooking, travel, and everyday situations where different measurement systems are used.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Select the measurement category (length, weight, etc.)</li>
+            <li>Enter the value you want to convert</li>
+            <li>Choose the source and target units</li>
+            <li>View the converted result instantly</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Supported Categories</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Length (m, km, mi, ft, etc.)</li>
+                <li>• Weight (kg, lb, oz, etc.)</li>
+                <li>• Temperature (°C, °F, K)</li>
+                <li>• Area, volume, speed</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Science and engineering</li>
+                <li>• Cooking and recipes</li>
+                <li>• Travel planning</li>
+                <li>• International trade</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What measurement categories are supported?",
+            answer: "The tool supports length, weight, temperature, area, volume, and speed conversions. Each category includes common units used in everyday life and professional settings."
+          },
+          {
+            question: "How accurate are the conversions?",
+            answer: "Conversions use standard conversion factors with high precision. Results are displayed with appropriate decimal places for practical use while maintaining accuracy."
+          },
+          {
+            question: "Can I convert between metric and imperial?",
+            answer: "Yes, the tool supports conversions between metric (meters, kilograms, Celsius) and imperial (feet, pounds, Fahrenheit) systems, making it useful for international contexts."
+          },
+          {
+            question: "How is temperature conversion calculated?",
+            answer: "Temperature conversions use specific formulas: °F = (°C × 9/5) + 32, °C = (°F - 32) × 5/9, and K = °C + 273.15 for Kelvin."
+          },
+          {
+            question: "Why do I need unit conversion?",
+            answer: "Different countries and industries use different measurement systems. Unit conversion ensures accurate communication, cooking, engineering, and scientific calculations across these systems."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

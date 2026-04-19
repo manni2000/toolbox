@@ -207,8 +207,76 @@ const StudyTimetableTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-blue-500" />
+            What is a Study Timetable?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            A study timetable organizes your study sessions into a structured schedule with allocated time for each subject. It helps students manage their time effectively, ensure balanced coverage of all subjects, and maintain consistent study habits for better academic performance.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Add study sessions with subject, start time, and end time</li>
+            <li>Set break times between sessions for better focus</li>
+            <li>View your complete timetable with all sessions</li>
+            <li>Adjust or remove sessions as needed</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Timetable Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Custom session duration</li>
+                <li>• Break time scheduling</li>
+                <li>• Subject organization</li>
+                <li>• Easy editing</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Study Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Better time management</li>
+                <li>• Consistent study habits</li>
+                <li>• Balanced subject coverage</li>
+                <li>• Reduced procrastination</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How long should study sessions be?",
+            answer: "The Pomodoro technique suggests 25-minute focused sessions with 5-minute breaks. However, you can customize session lengths based on your concentration span and subject difficulty."
+          },
+          {
+            question: "Why include break times?",
+            answer: "Breaks prevent mental fatigue, improve focus, and help retain information better. Regular breaks maintain productivity and prevent burnout during long study periods."
+          },
+          {
+            question: "How do I balance multiple subjects?",
+            answer: "Allocate time based on difficulty and importance. Give more time to challenging subjects while ensuring all subjects get regular attention throughout the week."
+          },
+          {
+            question: "Can I modify sessions after creating them?",
+            answer: "Yes, you can delete any session and create a new one with adjusted times. This flexibility allows you to adapt your timetable as your schedule changes."
+          },
+          {
+            question: "What's the best time to study?",
+            answer: "The best study time varies by person. Some prefer morning hours for fresh focus, while others study better at night. Choose times when you're most alert and least distracted."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

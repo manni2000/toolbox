@@ -390,19 +390,77 @@ const AudioMergerTool = () => {
           </>
         )}
 
-        {/* Info */}
-        <Card className="p-4 bg-muted/50">
-          <h4 className="font-medium mb-2">How it works</h4>
-          <ul className="text-sm text-muted-foreground space-y-1">
-            <li>• Upload multiple audio files</li>
-            <li>• Drag to reorder the sequence</li>
-            <li>• Click "Merge & Download" to combine them</li>
-            <li>• Output is in WAV format for best compatibility</li>
-          </ul>
-        </Card>
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Music className="h-5 w-5 text-purple-500" />
+            What is Audio Merging?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Audio merging combines multiple audio files into a single continuous track. This is useful for creating playlists, combining recordings, or assembling audio segments into a cohesive piece.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload multiple audio files you want to combine</li>
+            <li>Drag and drop to reorder files in the desired sequence</li>
+            <li>Adjust the order to match your preferred flow</li>
+            <li>Click "Merge & Download" to combine all files</li>
+            <li>Download the merged audio file in WAV format</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-purple-50 rounded-lg">
+              <h5 className="font-semibold text-purple-900 mb-1">Common Applications</h5>
+              <ul className="text-sm text-purple-800 space-y-1">
+                <li>• Create continuous playlists</li>
+                <li>• Combine podcast segments</li>
+                <li>• Merge music tracks</li>
+                <li>• Assemble audio presentations</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Key Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Drag-and-drop reordering</li>
+                <li>• Preserves audio quality</li>
+                <li>• No file size limits</li>
+                <li>• Instant processing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
 
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What audio formats can I merge?",
+            answer: "You can merge MP3, WAV, AAC, OGG, and other common audio formats. The tool automatically handles format conversion during the merge process."
+          },
+          {
+            question: "Is there a limit to how many files I can merge?",
+            answer: "There's no strict limit on the number of files. However, very large numbers of files may take longer to process and may be limited by your browser's memory."
+          },
+          {
+            question: "Can I adjust the order of merged tracks?",
+            answer: "Yes! Simply drag and drop the audio files to reorder them before merging. The order you set will be preserved in the final merged file."
+          },
+          {
+            question: "What format will the merged file be in?",
+            answer: "The merged file is output in WAV format to ensure maximum quality and compatibility. You can then convert it to other formats if needed."
+          },
+          {
+            question: "Will there be gaps between merged tracks?",
+            answer: "The tracks are merged seamlessly without gaps. Each track starts immediately after the previous one ends, creating a continuous audio stream."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

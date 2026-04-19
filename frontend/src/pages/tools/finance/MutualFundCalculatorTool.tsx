@@ -329,8 +329,76 @@ const MutualFundCalculatorTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-blue-500" />
+            What is Mutual Fund Investment?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Mutual fund investment pools money from multiple investors to purchase securities like stocks, bonds, and money market instruments. It offers diversification, professional management, and is suitable for investors seeking exposure to various asset classes.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your monthly investment amount</li>
+            <li>Set the expected annual return rate</li>
+            <li>Choose the investment duration</li>
+            <li>View the maturity amount and wealth gained</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Mutual Fund Types</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Equity funds (high risk/return)</li>
+                <li>• Debt funds (lower risk)</li>
+                <li>• Hybrid funds (balanced)</li>
+                <li>• Index funds (passive)</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Investment Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Professional management</li>
+                <li>• Diversification</li>
+                <li>• Liquidity</li>
+                <li>• Tax efficiency</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is the difference between equity and debt funds?",
+            answer: "Equity funds invest in stocks for higher growth potential but higher risk. Debt funds invest in bonds for stable returns with lower risk. Choose based on your risk appetite."
+          },
+          {
+            question: "How do I choose a mutual fund?",
+            answer: "Consider factors like your risk tolerance, investment horizon, financial goals, and fund performance history. Consult a financial advisor for personalized recommendations."
+          },
+          {
+            question: "What are the tax implications?",
+            answer: "Equity funds held over 1 year qualify for long-term capital gains tax (10% above ₹1 lakh). Debt funds have different tax rules based on holding period."
+          },
+          {
+            question: "What is NAV in mutual funds?",
+            answer: "NAV (Net Asset Value) is the per-unit price of a mutual fund. It's calculated by dividing total assets by total outstanding units and is published daily."
+          },
+          {
+            question: "Can I redeem my mutual funds anytime?",
+            answer: "Yes, most mutual funds offer high liquidity. However, some funds may have exit loads for early redemption. Check the fund's exit load structure before investing."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

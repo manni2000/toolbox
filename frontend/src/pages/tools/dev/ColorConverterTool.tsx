@@ -320,8 +320,76 @@ const ColorConverterTool = () => {
           </p>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Palette className="h-5 w-5 text-blue-500" />
+            What is Color Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Color conversion translates colors between different color formats like HEX, RGB, and HSL. Each format represents colors differently, and conversion ensures compatibility across web design, graphics, and development tools.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter a color value in any supported format</li>
+            <li>The tool automatically converts to all other formats</li>
+            <li>View the color preview and all representations</li>
+            <li>Copy any format with one click</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Supported Formats</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• HEX (e.g., #3b82f6)</li>
+                <li>• RGB (e.g., rgb(59, 130, 246))</li>
+                <li>• HSL (e.g., hsl(217, 91%, 60%))</li>
+                <li>• Real-time conversion</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Web design projects</li>
+                <li>• CSS development</li>
+                <li>• Graphic design</li>
+                <li>• Color palette creation</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is HEX color format?",
+            answer: "HEX is a 6-digit hexadecimal representation of color, prefixed with #. Each pair of digits represents red, green, and blue values (00-FF). Example: #3b82f6"
+          },
+          {
+            question: "What is RGB color format?",
+            answer: "RGB represents colors using three values (0-255) for red, green, and blue. It's commonly used in CSS and graphics. Example: rgb(59, 130, 246)"
+          },
+          {
+            question: "What is HSL color format?",
+            answer: "HSL uses hue (0-360), saturation (0-100%), and lightness (0-100%) to describe colors. It's more intuitive for designers. Example: hsl(217, 91%, 60%)"
+          },
+          {
+            question: "Can I convert between any formats?",
+            answer: "Yes, you can input any of the supported formats (HEX, RGB, HSL) and the tool will automatically convert to all other formats instantly."
+          },
+          {
+            question: "Why do I need different color formats?",
+            answer: "Different tools and platforms use different color formats. Web uses HEX and RGB, while designers often prefer HSL. Conversion ensures compatibility across all tools."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

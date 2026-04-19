@@ -632,8 +632,76 @@ const WhatsAppStatusTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Smartphone className="h-5 w-5 text-blue-500" />
+            What is WhatsApp Status Creation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            WhatsApp Status creator generates custom status images for WhatsApp stories. You can add text, choose colors, and customize the design to create engaging status updates that appear as full-screen stories in WhatsApp.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your background image or use solid color</li>
+            <li>Add your text and customize styling</li>
+            <li>Adjust text position, color, and size</li>
+            <li>Download the 1080x1920 status image</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Customization Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Text overlay with styling</li>
+                <li>• Position and alignment</li>
+                <li>• Color customization</li>
+                <li>• Font size control</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Status Features</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• 1080x1920 resolution</li>
+                <li>• Full-screen display</li>
+                <li>• Auto-optimized for WhatsApp</li>
+                <li>• Easy sharing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What resolution should WhatsApp status images be?",
+            answer: "WhatsApp status images should be 1080x1920 pixels (9:16 aspect ratio) for full-screen display. This ensures your status appears correctly on all devices without cropping."
+          },
+          {
+            question: "Can I use any image as a background?",
+            answer: "Yes, you can upload any image as a background. For best results, use high-quality images with good lighting. The tool will resize to fit the status dimensions."
+          },
+          {
+            question: "How long do WhatsApp statuses last?",
+            answer: "WhatsApp statuses last 24 hours before disappearing. They can be viewed multiple times during this period by your contacts."
+          },
+          {
+            question: "Can I add multiple text elements?",
+            answer: "This tool supports a single text element for simplicity. For complex designs with multiple text layers, use graphic design software and upload as an image."
+          },
+          {
+            question: "What's the difference between status and profile photo?",
+            answer: "Status appears as full-screen stories visible for 24 hours. Profile photos are permanent and appear in chat windows. Status is for temporary updates and sharing moments."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

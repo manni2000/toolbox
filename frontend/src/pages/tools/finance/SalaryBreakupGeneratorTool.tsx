@@ -358,6 +358,77 @@ export default function SalaryBreakupGeneratorTool() {
           </div>
         </div>
       </div>
+
+      {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-500" />
+            What is Salary Breakup?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Salary breakdown divides your total CTC (Cost to Company) into various components like basic salary, HRA, allowances, and deductions. It helps employees understand their compensation structure, take-home pay, and optimize tax planning strategies.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your annual CTC amount</li>
+            <li>The tool calculates basic salary (typically 40-50% of CTC)</li>
+            <li>HRA and allowances are calculated based on standard percentages</li>
+            <li>Deductions like PF, ESI, and tax are applied to show take-home pay</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Salary Components</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Basic salary (40-50% CTC)</li>
+                <li>• HRA (House Rent Allowance)</li>
+                <li>• Special allowances</li>
+                <li>• Statutory deductions</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Offer letter analysis</li>
+                <li>• Tax regime comparison</li>
+                <li>• Take-home pay calculation</li>
+                <li>• Compensation planning</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "What is CTC?",
+            answer: "CTC (Cost to Company) is the total annual compensation including salary, benefits, perks, and bonuses. It's the total cost the company incurs for an employee."
+          },
+          {
+            question: "What is basic salary?",
+            answer: "Basic salary is the fixed component of CTC, typically 40-50%. It determines PF contributions and is the base for HRA and other allowances."
+          },
+          {
+            question: "What is HRA?",
+            answer: "HRA (House Rent Allowance) is a component to help with housing expenses. It's typically 40-50% of basic salary in non-metro cities and 50% in metro cities."
+          },
+          {
+            question: "What's the difference between old and new tax regime?",
+            answer: "Old regime has higher tax rates but allows deductions. New regime has lower rates but no deductions. Choose based on your salary structure and deductions available."
+          },
+          {
+            question: "How is PF calculated?",
+            answer: "PF (Provident Fund) is 12% of basic salary, split equally between employee and employer. It's mandatory for employees earning up to ₹15,000/month basic salary."
+          }
+        ]} />
+        </div>
     </ToolLayout>
   );
 }

@@ -422,8 +422,76 @@ const UserAgentTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Monitor className="h-5 w-5 text-blue-500" />
+            What is User-Agent Parsing?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            User-Agent parsing analyzes browser identification strings to extract information about the user's browser, operating system, device type, and other technical details. This helps understand your audience and optimize experiences.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter a user-agent string</li>
+            <li>The tool parses the string components</li>
+            <li>View browser, OS, and device details</li>
+            <li>Get technical specifications</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Parsed Information</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Browser name and version</li>
+                <li>• Operating system</li>
+                <li>• Device type (mobile/desktop)</li>
+                <li>• Rendering engine</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Analytics and tracking</li>
+                <li>• Device-specific optimization</li>
+                <li>• Compatibility testing</li>
+                <li>• Feature detection</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is a user-agent string?",
+            answer: "A user-agent string is text sent by browsers to servers identifying the browser, OS, and device. It helps servers deliver appropriate content and features for the accessing client."
+          },
+          {
+            question: "Why parse user-agent strings?",
+            answer: "Parsing helps understand your audience's devices, optimize experiences for specific browsers, detect mobile users for responsive design, and gather analytics for business decisions."
+          },
+          {
+            question: "Can user-agent strings be spoofed?",
+            answer: "Yes, user-agents can be easily modified or spoofed. Never rely solely on user-agent for security decisions. Use it for analytics and feature detection, not authentication."
+          },
+          {
+            question: "What information can be extracted?",
+            answer: "User-agent strings typically contain browser name/version, operating system, device type, rendering engine, and sometimes device model. However, format varies between browsers."
+          },
+          {
+            question: "Is user-agent detection reliable?",
+            answer: "User-agent detection is unreliable for precise identification due to spoofing and varying formats. For feature detection, use modern APIs like feature detection libraries instead."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

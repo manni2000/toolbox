@@ -278,8 +278,76 @@ const LinkInBioTool = () => {
           </div>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <ExternalLink className="h-5 w-5 text-blue-500" />
+            What is Link in Bio Creation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Link in bio tools create a single link that directs followers to multiple destinations. This is essential for platforms like Instagram where you only get one link in your profile.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Add your links with titles and icons</li>
+            <li>Arrange links by priority</li>
+            <li>The tool generates a single bio link</li>
+            <li>Add to your social profile</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Link Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Multiple links in one</li>
+                <li>• Custom icons</li>
+                <li>• Click tracking</li>
+                <li>• Mobile-optimized</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Instagram profiles</li>
+                <li>• TikTok profiles</li>
+                <li>• Link aggregators</li>
+                <li>• Campaign landing pages</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why do I need a link in bio?",
+            answer: "Platforms like Instagram and TikTok allow only one link in profiles. Link in bio tools let you share multiple links through a single URL."
+          },
+          {
+            question: "How many links can I add?",
+            answer: "Most link in bio tools allow unlimited links, but 5-10 is optimal for mobile usability. Too many options can overwhelm visitors."
+          },
+          {
+            question: "Can I track link clicks?",
+            answer: "Yes, most link in bio services provide analytics showing which links get clicked, helping you understand what your audience wants."
+          },
+          {
+            question: "Should I order links by popularity?",
+            answer: "Order links by priority and relevance. Put your most important links first. You can also use analytics to optimize ordering based on performance."
+          },
+          {
+            question: "Do I need a custom domain?",
+            answer: "Custom domains look more professional but aren't necessary. Free services work well for most personal use. Consider custom domains for businesses."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

@@ -390,8 +390,76 @@ const CompoundInterestTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-green-500" />
+            What is Compound Interest?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Compound interest is interest calculated on the initial principal and also on the accumulated interest of previous periods. Unlike simple interest, compound interest grows exponentially over time, making it a powerful concept for investments and savings.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter the principal amount (initial investment)</li>
+            <li>Set the annual interest rate</li>
+            <li>Choose the time period and compounding frequency</li>
+            <li>View the calculated compound interest and total amount</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Key Concepts</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Principal (initial amount)</li>
+                <li>• Interest rate (annual %)</li>
+                <li>• Compounding frequency</li>
+                <li>• Time period</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Investment planning</li>
+                <li>• Savings calculations</li>
+                <li>• Loan comparison</li>
+                <li>• Financial education</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between simple and compound interest?",
+            answer: "Simple interest is calculated only on the principal amount. Compound interest is calculated on the principal plus accumulated interest, leading to exponential growth over time."
+          },
+          {
+            question: "How does compounding frequency affect returns?",
+            answer: "Higher compounding frequency (daily vs monthly vs yearly) leads to more interest because interest earns interest more often. More frequent compounding = higher returns."
+          },
+          {
+            question: "What is the compound interest formula?",
+            answer: "A = P(1 + r/n)^(nt), where A = final amount, P = principal, r = annual rate, n = compounding frequency per year, and t = time in years."
+          },
+          {
+            question: "Why is compound interest powerful?",
+            answer: "Compound interest creates exponential growth through the 'interest on interest' effect. Over long periods, even small rates can generate significant returns through compounding."
+          },
+          {
+            question: "Can this help with loan calculations?",
+            answer: "Yes, the same formula applies to loans. For loans, compound interest means you pay interest on accumulated interest, making it important to understand for debt management."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

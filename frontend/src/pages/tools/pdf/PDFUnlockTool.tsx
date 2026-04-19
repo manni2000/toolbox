@@ -219,8 +219,76 @@ const PDFUnlockTool = () => {
           from PDFs you have authorization to access.
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Unlock className="h-5 w-5 text-blue-500" />
+            What is PDF Unlocking?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PDF unlocking removes password protection from PDF documents, allowing you to open, edit, copy, and print the file without entering a password. This is useful when you've forgotten your password or need to access password-protected content.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your password-protected PDF</li>
+            <li>Enter the PDF password</li>
+            <li>The tool removes the protection</li>
+            <li>Download the unlocked PDF</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Unlock Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Remove user passwords</li>
+                <li>• Remove owner passwords</li>
+                <li>• Enable editing</li>
+                <li>• Enable copying/printing</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Recover forgotten passwords</li>
+                <li>• Remove access restrictions</li>
+                <li>• Enable document editing</li>
+                <li>• Archive management</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Can I unlock any PDF password?",
+            answer: "This tool can remove passwords if you know the password. It doesn't crack unknown passwords. For unknown passwords, you may need specialized password recovery software."
+          },
+          {
+            question: "Is PDF unlocking legal?",
+            answer: "Unlocking PDFs you own or have authorization to access is legal. Unlocking documents you don't have permission to access may violate copyright or privacy laws."
+          },
+          {
+            question: "Will unlocking affect the PDF content?",
+            answer: "No, unlocking only removes password protection. All content, formatting, and quality remain exactly the same. The unlocked PDF is functionally identical except for the removed password."
+          },
+          {
+            question: "What's the difference between user and owner passwords?",
+            answer: "User passwords prevent opening the PDF. Owner passwords control permissions like printing, copying, or editing. This tool can remove both types when you know the password."
+          },
+          {
+            question: "Can I re-protect a PDF after unlocking?",
+            answer: "Yes, you can re-add password protection using the PDF Password tool after unlocking. This is useful if you want to change the password or protection level."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

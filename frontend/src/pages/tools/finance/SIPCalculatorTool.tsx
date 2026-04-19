@@ -398,9 +398,77 @@ const SIPCalculatorTool = () => {
         />
       </div>
 
-      {/* FAQ Section */}
-      <ToolFAQ />
+      {/* Tool Definition Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="rounded-xl border border-border bg-card p-6"
+      >
+        <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+          <PiggyBank className="h-5 w-5 text-blue-500" />
+          What is SIP Investment?
+        </h3>
+        <p className="text-muted-foreground mb-4">
+          SIP (Systematic Investment Plan) is an investment strategy where you invest a fixed amount regularly in mutual funds. It promotes disciplined investing, benefits from rupee cost averaging, and helps build wealth over time through the power of compounding.
+        </p>
+        
+        <h4 className="font-semibold mb-2">How It Works</h4>
+        <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+          <li>Enter your monthly investment amount</li>
+          <li>Set the expected annual return rate</li>
+          <li>Choose the investment tenure in years</li>
+          <li>View the maturity amount and wealth gained</li>
+        </ol>
+        
+        <div className="grid sm:grid-cols-2 gap-4 mt-4">
+          <div className="p-3 bg-blue-50 rounded-lg">
+            <h5 className="font-semibold text-blue-900 mb-1">SIP Benefits</h5>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li>• Disciplined investing</li>
+              <li>• Rupee cost averaging</li>
+              <li>• Power of compounding</li>
+              <li>• Flexibility</li>
+            </ul>
+          </div>
+          <div className="p-3 bg-green-50 rounded-lg">
+            <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+            <ul className="text-sm text-green-800 space-y-1">
+              <li>• Retirement planning</li>
+              <li>• Wealth creation</li>
+              <li>• Goal-based investing</li>
+              <li>• Risk management</li>
+            </ul>
+          </div>
+        </div>
+      </motion.div>
+
+      <div className="mt-8">
+        {/* FAQ Section */}
+      <ToolFAQ faqs={[
+        {
+          question: "What is the difference between SIP and lumpsum?",
+          answer: "SIP involves investing fixed amounts regularly (monthly). Lumpsum is a one-time investment. SIP benefits from rupee cost averaging and is less affected by market timing."
+        },
+        {
+          question: "What is rupee cost averaging?",
+            answer: "Rupee cost averaging means you buy more units when prices are low and fewer when prices are high. This reduces the average cost per unit over time."
+        },
+        {
+          question: "How much should I invest via SIP?",
+            answer: "Start with an amount you're comfortable with regularly. Financial experts recommend investing at least 20% of your income, adjusting based on goals and risk appetite."
+        },
+        {
+          question: "Can I modify or stop my SIP?",
+            answer: "Yes, SIPs are flexible. You can increase, decrease, pause, or stop your SIP anytime. This makes it suitable for changing financial situations."
+        },
+        {
+          question: "What returns can I expect from SIP?",
+            answer: "Returns depend on the mutual fund scheme and market conditions. Historically, equity funds have delivered 12-15% annually over long periods, but past performance doesn't guarantee future returns."
+        }
+      ]} />
       <SimilarTools currentToolSlug="sip-calculator" />
+      </div>
     </ToolLayout>
   );
 };

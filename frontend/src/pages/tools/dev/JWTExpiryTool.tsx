@@ -442,8 +442,76 @@ const JWTExpiryTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Clock className="h-5 w-5 text-blue-500" />
+            What is JWT Expiry Check?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            JWT expiry checking verifies whether a JSON Web Token has expired based on its 'exp' (expiration) claim. It decodes the token, extracts the expiration timestamp, and compares it with the current time to determine if the token is still valid.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste your JWT token into the input field</li>
+            <li>The tool decodes and extracts the exp claim</li>
+            <li>It compares expiration time with current time</li>
+            <li>View expiry status, time remaining, and decoded payload</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Expiry Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Real-time expiry check</li>
+                <li>• Time remaining display</li>
+                <li>• Payload inspection</li>
+                <li>• Status indicators</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Debugging auth issues</li>
+                <li>• Token lifecycle management</li>
+                <li>• Session monitoring</li>
+                <li>• API testing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How is JWT expiration calculated?",
+            answer: "JWT expiration uses the 'exp' claim, which is a Unix timestamp (seconds since epoch). The tool compares this with the current time to determine if the token has expired."
+          },
+          {
+            question: "What if the token has no exp claim?",
+            answer: "If the token lacks an 'exp' claim, it never expires by default. This is generally not recommended for security, as tokens without expiration remain valid indefinitely."
+          },
+          {
+            question: "Can I check tokens that are already expired?",
+            answer: "Yes, the tool will show that the token is expired and display how long ago it expired. This is useful for debugging why authentication failed."
+          },
+          {
+            question: "What time format is used for exp?",
+            answer: "The 'exp' claim uses Unix timestamp format (seconds since January 1, 1970). The tool converts this to readable dates and times."
+          },
+          {
+            question: "Is this check secure?",
+            answer: "This is a client-side check for debugging purposes. For security, always validate token expiration server-side with proper signature verification."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

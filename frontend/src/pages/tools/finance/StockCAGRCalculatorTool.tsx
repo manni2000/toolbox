@@ -387,6 +387,77 @@ export default function StockCAGRCalculatorTool() {
           </div>
         </div>
       </div>
+
+      {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-blue-500" />
+            What is CAGR Calculation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            CAGR (Compound Annual Growth Rate) measures the mean annual growth rate of an investment over a specified period longer than one year. It smooths out volatility and provides a single growth rate for comparison across different investments.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter the initial investment value</li>
+            <li>Enter the final investment value</li>
+            <li>Specify the investment period in years</li>
+            <li>View the CAGR and total return analysis</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">CAGR Metrics</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Annual growth rate</li>
+                <li>• Total return percentage</li>
+                <li>• Absolute gain/loss</li>
+                <li>• Performance rating</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Investment Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Stock performance analysis</li>
+                <li>• Portfolio comparison</li>
+                <li>• Business growth tracking</li>
+                <li>• Benchmark evaluation</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "What is the CAGR formula?",
+            answer: "CAGR = [(Final Value / Initial Value)^(1/n) - 1] × 100, where n is the number of years. This gives the annualized growth rate assuming compounding."
+          },
+          {
+            question: "How is CAGR different from average return?",
+            answer: "Average return is simple average of yearly returns. CAGR accounts for compounding and shows the actual annual growth rate. CAGR is more accurate for multi-year periods."
+          },
+          {
+            question: "What is a good CAGR for stocks?",
+            answer: "Historically, stock market CAGR averages 10-12%. Individual stocks can vary widely. Above 15% is excellent, 10-15% is good, below 5% may underperform."
+          },
+          {
+            question: "Can CAGR be negative?",
+            answer: "Yes, if the final value is less than the initial value, CAGR will be negative, indicating a loss over the period. This shows the annualized rate of decline."
+          },
+          {
+            question: "How does volatility affect CAGR?",
+            answer: "CAGR smooths out volatility by showing the end result. Two investments with the same CAGR can have very different volatility profiles. Consider risk alongside CAGR."
+          }
+        ]} />
+        </div>
     </ToolLayout>
   );
 }

@@ -284,8 +284,76 @@ const QRScannerTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <ScanLine className="h-5 w-5 text-blue-500" />
+            What is QR Code Scanning?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            QR code scanning decodes the information stored in QR code images. It extracts URLs, text, contact information, and other data encoded in the QR code, allowing you to access the content without using a mobile device.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload or drag a QR code image</li>
+            <li>The tool analyzes and decodes the QR code</li>
+            <li>View the extracted content</li>
+            <li>Copy the result or visit the URL</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Scanning Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Image upload support</li>
+                <li>• Multiple QR code types</li>
+                <li>• Instant decoding</li>
+                <li>• Copy to clipboard</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• URL extraction</li>
+                <li>• Contact info retrieval</li>
+                <li>• WiFi password access</li>
+                <li>• Text decoding</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What types of QR codes can be scanned?",
+            answer: "This tool can scan standard QR codes containing URLs, text, contact information (vCards), WiFi credentials, and other common QR code data types."
+          },
+          {
+            question: "Why scan QR codes from images?",
+            answer: "Scanning from images is useful when you can't scan with your phone, need to extract data from screenshots, or want to analyze QR codes from printed materials digitally."
+          },
+          {
+            question: "Can I scan damaged or blurry QR codes?",
+            answer: "The scanner can handle moderately damaged or blurry QR codes due to built-in error correction. However, severely damaged codes may not be readable."
+          },
+          {
+            question: "Is it safe to scan QR codes?",
+            answer: "Be cautious with unknown QR codes as they could link to phishing sites. Always verify the URL before visiting, especially for codes from untrusted sources."
+          },
+          {
+            question: "What if the QR code isn't recognized?",
+            answer: "Ensure the QR code is clear, well-lit, and not distorted. Try cropping the image to focus only on the QR code, or improve the image quality if possible."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

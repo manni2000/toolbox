@@ -356,8 +356,76 @@ const MetaTitleDescriptionTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-500" />
+            What is Meta Tag Optimization?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Meta tag optimization creates effective title tags and meta descriptions for web pages. These tags appear in search results and significantly impact click-through rates and search engine rankings.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your page title and description</li>
+            <li>The tool checks length and optimization</li>
+            <li>View preview in search results</li>
+            <li>Get recommendations for improvement</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Optimization Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Length checking</li>
+                <li>• SERP preview</li>
+                <li>• Keyword analysis</li>
+                <li>• CTR prediction</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Best Practices</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Compelling titles</li>
+                <li>• Accurate descriptions</li>
+                <li>• Include keywords</li>
+                <li>• Match user intent</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the ideal length for meta titles?",
+            answer: "Meta titles should be 50-60 characters for optimal display in search results. Longer titles may be truncated. Keep them concise, descriptive, and include your primary keyword."
+          },
+          {
+            question: "How long should meta descriptions be?",
+            answer: "Meta descriptions should be 150-160 characters. This length ensures they display fully in search results. Use them to entice users to click with compelling, accurate descriptions."
+          },
+          {
+            question: "Do meta descriptions affect rankings?",
+            answer: "Meta descriptions don't directly affect rankings but significantly impact click-through rates. Higher CTR can indirectly improve rankings. Write descriptions that encourage clicks."
+          },
+          {
+            question: "Should every page have unique meta tags?",
+            answer: "Yes, each page should have unique, relevant meta tags that accurately describe the page content. Duplicate or generic tags miss optimization opportunities."
+          },
+          {
+            question: "What makes a good meta title?",
+            answer: "Good meta titles are descriptive, include primary keywords, match user intent, and are compelling enough to encourage clicks. They should accurately represent the page content."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

@@ -154,8 +154,76 @@ const HashGeneratorTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Hash className="h-5 w-5 text-blue-500" />
+            What is Hash Generation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Hash generation creates fixed-size cryptographic hashes from input data. Hashes are one-way functions that uniquely identify data without revealing the original content, essential for data integrity verification and secure password storage.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter text or upload a file</li>
+            <li>Select hash algorithm (MD5, SHA-1, SHA-256, etc.)</li>
+            <li>The tool generates the hash</li>
+            <li>Copy the hash for verification</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Hash Algorithms</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• MD5 (fast, legacy)</li>
+                <li>• SHA-1 (deprecated)</li>
+                <li>• SHA-256 (recommended)</li>
+                <li>• SHA-512 (high security)</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Password verification</li>
+                <li>• Data integrity checks</li>
+                <li>• File verification</li>
+                <li>• Digital signatures</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between MD5 and SHA-256?",
+            answer: "MD5 is faster but considered cryptographically broken for security. SHA-256 is more secure and recommended for modern applications. MD5 is still used for checksums where security isn't critical."
+          },
+          {
+            question: "Can hash be reversed to get original data?",
+            answer: "No, cryptographic hash functions are one-way. You cannot reverse a hash to get the original data. This is why they're used for password storage and data integrity verification."
+          },
+          {
+            question: "Why do hashes have fixed length?",
+            answer: "Hash algorithms produce fixed-length outputs regardless of input size. This ensures consistent storage and comparison. Different algorithms produce different hash lengths (e.g., MD5 is 32 hex characters)."
+          },
+          {
+            question: "Can two different inputs have the same hash?",
+            answer: "This is called a collision. While theoretically possible, it's extremely unlikely with modern algorithms like SHA-256. MD5 and SHA-1 have known vulnerabilities making collisions more feasible."
+          },
+          {
+            question: "Should I hash passwords before storing?",
+            answer: "Yes, always hash passwords before storing them. Use strong algorithms like bcrypt, Argon2, or SHA-256 with salt. Never store passwords in plain text."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

@@ -316,8 +316,76 @@ const WebsitePingTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Activity className="h-5 w-5 text-blue-500" />
+            What is Website Ping?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Website ping measures the response time and availability of a web server by sending requests and measuring the time it takes to receive a response. This helps diagnose network issues, check server health, and optimize website performance.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter a website URL or domain</li>
+            <li>The tool sends multiple ping requests</li>
+            <li>Measure response time for each request</li>
+            <li>View average latency and success rate</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Ping Metrics</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Response time (ms)</li>
+                <li>• Packet loss rate</li>
+                <li>• Success percentage</li>
+                <li>• TTL (Time To Live)</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Server monitoring</li>
+                <li>• Network troubleshooting</li>
+                <li>• Performance testing</li>
+                <li>• Availability checks</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is a good ping response time?",
+            answer: "Good ping response times are under 100ms for local servers, under 200ms for regional servers, and under 300ms for international servers. Times over 500ms indicate potential network issues."
+          },
+          {
+            question: "What does packet loss mean?",
+            answer: "Packet loss indicates the percentage of ping requests that didn't receive a response. 0% is ideal. Any packet loss over 1-2% suggests network problems, and over 5% indicates serious connectivity issues."
+          },
+          {
+            question: "Why might ping fail completely?",
+            answer: "Ping failures can occur due to firewall blocking, server being offline, DNS resolution issues, network connectivity problems, or the server explicitly blocking ICMP/ping requests."
+          },
+          {
+            question: "How many ping requests should I send?",
+            answer: "Sending 4-10 ping requests provides a good sample size for accurate averages. More requests give better statistical data but take longer to complete."
+          },
+          {
+            question: "What's the difference between ping and HTTP requests?",
+            answer: "Ping uses ICMP protocol at the network layer, measuring basic connectivity. HTTP requests test the web server and application layer, checking if the website is actually serving content."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

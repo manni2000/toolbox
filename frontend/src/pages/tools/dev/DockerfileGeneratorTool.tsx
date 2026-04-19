@@ -462,8 +462,76 @@ const DockerfileGeneratorTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Code className="h-5 w-5 text-blue-500" />
+            What is Dockerfile Generation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Dockerfile generation creates container configuration files that define how to build Docker images. It helps developers containerize applications by specifying the base image, dependencies, build instructions, and runtime configuration in a standardized format.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Add Dockerfile instructions (FROM, RUN, COPY, etc.)</li>
+            <li>Configure values for each instruction</li>
+            <li>Optionally use pre-built templates for common setups</li>
+            <li>Generate and download the Dockerfile</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Dockerfile Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• All standard instructions</li>
+                <li>• Template presets</li>
+                <li>• Instruction ordering</li>
+                <li>• Comment support</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Application containerization</li>
+                <li>• Microservices deployment</li>
+                <li>• CI/CD pipelines</li>
+                <li>• Development environments</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is a Dockerfile?",
+            answer: "A Dockerfile is a text document that contains all the commands to assemble a Docker image. It's like a recipe that tells Docker how to build your container step by step."
+          },
+          {
+            question: "What Dockerfile instructions are supported?",
+            answer: "The tool supports all common instructions including FROM, RUN, COPY, ADD, WORKDIR, EXPOSE, CMD, ENTRYPOINT, ENV, ARG, VOLUME, USER, LABEL, MAINTAINER, and SHELL."
+          },
+          {
+            question: "Can I use templates?",
+            answer: "Yes, the tool provides pre-built templates for common setups like Node.js, Python, and static websites. These give you a starting point to customize."
+          },
+          {
+            question: "What is the FROM instruction?",
+            answer: "FROM specifies the base image to build from. Every Dockerfile must start with a FROM instruction, which sets the foundation for your container."
+          },
+          {
+            question: "How do I optimize my Dockerfile?",
+            answer: "Best practices include using multi-stage builds, combining RUN commands, using .dockerignore, and leveraging build cache for faster builds."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

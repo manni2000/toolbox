@@ -223,8 +223,76 @@ const VideoSpeedTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Gauge className="h-5 w-5 text-blue-500" />
+            What is Video Speed Adjustment?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Video speed adjustment changes the playback speed of videos without affecting audio pitch. This is useful for creating slow-motion effects, speeding up content, or adjusting duration requirements.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your video file</li>
+            <li>Select speed multiplier</li>
+            <li>The tool adjusts playback speed</li>
+            <li>Download the modified video</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Speed Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Slow motion (0.5x, 0.25x)</li>
+                <li>• Normal speed (1x)</li>
+                <li>• Fast forward (1.5x, 2x)</li>
+                <li>• Custom speed values</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Slow-motion effects</li>
+                <li>• Time-lapse creation</li>
+                <li>• Content condensing</li>
+                <li>• Tutorial pacing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Does changing speed affect audio?",
+            answer: "This tool preserves audio pitch when changing speed. The audio plays faster or slower but maintains the same pitch, preventing the chipmunk effect."
+          },
+          {
+            question: "What speed should I use for slow motion?",
+            answer: "For slow motion, use 0.5x for mild slowdown, 0.25x for dramatic slow motion. Slower speeds may reduce smoothness depending on frame rate."
+          },
+          {
+            question: "Can I speed up video without losing quality?",
+            answer: "Speeding up doesn't inherently lose quality, but faster motion may make details harder to see. Quality depends on the original video, not speed adjustment."
+          },
+          {
+            question: "How does speed affect file size?",
+            answer: "Speed adjustment doesn't significantly change file size. The video duration changes, but the bitrate and resolution remain the same, keeping file size similar."
+          },
+          {
+            question: "What's the difference between speed and frame rate?",
+            answer: "Speed changes playback rate (how fast it plays). Frame rate changes how many frames per second are captured. Both can affect smoothness but are different concepts."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

@@ -534,8 +534,76 @@ Date: ${new Date().toUTCString()}
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Code className="h-5 w-5 text-blue-500" />
+            What is API Response Formatting?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            API response formatting beautifies and structures HTTP API responses for better readability. It handles JSON, XML, and other formats, adding proper indentation, syntax highlighting, and structure to make debugging and documentation easier.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your API response or paste a URL</li>
+            <li>The tool auto-detects the response format</li>
+            <li>It formats the response with proper structure</li>
+            <li>View headers, status, and formatted body</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Formatting Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Auto format detection</li>
+                <li>• Syntax highlighting</li>
+                <li>• Header inspection</li>
+                <li>• Error highlighting</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• API debugging</li>
+                <li>• Response analysis</li>
+                <li>• Documentation</li>
+                <li>• Integration testing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What response formats are supported?",
+            answer: "The tool supports JSON, XML, HTML, plain text, and other common API response formats. It auto-detects the format and applies appropriate formatting."
+          },
+          {
+            question: "Can I format responses from live APIs?",
+            answer: "Yes, you can enter a URL and the tool will fetch the response, then format it. This is useful for debugging live endpoints."
+          },
+          {
+            question: "What information is displayed?",
+            answer: "The tool shows the HTTP status code, response headers, and the formatted response body. This provides a complete view of the API response."
+          },
+          {
+            question: "Does it handle nested JSON?",
+            answer: "Yes, nested JSON objects and arrays are properly formatted with indentation to show the hierarchical structure clearly."
+          },
+          {
+            question: "Can I copy the formatted response?",
+            answer: "Yes, you can copy the formatted response to clipboard or download it as a file for documentation or sharing with your team."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

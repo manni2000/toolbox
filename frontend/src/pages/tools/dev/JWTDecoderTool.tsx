@@ -271,8 +271,76 @@ const JWTDecoderTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Key className="h-5 w-5 text-blue-500" />
+            What is JWT Decoding?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            JWT (JSON Web Token) decoding extracts and displays the header and payload information from a token without verifying the signature. This helps developers inspect token contents, debug authentication issues, and understand the claims embedded in JWTs.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste your JWT token into the input field</li>
+            <li>The tool decodes the base64-encoded header and payload</li>
+            <li>View the decoded JSON structure and claims</li>
+            <li>Copy individual sections or the full decoded data</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">JWT Structure</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Header (algorithm & type)</li>
+                <li>• Payload (claims & data)</li>
+                <li>• Signature (verification)</li>
+                <li>• Base64 encoded</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Debugging auth issues</li>
+                <li>• Inspecting token claims</li>
+                <li>• Understanding JWT structure</li>
+                <li>• API development</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Is JWT decoding the same as verification?",
+            answer: "No, decoding only extracts the readable content from base64. Verification requires the secret key to validate the signature and ensure the token hasn't been tampered with."
+          },
+          {
+            question: "What information is in a JWT?",
+            answer: "A JWT contains a header (algorithm info), payload (claims like user ID, expiration), and signature. The payload includes standard claims (iss, exp, sub) and custom data."
+          },
+          {
+            question: "Can I decode any JWT?",
+            answer: "Yes, you can decode any JWT because the header and payload are just base64-encoded. However, without the secret key, you cannot verify if the signature is valid."
+          },
+          {
+            question: "What are common JWT claims?",
+            answer: "Common claims include: iss (issuer), sub (subject), exp (expiration), iat (issued at), aud (audience), and custom claims like user roles or permissions."
+          },
+          {
+            question: "Is it safe to decode JWTs client-side?",
+            answer: "Decoding is safe as it only reveals what's already in the token. However, never rely on client-side decoding for authentication—always verify tokens server-side."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

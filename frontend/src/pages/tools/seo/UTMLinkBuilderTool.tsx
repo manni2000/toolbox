@@ -448,8 +448,77 @@ const UTMLinkBuilderTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Link className="h-5 w-5 text-blue-500" />
+            What is UTM Link Building?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            UTM link building adds tracking parameters to URLs to monitor marketing campaign performance. These parameters help you identify which campaigns, sources, and mediums drive traffic to your website.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your base URL</li>
+            <li>Add UTM parameters (source, medium, campaign)</li>
+            <li>The tool generates the tracked URL</li>
+            <li>Use in marketing to track performance</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">UTM Parameters</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• utm_source (referral source)</li>
+                <li>• utm_medium (marketing channel)</li>
+                <li>• utm_campaign (campaign name)</li>
+                <li>• utm_content/term (details)</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Tracking Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Campaign performance</li>
+                <li>• Traffic attribution</li>
+                <li>• ROI measurement</li>
+                <li>• Conversion tracking</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Which UTM parameters are required?",
+            answer: "Only utm_source and utm_medium are required for basic tracking. Utm_campaign is highly recommended. Utm_content and utm_term are optional for additional detail."
+          },
+          {
+            question: "What should I use for utm_source?",
+            answer: "Use the specific referrer: google, newsletter, facebook, twitter, linkedin, etc. This identifies where the traffic originated from."
+          },
+          {
+            question: "What values work for utm_medium?",
+            answer: "Common values: cpc, email, social, organic, referral, display, etc. This describes the marketing channel or medium."
+          },
+          {
+            question: "Can UTM parameters affect SEO?",
+            answer: "UTM parameters don't directly affect SEO but can create duplicate URLs. Use canonical tags to consolidate them. They're essential for tracking marketing performance."
+          },
+          {
+            question: "Should I use UTM links on my website?",
+            answer: "Use UTM links for external marketing campaigns, not internal links. Internal linking with UTMs can confuse analytics. Keep internal links clean."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

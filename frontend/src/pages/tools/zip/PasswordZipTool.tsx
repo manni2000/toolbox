@@ -387,8 +387,76 @@ const PasswordZipTool = () => {
           </ul>
         </motion.div>
 
-        {/* FAQ Section */}
-        <ToolFAQ />
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Lock className="h-5 w-5 text-blue-500" />
+            What is ZIP Password Protection?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            ZIP password protection encrypts ZIP archives with passwords, preventing unauthorized access to the contents. This secures sensitive files during storage and transfer.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your ZIP file</li>
+            <li>Set a strong password</li>
+            <li>The tool encrypts the archive</li>
+            <li>Download the protected ZIP</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Security Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• AES encryption</li>
+                <li>• Password protection</li>
+                <li>• Secure extraction</li>
+                <li>• Cross-platform support</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Sensitive document protection</li>
+                <li>• Secure file sharing</li>
+                <li>• Confidential backups</li>
+                <li>• Privacy compliance</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+          {/* FAQ Section */}
+          <ToolFAQ faqs={[
+            {
+              question: "How secure is ZIP password protection?",
+              answer: "Standard ZIP encryption (ZipCrypto) is weak. AES-256 encryption is strong. Use AES-256 for sensitive data. Remember that ZIP passwords can be cracked with enough time."
+            },
+            {
+              question: "What makes a strong ZIP password?",
+              answer: "Use at least 12 characters with uppercase, lowercase, numbers, and symbols. Avoid common words or patterns. Longer passwords are exponentially harder to crack."
+            },
+            {
+              question: "Can I remove password from a ZIP?",
+              answer: "Yes, extract the files with the password, then create a new ZIP without password. There's no direct way to remove encryption without extracting."
+            },
+            {
+              question: "What if I forget my ZIP password?",
+              answer: "There's no backdoor to recover ZIP passwords. You may try password recovery tools, but success isn't guaranteed. Always store passwords securely."
+            },
+            {
+              question: "Should I use ZIP for sensitive data?",
+              answer: "ZIP with AES-256 is reasonably secure for most uses. For highly sensitive data, consider specialized encryption software with stronger security features."
+            }
+          ]} />
+        </div>
       </div>
     </ToolLayout>
   );

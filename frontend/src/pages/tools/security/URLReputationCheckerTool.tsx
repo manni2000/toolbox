@@ -296,8 +296,76 @@ export default function URLReputationCheckerTool() {
           </div>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is URL Reputation Checking?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            URL reputation checking evaluates whether a website URL is safe or potentially malicious. It checks against blacklists, analyzes domain reputation, and flags phishing, malware, or scam sites to protect you from online threats.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter a URL to check</li>
+            <li>The tool queries reputation databases</li>
+ <li>Analyzes domain and URL characteristics</li>
+            <li>View safety rating and details</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Threat Detection</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Phishing detection</li>
+                <li>• Malware blacklists</li>
+                <li>• Scam identification</li>
+                <li>• Reputation scoring</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Safety Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Avoid malicious sites</li>
+                <li>• Protect from phishing</li>
+                <li>• Safe browsing</li>
+                <li>• Risk awareness</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What databases are checked?",
+            answer: "URLs are checked against known phishing blacklists, malware distribution sites, scam databases, and security reputation services. Multiple sources provide comprehensive threat intelligence."
+          },
+          {
+            question: "What makes a URL suspicious?",
+            answer: "Suspicious indicators include: recently registered domains, misleading domain names (typosquatting), poor reputation, hosting in high-risk countries, or known association with malicious activity."
+          },
+          {
+            question: "Can safe URLs be flagged incorrectly?",
+            answer: "Yes, false positives can occur. New sites or those with similar names to blacklisted domains might be flagged. Always verify through multiple sources if concerned."
+          },
+          {
+            question: "How often is reputation data updated?",
+            answer: "Reputation databases are updated continuously as new threats are discovered. However, there may be a delay between a site becoming malicious and it being added to blacklists."
+          },
+          {
+            question: "Should I avoid all flagged sites?",
+            answer: "Yes, exercise extreme caution with flagged sites. If you must visit, ensure your antivirus is updated, don't download anything, and never enter credentials or personal information."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

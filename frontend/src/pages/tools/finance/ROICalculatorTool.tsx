@@ -11,7 +11,6 @@ import { EnhancedDownload, downloadText, downloadJSON } from "@/components/Enhan
 import SimilarTools from "@/components/SimilarTools";
 import ToolFAQ from "@/components/ToolFAQ";
 
-import ToolContent from "@/components/ToolContent";
 const categoryColor = "262 80% 50%";
 
 const formatIndianCurrency = (value: number) => {
@@ -410,9 +409,77 @@ const ROICalculatorTool = () => {
         />
       </div>
 
-      {/* FAQ Section */}
-      <ToolFAQ />
-      <SimilarTools currentToolSlug="roi-calculator" />
+      {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-blue-500" />
+            What is ROI Calculation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            ROI (Return on Investment) measures the efficiency of an investment by comparing the profit or loss to the initial investment cost. It's expressed as a percentage and helps investors evaluate the performance of different investment opportunities.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter the initial investment amount</li>
+            <li>Enter the final value or sale amount</li>
+            <li>Optionally include the investment duration</li>
+            <li>View the ROI percentage and absolute profit</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">ROI Metrics</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• ROI percentage</li>
+                <li>• Absolute profit/loss</li>
+                <li>• Annualized ROI</li>
+                <li>• Investment ratio</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Investment comparison</li>
+                <li>• Business performance</li>
+                <li>• Marketing analysis</li>
+                <li>• Project evaluation</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "What is the ROI formula?",
+            answer: "ROI = [(Final Value - Initial Investment) / Initial Investment] × 100. This gives you the percentage return on your investment."
+          },
+          {
+            question: "What is a good ROI?",
+            answer: "A good ROI depends on the investment type and risk. Generally, ROI above the market average (S&P 500 ~10%) is considered good for stocks. Higher risk investments should yield higher returns."
+          },
+          {
+            question: "How do I calculate annualized ROI?",
+            answer: "Annualized ROI accounts for investment time: [(Final Value / Initial Investment)^(1/n) - 1] × 100, where n is number of years invested."
+          },
+          {
+            question: "Does ROI account for time?",
+            answer: "Basic ROI doesn't account for time. A 10% return in 1 year is better than 10% in 10 years. Annualized ROI adjusts for time to enable fair comparison."
+          },
+          {
+            question: "What's the difference between ROI and profit?",
+            answer: "Profit is the absolute gain (Final - Initial). ROI is profit as a percentage of investment, allowing comparison across different investment sizes."
+          }
+        ]} />
+        <SimilarTools currentToolSlug="roi-calculator" />
+        </div>
     </ToolLayout>
   );
 };

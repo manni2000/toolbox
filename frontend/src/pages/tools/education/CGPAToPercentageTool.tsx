@@ -245,8 +245,76 @@ const CGPAToPercentageTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Award className="h-5 w-5 text-green-500" />
+            What is CGPA to Percentage Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            CGPA (Cumulative Grade Point Average) to percentage conversion translates academic performance from a grade point scale to a percentage format. This conversion is often required for job applications, higher education admissions, and eligibility criteria that use percentage-based evaluation.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your CGPA value</li>
+            <li>Select the CGPA scale (10.0, 5.0, or 4.0)</li>
+            <li>The tool calculates the equivalent percentage</li>
+            <li>View your grade classification and percentage</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Conversion Formulas</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• 10.0 Scale: CGPA × 9.5</li>
+                <li>• 5.0 Scale: CGPA × 19</li>
+                <li>• 4.0 Scale: CGPA × 25</li>
+                <li>• Grade classification included</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Job applications</li>
+                <li>• Higher education admissions</li>
+                <li>• Scholarship eligibility</li>
+                <li>• Academic performance tracking</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is CGPA?",
+            answer: "CGPA (Cumulative Grade Point Average) is a measure of academic performance across all courses, typically calculated on a scale of 10.0, 5.0, or 4.0 depending on the institution."
+          },
+          {
+            question: "Why convert CGPA to percentage?",
+            answer: "Many organizations and institutions require percentage for eligibility criteria, job applications, and admissions. Conversion standardizes academic performance across different grading systems."
+          },
+          {
+            question: "Which CGPA scale should I use?",
+            answer: "Use the scale that matches your institution's grading system. Most Indian universities use 10.0, some use 5.0, and international institutions often use 4.0."
+          },
+          {
+            question: "Is the conversion formula universal?",
+            answer: "Conversion formulas vary by institution. The tool provides standard formulas (CGPA × 9.5 for 10-point scale), but always verify with your institution's specific conversion policy."
+          },
+          {
+            question: "What grade classifications are shown?",
+            answer: "The tool shows standard grade classifications like First Class, Second Class, etc., based on percentage ranges commonly used in academic evaluation."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

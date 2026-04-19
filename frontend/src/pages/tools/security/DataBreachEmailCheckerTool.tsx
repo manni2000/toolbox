@@ -300,9 +300,77 @@ export default function DataBreachEmailCheckerTool() {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is Data Breach Email Checking?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Data breach email checking verifies if your email address has been exposed in known data breaches. This helps you understand your risk profile, take protective action, and secure accounts that may have been compromised.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your email address to check</li>
+            <li>The tool queries breach databases</li>
+            <li>View breach history and details</li>
+            <li>Take recommended security actions</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Check Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Multiple breach sources</li>
+                <li>• Breach date information</li>
+                <li>• Compromised data types</li>
+                <li>• Risk assessment</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Security Actions</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Change passwords</li>
+                <li>• Enable 2FA</li>
+                <li>• Monitor accounts</li>
+                <li>• Use unique passwords</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What data sources are checked?",
+            answer: "The tool checks known public data breach databases including major breaches from various services. It aggregates data from multiple breach disclosure sources and security researchers."
+          },
+          {
+            question: "What should I do if my email is found?",
+            answer: "Immediately change passwords for affected accounts, enable two-factor authentication, review account activity, and check for unauthorized access. Use unique passwords going forward."
+          },
+          {
+            question: "How accurate are the results?",
+            answer: "Results are based on publicly disclosed breach data. While comprehensive, not all breaches are publicly disclosed. A clean result doesn't guarantee your email has never been compromised."
+          },
+          {
+            question: "Is my email stored when I check?",
+            answer: "Your email is only used temporarily for the lookup and is not stored. The query is sent to breach databases and the results are displayed without retaining your email address."
+          },
+          {
+            question: "How often should I check my email?",
+            answer: "Check periodically, especially after news of major breaches. Once every few months is reasonable, or immediately if you suspect an account may have been compromised."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );
-}
+};

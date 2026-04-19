@@ -407,8 +407,77 @@ const AudioConverterTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Info className="h-5 w-5 text-blue-500" />
+            What is Audio Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Audio conversion is the process of changing audio files from one format to another while preserving the sound quality. Different audio formats offer varying levels of compression, quality, and compatibility with devices and software.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your audio file (MP3, WAV, AAC, OGG, FLAC, etc.)</li>
+            <li>Select your desired output format from the available options</li>
+            <li>Choose quality settings and advanced options if needed</li>
+            <li>Click convert to process your file using our optimized audio engine</li>
+            <li>Download the converted file with preserved metadata</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Common Use Cases</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Convert for device compatibility</li>
+                <li>• Reduce file size for storage</li>
+                <li>• Prepare for streaming platforms</li>
+                <li>• Archive with lossless formats</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Format Benefits</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• MP3: Universal compatibility</li>
+                <li>• WAV: Maximum quality</li>
+                <li>• FLAC: Lossless compression</li>
+                <li>• AAC: Efficient streaming</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What audio formats can I convert?",
+            answer: "You can convert between MP3, WAV, AAC, OGG, and FLAC formats. Our tool supports the most common audio formats for maximum compatibility."
+          },
+          {
+            question: "Will converting audio reduce quality?",
+            answer: "Quality depends on the format and settings. Converting to lossless formats like FLAC preserves original quality, while MP3/AAC offers good quality with smaller file sizes."
+          },
+          {
+            question: "How long does audio conversion take?",
+            answer: "Conversion time varies based on file size and format. Most audio files convert within seconds to a few minutes. Larger files may take longer."
+          },
+          {
+            question: "Is my audio data kept private?",
+            answer: "Yes, all audio processing happens locally in your browser. Your files are never uploaded to our servers, ensuring complete privacy."
+          },
+          {
+            question: "Can I convert multiple files at once?",
+            answer: "Currently, the tool processes one file at a time to ensure optimal quality and performance. You can convert multiple files sequentially."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

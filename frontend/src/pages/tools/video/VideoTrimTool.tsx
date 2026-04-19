@@ -1,5 +1,7 @@
 import { useState, useRef } from "react";
-import { Scissors, X, Loader2, Video } from "lucide-react";
+import { Scissors, X, Loader2, Video, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
@@ -222,8 +224,76 @@ const VideoTrimTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Scissors className="h-5 w-5 text-blue-500" />
+            What is Video Trimming?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Video trimming cuts out unwanted sections from the beginning, middle, or end of videos. This is useful for removing mistakes, creating clips, or focusing on the most important content.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your video file</li>
+            <li>Set start and end timestamps</li>
+            <li>The tool cuts the video</li>
+            <li>Download the trimmed video</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Trim Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Precise timestamp selection</li>
+                <li>• Preview before trimming</li>
+                <li>• Multiple trim options</li>
+                <li>• Quality preservation</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Removing mistakes</li>
+                <li>• Creating clips</li>
+                <li>• Social media content</li>
+                <li>• Highlight reels</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Does trimming reduce video quality?",
+            answer: "Trimming doesn't reduce quality if done correctly. The trimmed section is cut without re-encoding, preserving original quality. Some tools may re-encode, which can affect quality."
+          },
+          {
+            question: "How precise can I trim videos?",
+            answer: "Precision depends on the video's frame rate and keyframes. You can typically trim to the nearest frame. For frame-accurate editing, use professional video editing software."
+          },
+          {
+            question: "Can I trim multiple sections?",
+            answer: "This tool trims a single continuous section. For multiple cuts, you may need to trim multiple times or use video editing software with multi-cut capabilities."
+          },
+          {
+            question: "What's the difference between trimming and cutting?",
+            answer: "Trimming removes sections from the beginning or end. Cutting can remove sections from anywhere. In practice, both terms are often used interchangeably for removing unwanted parts."
+          },
+          {
+            question: "Does trimming affect file size?",
+            answer: "Yes, trimming reduces file size proportionally to the removed duration. A 50% shorter video will be approximately 50% smaller in file size."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

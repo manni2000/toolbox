@@ -7,6 +7,17 @@ import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 80% 55%";
 
+const CheckItem = ({ passed, label }: { passed: boolean; label: string }) => (
+  <div className="flex items-center gap-3 rounded-lg border border-border bg-card p-3">
+    {passed ? (
+      <Check className="h-5 w-5 text-primary" />
+    ) : (
+      <X className="h-5 w-5 text-destructive" />
+    )}
+    <span className={passed ? "" : "text-muted-foreground"}>{label}</span>
+  </div>
+);
+
 const PasswordStrengthTool = () => {
   const [password, setPassword] = useState("");
 
@@ -196,22 +207,79 @@ const PasswordStrengthTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is Password Strength Analysis?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Password strength analysis evaluates how resistant a password is to cracking attempts. It checks length, character variety, patterns, and common weaknesses to provide an overall security assessment for your passwords.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your password to analyze</li>
+            <li>The tool checks length and complexity</li>
+            <li>Scans for common patterns and weaknesses</li>
+            <li>Get strength rating and improvement tips</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Strength Factors</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Password length</li>
+                <li>• Character variety</li>
+                <li>• Pattern detection</li>
+                <li>• Common word checks</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Security Tips</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Use 12+ characters</li>
+                <li>• Mix character types</li>
+                <li>• Avoid patterns</li>
+                <li>• Use unique passwords</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What makes a password strong?",
+            answer: "Strong passwords are long (12+ characters), use a mix of uppercase, lowercase, numbers, and symbols, avoid common words or patterns, and are unique for each account."
+          },
+          {
+            question: "How is password strength calculated?",
+            answer: "Strength is calculated based on entropy, character variety, length, and absence of common patterns. Longer passwords with more character types have exponentially higher strength."
+          },
+          {
+            question: "Why are common passwords weak?",
+            answer: "Common passwords are easily guessed or found in password dictionaries used by attackers. Even complex patterns like substituting letters with numbers are well-known and quickly cracked."
+          },
+          {
+            question: "Should I change my password regularly?",
+            answer: "Modern security guidance suggests changing passwords only when compromised. Focus on using strong, unique passwords for each account rather than frequent changes which often leads to weaker passwords."
+          },
+          {
+            question: "Is length more important than complexity?",
+            answer: "Length is exponentially more important than complexity. A 20-character password with only lowercase letters is stronger than an 8-character password with all character types."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );
 };
-
-const CheckItem = ({ passed, label }: { passed: boolean; label: string }) => (
-  <div className="flex items-center gap-3 rounded-lg border border-border bg-card p-3">
-    {passed ? (
-      <Check className="h-5 w-5 text-primary" />
-    ) : (
-      <X className="h-5 w-5 text-destructive" />
-    )}
-    <span className={passed ? "" : "text-muted-foreground"}>{label}</span>
-  </div>
-);
 
 export default PasswordStrengthTool;

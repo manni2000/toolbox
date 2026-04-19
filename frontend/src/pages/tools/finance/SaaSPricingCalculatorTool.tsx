@@ -418,6 +418,77 @@ export default function SaaSPricingCalculatorTool() {
           </div>
         </div>
       </div>
+
+      {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Zap className="h-5 w-5 text-blue-500" />
+            What is SaaS Pricing Calculation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            SaaS (Software as a Service) pricing calculation helps determine optimal pricing strategies for subscription-based software products. It analyzes revenue projections, customer acquisition costs, and lifetime value to ensure sustainable growth and profitability.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your monthly and annual pricing</li>
+            <li>Set expected customer counts for each plan</li>
+            <li>Input customer acquisition cost (CAC)</li>
+            <li>View LTV, revenue, and LTV:CAC ratio analysis</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">SaaS Metrics</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Monthly Recurring Revenue (MRR)</li>
+                <li>• Lifetime Value (LTV)</li>
+                <li>• Customer Acquisition Cost (CAC)</li>
+                <li>• LTV:CAC ratio</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Pricing Strategies</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Tiered pricing</li>
+                <li>• Annual discounts</li>
+                <li>• Freemium models</li>
+                <li>• Usage-based pricing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "What is a good LTV:CAC ratio?",
+            answer: "A healthy LTV:CAC ratio is 3:1 or higher, meaning you earn 3x more from a customer than you spend to acquire them. Below 1:1 is unsustainable, 1-2:1 needs improvement."
+          },
+          {
+            question: "How much discount should I offer for annual plans?",
+            answer: "Standard annual discounts are 15-20%. This incentivizes longer commitments while protecting your margins. Calculate if the discount is offset by reduced churn."
+          },
+          {
+            question: "What is churn rate and why does it matter?",
+            answer: "Churn rate is the percentage of customers who cancel. It directly impacts LTV. Lower churn means higher LTV. Aim for under 5% monthly churn for healthy SaaS growth."
+          },
+          {
+            question: "How do I calculate Customer Acquisition Cost (CAC)?",
+            answer: "CAC = Total Sales & Marketing Costs / Number of New Customers. Include all marketing spend, sales team salaries, and tools used for acquisition."
+          },
+          {
+            question: "Should I offer freemium or trial?",
+            answer: "Freemium works for products with viral growth potential. Trials (14-30 days) work better for complex products. Choose based on your product type and target market."
+          }
+        ]} />
+        </div>
     </ToolLayout>
   );
 }

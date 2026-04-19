@@ -381,8 +381,76 @@ const ImageResizeTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Maximize2 className="h-5 w-5 text-blue-500" />
+            What is Image Resizing?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Image resizing changes the dimensions of an image to fit specific requirements. It's essential for web optimization, social media posts, print materials, and ensuring images display correctly across different devices and platforms.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your image</li>
+            <li>Set the desired width and height</li>
+            <li>Choose to maintain aspect ratio or not</li>
+            <li>Download the resized image</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Resize Options</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Custom dimensions</li>
+                <li>• Aspect ratio lock</li>
+                <li>• Percentage scaling</li>
+                <li>• Preset sizes</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Social media posts</li>
+                <li>• Website optimization</li>
+                <li>• Print preparation</li>
+                <li>• Thumbnail creation</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Should I maintain aspect ratio when resizing?",
+            answer: "Yes, maintaining aspect ratio prevents image distortion. Only disable it if you intentionally want to change the image proportions for specific requirements."
+          },
+          {
+            question: "What are common social media image sizes?",
+            answer: "Common sizes: Instagram post 1080x1080, Twitter post 1200x675, Facebook post 1200x630, LinkedIn post 1200x627. Check platform guidelines for current specs."
+          },
+          {
+            question: "Does resizing affect image quality?",
+            answer: "Resizing down typically doesn't affect quality much. Resizing up can cause pixelation. For best results, resize from original high-resolution images."
+          },
+          {
+            question: "What is aspect ratio?",
+            answer: "Aspect ratio is the proportional relationship between width and height (e.g., 16:9, 4:3, 1:1). Maintaining it ensures images don't appear stretched or squashed."
+          },
+          {
+            question: "Can I resize multiple images at once?",
+            answer: "This tool processes one image at a time. For batch processing, you'd need to repeat the process for each image or use specialized batch processing software."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

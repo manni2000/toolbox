@@ -115,13 +115,76 @@ const WorkingDaysTool = () => {
           </div>
         )}
 
-        <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 text-sm text-muted-foreground">
-          <strong className="text-foreground">Note:</strong> This calculator excludes Saturdays and 
-          Sundays. Public holidays are not excluded as they vary by region.
-        </div>
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-blue-500" />
+            What is Working Days Calculation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Working days calculation determines the number of business days between two dates, excluding weekends (Saturday and Sunday). This is essential for project planning, payroll calculations, and business timeline estimates.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Select the start date for your calculation</li>
+            <li>Select the end date for your calculation</li>
+            <li>Choose to include or exclude weekends</li>
+            <li>Click calculate to see working days breakdown</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Calculation Metrics</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Total calendar days</li>
+                <li>• Working days (Mon-Fri)</li>
+                <li>• Weekend days (Sat-Sun)</li>
+                <li>• Optional weekend inclusion</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Business Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Project scheduling</li>
+                <li>• Payroll periods</li>
+                <li>• Contract deadlines</li>
+                <li>• Leave calculations</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
 
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Are public holidays excluded?",
+            answer: "No, public holidays are not excluded as they vary by region and country. The calculator only excludes weekends (Saturday and Sunday) by default."
+          },
+          {
+            question: "Can I include weekends in the calculation?",
+            answer: "Yes, you can toggle the option to include weekends. This will count all days between the dates, including Saturdays and Sundays."
+          },
+          {
+            question: "What counts as a weekend?",
+            answer: "Weekends are typically Saturday and Sunday in most regions. This is the standard business calendar used globally."
+          },
+          {
+            question: "How are working days calculated?",
+            answer: "Working days are calculated by counting all days between the start and end dates, then subtracting weekend days (Saturdays and Sundays)."
+          },
+          {
+            question: "Can I use this for payroll calculations?",
+            answer: "Yes, this is commonly used for payroll. However, you should manually subtract any public holidays specific to your region for accurate results."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

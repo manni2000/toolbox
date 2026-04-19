@@ -444,17 +444,77 @@ const SpeechToTextTool = () => {
           </div>
         )}
 
-        {/* Info Notice */}
-        <Card className="p-4 bg-muted/50">
-          <p className="text-sm text-muted-foreground">
-            <strong>How it works:</strong> This tool uses the Web Speech API for live microphone recording 
-            (supported in Chrome, Edge, and Safari). For audio file transcription, a backend service 
-            like Google Cloud Speech-to-Text, AWS Transcribe, or OpenAI Whisper would be required.
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Languages className="h-5 w-5 text-indigo-500" />
+            What is Speech to Text?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Speech to text converts spoken words into written text using automatic speech recognition. This technology is useful for transcribing meetings, creating captions, or converting voice notes into searchable text.
           </p>
-        </Card>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Choose between live recording or upload an audio file</li>
+            <li>Select your language for accurate recognition</li>
+            <li>Start recording or upload your audio file</li>
+            <li>The system transcribes the speech to text</li>
+            <li>Edit, copy, or export the transcription as needed</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-indigo-50 rounded-lg">
+              <h5 className="font-semibold text-indigo-900 mb-1">Common Applications</h5>
+              <ul className="text-sm text-indigo-800 space-y-1">
+                <li>• Meeting transcription</li>
+                <li>• Voice memos to text</li>
+                <li>• Podcast subtitles</li>
+                <li>• Accessibility captions</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-teal-50 rounded-lg">
+              <h5 className="font-semibold text-teal-900 mb-1">Supported Features</h5>
+              <ul className="text-sm text-teal-800 space-y-1">
+                <li>• Multiple languages</li>
+                <li>• Real-time transcription</li>
+                <li>• Export to TXT/SRT</li>
+                <li>• Copy to clipboard</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
 
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "How accurate is the speech recognition?",
+            answer: "Accuracy depends on audio quality, background noise, and speaking clarity. Clear speech with minimal noise typically achieves 90-95% accuracy."
+          },
+          {
+            question: "What languages are supported?",
+            answer: "The tool supports multiple languages including English, Spanish, French, German, and more. Select your language before recording for best results."
+          },
+          {
+            question: "Can I transcribe pre-recorded audio files?",
+            answer: "Yes, you can upload audio files in MP3, WAV, M4A, OGG, or FLAC format. The transcription process may take longer for longer files."
+          },
+          {
+            question: "Is my audio data stored or sent to servers?",
+            answer: "For live recording, processing happens in your browser using the Web Speech API. For file uploads, audio is sent to our secure backend for transcription and is not stored permanently."
+          },
+          {
+            question: "What export formats are available?",
+            answer: "You can export transcriptions as plain text (.txt) or as subtitle files (.srt) with timestamps for video editing purposes."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

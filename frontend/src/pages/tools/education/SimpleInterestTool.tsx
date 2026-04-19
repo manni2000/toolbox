@@ -228,8 +228,76 @@ const SimpleInterestTool = () => {
           </p>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-blue-500" />
+            What is Simple Interest?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Simple interest is interest calculated only on the original principal amount throughout the loan or investment period. Unlike compound interest, it doesn't earn interest on accumulated interest, making calculations straightforward but typically yielding less over time.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter the principal amount (initial loan/investment)</li>
+            <li>Set the annual interest rate (percentage)</li>
+            <li>Choose the time period (years or months)</li>
+            <li>View the calculated simple interest and total amount</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Key Formula</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• SI = (P × R × T) / 100</li>
+                <li>• P = Principal amount</li>
+                <li>• R = Annual rate (%)</li>
+                <li>• T = Time period</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Short-term loans</li>
+                <li>• Basic investments</li>
+                <li>• Financial education</li>
+                <li>• Simple calculations</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the simple interest formula?",
+            answer: "Simple Interest = (Principal × Rate × Time) / 100. For example, $1000 at 5% for 2 years = (1000 × 5 × 2) / 100 = $100."
+          },
+          {
+            question: "When is simple interest used?",
+            answer: "Simple interest is commonly used for short-term loans, car loans, some personal loans, and basic investment products where compounding isn't applied."
+          },
+          {
+            question: "How does it differ from compound interest?",
+            answer: "Simple interest is calculated only on the principal. Compound interest is calculated on principal plus accumulated interest, leading to exponential growth over time."
+          },
+          {
+            question: "Can I calculate in months?",
+            answer: "Yes, you can select time in months. The formula automatically adjusts: Time in years = months / 12 for accurate calculation."
+          },
+          {
+            question: "Is simple interest better than compound?",
+            answer: "For borrowers, simple interest is better as you pay less total interest. For investors, compound interest is better as you earn more through interest on interest."
+          }
+        ]} />
+      </div>
       </div>
     </ToolLayout>
   );

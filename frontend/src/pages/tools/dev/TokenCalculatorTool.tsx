@@ -253,8 +253,76 @@ const TokenCalculatorTool = () => {
           </p>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Hash className="h-5 w-5 text-blue-500" />
+            What is Token Calculation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Token calculation estimates the number of tokens in text for AI language models like GPT, Claude, and LLaMA. Tokens are the basic units that AI models process, and understanding token count helps manage API costs and model limits.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter or paste your text into the input area</li>
+            <li>Select the AI model (GPT, Claude, or LLaMA)</li>
+            <li>The tool calculates token count in real-time</li>
+            <li>View character, word, and token statistics</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Metrics Provided</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Token count estimate</li>
+                <li>• Word count</li>
+                <li>• Character count</li>
+                <li>• Characters without spaces</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• API cost estimation</li>
+                <li>• Context window planning</li>
+                <li>• Text length optimization</li>
+                <li>• Model limit checking</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What is a token in AI models?",
+            answer: "A token is the basic unit of text that AI models process. It can be a word, part of a word, or a character. Models don't read text word-by-word, but token-by-token."
+          },
+          {
+            question: "How accurate is the token count?",
+            answer: "Token counts are estimates based on average character-to-token ratios (~4 chars per token for English). For precise counts, use the official tokenizer for your specific model."
+          },
+          {
+            question: "Why do different models have different token counts?",
+            answer: "Different AI models use different tokenization methods. GPT, Claude, and LLaMA each have their own tokenizers, so the same text may have different token counts."
+          },
+          {
+            question: "How does token count affect API costs?",
+            answer: "Most AI APIs charge based on token usage (both input and output tokens). Knowing your token count helps estimate costs before making API calls."
+          },
+          {
+            question: "What is the character-to-token ratio?",
+            answer: "For English text, the average is about 4 characters per token. However, this varies by language, with some languages requiring more or fewer characters per token."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

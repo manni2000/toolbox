@@ -336,9 +336,77 @@ const PNGToWebPConverter = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Zap className="h-5 w-5 text-blue-500" />
+            What is PNG to WebP Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PNG to WebP conversion transforms PNG images into WebP format. WebP is a modern image format that provides superior compression while maintaining quality, resulting in significantly smaller file sizes for web use.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PNG image</li>
+            <li>Adjust the quality slider (optional)</li>
+            <li>The tool converts it to WebP format</li>
+            <li>Download the optimized WebP file</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">WebP Advantages</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• 25-35% smaller than PNG</li>
+                <li>• Supports transparency</li>
+                <li>• Modern browser support</li>
+                <li>• Better compression</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Web Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Website optimization</li>
+                <li>• Faster page loads</li>
+                <li>• Reduced bandwidth</li>
+                <li>• Better SEO scores</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why use WebP instead of PNG?",
+            answer: "WebP provides 25-35% smaller file sizes than PNG while maintaining similar quality. It supports transparency and is supported by all modern browsers, making it ideal for web optimization."
+          },
+          {
+            question: "Does WebP support transparency?",
+            answer: "Yes, WebP supports alpha channel transparency just like PNG. This makes it a direct replacement for PNG with better compression and smaller file sizes."
+          },
+          {
+            question: "Is WebP compatible with all browsers?",
+            answer: "WebP is supported by all modern browsers (Chrome, Firefox, Edge, Safari). Very old browsers (IE) don't support it, but fallback mechanisms can be implemented."
+          },
+          {
+            question: "How much smaller will WebP files be?",
+            answer: "WebP typically reduces file size by 25-35% compared to PNG for similar quality. For complex images, savings can be even higher while maintaining visual quality."
+          },
+          {
+            question: "Should I convert all PNGs to WebP?",
+            answer: "For web use, yes. WebP provides better performance. For print or editing, keep the original PNG. Always keep your source files for future flexibility."
+          }
+        ]} />
       </div>
+    </div>
     </ToolLayout>
   );
 };

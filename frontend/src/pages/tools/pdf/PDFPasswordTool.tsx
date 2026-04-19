@@ -218,8 +218,76 @@ const PDFPasswordTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            What is PDF Password Protection?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PDF password protection adds security to your PDF documents by requiring a password to open or edit the file. This protects sensitive information from unauthorized access and controls who can modify the document.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PDF file</li>
+            <li>Set a password for protection</li>
+            <li>Choose protection level (open/edit)</li>
+            <li>Download the protected PDF</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Protection Types</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• User password (open)</li>
+                <li>• Owner password (edit)</li>
+                <li>• Print restrictions</li>
+                <li>• Copy restrictions</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Security Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Confidential documents</li>
+                <li>• Legal contracts</li>
+                <li>• Financial reports</li>
+                <li>• Personal information</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between user and owner passwords?",
+            answer: "User password requires a password to open the PDF. Owner password controls permissions like printing, copying, or editing. You can use both for comprehensive protection."
+          },
+          {
+            question: "Can I remove the password later?",
+            answer: "Yes, if you know the password, you can remove it using the PDF Unlock tool. Without the password, removal is extremely difficult and may not be possible."
+          },
+          {
+            question: "How strong should my PDF password be?",
+            answer: "Use strong passwords with at least 12 characters including uppercase, lowercase, numbers, and symbols. Avoid common words or personal information for better security."
+          },
+          {
+            question: "Does password protection affect file size?",
+            answer: "Password protection adds minimal overhead to file size. The increase is negligible for most documents and shouldn't impact sharing or storage significantly."
+          },
+          {
+            question: "Can I add passwords to already protected PDFs?",
+            answer: "You'll need to remove the existing password first using the PDF Unlock tool, then add your new password. You cannot add a second password without removing the first one."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

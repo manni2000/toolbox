@@ -382,6 +382,77 @@ export default function ProfitMarginCalculatorTool() {
             </div>
           </div>
         </div>
+
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-blue-500" />
+            What is Profit Margin?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Profit margin is the percentage of revenue that remains as profit after accounting for all expenses. It measures how efficiently a company converts revenue into profit and is a key indicator of financial health and pricing strategy.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your total revenue amount</li>
+            <li>Enter your total costs/expenses</li>
+            <li>The tool calculates profit and margin percentage</li>
+            <li>View gross margin, net margin, and markup</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Margin Types</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Gross margin (revenue - COGS)</li>
+                <li>• Net margin (after all expenses)</li>
+                <li>• Markup (profit as % of cost)</li>
+                <li>• Operating margin</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Industry Benchmarks</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Software: 20-30%</li>
+                <li>• Services: 20-50%</li>
+                <li>• Manufacturing: 10-20%</li>
+                <li>• Retail: 2-10%</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+        {/* FAQ Section */}
+        <ToolFAQ faqs={[
+          {
+            question: "What's the difference between margin and markup?",
+            answer: "Margin is profit as a percentage of revenue. Markup is profit as a percentage of cost. Margin = (Profit / Revenue) × 100. Markup = (Profit / Cost) × 100."
+          },
+          {
+            question: "What is a good profit margin?",
+            answer: "Good margins vary by industry. Software and services often have 20-50%, while retail may have 2-10%. Compare with industry benchmarks to evaluate your performance."
+          },
+          {
+            question: "How do I improve my profit margin?",
+            answer: "Increase prices (if market allows), reduce costs through efficiency, eliminate waste, negotiate better supplier terms, or focus on higher-margin products/services."
+          },
+          {
+            question: "Why is net margin lower than gross margin?",
+            answer: "Net margin includes all expenses (operating, interest, taxes) while gross margin only includes cost of goods sold. Net margin is the true profitability measure."
+          },
+          {
+            question: "Can I have negative margins?",
+            answer: "Negative margins mean you're selling at a loss. This may be acceptable for short-term strategies but unsustainable long-term. Review pricing and costs immediately."
+          }
+        ]} />
+        </div>
       </div>
     </ToolLayout>
   );

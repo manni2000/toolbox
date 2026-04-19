@@ -297,9 +297,77 @@ const PNGToJPGConverter = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <RefreshCw className="h-5 w-5 text-blue-500" />
+            What is PNG to JPG Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            PNG to JPG conversion transforms PNG images into JPEG format. JPG uses lossy compression, resulting in smaller file sizes suitable for web use, sharing, and storage where transparency isn't required.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your PNG image</li>
+            <li>Adjust the quality slider (optional)</li>
+            <li>The tool converts it to JPG format</li>
+            <li>Download the compressed JPG file</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Conversion Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Quality control slider</li>
+                <li>• Significant size reduction</li>
+                <li>• Web-optimized output</li>
+                <li>• Batch processing ready</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">When to Use JPG</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Photographs</li>
+                <li>• Web images</li>
+                <li>• Email attachments</li>
+                <li>• Storage optimization</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why convert PNG to JPG?",
+            answer: "Convert to JPG for smaller file sizes and better compatibility. JPG is ideal for web use, email, and sharing where transparency isn't needed and file size matters."
+          },
+          {
+            question: "Will I lose transparency?",
+            answer: "Yes, JPG doesn't support transparency. Transparent areas will be replaced with a background color (usually white or black). Consider this when converting images with transparency."
+          },
+          {
+            question: "What quality setting should I use?",
+            answer: "Quality 80-90% is recommended for most uses. This provides good visual quality while significantly reducing file size. Use 95%+ for important images needing maximum quality."
+          },
+          {
+            question: "How much will file size reduce?",
+            answer: "JPG compression typically reduces file size by 50-80% compared to PNG. The exact reduction depends on image content and quality setting."
+          },
+          {
+            question: "Can I convert back to PNG later?",
+            answer: "Yes, but you won't recover the original PNG quality or transparency. JPG compression is lossy - some data is permanently lost. Always keep your original PNG files."
+          }
+        ]} />
       </div>
+    </div>
     </ToolLayout>
   );
 };

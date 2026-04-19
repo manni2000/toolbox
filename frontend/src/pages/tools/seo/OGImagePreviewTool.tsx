@@ -456,8 +456,77 @@ const OGImagePreviewTool = () => {
           </div>
         </motion.div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Image className="h-5 w-5 text-blue-500" />
+            What is OG Image Preview?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            OG (Open Graph) image preview tests how your website's image appears when shared on social media platforms. This ensures your content looks appealing and professional when shared on Facebook, Twitter, LinkedIn, and other platforms.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your website URL</li>
+            <li>The tool fetches OG image metadata</li>
+            <li>Preview how it appears on social platforms</li>
+            <li>Get optimization recommendations</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Preview Platforms</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Facebook</li>
+                <li>• Twitter/X</li>
+                <li>• LinkedIn</li>
+                <li>• Generic preview</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Optimization Tips</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Use high-quality images</li>
+                <li>• Recommended dimensions</li>
+                <li>• Include branding</li>
+                <li>• Test on mobile</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What are the recommended OG image dimensions?",
+            answer: "Recommended dimensions are 1200x630 pixels for optimal display across platforms. Minimum is 200x200 pixels. Use 1.91:1 aspect ratio for best results."
+          },
+          {
+            question: "Why is OG image preview important?",
+            answer: "OG images make your content more engaging when shared on social media. Good images increase click-through rates, brand recognition, and social engagement."
+          },
+          {
+            question: "Do all social platforms use OG tags?",
+            answer: "Most major platforms (Facebook, LinkedIn, Pinterest) use OG tags. Twitter uses its own Twitter Card tags but can fall back to OG tags. Always implement both for best coverage."
+          },
+          {
+            question: "What file format should OG images use?",
+            answer: "Use JPG or PNG formats. JPG is recommended for better compression and smaller file sizes. Ensure file size is under 5MB for faster loading."
+          },
+          {
+            question: "How do I implement OG images?",
+            answer: "Add meta tags to your HTML head: <meta property=\"og:image\" content=\"image-url\">. Also specify width, height, and alt text for accessibility and better rendering."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

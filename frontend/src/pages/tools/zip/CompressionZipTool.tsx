@@ -319,8 +319,76 @@ const CompressionZipTool = () => {
           </ul>
         </motion.div>
 
-        {/* FAQ Section */}
-        <ToolFAQ />
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Gauge className="h-5 w-5 text-blue-500" />
+            What is ZIP Compression?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            ZIP compression reduces file sizes by using compression algorithms to eliminate redundancy. This saves storage space and reduces transfer times for file sharing and backups.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your files to compress</li>
+            <li>Select compression level</li>
+            <li>The tool compresses the files</li>
+            <li>Download the ZIP archive</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Compression Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Multiple compression levels</li>
+                <li>• Batch file support</li>
+                <li>• Size reduction analysis</li>
+                <li>• Password protection option</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• File backup</li>
+                <li>• Email attachments</li>
+                <li>• Storage optimization</li>
+                <li>• Faster file transfer</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
+          {/* FAQ Section */}
+          <ToolFAQ faqs={[
+            {
+              question: "How much can ZIP compress files?",
+              answer: "Compression varies by file type. Text files compress well (50-90% reduction). Images and videos compress less (5-20%). Already compressed files (ZIP, MP3) won't compress further."
+            },
+            {
+              question: "What compression level should I use?",
+              answer: "Use standard compression for most files. Maximum compression takes longer but saves more space. Fast compression is quicker but may not reduce size as much."
+            },
+            {
+              question: "Does compression affect file quality?",
+              answer: "ZIP compression is lossless—files decompress exactly as original. No quality loss for any file type. Perfect for documents, images, and any data."
+            },
+            {
+              question: "Can I compress already compressed files?",
+              answer: "You can, but it won't help. Files already compressed (ZIP, MP3, JPG) won't compress further and may even get slightly larger due to overhead."
+            },
+            {
+              question: "Is ZIP better than RAR or 7Z?",
+              answer: "ZIP is most compatible and works everywhere. RAR and 7Z offer better compression but require specific software. Use ZIP for maximum compatibility."
+            }
+          ]} />
+        </div>
       </div>
     </ToolLayout>
   );

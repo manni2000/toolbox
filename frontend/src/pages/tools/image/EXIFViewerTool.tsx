@@ -312,8 +312,76 @@ const EXIFViewerTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Info className="h-5 w-5 text-blue-500" />
+            What is EXIF Data?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            EXIF (Exchangeable Image File Format) metadata contains information about how a photo was taken: camera settings, GPS location, date/time, and more. It's embedded in image files and helps photographers understand and improve their photography.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your image to extract EXIF data</li>
+            <li>View camera settings (aperture, shutter, ISO)</li>
+            <li>Check GPS location and timestamp</li>
+            <li>Download or copy the metadata</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">EXIF Data Types</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Camera make/model</li>
+                <li>• Exposure settings</li>
+                <li>• GPS coordinates</li>
+                <li>• Date/time stamp</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Photography Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Learning from photos</li>
+                <li>• Technical analysis</li>
+                <li>• Location tracking</li>
+                <li>• Workflow optimization</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "What EXIF data is stored in images?",
+            answer: "EXIF stores camera settings (aperture, shutter speed, ISO), camera model, date/time, GPS location, orientation, and other technical details about how the photo was taken."
+          },
+          {
+            question: "Does EXIF data affect image quality?",
+            answer: "No, EXIF metadata doesn't affect image quality. It's separate from the actual image data. You can remove it to reduce file size without changing the image."
+          },
+          {
+            question: "Can I edit or remove EXIF data?",
+            answer: "Yes, you can edit or remove EXIF data using various tools. This is useful for privacy (removing GPS) or reducing file size before sharing images online."
+          },
+          {
+            question: "Do all images have EXIF data?",
+            answer: "No, only images from cameras (phones, DSLRs, etc.) typically have EXIF. Screenshots, edited images, or downloaded images often have no or incomplete EXIF data."
+          },
+          {
+            question: "Why is EXIF important for photographers?",
+            answer: "EXIF helps photographers analyze their techniques, learn from successful shots, understand why images worked (or didn't), and improve their photography skills over time."
+          }
+        ]} />
       </div>
     </ToolLayout>
   );

@@ -292,9 +292,77 @@ const JPGToPNGConverter = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <RefreshCw className="h-5 w-5 text-blue-500" />
+            What is JPG to PNG Conversion?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            JPG to PNG conversion transforms JPEG images into PNG format. PNG supports transparency and uses lossless compression, making it ideal for graphics, logos, and images that need transparency or will be edited further.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Upload your JPG image</li>
+            <li>The tool converts it to PNG format</li>
+            <li>Transparency is preserved (if applicable)</li>
+            <li>Download the PNG file</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Format Differences</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• JPG: Lossy, smaller files</li>
+                <li>• PNG: Lossless, supports transparency</li>
+                <li>• PNG: Better for editing</li>
+                <li>• JPG: Better for photos</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">When to Use PNG</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Logos and graphics</li>
+                <li>• Images with transparency</li>
+                <li>• Images for editing</li>
+                <li>• Screenshots</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ />
+        <ToolFAQ faqs={[
+          {
+            question: "Why convert JPG to PNG?",
+            answer: "Convert to PNG when you need transparency, lossless quality, or plan to edit the image further. PNG is better for graphics, logos, and images requiring precise details."
+          },
+          {
+            question: "Will PNG files be larger than JPG?",
+            answer: "Yes, PNG files are typically larger than JPG because PNG uses lossless compression. For photos, JPG is more efficient. For graphics, PNG's quality is worth the size increase."
+          },
+          {
+            question: "Does conversion affect image quality?",
+            answer: "Converting JPG to PNG doesn't improve quality - it just prevents further degradation. The original JPG compression artifacts remain. Start with uncompressed sources when possible."
+          },
+          {
+            question: "Can PNG support transparency?",
+            answer: "Yes, PNG supports alpha channel transparency. This is why PNG is preferred for logos, icons, and graphics that need transparent backgrounds."
+          },
+          {
+            question: "When should I use JPG vs PNG?",
+            answer: "Use JPG for photos and images where file size matters. Use PNG for graphics, logos, images with transparency, or when you need lossless quality for editing."
+          }
+        ]} />
       </div>
+    </div>
     </ToolLayout>
   );
 };

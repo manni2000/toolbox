@@ -419,8 +419,76 @@ const EMICalculatorTool = () => {
         />
       </div>
 
-      {/* FAQ Section */}
-      <ToolFAQ />
+      {/* Tool Definition Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="rounded-xl border border-border bg-card p-6"
+      >
+        <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+          <Calculator className="h-5 w-5 text-blue-500" />
+          What is EMI Calculation?
+        </h3>
+        <p className="text-muted-foreground mb-4">
+          EMI (Equated Monthly Installment) is the fixed payment amount made by a borrower to a lender at a specified date each calendar month. EMI calculators help you understand your monthly loan repayment before taking a loan, enabling better financial planning.
+        </p>
+        
+        <h4 className="font-semibold mb-2">How It Works</h4>
+        <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+          <li>Enter the loan amount (principal)</li>
+          <li>Set the interest rate (annual percentage)</li>
+          <li>Choose the loan tenure (in months or years)</li>
+          <li>View the calculated EMI and total payment breakdown</li>
+        </ol>
+        
+        <div className="grid sm:grid-cols-2 gap-4 mt-4">
+          <div className="p-3 bg-blue-50 rounded-lg">
+            <h5 className="font-semibold text-blue-900 mb-1">EMI Components</h5>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li>• Principal repayment</li>
+              <li>• Interest payment</li>
+              <li>• Total payment</li>
+              <li>• Interest ratio</li>
+            </ul>
+          </div>
+          <div className="p-3 bg-green-50 rounded-lg">
+            <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+            <ul className="text-sm text-green-800 space-y-1">
+              <li>• Home loan planning</li>
+              <li>• Car loan comparison</li>
+              <li>• Personal loan budgeting</li>
+              <li>• Loan affordability check</li>
+            </ul>
+          </div>
+        </div>
+      </motion.div>
+
+      <div className="mt-8">
+        {/* FAQ Section */}
+      <ToolFAQ faqs={[
+        {
+          question: "What is the EMI formula?",
+          answer: "EMI = [P × R × (1+R)^N] / [(1+R)^N-1], where P = Principal, R = Monthly interest rate, N = Number of months. This calculates your fixed monthly payment."
+        },
+        {
+          question: "How does interest rate affect EMI?",
+          answer: "Higher interest rates increase your EMI and total payment. Even a 1% difference can significantly impact your total cost over the loan tenure."
+        },
+        {
+          question: "What's the difference between reducing balance and flat rate?",
+          answer: "Reducing balance calculates interest on remaining principal (lower cost). Flat rate calculates interest on original principal throughout (higher cost)."
+        },
+        {
+          question: "Should I choose shorter or longer tenure?",
+          answer: "Shorter tenure means higher EMI but lower total interest paid. Longer tenure means lower EMI but higher total interest. Choose based on your monthly budget."
+        },
+        {
+          question: "Can I prepay my loan to reduce EMI?",
+          answer: "Yes, prepayment reduces the principal, which can either reduce your EMI or shorten your tenure. Check with your lender for prepayment terms and charges."
+        }
+      ]} />
+      </div>
     </ToolLayout>
   );
 };

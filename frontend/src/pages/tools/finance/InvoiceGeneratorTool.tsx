@@ -499,10 +499,56 @@ export default function InvoiceGeneratorTool() {
           </div>
         </div>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-500" />
+            What is Invoice Generation?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Invoice generation creates professional invoices for billing clients. This tool helps you create detailed invoices with line items, tax calculations, and payment terms for your business transactions.
+          </p>
+          
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your business and client details</li>
+            <li>Add line items with descriptions and costs</li >           <li>The tool calculates totals and tax</li>
+            <li>Generate and download the invoice</li>
+          </ol>
+          
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Invoice Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Automatic calculations</li>
+                <li>• Tax and discount support</li>
+                <li>• Multiple line items</li>
+                <li>• Professional formatting</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Freelance billing</li>
+                <li>• Service invoicing</li>
+                <li>• Product sales</li>
+                <li>• Client billing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
         {/* FAQ Section */}
-        {toolSeoData?.faqs && toolSeoData.faqs.length > 0 && (
-          <ToolFAQ faqs={toolSeoData.faqs} />
-        )}
+        <div className="mt-8">
+          {toolSeoData?.faqs && toolSeoData.faqs.length > 0 && (
+            <ToolFAQ faqs={toolSeoData.faqs} />
+          )}
+        </div>
       </div>
     </ToolLayout>
   );
