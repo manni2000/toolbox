@@ -325,6 +325,8 @@ export default function InvoiceGeneratorTool() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
               <div className="sm:col-span-2 md:col-span-1">
                 <input
+                  id="item-description"
+                  name="item-description"
                   type="text"
                   placeholder="Description"
                   aria-label="Item description"
@@ -334,6 +336,8 @@ export default function InvoiceGeneratorTool() {
                 />
               </div>
               <input
+                id="item-quantity"
+                name="item-quantity"
                 type="number"
                 placeholder="Qty"
                 aria-label="Item quantity"
@@ -342,6 +346,8 @@ export default function InvoiceGeneratorTool() {
                 className="input-tool w-full"
               />
               <input
+                id="item-unit-price"
+                name="item-unit-price"
                 type="number"
                 step="0.01"
                 placeholder="Price"
@@ -351,6 +357,8 @@ export default function InvoiceGeneratorTool() {
                 className="input-tool w-full"
               />
               <input
+                id="item-discount"
+                name="item-discount"
                 type="number"
                 step="0.01"
                 placeholder="Discount %"

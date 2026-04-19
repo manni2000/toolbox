@@ -44,7 +44,7 @@ const BlogPostPage = () => {
               keywords: apiPost.keywords || apiPost.tags || [],
               publishedDate: apiPost.publishedDate || apiPost.date || '',
               readTime: apiPost.readTime || '5 min',
-              image: apiPost.image || '/dailytools247.png',
+              image: apiPost.image || '/dailytools247.webp',
             });
             const allOtherPosts = blogPosts.filter((item) => item.slug !== slug);
             setRelatedPosts(allOtherPosts);
@@ -80,7 +80,8 @@ const BlogPostPage = () => {
   }
 
   const enhancement = blogEnhancements[post.slug];
-  const faqs = enhancement ? [...(post.faqs || []), ...(enhancement.additionalFaqs || [])] : (post.faqs || []);
+  const combinedFaqs = enhancement ? [...(post.faqs || []), ...(enhancement.additionalFaqs || [])] : (post.faqs || []);
+  const faqs = Array.from(new Map(combinedFaqs.map(faq => [faq.question, faq])).values());
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -100,7 +101,7 @@ const BlogPostPage = () => {
       name: "Dailytools247",
       logo: {
         "@type": "ImageObject",
-        url: "https://www.dailytools247.app/dailytools247.png",
+        url: "https://www.dailytools247.app/dailytools247.webp",
       },
     },
   };
@@ -173,7 +174,7 @@ const BlogPostPage = () => {
                   loading="lazy"
                   onError={(event) => {
                     const target = event.currentTarget;
-                    target.src = "/dailytools247.png";
+                    target.src = "/dailytools247.webp";
                   }}
                 />
               </div>
@@ -362,7 +363,7 @@ const BlogPostPage = () => {
                               loading="lazy"
                               onError={(event) => {
                                 const target = event.currentTarget;
-                                target.src = "/dailytools247.png";
+                                target.src = "/dailytools247.webp";
                               }}
                             />
                             <div className="absolute top-3 left-3">

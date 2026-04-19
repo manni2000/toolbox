@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import QRCode from "qrcode";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 import { EnhancedInput } from "@/components/ui/enhanced-input";
 import { ProcessingState } from "@/components/ProcessingState";
 import { EmptyState, NoData } from "@/components/EmptyState";
@@ -16,6 +17,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 
 const QRGeneratorToolEnhanced = () => {
+  const toolSeoData = getToolSeoMetadata('qr-code-generator');
   const [text, setText] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [size, setSize] = useState(300);
@@ -262,30 +264,56 @@ const QRGeneratorToolEnhanced = () => {
           </Card>
         </main>
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6 mt-8"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <LinkIcon className="h-5 w-5 text-blue-500" />
+            What is QR Code Generator?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            A QR Code Generator creates scannable 2D barcodes that store information like URLs, text, or contact details. QR codes can be read by smartphones and dedicated scanners, making them perfect for sharing digital content in physical spaces.
+          </p>
+
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter the URL, text, or data you want to encode</li>
+            <li>Customize the size and colors to match your needs</li>
+            <li>Click generate to create your QR code instantly</li>
+            <li>Download as PNG and use anywhere you need</li>
+          </ol>
+
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">QR Code Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Custom size (100px to 500px)</li>
+                <li>• Color customization</li>
+                <li>• High-quality PNG output</li>
+                <li>• Works with all QR scanners</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Website links</li>
+                <li>• Business cards</li>
+                <li>• Product packaging</li>
+                <li>• Marketing materials</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
         {/* FAQ Section */}
         <div className="mt-8">
-        <ToolFAQ faqs={[
-          {
-            question: "What data can QR codes store?",
-            answer: "QR codes can store up to 2,953 bytes of data including URLs, text, contact info (vCards), WiFi credentials, and more. The capacity depends on the QR code version and error correction level."
-          },
-          {
-            question: "What are error correction levels?",
-            answer: "QR codes have 4 error correction levels: L (7%), M (15%), Q (25%), H (30%). Higher levels allow the QR to be read even if partially damaged but increase code size."
-          },
-          {
-            question: "Can QR codes be tracked?",
-            answer: "Yes, using URL shorteners with analytics. Each scan can be tracked for location, device, time, and more. This is useful for marketing campaigns and measuring engagement."
-          },
-          {
-            question: "What size should QR codes be printed?",
-            answer: "For reliable scanning, QR codes should be at least 2cm x 2cm. Ensure high contrast (dark on light) and sufficient quiet space around the code."
-          },
-          {
-            question: "Are QR codes secure?",
-            answer: "QR codes themselves aren't secure - they just contain data. The security depends on what they link to. Be cautious scanning unknown QR codes as they could lead to phishing sites."
-          }
-        ]} />
+          {toolSeoData?.faqs && toolSeoData.faqs.length > 0 && (
+            <ToolFAQ faqs={toolSeoData.faqs} />
+          )}
         </div>
       </ToolLayout>
     </>

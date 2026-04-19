@@ -5,12 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Dailytools247 - 100+ Free Online Tools | PDF, Image, Video, Text Converters & More</title>
+  <title>Dailytools247 - 100+ Free Online Tools | PDF, Image, SEO, Video Converters & More</title>
   <meta name="title" content="Dailytools247 - 100+ Free Online Tools | PDF, Image, Video, Text Converters & More" />
   <meta name="description"
-    content="Free online tools for PDF conversion, image editing, video processing, text formatting, QR codes, password generation, JSON formatting & more. No signup required. 100% browser-based, fast & private." />
+  content="Free online tools for PDF conversion, image editing, video processing, text formatting, QR codes, password generation, JSON formatting & more. No signup required. 100% browser-based, fast & private." />
   <meta name="keywords"
-    content="free online tools, PDF converter, image compressor, QR code generator, video tools, password generator, JSON formatter, background remover, word counter, age calculator, unit converter, text tools, security tools, SEO tools, developer tools, PDF to Word, PNG to JPG, MP4 converter, text to speech, hash generator, URL encoder, base64 converter, scientific calculator, percentage calculator, file converter, online utilities" />
+  content="free online tools, PDF converter, image compressor, QR code generator, video tools, password generator, JSON formatter, background remover, word counter, age calculator, unit converter, text tools, security tools, SEO tools, developer tools, PDF to Word, webp to JPG, MP4 converter, text to speech, hash generator, URL encoder, base64 converter, scientific calculator, percentage calculator, file converter, online utilities" />
   <meta name="author" content="Dailytools247" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
@@ -48,34 +48,32 @@
   <meta name="twitter:creator" content="@dailytools247" />
   <meta name="twitter:site" content="@dailytools247" />
 
-  <link rel="icon" href="/d.png" sizes="any" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/d.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/d.png" />
-  <link rel="icon" type="image/png" sizes="48x48" href="/d.png" />
-  <link rel="icon" type="image/png" sizes="96x96" href="/d.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/d.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/d.png" />
-  <link rel="icon" type="image/png" href="/d.png" />
+  <link rel="icon" href="/d.webp" sizes="any" />
+  <link rel="icon" type="image/webp" sizes="16x16" href="/d.webp" />
+  <link rel="icon" type="image/webp" sizes="32x32" href="/d.webp" />
+  <link rel="icon" type="image/webp" sizes="48x48" href="/d.webp" />
+  <link rel="icon" type="image/webp" sizes="96x96" href="/d.webp" />
+  <link rel="icon" type="image/webp" sizes="192x192" href="/d.webp" />
+  <link rel="icon" type="image/webp" sizes="512x512" href="/d.webp" />
+  <link rel="icon" type="image/webp" href="/d.webp" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.webp" />
 
   <meta name="theme-color" content="#6366f1" />
 
   <meta name="msapplication-TileColor" content="#6366f1" />
-  <meta name="msapplication-TileImage" content="/dailytools247.png" />
+  <meta name="msapplication-TileImage" content="/dailytools247.webp" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" /></noscript>
 
-  <link rel="preload" as="image" href="/d.png" />
-
-  <link rel="modulepreload" href="/src/main.tsx" />
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
+  <script defer>
+    (function() {
       const webAppSchema = document.createElement('script');
       webAppSchema.type = 'application/ld+json';
       webAppSchema.innerHTML = JSON.stringify({
@@ -130,7 +128,7 @@
         "@type": "Organization",
         "name": "Dailytools247",
         "url": "https://www.dailytools247.app/",
-        "logo": "https://www.dailytools247.app/dailytools247.png",
+        "logo": "https://www.dailytools247.app/dailytools247.webp",
         "description": "Free online tools platform offering 100+ utilities for PDF, image, video, text processing and more",
         "foundingDate": "2024",
         "sameAs": ["https://twitter.com/dailytools247", "https://facebook.com/dailytools247"],
@@ -263,14 +261,15 @@
         ]
       });
       document.head.appendChild(faqSchema);
-    });
+    })();
   </script>
 
 </head>
 
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@4.0.0/dist/jspdf.umd.min.js" defer></script>
+  <script type="module" src="/src/main.tsx" defer></script>
 </body>
 
 </html>

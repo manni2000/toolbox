@@ -27,7 +27,7 @@ const Header = () => {
           <Link to="/" className="flex items-center">
             <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden">
               <img 
-                src="/dailytools247.png" 
+                src="/dailytools247.webp" 
                 alt="dailytools247 logo" 
                 className="h-28 w-28 object-contain"
                 onError={(e) => {

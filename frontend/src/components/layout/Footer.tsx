@@ -3,7 +3,6 @@ import { Wrench, Heart } from "lucide-react";
 import { toolCategories } from "@/data/toolCategories";
 
 const Footer = () => {
-  // Get top tools from each major category for display
   const popularTools = [
     { name: "QR Code Generator", path: "/qr-code-generator" },
     { name: "Image to PDF", path: "/image-to-pdf" },
@@ -204,7 +203,7 @@ const Footer = () => {
             <div className="flex flex-col sm:items-start -mt-2">
             <div className="relative flex h-40 w-40 sm:h-48 sm:w-48 overflow-hidden ml-[-30px]">
               <img
-                src="/dailytools247.png"
+                src="/dailytools247.webp"
                 alt="dailytools247 logo"
                 className="h-40 w-40 sm:h-48 sm:w-48 object-contain"
                 loading="lazy"

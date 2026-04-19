@@ -144,7 +144,7 @@ const BlogListPage = () => {
                     loading="lazy"
                     onError={(event) => {
                       const target = event.currentTarget;
-                      target.src = "/dailytools247.png";
+                      target.src = "/dailytools247.webp";
                     }}
                   />
                 </div>
@@ -169,7 +169,7 @@ const BlogListPage = () => {
                       loading="lazy"
                       onError={(event) => {
                         const target = event.currentTarget;
-                        target.src = "/dailytools247.png";
+                        target.src = "/dailytools247.webp";
                       }}
                     />
                     <div className="p-6">

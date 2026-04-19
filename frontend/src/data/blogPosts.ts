@@ -37,7 +37,7 @@ export const blogPosts: BlogPost[] = [
       "free seo tools online, meta title description tool, sitemap validator, keyword density checker, page seo analyzer",
     publishedDate: "2026-04-05",
     readTime: "8 min read",
-        image: "/blog-image/6.png",
+        image: "/blog-image/6.webp",
     category: "SEO Tools",
     sections: [
       {
@@ -96,7 +96,7 @@ export const blogPosts: BlogPost[] = [
       "text tools online, security tools online, password generator, word counter, hash generator, free online tools",
     publishedDate: "2026-04-05",
     readTime: "6 min read",
-    image: "/blog-image/8.png",
+    image: "/blog-image/8.webp",
     category: "Security Tools",
     sections: [
       {
@@ -153,7 +153,7 @@ export const blogPosts: BlogPost[] = [
       "free online tools, best tools 2026, online converter free, no signup required tools, productivity tools",
     publishedDate: "2026-04-04",
     readTime: "9 min read",
-    image: "/blog-image/1.png",
+    image: "/blog-image/1.webp",
     category: "Productivity",
     sections: [
       {
@@ -167,7 +167,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "Top 25 Tools Worth Bookmarking",
         paragraphs: [
-          "1) PDF to Word. 2) Word to PDF. 3) PDF Merge. 4) PDF Split. 5) Image Compressor. 6) PNG to JPG Converter. 7) JPG to PNG Converter. 8) WebP to PNG Converter. 9) Background Remover. 10) Image Resize.",
+          "1) PDF to Word. 2) Word to PDF. 3) PDF Merge. 4) PDF Split. 5) Image Compressor. 6) webp to JPG Converter. 7) JPG to webp Converter. 8) WebP to webp Converter. 9) Background Remover. 10) Image Resize.",
           "11) QR Code Generator. 12) QR Code Scanner. 13) JSON Formatter. 14) Regex Tester. 15) URL Encoder. 16) JWT Decoder. 17) HTTP Header Checker. 18) Password Generator. 19) Password Strength Checker. 20) Hash Generator.",
           "21) Meta Title & Description Generator. 22) Keyword Density Checker. 23) UTM Link Builder. 24) GST Calculator. 25) Invoice Generator.",
         ],
@@ -212,10 +212,10 @@ export const blogPosts: BlogPost[] = [
     description:
       "Find the best free image converter and compressor tools online to optimize quality, reduce file size, and convert formats without signup.",
     keywords:
-      "image converter online free, image compressor online, no signup image tools, webp to png converter, png to jpg",
+      "image converter online free, image compressor online, no signup image tools, webp to webp converter, webp to jpg",
     publishedDate: "2026-04-04",
     readTime: "7 min read",
-    image: "/blog-image/2.png",
+    image: "/blog-image/2.webp",
     category: "Image Tools",
     sections: [
       {
@@ -229,14 +229,14 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "Recommended Image Conversion and Compression Stack",
         paragraphs: [
-          "Use PNG to JPG when you need smaller files for web upload. Use JPG to PNG when transparency or edit flexibility matters.",
+          "Use webp to JPG when you need smaller files for web upload. Use JPG to webp when transparency or edit flexibility matters.",
           "Use WebP converters for compatibility workflows and an image compressor before publishing to improve page speed and SEO.",
           "For social use, add quick resize and crop steps so your visuals fit platform dimensions without quality loss.",
         ],
         links: [
-          { label: "PNG to JPG Converter", path: "/png-to-jpg-converter" },
-          { label: "JPG to PNG Converter", path: "/jpg-to-png-converter" },
-          { label: "WebP to PNG Converter", path: "/webp-to-png-converter" },
+          { label: "webp to JPG Converter", path: "/webp-to-jpg-converter" },
+          { label: "JPG to webp Converter", path: "/jpg-to-webp-converter" },
+          { label: "WebP to webp Converter", path: "/webp-to-webp-converter" },
           { label: "Image Compressor", path: "/image-compressor" },
           { label: "Image Resize", path: "/image-resize" },
         ],
@@ -259,7 +259,7 @@ export const blogPosts: BlogPost[] = [
       {
         question: "Which format is best for website images?",
         answer:
-          "WebP is usually best for performance, while PNG works well for transparency and JPG for photo-heavy content.",
+          "WebP is usually best for performance, while webp works well for transparency and JPG for photo-heavy content.",
       },
       {
         question: "Can I convert images on mobile?",
@@ -277,7 +277,7 @@ export const blogPosts: BlogPost[] = [
       "online developer tools, no install dev tools, json formatter online, regex tester online, jwt decoder free",
     publishedDate: "2026-04-04",
     readTime: "8 min read",
-    image: "/blog-image/3.png",
+    image: "/blog-image/3.webp",
     category: "Developer Tools",
     sections: [
       {
@@ -339,7 +339,7 @@ export const blogPosts: BlogPost[] = [
       "pdf to word online free, convert pdf to word fast, secure pdf converter, online converter free",
     publishedDate: "2026-04-04",
     readTime: "6 min read",
-    image: "/blog-image/4.png",
+    image: "/blog-image/4.webp",
     category: "PDF Tools",
     sections: [
       {
@@ -401,7 +401,7 @@ export const blogPosts: BlogPost[] = [
       "free online tools, replace expensive software, best tools 2026, no signup required tools, save money software alternatives",
     publishedDate: "2026-04-04",
     readTime: "8 min read",
-    image: "/blog-image/5.png",
+    image: "/blog-image/5.webp",
     category: "Savings",
     sections: [
       {
