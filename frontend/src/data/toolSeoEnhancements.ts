@@ -2093,8 +2093,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'robots-txt': {
-    slug: 'robots-txt',
+  'robots-txt-generator': {
+    slug: 'robots-txt-generator',
     title: 'Robots.txt Generator - Create Robots.txt Online Free',
     description: 'Generate robots.txt files instantly for SEO. Control search engine crawling and indexing. Perfect for website optimization.',
     keywords: [
@@ -2155,8 +2155,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'keyword-density': {
-    slug: 'keyword-density',
+  'keyword-density-checker': {
+    slug: 'keyword-density-checker',
     title: 'Keyword Density Checker - Analyze Keyword Density Online Free',
     description: 'Analyze keyword density in text instantly. Check SEO optimization and keyword usage. Perfect for content optimization.',
     keywords: [
@@ -4854,8 +4854,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'freelancer-rate': {
-    slug: 'freelancer-rate',
+  'freelancer-rate-calculator': {
+    slug: 'freelancer-rate-calculator',
     title: 'Freelancer Rate Calculator - Calculate Hourly Rates',
     description: 'Calculate your ideal freelance hourly rate. Factor in expenses, taxes, and profit margin. Perfect for freelancers and consultants.',
     keywords: [
@@ -4923,8 +4923,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'profit-margin': {
-    slug: 'profit-margin',
+  'profit-margin-calculator': {
+    slug: 'profit-margin-calculator',
     title: 'Profit Margin Calculator - Calculate Business Profitability',
     description: 'Calculate profit margin, markup, and profitability metrics. Analyze business performance. Perfect for entrepreneurs and businesses.',
     keywords: [
@@ -4992,8 +4992,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'saas-pricing': {
-    slug: 'saas-pricing',
+  'saas-pricing-calculator': {
+    slug: 'saas-pricing-calculator',
     title: 'SaaS Pricing Calculator - Optimize Subscription Pricing',
     description: 'Calculate optimal SaaS pricing strategies. Analyze customer lifetime value and churn rates. Perfect for SaaS businesses.',
     keywords: [
@@ -5061,8 +5061,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'salary-breakup': {
-    slug: 'salary-breakup',
+  'salary-breakup-generator': {
+    slug: 'salary-breakup-generator',
     title: 'Salary Breakup Calculator - Calculate Take-Home Salary',
     description: 'Calculate detailed salary breakup with taxes and deductions. Find your take-home salary. Perfect for job offers and financial planning.',
     keywords: [
@@ -5130,8 +5130,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'startup-burn-rate': {
-    slug: 'startup-burn-rate',
+  'startup-burn-rate-calculator': {
+    slug: 'startup-burn-rate-calculator',
     title: 'Startup Burn Rate Calculator - Track Cash Runway',
     description: 'Calculate startup burn rate and cash runway. Track monthly expenses and funding. Perfect for founders and investors.',
     keywords: [
@@ -5199,8 +5199,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'stock-cagr': {
-    slug: 'stock-cagr',
+  'stock-cagr-calculator': {
+    slug: 'stock-cagr-calculator',
     title: 'Stock CAGR Calculator - Calculate Investment Returns',
     description: 'Calculate Compound Annual Growth Rate for stocks and investments. Analyze historical performance. Perfect for investors.',
     keywords: [
@@ -6789,6 +6789,2865 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       offers: { price: '0', priceCurrency: 'USD' },
     },
   },
+
+  'working-days-calculator': {
+    slug: 'working-days-calculator',
+    title: 'Working Days Calculator - Calculate Business Days Online Free',
+    description: 'Calculate working days between two dates, excluding weekends and holidays. Perfect for project planning, payroll calculations, and business timelines.',
+    keywords: [
+      'working days calculator',
+      'business days calculator',
+      'calculate working days',
+      'exclude weekends',
+      'working days between dates',
+      'business day counter',
+      'work days calculator',
+      'working days excluding holidays',
+      'calculate business days online',
+      'working days calculator free',
+      'weekdays calculator',
+      'working days counter',
+    ],
+    longTailKeywords: [
+      'calculate working days between two dates',
+      'business days calculator excluding weekends',
+      'how to calculate working days',
+      'working days calculator with holidays',
+      'free online working days calculator',
+      'calculate business days for project',
+      'working days calculator for payroll',
+    ],
+    category: 'Date & Time Tools',
+    faqs: [
+      {
+        question: 'Are weekends excluded?',
+        answer: 'Yes, Saturdays and Sundays are automatically excluded from working day calculations.',
+      },
+      {
+        question: 'Can I exclude public holidays?',
+        answer: 'Yes, you can add custom holiday dates to exclude from your working day calculation.',
+      },
+      {
+        question: 'How are leap years handled?',
+        answer: 'Our calculator automatically accounts for leap years including February 29th when applicable.',
+      },
+      {
+        question: 'Can I calculate working days for multiple date ranges?',
+        answer: 'Yes, you can calculate working days for any start and end date range.',
+      },
+    ],
+    howTo: {
+      name: 'How to Calculate Working Days',
+      description: 'Step-by-step guide to calculate business days',
+      steps: [
+        {
+          name: 'Select Start Date',
+          text: 'Choose your project or work start date from the calendar picker.',
+        },
+        {
+          name: 'Select End Date',
+          text: 'Choose your project or work end date. The calculator will determine the date range.',
+        },
+        {
+          name: 'Add Holidays (Optional)',
+          text: 'Add any public holidays or company holidays to exclude from the calculation.',
+        },
+        {
+          name: 'View Results',
+          text: 'See the total working days, weekends excluded, and holidays excluded in your date range.',
+        },
+      ],
+    },
+    relatedTools: ['age-calculator', 'date-difference', 'countdown-timer'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Date Calculator',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'world-time': {
+    slug: 'world-time',
+    title: 'World Time Clock - Check Current Time Worldwide',
+    description: 'Check current time in cities worldwide. Compare time zones, plan international meetings, and convert time between different locations instantly.',
+    keywords: [
+      'world time clock',
+      'current time worldwide',
+      'time zone converter',
+      'world clock online',
+      'current time in cities',
+      'time zone comparison',
+      'international time',
+      'world clock free',
+      'check time in different countries',
+      'time zone calculator',
+      'global time',
+      'world time zones',
+    ],
+    longTailKeywords: [
+      'check current time in different cities',
+      'world time zone converter online',
+      'compare time zones for meetings',
+      'current time in major cities worldwide',
+      'free world clock online',
+      'international time zone calculator',
+      'world clock with multiple cities',
+    ],
+    category: 'Date & Time Tools',
+    faqs: [
+      {
+        question: 'How many cities are supported?',
+        answer: 'We support 500+ major cities and time zones worldwide.',
+      },
+      {
+        question: 'Is the time accurate?',
+        answer: 'Yes, our world clock uses your device time and applies accurate time zone offsets for real-time accuracy.',
+      },
+      {
+        question: 'Can I compare multiple time zones?',
+        answer: 'Yes, add multiple cities to compare their current times side by side.',
+      },
+      {
+        question: 'Does it account for daylight saving time?',
+        answer: 'Yes, daylight saving time adjustments are automatically applied for affected regions.',
+      },
+    ],
+    howTo: {
+      name: 'How to Check World Time',
+      description: 'Step-by-step guide to check time worldwide',
+      steps: [
+        {
+          name: 'Search for City',
+          text: 'Type the city name in the search bar to find its time zone.',
+        },
+        {
+          name: 'Add to Comparison',
+          text: 'Click to add the city to your time zone comparison list.',
+        },
+        {
+          name: 'View Current Times',
+          text: 'See the current time in all selected cities with their local time zones.',
+        },
+        {
+          name: 'Plan Meetings',
+          text: 'Use the time comparison to find suitable meeting times across different time zones.',
+        },
+      ],
+    },
+    relatedTools: ['age-calculator', 'countdown-timer', 'date-difference'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Time Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'lorem-ipsum-generator': {
+    slug: 'lorem-ipsum-generator',
+    title: 'Lorem Ipsum Generator - Create Dummy Text Online Free',
+    description: 'Generate Lorem Ipsum placeholder text for design mockups and prototypes. Customize paragraphs, sentences, and words. Perfect for web designers and developers.',
+    keywords: [
+      'lorem ipsum generator',
+      'dummy text generator',
+      'placeholder text',
+      'lorem ipsum text',
+      'filler text generator',
+      'random text generator',
+      'lorem ipsum online',
+      'lorem ipsum creator',
+      'generate lorem ipsum free',
+      'mockup text',
+      'design placeholder text',
+      'lorem ipsum paragraphs',
+    ],
+    longTailKeywords: [
+      'generate lorem ipsum text online',
+      'free dummy text generator',
+      'create placeholder text for designs',
+      'lorem ipsum generator with paragraphs',
+      'random text for mockups',
+      'lorem ipsum generator for web design',
+      'customizable lorem ipsum generator',
+    ],
+    category: 'Developer Tools',
+    faqs: [
+      {
+        question: 'What is Lorem Ipsum?',
+        answer: 'Lorem Ipsum is standard placeholder text used in printing and typesetting. It mimics real text layout without distracting from design.',
+      },
+      {
+        question: 'Can I customize the text length?',
+        answer: 'Yes, you can specify the number of paragraphs, sentences, or words to generate.',
+      },
+      {
+        question: 'Is the text random?',
+        answer: 'Yes, each generation creates unique random Lorem Ipsum text while maintaining realistic word distribution.',
+      },
+      {
+        question: 'Can I copy the generated text?',
+        answer: 'Yes, use the copy button to instantly copy the text to your clipboard.',
+      },
+    ],
+    howTo: {
+      name: 'How to Generate Lorem Ipsum',
+      description: 'Step-by-step guide to create dummy text',
+      steps: [
+        {
+          name: 'Select Output Type',
+          text: 'Choose whether to generate paragraphs, sentences, or words.',
+        },
+        {
+          name: 'Set Quantity',
+          text: 'Enter the number of paragraphs, sentences, or words you need.',
+        },
+        {
+          name: 'Generate Text',
+          text: 'Click generate to create your Lorem Ipsum placeholder text.',
+        },
+        {
+          name: 'Copy and Use',
+          text: 'Copy the text and paste it into your design mockup or prototype.',
+        },
+      ],
+    },
+    relatedTools: ['json-formatter', 'regex-tester', 'word-counter'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Developer Tools',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'http-header-checker': {
+    slug: 'http-header-checker',
+    title: 'HTTP Header Checker - Analyze Response Headers Online',
+    description: 'Analyze HTTP response headers from any URL. View status codes, content type, caching headers, and security headers. Essential for debugging and SEO.',
+    keywords: [
+      'http header checker',
+      'response header analyzer',
+      'http headers viewer',
+      'check http headers',
+      'analyze response headers',
+      'http header inspector',
+      'view response headers',
+      'http header tool',
+      'header checker online',
+      'http response analyzer',
+      'website headers checker',
+      'http headers inspector',
+    ],
+    longTailKeywords: [
+      'check http headers of a website',
+      'analyze response headers online',
+      'http header checker for seo',
+      'view http response headers free',
+      'http header analyzer tool',
+      'check website headers online',
+      'http header security checker',
+    ],
+    category: 'Developer Tools',
+    faqs: [
+      {
+        question: 'What headers can I view?',
+        answer: 'You can view all HTTP response headers including content-type, cache-control, server, security headers, and more.',
+      },
+      {
+        question: 'Does this work with HTTPS?',
+        answer: 'Yes, the header checker works with both HTTP and HTTPS URLs.',
+      },
+      {
+        question: 'Can I check headers from any website?',
+        answer: 'Most websites allow header inspection. Some may block requests due to CORS or security policies.',
+      },
+      {
+        question: 'What is the status code?',
+        answer: 'The status code indicates the HTTP response status (200=success, 404=not found, 500=server error, etc.).',
+      },
+    ],
+    howTo: {
+      name: 'How to Check HTTP Headers',
+      description: 'Step-by-step guide to analyze response headers',
+      steps: [
+        {
+          name: 'Enter URL',
+          text: 'Paste the full URL (including http:// or https://) of the website you want to analyze.',
+        },
+        {
+          name: 'Analyze Headers',
+          text: 'Click the analyze button to fetch and display all HTTP response headers.',
+        },
+        {
+          name: 'Review Results',
+          text: 'View the status code, content type, caching directives, and all other response headers.',
+        },
+        {
+          name: 'Debug Issues',
+          text: 'Use the header information to diagnose caching, security, or content delivery issues.',
+        },
+      ],
+    },
+    relatedTools: ['json-formatter', 'jwt-decoder', 'api-response-formatter'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Developer Tools',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'json-to-typescript-interface': {
+    slug: 'json-to-typescript-interface',
+    title: 'JSON to TypeScript Interface Converter - Convert Online Free',
+    description: 'Convert JSON objects to TypeScript interfaces instantly. Generate type-safe interfaces from JSON data. Perfect for TypeScript developers working with APIs.',
+    keywords: [
+      'json to typescript',
+      'json to typescript interface',
+      'typescript interface generator',
+      'convert json to typescript',
+      'json typescript converter',
+      'typescript type generator',
+      'json to ts interface',
+      'typescript interface from json',
+      'generate typescript types',
+      'json to types online',
+      'typescript interface creator',
+      'json to typescript tool',
+    ],
+    longTailKeywords: [
+      'convert json to typescript interface online',
+      'generate typescript interfaces from json',
+      'json to typescript converter free',
+      'create typescript types from json',
+      'best json to typescript tool',
+      'typescript interface generator from api',
+      'json to typescript type converter',
+    ],
+    category: 'Developer Tools',
+    faqs: [
+      {
+        question: 'Does it handle nested objects?',
+        answer: 'Yes, the converter recursively processes nested objects and arrays to create proper TypeScript interfaces.',
+      },
+      {
+        question: 'Can it handle arrays?',
+        answer: 'Yes, arrays are properly typed with the correct item interface.',
+      },
+      {
+        question: 'What TypeScript version is used?',
+        answer: 'We generate modern TypeScript interfaces compatible with TypeScript 4.0+.',
+      },
+      {
+        question: 'Can I customize the interface names?',
+        answer: 'Yes, you can specify custom interface names or use the auto-generated names.',
+      },
+    ],
+    howTo: {
+      name: 'How to Convert JSON to TypeScript',
+      description: 'Step-by-step guide to generate TypeScript interfaces',
+      steps: [
+        {
+          name: 'Paste JSON',
+          text: 'Paste your JSON object or array into the input area.',
+        },
+        {
+          name: 'Configure Options',
+          text: 'Set interface name preferences, enable optional fields, or add root interface.',
+        },
+        {
+          name: 'Generate Interfaces',
+          text: 'Click convert to generate TypeScript interfaces from your JSON structure.',
+        },
+        {
+          name: 'Copy Code',
+          text: 'Copy the generated TypeScript interfaces and paste them into your project.',
+        },
+      ],
+    },
+    relatedTools: ['json-formatter', 'api-response-formatter', 'jwt-decoder'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Developer Tools',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'jwt-token-expiry-calculator': {
+    slug: 'jwt-token-expiry-calculator',
+    title: 'JWT Token Expiry Calculator - Check Token Expiration Online',
+    description: 'Calculate JWT token expiry time and decode expiration claims. Check if tokens are expired or valid. Perfect for debugging authentication systems.',
+    keywords: [
+      'jwt expiry calculator',
+      'jwt token expiration',
+      'check jwt expiry',
+      'jwt expiration checker',
+      'jwt token validity',
+      'jwt exp calculator',
+      'jwt token expiry time',
+      'verify jwt expiration',
+      'jwt expiry checker',
+      'jwt token expiration time',
+      'jwt validity calculator',
+      'check if jwt is expired',
+    ],
+    longTailKeywords: [
+      'check jwt token expiration online',
+      'jwt expiry calculator tool',
+      'verify jwt token validity',
+      'jwt token expiration checker',
+      'calculate jwt expiry time',
+      'jwt token expiry decoder',
+      'check if jwt token is expired',
+    ],
+    category: 'Developer Tools',
+    faqs: [
+      {
+        question: 'How is expiry calculated?',
+        answer: 'The expiry is calculated from the "exp" claim in the JWT payload, which represents Unix timestamp.',
+      },
+      {
+        question: 'What time zone is used?',
+        answer: 'Expiry times are shown in both UTC and your local time zone for clarity.',
+      },
+      {
+        question: 'Can I check multiple tokens?',
+        answer: 'Yes, you can check one token at a time. Each check shows detailed expiry information.',
+      },
+      {
+        question: 'What if the token has no expiry?',
+        answer: 'Tokens without an "exp" claim are considered to have no expiration and will show as valid indefinitely.',
+      },
+    ],
+    howTo: {
+      name: 'How to Check JWT Expiry',
+      description: 'Step-by-step guide to check token expiration',
+      steps: [
+        {
+          name: 'Paste JWT Token',
+          text: 'Paste your JWT token into the input field.',
+        },
+        {
+          name: 'Decode Token',
+          text: 'The tool automatically decodes the token and extracts the expiry claim.',
+        },
+        {
+          name: 'View Expiry Status',
+          text: 'See whether the token is expired, valid, or about to expire with time remaining.',
+        },
+        {
+          name: 'View Details',
+          text: 'Review the exact expiration timestamp, issued at time, and other token claims.',
+        },
+      ],
+    },
+    relatedTools: ['jwt-decoder', 'json-formatter', 'regex-tester'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Developer Tools',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'environment-variable-generator': {
+    slug: 'environment-variable-generator',
+    title: 'Environment Variable Generator - Create .env Files Online',
+    description: 'Generate environment variable files (.env) for your applications. Create secure configuration files for development and production. Perfect for developers.',
+    keywords: [
+      'environment variable generator',
+      '.env generator',
+      'env file generator',
+      'create environment variables',
+      'env file creator',
+      'environment config generator',
+      'generate .env file',
+      'dotenv generator',
+      'environment variables tool',
+      'create env file online',
+      'env file maker',
+      'configuration file generator',
+    ],
+    longTailKeywords: [
+      'generate .env file online',
+      'create environment variables for development',
+      'environment variable generator tool',
+      'dotenv file generator free',
+      'create .env file for production',
+      'environment config file maker',
+      'generate environment variables securely',
+    ],
+    category: 'Developer Tools',
+    faqs: [
+      {
+        question: 'What format is the output?',
+        answer: 'The output is in standard .env format with KEY=VALUE pairs, compatible with dotenv libraries.',
+      },
+      {
+        question: 'Can I add comments?',
+        answer: 'Yes, you can add comments using # prefix for documentation.',
+      },
+      {
+        question: 'Are values secure?',
+        answer: 'The file is generated locally in your browser. No data is sent to any server.',
+      },
+      {
+        question: 'Can I export the file?',
+        answer: 'Yes, download the generated .env file directly to your computer.',
+      },
+    ],
+    howTo: {
+      name: 'How to Generate Environment Variables',
+      description: 'Step-by-step guide to create .env files',
+      steps: [
+        {
+          name: 'Add Variables',
+          text: 'Enter variable names and their values. You can add multiple variables.',
+        },
+        {
+          name: 'Set Comments',
+          text: 'Add optional comments using # to document each variable.',
+        },
+        {
+          name: 'Generate File',
+          text: 'Click generate to create the .env file with all your variables.',
+        },
+        {
+          name: 'Download and Use',
+          text: 'Download the .env file and place it in your project root directory.',
+        },
+      ],
+    },
+    relatedTools: ['json-formatter', 'dockerfile-generator', 'postman-collection-generator'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Developer Tools',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'postman-collection-generator': {
+    slug: 'postman-collection-generator',
+    title: 'Postman Collection Generator - Create API Collections Online',
+    description: 'Generate Postman collections from API definitions or curl commands. Create structured API requests for testing and documentation. Perfect for API developers.',
+    keywords: [
+      'postman collection generator',
+      'create postman collection',
+      'api collection generator',
+      'postman collection creator',
+      'generate postman collection',
+      'curl to postman',
+      'api to postman',
+      'postman collection tool',
+      'generate api collection',
+      'postman collection maker',
+      'create api collection online',
+      'postman import generator',
+    ],
+    longTailKeywords: [
+      'generate postman collection from curl',
+      'create postman collection online free',
+      'api to postman collection converter',
+      'postman collection generator tool',
+      'curl command to postman collection',
+      'generate postman collection for api',
+      'best postman collection generator',
+    ],
+    category: 'Developer Tools',
+    faqs: [
+      {
+        question: 'What input formats are supported?',
+        answer: 'We support curl commands, OpenAPI/Swagger specs, and manual API endpoint input.',
+      },
+      {
+        question: 'Can I organize requests in folders?',
+        answer: 'Yes, the generator creates organized collections with folders based on your API structure.',
+      },
+      {
+        question: 'Is the collection compatible with Postman?',
+        answer: 'Yes, the output is standard Postman collection v2.1 format, fully compatible with Postman.',
+      },
+      {
+        question: 'Can I import the collection directly?',
+        answer: 'Yes, download the JSON file and import it directly into Postman.',
+      },
+    ],
+    howTo: {
+      name: 'How to Generate Postman Collection',
+      description: 'Step-by-step guide to create API collections',
+      steps: [
+        {
+          name: 'Input API Details',
+          text: 'Enter API endpoints, methods, headers, and body parameters manually or paste curl commands.',
+        },
+        {
+          name: 'Organize Structure',
+          text: 'Group related endpoints into folders for better organization.',
+        },
+        {
+          name: 'Generate Collection',
+          text: 'Click generate to create the Postman collection JSON file.',
+        },
+        {
+          name: 'Import to Postman',
+          text: 'Download the file and import it into Postman to start testing your APIs.',
+        },
+      ],
+    },
+    relatedTools: ['api-response-formatter', 'curl-to-axios-converter', 'json-formatter'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Developer Tools',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'curl-to-axios-converter': {
+    slug: 'curl-to-axios-converter',
+    title: 'Curl to Axios Converter - Convert Curl Commands Online',
+    description: 'Convert curl commands to Axios JavaScript code instantly. Generate ready-to-use Axios requests for your projects. Perfect for JavaScript developers.',
+    keywords: [
+      'curl to axios',
+      'curl to axios converter',
+      'convert curl to axios',
+      'curl axios generator',
+      'curl to javascript',
+      'axios request generator',
+      'curl command converter',
+      'curl to js axios',
+      'generate axios from curl',
+      'curl to axios online',
+      'axios code generator',
+      'convert curl to javascript axios',
+    ],
+    longTailKeywords: [
+      'convert curl command to axios online',
+      'curl to axios converter free',
+      'generate axios code from curl',
+      'curl to javascript axios converter',
+      'best curl to axios tool',
+      'axios request generator from curl',
+      'convert curl to axios javascript',
+    ],
+    category: 'Developer Tools',
+    faqs: [
+      {
+        question: 'What Axios features are supported?',
+        answer: 'The converter supports headers, data, params, authentication, and most common curl options.',
+      },
+      {
+        question: 'Can I handle multipart requests?',
+        answer: 'Yes, multipart/form-data and file uploads are properly converted to Axios format.',
+      },
+      {
+        question: 'Is the code ready to use?',
+        answer: 'Yes, the generated Axios code is production-ready and can be copied directly into your project.',
+      },
+      {
+        question: 'Does it handle authentication?',
+        answer: 'Yes, Basic Auth, Bearer tokens, and other authentication methods are converted to Axios headers.',
+      },
+    ],
+    howTo: {
+      name: 'How to Convert Curl to Axios',
+      description: 'Step-by-step guide to convert curl commands',
+      steps: [
+        {
+          name: 'Paste Curl Command',
+          text: 'Paste your curl command into the input area.',
+        },
+        {
+          name: 'Configure Options',
+          text: 'Choose between async/await or promise syntax, and set variable naming preferences.',
+        },
+        {
+          name: 'Convert Code',
+          text: 'Click convert to generate the equivalent Axios JavaScript code.',
+        },
+        {
+          name: 'Copy and Use',
+          text: 'Copy the generated Axios code and paste it into your JavaScript/TypeScript project.',
+        },
+      ],
+    },
+    relatedTools: ['api-response-formatter', 'postman-collection-generator', 'http-header-checker'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Developer Tools',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'http-status-code-explainer': {
+    slug: 'http-status-code-explainer',
+    title: 'HTTP Status Code Explainer - Understand Status Codes',
+    description: 'Understand HTTP status codes with detailed explanations. Lookup 1xx, 2xx, 3xx, 4xx, and 5xx codes. Perfect for debugging web applications and APIs.',
+    keywords: [
+      'http status code explainer',
+      'http status codes',
+      'status code lookup',
+      'http status code reference',
+      'understand http codes',
+      'status code meanings',
+      'http response codes',
+      'status code guide',
+      'http error codes',
+      'status code checker',
+      'http status code list',
+      'web status codes',
+    ],
+    longTailKeywords: [
+      'http status code reference guide',
+      'lookup http status codes online',
+      'understand http error codes',
+      'http status code meanings list',
+      'http status code explainer tool',
+      'complete http status code reference',
+      'http status code guide for developers',
+    ],
+    category: 'Developer Tools',
+    faqs: [
+      {
+        question: 'What status codes are covered?',
+        answer: 'We cover all standard HTTP status codes from 1xx to 5xx including informational, success, redirection, client error, and server error codes.',
+      },
+      {
+        question: 'Are explanations detailed?',
+        answer: 'Yes, each status code includes a detailed explanation of what it means and common use cases.',
+      },
+      {
+        question: 'Can I search for codes?',
+        answer: 'Yes, search by code number (e.g., 404) or by category (e.g., client errors).',
+      },
+      {
+        question: 'Are there examples?',
+        answer: 'Yes, common scenarios and examples are provided for each status code.',
+      },
+    ],
+    howTo: {
+      name: 'How to Use Status Code Explainer',
+      description: 'Step-by-step guide to understand HTTP codes',
+      steps: [
+        {
+          name: 'Search or Browse',
+          text: 'Search for a specific status code or browse by category (1xx-5xx).',
+        },
+        {
+          name: 'View Explanation',
+          text: 'Read the detailed explanation of what the status code means.',
+        },
+        {
+          name: 'Check Examples',
+          text: 'Review common scenarios where this status code is used.',
+        },
+        {
+          name: 'Apply Knowledge',
+          text: 'Use this information to debug your web applications or APIs.',
+        },
+      ],
+    },
+    relatedTools: ['http-header-checker', 'api-response-formatter', 'json-formatter'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Developer Tools',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'compound-interest-calculator': {
+    slug: 'compound-interest-calculator',
+    title: 'Compound Interest Calculator - Calculate Interest Online Free',
+    description: 'Calculate compound interest on investments and loans. Input principal, rate, and time to see growth. Perfect for financial planning and investment analysis.',
+    keywords: [
+      'compound interest calculator',
+      'calculate compound interest',
+      'compound interest formula',
+      'investment calculator',
+      'compound interest online',
+      'interest calculator',
+      'compound interest tool',
+      'calculate investment growth',
+      'compound interest free',
+      'savings calculator',
+      'compound interest rate',
+      'investment growth calculator',
+    ],
+    longTailKeywords: [
+      'calculate compound interest online',
+      'compound interest calculator with formula',
+      'investment growth calculator free',
+      'calculate compound interest on savings',
+      'best compound interest calculator',
+      'compound interest calculator for loans',
+      'calculate compound interest with contributions',
+    ],
+    category: 'Education Tools',
+    faqs: [
+      {
+        question: 'What is compound interest?',
+        answer: 'Compound interest is interest calculated on the initial principal and also on the accumulated interest of previous periods.',
+      },
+      {
+        question: 'Can I add regular contributions?',
+        answer: 'Yes, you can set up regular monthly or annual contributions to see how they affect your investment growth.',
+      },
+      {
+        question: 'What compounding frequencies are supported?',
+        answer: 'We support annual, semi-annual, quarterly, monthly, and daily compounding frequencies.',
+      },
+      {
+        question: 'Is this calculator accurate?',
+        answer: 'Yes, we use the standard compound interest formula A = P(1 + r/n)^(nt) for accurate calculations.',
+      },
+    ],
+    howTo: {
+      name: 'How to Calculate Compound Interest',
+      description: 'Step-by-step guide to calculate investment growth',
+      steps: [
+        {
+          name: 'Enter Principal Amount',
+          text: 'Input your initial investment or loan amount.',
+        },
+        {
+          name: 'Set Interest Rate',
+          text: 'Enter the annual interest rate as a percentage.',
+        },
+        {
+          name: 'Choose Time Period',
+          text: 'Set the investment duration in years.',
+        },
+        {
+          name: 'Select Compounding Frequency',
+          text: 'Choose how often interest is compounded (annually, monthly, daily, etc.).',
+        },
+        {
+          name: 'View Results',
+          text: 'See your final amount, total interest earned, and growth over time.',
+        },
+      ],
+    },
+    relatedTools: ['simple-interest-calculator', 'sip-calculator', 'lumpsum-calculator'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Financial Calculator',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'simple-interest-calculator': {
+    slug: 'simple-interest-calculator',
+    title: 'Simple Interest Calculator - Calculate Interest Online Free',
+    description: 'Calculate simple interest on loans and investments. Input principal, rate, and time to get instant results. Perfect for basic financial calculations.',
+    keywords: [
+      'simple interest calculator',
+      'calculate simple interest',
+      'simple interest formula',
+      'loan interest calculator',
+      'simple interest online',
+      'interest calculation',
+      'simple interest tool',
+      'calculate loan interest',
+      'simple interest free',
+      'basic interest calculator',
+      'simple interest rate',
+      'loan calculator simple',
+    ],
+    longTailKeywords: [
+      'calculate simple interest online',
+      'simple interest calculator with formula',
+      'loan interest calculator free',
+      'calculate simple interest on principal',
+      'best simple interest calculator',
+      'simple interest calculator for students',
+      'calculate simple interest for loans',
+    ],
+    category: 'Education Tools',
+    faqs: [
+      {
+        question: 'What is simple interest?',
+        answer: 'Simple interest is calculated only on the principal amount, not on accumulated interest. Formula: I = P × R × T.',
+      },
+      {
+        question: 'How is it different from compound interest?',
+        answer: 'Simple interest is calculated only on the principal, while compound interest is calculated on principal plus accumulated interest.',
+      },
+      {
+        question: 'What time units are supported?',
+        answer: 'You can calculate interest for years, months, or days.',
+      },
+      {
+        question: 'Can I calculate total amount?',
+        answer: 'Yes, the calculator shows both the interest amount and the total amount (principal + interest).',
+      },
+    ],
+    howTo: {
+      name: 'How to Calculate Simple Interest',
+      description: 'Step-by-step guide to calculate simple interest',
+      steps: [
+        {
+          name: 'Enter Principal Amount',
+          text: 'Input the initial principal amount.',
+        },
+        {
+          name: 'Set Interest Rate',
+          text: 'Enter the annual interest rate as a percentage.',
+        },
+        {
+          name: 'Choose Time Period',
+          text: 'Set the duration in years, months, or days.',
+        },
+        {
+          name: 'Calculate Interest',
+          text: 'Click calculate to see the simple interest and total amount.',
+        },
+      ],
+    },
+    relatedTools: ['compound-interest-calculator', 'percentage-calculator', 'unit-converter'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Educational Calculator',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'lcm-hcf-calculator': {
+    slug: 'lcm-hcf-calculator',
+    title: 'LCM HCF Calculator - Calculate LCM & HCF Online Free',
+    description: 'Calculate LCM (Least Common Multiple) and HCF/GCD (Highest Common Factor) of numbers instantly. Perfect for students and mathematical calculations.',
+    keywords: [
+      'lcm calculator',
+      'hcf calculator',
+      'gcd calculator',
+      'lcm hcf calculator',
+      'least common multiple',
+      'highest common factor',
+      'calculate lcm',
+      'calculate hcf',
+      'lcm online',
+      'hcf online',
+      'gcd calculator online',
+      'lcm hcf tool',
+      'math calculator',
+    ],
+    longTailKeywords: [
+      'calculate lcm and hcf online',
+      'least common multiple calculator',
+      'highest common factor calculator',
+      'lcm calculator for multiple numbers',
+      'gcd calculator free',
+      'calculate lcm hcf of numbers',
+      'best lcm hcf calculator',
+    ],
+    category: 'Education Tools',
+    faqs: [
+      {
+        question: 'What is LCM?',
+        answer: 'LCM (Least Common Multiple) is the smallest positive number that is divisible by all given numbers.',
+      },
+      {
+        question: 'What is HCF/GCD?',
+        answer: 'HCF (Highest Common Factor) or GCD (Greatest Common Divisor) is the largest number that divides all given numbers without remainder.',
+      },
+      {
+        question: 'How many numbers can I input?',
+        answer: 'You can input 2 to 10 numbers to calculate their LCM and HCF.',
+      },
+      {
+        question: 'Are the calculations accurate?',
+        answer: 'Yes, we use efficient algorithms to calculate exact LCM and HCF values.',
+      },
+    ],
+    howTo: {
+      name: 'How to Calculate LCM and HCF',
+      description: 'Step-by-step guide to calculate LCM and HCF',
+      steps: [
+        {
+          name: 'Enter Numbers',
+          text: 'Input 2 or more positive integers separated by commas or spaces.',
+        },
+        {
+          name: 'Select Calculation',
+          text: 'Choose to calculate LCM, HCF, or both.',
+        },
+        {
+          name: 'Calculate',
+          text: 'Click calculate to get the LCM and HCF results.',
+        },
+        {
+          name: 'View Steps',
+          text: 'Review the step-by-step calculation method used.',
+        },
+      ],
+    },
+    relatedTools: ['percentage-calculator', 'scientific-calculator', 'unit-converter'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Educational Calculator',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'study-timetable-generator': {
+    slug: 'study-timetable-generator',
+    title: 'Study Timetable Generator - Create Study Schedule Online',
+    description: 'Create personalized study timetables for exams and courses. Organize subjects, set study hours, and track progress. Perfect for students and educators.',
+    keywords: [
+      'study timetable generator',
+      'study schedule maker',
+      'create study timetable',
+      'study planner',
+      'exam schedule generator',
+      'study timetable online',
+      'study schedule creator',
+      'study plan generator',
+      'timetable for studying',
+      'study routine maker',
+      'exam timetable generator',
+      'study schedule tool',
+    ],
+    longTailKeywords: [
+      'create study timetable online free',
+      'study schedule generator for students',
+      'exam study timetable maker',
+      'best study timetable generator',
+      'create personalized study schedule',
+      'study timetable for exams',
+      'generate study plan online',
+    ],
+    category: 'Education Tools',
+    faqs: [
+      {
+        question: 'How many subjects can I add?',
+        answer: 'You can add unlimited subjects to your study timetable.',
+      },
+      {
+        question: 'Can I set different study times?',
+        answer: 'Yes, customize study hours for each subject based on your preference and difficulty level.',
+      },
+      {
+        question: 'Can I add breaks?',
+        answer: 'Yes, include break times between study sessions for better productivity.',
+      },
+      {
+        question: 'Can I export the timetable?',
+        answer: 'Yes, download your timetable as an image or print it directly.',
+      },
+    ],
+    howTo: {
+      name: 'How to Create Study Timetable',
+      description: 'Step-by-step guide to create study schedule',
+      steps: [
+        {
+          name: 'Add Subjects',
+          text: 'List all subjects you need to study.',
+        },
+        {
+          name: 'Set Study Hours',
+          text: 'Assign study duration for each subject based on importance and difficulty.',
+        },
+        {
+          name: 'Organize Schedule',
+          text: 'Arrange subjects across days and time slots to create a balanced schedule.',
+        },
+        {
+          name: 'Add Breaks',
+          text: 'Include short breaks between sessions for better retention.',
+        },
+        {
+          name: 'Generate and Download',
+          text: 'Generate your timetable and download or print it.',
+        },
+      ],
+    },
+    relatedTools: ['scientific-calculator', 'percentage-calculator', 'mcq-generator'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Educational Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'lumpsum-calculator': {
+    slug: 'lumpsum-calculator',
+    title: 'Lump Sum Calculator - Calculate Investment Returns Online',
+    description: 'Calculate returns on lump sum investments. Input amount, rate, and tenure to get projected maturity value. Perfect for planning one-time investments.',
+    keywords: [
+      'lumpsum calculator',
+      'lump sum investment calculator',
+      'calculate lumpsum returns',
+      'lumpsum calculator online',
+      'one-time investment calculator',
+      'lump sum returns',
+      'investment calculator lumpsum',
+      'calculate lumpsum growth',
+      'lumpsum tool',
+      'lump sum calculator free',
+      'investment growth calculator',
+      'lumpsum maturity calculator',
+    ],
+    longTailKeywords: [
+      'calculate lumpsum investment returns',
+      'lumpsum calculator for mutual funds',
+      'one-time investment return calculator',
+      'lumpsum calculator with inflation',
+      'best lumpsum calculator online',
+      'calculate lumpsum for fixed deposit',
+      'lumpsum investment planning tool',
+    ],
+    category: 'Finance Tools',
+    faqs: [
+      {
+        question: 'What is lump sum investment?',
+        answer: 'Lump sum investment is investing a large amount of money at once instead of small regular installments like SIP.',
+      },
+      {
+        question: 'How is return calculated?',
+        answer: 'Returns are calculated using compound interest formula based on your investment amount, expected rate, and time period.',
+      },
+      {
+        question: 'Can I compare with SIP?',
+        answer: 'Yes, you can compare lump sum vs SIP returns to see which works better for your goals.',
+      },
+      {
+        question: 'What is the minimum investment amount?',
+        answer: 'There is no minimum. You can calculate returns for any amount from ₹1 to crores.',
+      },
+    ],
+    howTo: {
+      name: 'How to Calculate Lump Sum Returns',
+      description: 'Step-by-step guide to calculate lump sum investment',
+      steps: [
+        {
+          name: 'Enter Investment Amount',
+          text: 'Input your one-time investment amount.',
+        },
+        {
+          name: 'Set Expected Return Rate',
+          text: 'Enter the annual expected return rate as a percentage.',
+        },
+        {
+          name: 'Choose Investment Period',
+          text: 'Set the duration in years for your investment.',
+        },
+        {
+          name: 'Calculate Returns',
+          text: 'Click calculate to see the projected maturity value and total returns.',
+        },
+      ],
+    },
+    relatedTools: ['sip-calculator', 'mutual-fund-calculator', 'emi-calculator'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Financial Calculator',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'qr-code-scanner': {
+    slug: 'qr-code-scanner',
+    title: 'QR Code Scanner - Scan QR Codes Online Free',
+    description: 'Scan QR codes instantly using your device camera. Decode URLs, text, and other data from QR codes. Perfect for quick information access.',
+    keywords: [
+      'qr code scanner',
+      'scan qr code',
+      'qr code reader',
+      'online qr scanner',
+      'qr code decoder',
+      'scan qr online',
+      'qr code scanner free',
+      'read qr code',
+      'qr code scanner online',
+      'decode qr code',
+      'qr reader online',
+      'scan qr code from image',
+    ],
+    longTailKeywords: [
+      'scan qr code online free',
+      'qr code scanner from camera',
+      'decode qr code online',
+      'best qr code scanner tool',
+      'scan qr code from image file',
+      'online qr code reader free',
+      'qr code scanner for web',
+    ],
+    category: 'Image Tools',
+    faqs: [
+      {
+        question: 'How do I scan a QR code?',
+        answer: 'Upload an image containing a QR code or use your camera to scan it directly.',
+      },
+      {
+        question: 'What types of QR codes are supported?',
+        answer: 'We support all standard QR codes including URLs, text, vCards, WiFi, and more.',
+      },
+      {
+        question: 'Is scanning secure?',
+        answer: 'Yes, scanning happens locally in your browser. No data is sent to any server.',
+      },
+      {
+        question: 'Can I scan from image files?',
+        answer: 'Yes, upload PNG, JPG, or other image files containing QR codes to scan them.',
+      },
+    ],
+    howTo: {
+      name: 'How to Scan QR Codes',
+      description: 'Step-by-step guide to scan QR codes',
+      steps: [
+        {
+          name: 'Upload or Use Camera',
+          text: 'Upload an image with QR code or grant camera permission to scan directly.',
+        },
+        {
+          name: 'Position QR Code',
+          text: 'Ensure the QR code is clearly visible and within the frame.',
+        },
+        {
+          name: 'Scan',
+          text: 'The tool automatically detects and decodes the QR code.',
+        },
+        {
+          name: 'View Result',
+          text: 'See the decoded content (URL, text, or other data) and copy if needed.',
+        },
+      ],
+    },
+    relatedTools: ['qr-code-generator', 'barcode-generator', 'image-compressor'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Image Scanner',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'whatsapp-status-generator': {
+    slug: 'whatsapp-status-generator',
+    title: 'WhatsApp Status Generator - Create Status Images Online',
+    description: 'Create custom WhatsApp status images with text and backgrounds. Perfect for sharing updates, quotes, and announcements on WhatsApp.',
+    keywords: [
+      'whatsapp status generator',
+      'create whatsapp status',
+      'whatsapp status maker',
+      'status image generator',
+      'whatsapp status creator',
+      'create status online',
+      'whatsapp status image',
+      'status maker online',
+      'whatsapp status tool',
+      'create status for whatsapp',
+      'status image creator',
+      'whatsapp status designer',
+    ],
+    longTailKeywords: [
+      'create whatsapp status image online',
+      'whatsapp status maker free',
+      'custom whatsapp status generator',
+      'create status images for whatsapp',
+      'best whatsapp status generator',
+      'whatsapp status image creator online',
+      'generate whatsapp status with text',
+    ],
+    category: 'Image Tools',
+    faqs: [
+      {
+        question: 'What image size is generated?',
+        answer: 'We generate images in WhatsApp status dimensions (1080x1920 pixels) for optimal display.',
+      },
+      {
+        question: 'Can I add custom backgrounds?',
+        answer: 'Yes, choose from solid colors, gradients, or upload your own background image.',
+      },
+      {
+        question: 'What fonts are available?',
+        answer: 'Multiple fonts are available including bold, italic, and decorative styles.',
+      },
+      {
+        question: 'Can I add emojis?',
+        answer: 'Yes, you can add emojis to your status text for more expressive content.',
+      },
+    ],
+    howTo: {
+      name: 'How to Create WhatsApp Status',
+      description: 'Step-by-step guide to create status images',
+      steps: [
+        {
+          name: 'Enter Text',
+          text: 'Type the text you want to display on your WhatsApp status.',
+        },
+        {
+          name: 'Choose Background',
+          text: 'Select a solid color, gradient, or upload your own background image.',
+        },
+        {
+          name: 'Customize Styling',
+          text: 'Adjust font size, color, and text position to your preference.',
+        },
+        {
+          name: 'Generate and Download',
+          text: 'Generate your status image and download it to share on WhatsApp.',
+        },
+      ],
+    },
+    relatedTools: ['image-compressor', 'image-resize', 'qr-code-generator'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Image Editor',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'image-dpi-checker': {
+    slug: 'image-dpi-checker',
+    title: 'Image DPI Checker - Check Image Resolution Online',
+    description: 'Check image DPI (dots per inch) and resolution. Verify print quality and image dimensions. Perfect for designers and print professionals.',
+    keywords: [
+      'image dpi checker',
+      'check image dpi',
+      'dpi checker online',
+      'image resolution checker',
+      'check image resolution',
+      'dpi analyzer',
+      'image dpi tool',
+      'check print quality',
+      'image dpi online',
+      'resolution checker',
+      'dpi calculator',
+      'image quality checker',
+    ],
+    longTailKeywords: [
+      'check image dpi online free',
+      'image resolution checker tool',
+      'check dpi of image for print',
+      'image dpi analyzer online',
+      'best image dpi checker',
+      'check image resolution and dimensions',
+      'image quality checker for print',
+    ],
+    category: 'Image Tools',
+    faqs: [
+      {
+        question: 'What is DPI?',
+        answer: 'DPI (Dots Per Inch) measures image resolution. Higher DPI means better print quality. Standard print DPI is 300.',
+      },
+      {
+        question: 'What is the recommended DPI for print?',
+        answer: 'For high-quality print, use 300 DPI. For web use, 72 DPI is sufficient.',
+      },
+      {
+        question: 'Can I check multiple images?',
+        answer: 'Yes, upload multiple images to check their DPI and resolution.',
+      },
+      {
+        question: 'What file formats are supported?',
+        answer: 'We support PNG, JPG, JPEG, WebP, GIF, and other common image formats.',
+      },
+    ],
+    howTo: {
+      name: 'How to Check Image DPI',
+      description: 'Step-by-step guide to check image resolution',
+      steps: [
+        {
+          name: 'Upload Image',
+          text: 'Upload the image file you want to check.',
+        },
+        {
+          name: 'View Results',
+          text: 'See the DPI, resolution in pixels, and print dimensions.',
+        },
+        {
+          name: 'Check Quality',
+          text: 'Verify if the DPI is suitable for your intended use (print or web).',
+        },
+        {
+          name: 'Export Report',
+          text: 'Download a report with the image specifications.',
+        },
+      ],
+    },
+    relatedTools: ['image-compressor', 'image-resize', 'exif-viewer'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Image Analyzer',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'ip-lookup': {
+    slug: 'ip-lookup',
+    title: 'IP Lookup - Find IP Address Information Online',
+    description: 'Lookup IP address details including location, ISP, and geolocation. Get comprehensive information about any IP address. Perfect for security analysis and geolocation.',
+    keywords: [
+      'ip lookup',
+      'ip address lookup',
+      'ip geolocation',
+      'find ip location',
+      'ip address info',
+      'ip locator',
+      'ip address search',
+      'geolocation lookup',
+      'ip address details',
+      'whois ip',
+      'ip address finder',
+      'trace ip address',
+    ],
+    longTailKeywords: [
+      'lookup ip address location',
+      'find ip address geolocation',
+      'ip address lookup tool free',
+      'get ip address information',
+      'ip address geolocation lookup',
+      'trace ip address online',
+      'ip address location finder',
+    ],
+    category: 'Internet Tools',
+    faqs: [
+      {
+        question: 'What information is provided?',
+        answer: 'We provide IP location (city, country), ISP, timezone, and other geolocation data.',
+      },
+      {
+        question: 'Can I lookup any IP address?',
+        answer: 'Yes, you can lookup any public IPv4 or IPv6 address.',
+      },
+      {
+        question: 'Is the location accurate?',
+        answer: 'Location accuracy varies. City-level accuracy is typical, but exact location is not provided for privacy.',
+      },
+      {
+        question: 'Is my IP logged?',
+        answer: 'No, IP lookups are not stored or logged.',
+      },
+    ],
+    howTo: {
+      name: 'How to Lookup IP Address',
+      description: 'Step-by-step guide to find IP information',
+      steps: [
+        {
+          name: 'Enter IP Address',
+          text: 'Input the IP address you want to lookup (IPv4 or IPv6).',
+        },
+        {
+          name: 'Search',
+          text: 'Click search to retrieve IP address information.',
+        },
+        {
+          name: 'View Details',
+          text: 'See the location, ISP, timezone, and other details about the IP.',
+        },
+        {
+          name: 'Analyze Results',
+          text: 'Use the information for security analysis or geolocation purposes.',
+        },
+      ],
+    },
+    relatedTools: ['dns-lookup', 'ssl-checker', 'website-ping'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Network Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'user-agent-parser': {
+    slug: 'user-agent-parser',
+    title: 'User Agent Parser - Analyze Browser & Device Info',
+    description: 'Parse and analyze user agent strings to identify browser, OS, and device. Perfect for analytics and debugging user access.',
+    keywords: [
+      'user agent parser',
+      'parse user agent',
+      'user agent analyzer',
+      'browser detection',
+      'device detection',
+      'user agent string',
+      'analyze user agent',
+      'browser detector',
+      'os detection',
+      'user agent tool',
+      'ua parser',
+      'device identification',
+    ],
+    longTailKeywords: [
+      'parse user agent string online',
+      'user agent analyzer tool',
+      'detect browser and device',
+      'user agent parser free',
+      'analyze user agent string',
+      'browser detection tool',
+      'device detection from user agent',
+    ],
+    category: 'Internet Tools',
+    faqs: [
+      {
+        question: 'What information is extracted?',
+        answer: 'We extract browser name/version, operating system, device type, and other client information.',
+      },
+      {
+        question: 'Can I parse any user agent?',
+        answer: 'Yes, the parser handles standard user agent strings from all major browsers and devices.',
+      },
+      {
+        question: 'Is bot detection included?',
+        answer: 'Yes, common bots and crawlers are identified in the parsing results.',
+      },
+      {
+        question: 'Can I parse multiple user agents?',
+        answer: 'Yes, you can parse multiple user agent strings one at a time.',
+      },
+    ],
+    howTo: {
+      name: 'How to Parse User Agent',
+      description: 'Step-by-step guide to analyze user agent strings',
+      steps: [
+        {
+          name: 'Paste User Agent',
+          text: 'Paste the user agent string you want to analyze.',
+        },
+        {
+          name: 'Parse',
+          text: 'Click parse to analyze the user agent string.',
+        },
+        {
+          name: 'View Results',
+          text: 'See the browser, operating system, device type, and other extracted information.',
+        },
+        {
+          name: 'Use Data',
+          text: 'Use the parsed data for analytics, debugging, or compatibility checks.',
+        },
+      ],
+    },
+    relatedTools: ['ip-lookup', 'http-header-checker', 'website-ping'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Network Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'dns-lookup': {
+    slug: 'dns-lookup',
+    title: 'DNS Lookup - Query DNS Records Online',
+    description: 'Query DNS records including A, AAAA, MX, NS, TXT, and more. Debug DNS issues and verify domain configuration. Perfect for network administrators.',
+    keywords: [
+      'dns lookup',
+      'dns query',
+      'dns records',
+      'check dns records',
+      'dns lookup tool',
+      'query dns',
+      'dns checker',
+      'dns record lookup',
+      'dns search',
+      'find dns records',
+      'dns lookup online',
+      'domain dns lookup',
+    ],
+    longTailKeywords: [
+      'lookup dns records online',
+      'dns query tool free',
+      'check domain dns records',
+      'dns record lookup tool',
+      'query dns records online',
+      'dns lookup for domain',
+      'check mx records online',
+    ],
+    category: 'Internet Tools',
+    faqs: [
+      {
+        question: 'What DNS record types are supported?',
+        answer: 'We support A, AAAA, MX, NS, TXT, CNAME, SOA, and other common DNS record types.',
+      },
+      {
+        question: 'Can I lookup any domain?',
+        answer: 'Yes, you can lookup DNS records for any public domain.',
+      },
+      {
+        question: 'How current is the data?',
+        answer: 'DNS queries are performed in real-time, so results reflect current DNS configuration.',
+      },
+      {
+        question: 'Can I check multiple record types?',
+        answer: 'Yes, select multiple record types to query in a single lookup.',
+      },
+    ],
+    howTo: {
+      name: 'How to Lookup DNS Records',
+      description: 'Step-by-step guide to query DNS',
+      steps: [
+        {
+          name: 'Enter Domain',
+          text: 'Input the domain name you want to query.',
+        },
+        {
+          name: 'Select Record Type',
+          text: 'Choose the DNS record type (A, MX, NS, TXT, etc.) or select all.',
+        },
+        {
+          name: 'Query DNS',
+          text: 'Click lookup to query the DNS servers.',
+        },
+        {
+          name: 'View Results',
+          text: 'See the DNS records and use them for troubleshooting or verification.',
+        },
+      ],
+    },
+    relatedTools: ['ip-lookup', 'ssl-checker', 'website-ping'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Network Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'ssl-checker': {
+    slug: 'ssl-checker',
+    title: 'SSL Checker - Verify SSL Certificate Online',
+    description: 'Check SSL certificate validity, expiration, and details. Verify HTTPS security for any domain. Perfect for website security audits.',
+    keywords: [
+      'ssl checker',
+      'ssl certificate checker',
+      'check ssl certificate',
+      'ssl verification',
+      'https checker',
+      'ssl cert lookup',
+      'ssl certificate analyzer',
+      'check ssl',
+      'ssl validation',
+      'certificate checker',
+      'ssl test',
+      'verify ssl online',
+    ],
+    longTailKeywords: [
+      'check ssl certificate online',
+      'ssl certificate verification tool',
+      'verify ssl certificate free',
+      'check https ssl certificate',
+      'ssl certificate checker online',
+      'test ssl certificate validity',
+      'ssl security checker',
+    ],
+    category: 'Internet Tools',
+    faqs: [
+      {
+        question: 'What SSL information is shown?',
+        answer: 'We show certificate issuer, validity dates, protocol, cipher suite, and chain details.',
+      },
+      {
+        question: 'Can I check any website?',
+        answer: 'Yes, you can check SSL certificates for any website using HTTPS.',
+      },
+      {
+        question: 'Is the expiration warning accurate?',
+        answer: 'Yes, we calculate days until expiration based on the certificate\'s validTo date.',
+      },
+      {
+        question: 'Does it check certificate chain?',
+        answer: 'Yes, the full certificate chain is validated and displayed.',
+      },
+    ],
+    howTo: {
+      name: 'How to Check SSL Certificate',
+      description: 'Step-by-step guide to verify SSL',
+      steps: [
+        {
+          name: 'Enter Domain',
+          text: 'Input the domain name (with or without https://).',
+        },
+        {
+          name: 'Check SSL',
+          text: 'Click check to query the SSL certificate.',
+        },
+        {
+          name: 'View Certificate Details',
+          text: 'See issuer, validity dates, protocol, and other certificate information.',
+        },
+        {
+          name: 'Verify Security',
+          text: 'Check if the certificate is valid, trusted, and not expired.',
+        },
+      ],
+    },
+    relatedTools: ['dns-lookup', 'ip-lookup', 'http-header-checker'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Security Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'website-ping': {
+    slug: 'website-ping',
+    title: 'Website Ping - Check Website Response Time Online',
+    description: 'Ping websites to check uptime and response time. Monitor website performance from multiple locations. Perfect for uptime monitoring.',
+    keywords: [
+      'website ping',
+      'ping website',
+      'website response time',
+      'check website uptime',
+      'ping test',
+      'website latency',
+      'ping online',
+      'website speed test',
+      'check website status',
+      'ping tool',
+      'website checker',
+      'response time checker',
+    ],
+    longTailKeywords: [
+      'ping website online free',
+      'check website response time',
+      'website uptime checker',
+      'ping test tool online',
+      'check website latency',
+      'website speed ping test',
+      'monitor website uptime',
+    ],
+    category: 'Internet Tools',
+    faqs: [
+      {
+        question: 'What does the ping test measure?',
+        answer: 'It measures the time it takes for a request to reach the server and return, indicating response speed.',
+      },
+      {
+        question: 'Can I ping any website?',
+        answer: 'Yes, you can ping any publicly accessible website.',
+      },
+      {
+        question: 'What is a good response time?',
+        answer: 'Under 200ms is excellent, 200-500ms is good, over 500ms may indicate performance issues.',
+      },
+      {
+        question: 'Does this work with HTTPS?',
+        answer: 'Yes, the ping test works with both HTTP and HTTPS websites.',
+      },
+    ],
+    howTo: {
+      name: 'How to Ping a Website',
+      description: 'Step-by-step guide to check response time',
+      steps: [
+        {
+          name: 'Enter URL',
+          text: 'Input the website URL you want to ping.',
+        },
+        {
+          name: 'Start Ping',
+          text: 'Click ping to send requests to the website.',
+        },
+        {
+          name: 'View Results',
+          text: 'See the response time, status, and any errors.',
+        },
+        {
+          name: 'Analyze Performance',
+          text: 'Use the response time data to assess website performance.',
+        },
+      ],
+    },
+    relatedTools: ['ip-lookup', 'dns-lookup', 'ssl-checker'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Network Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'pdf-to-image': {
+    slug: 'pdf-to-image',
+    title: 'PDF to Image Converter - Convert PDF to JPG/PNG Online',
+    description: 'Convert PDF pages to images (JPG, PNG) instantly. Extract pages as high-quality images. Perfect for presentations and design work.',
+    keywords: [
+      'pdf to image',
+      'pdf to jpg',
+      'pdf to png',
+      'convert pdf to image',
+      'pdf to image converter',
+      'pdf to jpg converter',
+      'pdf to png converter',
+      'extract pdf pages as images',
+      'pdf page to image',
+      'convert pdf pages to images',
+      'pdf to image online',
+      'pdf image extractor',
+    ],
+    longTailKeywords: [
+      'convert pdf to jpg online free',
+      'pdf to png converter online',
+      'extract pdf pages as images',
+      'convert pdf to high quality images',
+      'pdf to image converter free',
+      'pdf to jpg png converter',
+      'best pdf to image tool',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'What image formats are supported?',
+        answer: 'We support JPG, PNG, and other common image formats.',
+      },
+      {
+        question: 'Can I convert specific pages?',
+        answer: 'Yes, you can select specific page ranges to convert.',
+      },
+      {
+        question: 'What is the image quality?',
+        answer: 'Images are exported at high resolution (300 DPI) for quality output.',
+      },
+      {
+        question: 'Can I convert all pages at once?',
+        answer: 'Yes, convert all pages or select a range of pages.',
+      },
+    ],
+    howTo: {
+      name: 'How to Convert PDF to Image',
+      description: 'Step-by-step guide to convert PDF to images',
+      steps: [
+        {
+          name: 'Upload PDF',
+          text: 'Upload the PDF file you want to convert.',
+        },
+        {
+          name: 'Select Pages',
+          text: 'Choose all pages or specify a page range to convert.',
+        },
+        {
+          name: 'Choose Format',
+          text: 'Select output image format (JPG, PNG, etc.) and quality.',
+        },
+        {
+          name: 'Convert and Download',
+          text: 'Convert the PDF and download the images as individual files or a ZIP archive.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-merge', 'pdf-split', 'image-compressor'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Document Converter',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'pdf-password': {
+    slug: 'pdf-password',
+    title: 'PDF Password Protection - Add Password to PDF Online',
+    description: 'Add password protection to PDF files. Secure your documents with encryption. Perfect for protecting sensitive documents.',
+    keywords: [
+      'pdf password',
+      'protect pdf with password',
+      'pdf password protection',
+      'add password to pdf',
+      'encrypt pdf',
+      'pdf security',
+      'password protect pdf',
+      'pdf encryption',
+      'secure pdf file',
+      'pdf password tool',
+      'lock pdf',
+      'pdf password online',
+    ],
+    longTailKeywords: [
+      'add password to pdf online',
+      'password protect pdf free',
+      'encrypt pdf document online',
+      'pdf password protection tool',
+      'secure pdf with password',
+      'add password to pdf file',
+      'best pdf password tool',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'What encryption is used?',
+        answer: 'We use standard PDF encryption (AES-256) for strong security.',
+      },
+      {
+        question: 'Can I set different passwords?',
+        answer: 'Yes, you can set separate owner and user passwords for different access levels.',
+      },
+      {
+        question: 'Is the encryption secure?',
+        answer: 'Yes, industry-standard encryption ensures your PDF is securely protected.',
+      },
+      {
+        question: 'Can I remove the password later?',
+        answer: 'To remove a password, use our PDF unlock tool with the correct password.',
+      },
+    ],
+    howTo: {
+      name: 'How to Password Protect PDF',
+      description: 'Step-by-step guide to secure PDF',
+      steps: [
+        {
+          name: 'Upload PDF',
+          text: 'Upload the PDF file you want to protect.',
+        },
+        {
+          name: 'Set Password',
+          text: 'Enter a strong password for your PDF document.',
+        },
+        {
+          name: 'Configure Security',
+          text: 'Set additional security options like printing or copying restrictions.',
+        },
+        {
+          name: 'Protect and Download',
+          text: 'Apply the password protection and download the secured PDF.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-unlock', 'pdf-merge', 'pdf-split'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Security Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'pdf-unlock': {
+    slug: 'pdf-unlock',
+    title: 'PDF Unlock - Remove Password from PDF Online',
+    description: 'Remove password protection from PDF files. Unlock secured PDFs with the correct password. Perfect for accessing protected documents.',
+    keywords: [
+      'pdf unlock',
+      'remove pdf password',
+      'unlock pdf',
+      'pdf password remover',
+      'remove password from pdf',
+      'decrypt pdf',
+      'pdf unlocker',
+      'unlock pdf file',
+      'pdf password removal',
+      'remove pdf security',
+      'pdf unlock online',
+      'decrypt pdf online',
+    ],
+    longTailKeywords: [
+      'remove password from pdf online',
+      'unlock pdf file free',
+      'pdf password remover tool',
+      'decrypt pdf document',
+      'remove pdf security online',
+      'pdf unlocker online free',
+      'best pdf unlock tool',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'Do I need the password?',
+        answer: 'Yes, you must know the password to unlock a password-protected PDF.',
+      },
+      {
+        question: 'Is the unlocking process secure?',
+        answer: 'Yes, processing happens locally in your browser. Your PDF is not uploaded to any server.',
+      },
+      {
+        question: 'Can I unlock any PDF?',
+        answer: 'You can unlock PDFs protected with standard PDF encryption if you have the password.',
+      },
+      {
+        question: 'Will the quality be preserved?',
+        answer: 'Yes, the unlocked PDF maintains original quality and formatting.',
+      },
+    ],
+    howTo: {
+      name: 'How to Unlock PDF',
+      description: 'Step-by-step guide to remove PDF password',
+      steps: [
+        {
+          name: 'Upload PDF',
+          text: 'Upload the password-protected PDF file.',
+        },
+        {
+          name: 'Enter Password',
+          text: 'Input the correct password for the PDF.',
+        },
+        {
+          name: 'Unlock PDF',
+          text: 'Click unlock to remove the password protection.',
+        },
+        {
+          name: 'Download Unlocked PDF',
+          text: 'Download the unlocked PDF without password protection.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-password', 'pdf-merge', 'pdf-split'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Security Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'pdf-page-remover': {
+    slug: 'pdf-page-remover',
+    title: 'PDF Page Remover - Delete Pages from PDF Online',
+    description: 'Remove specific pages from PDF files instantly. Delete unwanted pages and reorganize PDFs. Perfect for cleaning up documents.',
+    keywords: [
+      'pdf page remover',
+      'remove pages from pdf',
+      'delete pdf pages',
+      'pdf page deleter',
+      'remove pdf pages online',
+      'delete pages from pdf',
+      'pdf page removal',
+      'pdf page extractor',
+      'remove pdf page',
+      'pdf page editor',
+      'delete pages pdf',
+      'pdf page tool',
+    ],
+    longTailKeywords: [
+      'remove pages from pdf online free',
+      'delete pdf pages tool',
+      'pdf page remover online',
+      'remove specific pages from pdf',
+      'delete pages from pdf file',
+      'best pdf page remover',
+      'pdf page deletion tool',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'Can I remove multiple pages at once?',
+        answer: 'Yes, select multiple pages to remove in a single operation.',
+      },
+      {
+        question: 'Will the quality be preserved?',
+        answer: 'Yes, remaining pages maintain original quality and formatting.',
+      },
+      {
+        question: 'Can I preview before removing?',
+        answer: 'Yes, preview page thumbnails before selecting which to remove.',
+      },
+      {
+        question: 'Is there a page limit?',
+        answer: 'No, you can remove pages from PDFs of any size.',
+      },
+    ],
+    howTo: {
+      name: 'How to Remove PDF Pages',
+      description: 'Step-by-step guide to delete pages',
+      steps: [
+        {
+          name: 'Upload PDF',
+          text: 'Upload the PDF file from which you want to remove pages.',
+        },
+        {
+          name: 'Select Pages',
+          text: 'Click on page thumbnails to select pages for removal.',
+        },
+        {
+          name: 'Remove Pages',
+          text: 'Click remove to delete the selected pages from the PDF.',
+        },
+        {
+          name: 'Download PDF',
+          text: 'Download the modified PDF with pages removed.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-merge', 'pdf-split', 'pdf-rotate'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Document Editor',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'pdf-rotate': {
+    slug: 'pdf-rotate',
+    title: 'PDF Rotate - Rotate PDF Pages Online',
+    description: 'Rotate PDF pages to correct orientation. Fix sideways or upside-down pages. Perfect for scanned documents and PDFs.',
+    keywords: [
+      'pdf rotate',
+      'rotate pdf pages',
+      'rotate pdf',
+      'pdf page rotation',
+      'rotate pdf online',
+      'pdf rotation tool',
+      'rotate pdf file',
+      'pdf page rotator',
+      'rotate pdf pages online',
+      'pdf rotator',
+      'rotate pdf document',
+      'fix pdf orientation',
+    ],
+    longTailKeywords: [
+      'rotate pdf pages online free',
+      'rotate pdf file online',
+      'pdf rotation tool free',
+      'rotate pdf pages 90 degrees',
+      'fix sideways pdf pages',
+      'best pdf rotator tool',
+      'rotate pdf document online',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'What rotation angles are supported?',
+        answer: 'You can rotate pages 90°, 180°, or 270° clockwise or counterclockwise.',
+      },
+      {
+        question: 'Can I rotate all pages at once?',
+        answer: 'Yes, rotate all pages or select specific pages to rotate individually.',
+      },
+      {
+        question: 'Will quality be affected?',
+        answer: 'No, rotation does not affect image quality or text clarity.',
+      },
+      {
+        question: 'Can I preview before saving?',
+        answer: 'Yes, preview the rotated pages before downloading.',
+      },
+    ],
+    howTo: {
+      name: 'How to Rotate PDF Pages',
+      description: 'Step-by-step guide to rotate pages',
+      steps: [
+        {
+          name: 'Upload PDF',
+          text: 'Upload the PDF file with pages you want to rotate.',
+        },
+        {
+          name: 'Select Pages',
+          text: 'Choose all pages or select specific pages to rotate.',
+        },
+        {
+          name: 'Choose Rotation',
+          text: 'Select the rotation angle (90°, 180°, or 270°).',
+        },
+        {
+          name: 'Rotate and Download',
+          text: 'Apply the rotation and download the corrected PDF.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-merge', 'pdf-split', 'pdf-page-remover'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Document Editor',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'pdf-to-powerpoint': {
+    slug: 'pdf-to-powerpoint',
+    title: 'PDF to PowerPoint Converter - Convert PDF to PPT Online',
+    description: 'Convert PDF files to editable PowerPoint presentations. Extract content for slides. Perfect for presentations and editing.',
+    keywords: [
+      'pdf to powerpoint',
+      'pdf to ppt',
+      'convert pdf to powerpoint',
+      'pdf to pptx converter',
+      'pdf to presentation',
+      'pdf to ppt online',
+      'convert pdf to ppt',
+      'pdf to powerpoint converter',
+      'pdf to slides',
+      'pdf to pptx',
+      'pdf to presentation converter',
+      'pdf to powerpoint free',
+    ],
+    longTailKeywords: [
+      'convert pdf to powerpoint online free',
+      'pdf to ppt converter online',
+      'convert pdf to editable powerpoint',
+      'pdf to pptx converter free',
+      'best pdf to powerpoint tool',
+      'convert pdf to slides online',
+      'pdf to presentation converter',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'Will formatting be preserved?',
+        answer: 'We preserve basic formatting, but complex layouts may need manual adjustment in PowerPoint.',
+      },
+      {
+        question: 'What PowerPoint version is output?',
+        answer: 'We generate PPTX files compatible with PowerPoint 2007 and later.',
+      },
+      {
+        question: 'Can I convert multi-page PDFs?',
+        answer: 'Yes, each PDF page becomes a PowerPoint slide.',
+      },
+      {
+        question: 'Are images preserved?',
+        answer: 'Yes, images from the PDF are included in the PowerPoint slides.',
+      },
+    ],
+    howTo: {
+      name: 'How to Convert PDF to PowerPoint',
+      description: 'Step-by-step guide to convert to PPT',
+      steps: [
+        {
+          name: 'Upload PDF',
+          text: 'Upload the PDF file you want to convert.',
+        },
+        {
+          name: 'Convert',
+          text: 'Click convert to transform the PDF into a PowerPoint presentation.',
+        },
+        {
+          name: 'Preview',
+          text: 'Preview the converted slides to ensure quality.',
+        },
+        {
+          name: 'Download PPTX',
+          text: 'Download the editable PowerPoint file.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-to-word', 'pdf-to-excel', 'powerpoint-to-pdf'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Document Converter',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'pdf-to-excel': {
+    slug: 'pdf-to-excel',
+    title: 'PDF to Excel Converter - Convert PDF to XLS Online',
+    description: 'Convert PDF tables to Excel spreadsheets. Extract data from PDFs to editable XLS files. Perfect for data analysis and accounting.',
+    keywords: [
+      'pdf to excel',
+      'pdf to xls',
+      'convert pdf to excel',
+      'pdf to xlsx converter',
+      'pdf to spreadsheet',
+      'pdf to excel online',
+      'convert pdf to xls',
+      'pdf to excel converter',
+      'extract pdf to excel',
+      'pdf to xlsx',
+      'pdf table to excel',
+      'pdf to excel free',
+    ],
+    longTailKeywords: [
+      'convert pdf to excel online free',
+      'pdf to xlsx converter online',
+      'convert pdf tables to excel',
+      'pdf to excel converter tool',
+      'extract data from pdf to excel',
+      'best pdf to excel converter',
+      'pdf to spreadsheet converter',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'Are tables preserved?',
+        answer: 'Yes, we detect and preserve table structures from the PDF.',
+      },
+      {
+        question: 'What Excel format is output?',
+        answer: 'We generate XLSX files compatible with Excel 2007 and later.',
+      },
+      {
+        question: 'Can I convert multiple pages?',
+        answer: 'Yes, all pages with tables are converted to Excel sheets.',
+      },
+      {
+        question: 'Will formulas be preserved?',
+        answer: 'Formulas are not preserved, but values are extracted accurately.',
+      },
+    ],
+    howTo: {
+      name: 'How to Convert PDF to Excel',
+      description: 'Step-by-step guide to convert to XLS',
+      steps: [
+        {
+          name: 'Upload PDF',
+          text: 'Upload the PDF file containing tables or data.',
+        },
+        {
+          name: 'Convert',
+          text: 'Click convert to extract data into Excel format.',
+        },
+        {
+          name: 'Preview',
+          text: 'Preview the extracted data in the Excel preview.',
+        },
+        {
+          name: 'Download XLSX',
+          text: 'Download the editable Excel spreadsheet.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-to-word', 'pdf-to-powerpoint', 'excel-to-pdf'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Document Converter',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'powerpoint-to-pdf': {
+    slug: 'powerpoint-to-pdf',
+    title: 'PowerPoint to PDF Converter - Convert PPT to PDF Online',
+    description: 'Convert PowerPoint presentations to PDF instantly. Preserve slides and formatting. Perfect for sharing and printing presentations.',
+    keywords: [
+      'powerpoint to pdf',
+      'ppt to pdf',
+      'convert powerpoint to pdf',
+      'pptx to pdf converter',
+      'presentation to pdf',
+      'ppt to pdf online',
+      'convert ppt to pdf',
+      'powerpoint to pdf converter',
+      'slides to pdf',
+      'pptx to pdf',
+      'presentation converter',
+      'ppt to pdf free',
+    ],
+    longTailKeywords: [
+      'convert powerpoint to pdf online free',
+      'ppt to pdf converter online',
+      'convert pptx to pdf free',
+      'presentation to pdf converter',
+      'best ppt to pdf tool',
+      'convert slides to pdf online',
+      'powerpoint to pdf converter tool',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'Will formatting be preserved?',
+        answer: 'Yes, slide layouts, fonts, and images are preserved in the PDF.',
+      },
+      {
+        question: 'Can I convert large presentations?',
+        answer: 'Yes, presentations of any size can be converted.',
+      },
+      {
+        question: 'Are animations preserved?',
+        answer: 'Animations are converted to static slides in the PDF.',
+      },
+      {
+        question: 'What PowerPoint formats are supported?',
+        answer: 'We support PPT, PPTX, and other PowerPoint formats.',
+      },
+    ],
+    howTo: {
+      name: 'How to Convert PowerPoint to PDF',
+      description: 'Step-by-step guide to convert PPT to PDF',
+      steps: [
+        {
+          name: 'Upload Presentation',
+          text: 'Upload the PowerPoint file (PPT or PPTX).',
+        },
+        {
+          name: 'Convert',
+          text: 'Click convert to transform the presentation to PDF.',
+        },
+        {
+          name: 'Preview',
+          text: 'Preview the PDF to ensure slides are correctly converted.',
+        },
+        {
+          name: 'Download PDF',
+          text: 'Download the PDF file of your presentation.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-to-powerpoint', 'word-to-pdf', 'pdf-to-word'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Document Converter',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'html-to-pdf': {
+    slug: 'html-to-pdf',
+    title: 'HTML to PDF Converter - Convert Webpages to PDF Online',
+    description: 'Convert HTML code or webpages to PDF instantly. Perfect for saving web content and generating PDFs from HTML.',
+    keywords: [
+      'html to pdf',
+      'convert html to pdf',
+      'html to pdf converter',
+      'webpage to pdf',
+      'html to pdf online',
+      'convert webpage to pdf',
+      'html pdf converter',
+      'save webpage as pdf',
+      'html to pdf tool',
+      'render html to pdf',
+      'html to pdf generator',
+      'html to pdf free',
+    ],
+    longTailKeywords: [
+      'convert html to pdf online free',
+      'html to pdf converter tool',
+      'convert webpage to pdf online',
+      'render html to pdf',
+      'best html to pdf converter',
+      'save html as pdf',
+      'html to pdf generator online',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'Can I convert a URL directly?',
+        answer: 'Yes, you can enter a URL to convert the webpage to PDF.',
+      },
+      {
+        question: 'Will CSS be preserved?',
+        answer: 'Yes, CSS styling is preserved in the PDF output.',
+      },
+      {
+        question: 'Can I input HTML code directly?',
+        answer: 'Yes, paste HTML code directly to convert to PDF.',
+      },
+      {
+        question: 'Are images included?',
+        answer: 'Yes, images referenced in the HTML are included in the PDF.',
+      },
+    ],
+    howTo: {
+      name: 'How to Convert HTML to PDF',
+      description: 'Step-by-step guide to convert HTML',
+      steps: [
+        {
+          name: 'Input HTML or URL',
+          text: 'Paste HTML code or enter a webpage URL.',
+        },
+        {
+          name: 'Configure Options',
+          text: 'Set page size, orientation, and other PDF options.',
+        },
+        {
+          name: 'Convert',
+          text: 'Click convert to generate the PDF from HTML.',
+        },
+        {
+          name: 'Download PDF',
+          text: 'Download the generated PDF file.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-to-word', 'word-to-pdf', 'pdf-merge'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Document Converter',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'password-strength': {
+    slug: 'password-strength',
+    title: 'Password Strength Checker - Test Password Security Online',
+    description: 'Test password strength and security. Analyze password complexity and get improvement suggestions. Perfect for creating secure passwords.',
+    keywords: [
+      'password strength checker',
+      'check password strength',
+      'password security test',
+      'password analyzer',
+      'test password',
+      'password strength meter',
+      'password security checker',
+      'password complexity checker',
+      'password strength tool',
+      'check password security',
+      'password analyzer online',
+      'test password strength',
+    ],
+    longTailKeywords: [
+      'check password strength online',
+      'password security checker free',
+      'test password complexity',
+      'password strength analyzer tool',
+      'check if password is strong',
+      'password security test online',
+      'best password strength checker',
+    ],
+    category: 'Security Tools',
+    faqs: [
+      {
+        question: 'How is strength calculated?',
+        answer: 'Strength is based on length, character variety, and patterns. Longer passwords with mixed characters are stronger.',
+      },
+      {
+        question: 'Is my password stored?',
+        answer: 'No, password analysis happens locally in your browser. Nothing is stored or transmitted.',
+      },
+      {
+        question: 'What makes a password strong?',
+        answer: 'Strong passwords are 12+ characters, mix uppercase/lowercase/numbers/symbols, and avoid common patterns.',
+      },
+      {
+        question: 'Can I get suggestions?',
+        answer: 'Yes, the tool provides specific suggestions to improve password strength.',
+      },
+    ],
+    howTo: {
+      name: 'How to Check Password Strength',
+      description: 'Step-by-step guide to test password',
+      steps: [
+        {
+          name: 'Enter Password',
+          text: 'Type or paste the password you want to test.',
+        },
+        {
+          name: 'Analyze',
+          text: 'The tool automatically analyzes password strength.',
+        },
+        {
+          name: 'View Results',
+          text: 'See the strength rating and detailed analysis.',
+        },
+        {
+          name: 'Improve',
+          text: 'Follow suggestions to make your password stronger.',
+        },
+      ],
+    },
+    relatedTools: ['password-generator', 'hash-generator', 'password-strength-explainer'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Security Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'base64-encoder': {
+    slug: 'base64-encoder',
+    title: 'Base64 Encoder/Decoder - Encode & Decode Base64 Online',
+    description: 'Encode and decode Base64 strings instantly. Convert text to Base64 and back. Perfect for developers working with encoded data.',
+    keywords: [
+      'base64 encoder',
+      'base64 decoder',
+      'encode base64',
+      'decode base64',
+      'base64 converter',
+      'base64 online',
+      'text to base64',
+      'base64 to text',
+      'base64 encode decode',
+      'base64 tool',
+      'base64 string converter',
+      'base64 encoder decoder',
+      'base64 online tool',
+    ],
+    longTailKeywords: [
+      'encode to base64 online',
+      'decode base64 string online',
+      'base64 encoder decoder tool',
+      'convert text to base64 free',
+      'base64 converter online',
+      'best base64 tool',
+      'base64 encode decode online',
+    ],
+    category: 'Security Tools',
+    faqs: [
+      {
+        question: 'What can I encode to Base64?',
+        answer: 'You can encode text, strings, and small files to Base64 format.',
+      },
+      {
+        question: 'Is encoding reversible?',
+        answer: 'Yes, Base64 encoding is reversible. Decode to get the original text.',
+      },
+      {
+        question: 'Is my data secure?',
+        answer: 'Encoding/decoding happens locally in your browser. Data is not transmitted.',
+      },
+      {
+        question: 'Can I encode large text?',
+        answer: 'Yes, but very large text may take longer to process.',
+      },
+    ],
+    howTo: {
+      name: 'How to Encode/Decode Base64',
+      description: 'Step-by-step guide to Base64 conversion',
+      steps: [
+        {
+          name: 'Input Text',
+          text: 'Paste the text you want to encode or Base64 string to decode.',
+        },
+        {
+          name: 'Choose Mode',
+          text: 'Select encode or decode mode.',
+        },
+        {
+          name: 'Convert',
+          text: 'Click convert to perform the Base64 operation.',
+        },
+        {
+          name: 'Copy Result',
+          text: 'Copy the encoded or decoded result.',
+        },
+      ],
+    },
+    relatedTools: ['url-encoder', 'hash-generator', 'jwt-decoder'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Security Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'password-strength-explainer': {
+    slug: 'password-strength-explainer',
+    title: 'Password Strength Explainer - Understand Password Security',
+    description: 'Learn about password security best practices. Understand what makes passwords strong and weak. Educational resource for security.',
+    keywords: [
+      'password strength explainer',
+      'password security guide',
+      'understand password strength',
+      'password security tips',
+      'password best practices',
+      'password security education',
+      'strong password guide',
+      'password security explained',
+      'password strength tips',
+      'how to create strong passwords',
+      'password security basics',
+      'password strength guide',
+    ],
+    longTailKeywords: [
+      'how to create strong passwords',
+      'password security best practices',
+      'understand password strength',
+      'password security guide for beginners',
+      'what makes a password strong',
+      'password security tips online',
+      'password strength explanation',
+    ],
+    category: 'Security Tools',
+    faqs: [
+      {
+        question: 'What is password entropy?',
+        answer: 'Password entropy measures randomness and unpredictability. Higher entropy means stronger passwords.',
+      },
+      {
+        question: 'Why avoid common words?',
+        answer: 'Common words are easily guessed in dictionary attacks. Use random combinations instead.',
+      },
+      {
+        question: 'How often should I change passwords?',
+        answer: 'Change passwords if compromised, otherwise focus on using unique, strong passwords for each account.',
+      },
+      {
+        question: 'Should I use password managers?',
+        answer: 'Yes, password managers help generate and store strong, unique passwords securely.',
+      },
+    ],
+    howTo: {
+      name: 'How to Create Strong Passwords',
+      description: 'Step-by-step guide to password security',
+      steps: [
+        {
+          name: 'Use Long Passwords',
+          text: 'Aim for 12+ characters. Longer passwords are exponentially harder to crack.',
+        },
+        {
+          name: 'Mix Character Types',
+          text: 'Combine uppercase, lowercase, numbers, and symbols.',
+        },
+        {
+          name: 'Avoid Patterns',
+          text: 'Don\'t use sequences, repeated characters, or common substitutions.',
+        },
+        {
+          name: 'Be Unique',
+          text: 'Use a different password for each account.',
+        },
+      ],
+    },
+    relatedTools: ['password-generator', 'password-strength', 'hash-generator'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Educational Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'data-breach-email-checker': {
+    slug: 'data-breach-email-checker',
+    title: 'Data Breach Email Checker - Check if Email Was Compromised',
+    description: 'Check if your email address has been involved in data breaches. Verify account security and take action. Perfect for security awareness.',
+    keywords: [
+      'data breach checker',
+      'email breach checker',
+      'check email breach',
+      'data breach lookup',
+      'email security checker',
+      'compromised email check',
+      'data breach search',
+      'email breach test',
+      'security breach checker',
+      'check if email hacked',
+      'data breach database',
+      'email security scan',
+    ],
+    longTailKeywords: [
+      'check if email was in data breach',
+      'email breach checker online',
+      'data breach lookup tool',
+      'check email for security breaches',
+      'has my email been compromised',
+      'data breach email search',
+      'email security checker free',
+    ],
+    category: 'Security Tools',
+    faqs: [
+      {
+        question: 'What data sources are used?',
+        answer: 'We check against public breach databases and known security incident reports.',
+      },
+      {
+        question: 'Is my email stored?',
+        answer: 'No, your email is not stored. The check is performed and results are displayed immediately.',
+      },
+      {
+        question: 'What should I do if compromised?',
+        answer: 'Change passwords for affected accounts, enable 2FA, and monitor for suspicious activity.',
+      },
+      {
+        question: 'How current is the data?',
+        answer: 'Breach data is regularly updated from public sources and security reports.',
+      },
+    ],
+    howTo: {
+      name: 'How to Check Email Breaches',
+      description: 'Step-by-step guide to check email security',
+      steps: [
+        {
+          name: 'Enter Email',
+          text: 'Input the email address you want to check.',
+        },
+        {
+          name: 'Check',
+          text: 'Click check to search breach databases.',
+        },
+        {
+          name: 'View Results',
+          text: 'See if your email was found in any data breaches.',
+        },
+        {
+          name: 'Take Action',
+          text: 'If compromised, follow security recommendations to protect your accounts.',
+        },
+      ],
+    },
+    relatedTools: ['password-strength', 'password-generator', 'hash-generator'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Security Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
+
+  'file-hash-comparison': {
+    slug: 'file-hash-comparison',
+    title: 'File Hash Comparison - Compare File Hashes Online',
+    description: 'Compare file hashes to verify integrity and detect changes. Generate and compare MD5, SHA-1, SHA-256 hashes. Perfect for file verification.',
+    keywords: [
+      'file hash comparison',
+      'compare file hashes',
+      'hash comparison tool',
+      'file integrity check',
+      'compare md5 hashes',
+      'compare sha256',
+      'file hash verifier',
+      'hash compare',
+      'file checksum comparison',
+      'verify file integrity',
+      'hash comparison online',
+      'file hash tool',
+    ],
+    longTailKeywords: [
+      'compare file hashes online',
+      'file hash comparison tool',
+      'verify file integrity with hash',
+      'compare md5 sha256 hashes',
+      'file checksum comparison online',
+      'hash comparison tool free',
+      'best file hash comparator',
+    ],
+    category: 'Security Tools',
+    faqs: [
+      {
+        question: 'What hash algorithms are supported?',
+        answer: 'We support MD5, SHA-1, SHA-256, and other common hash algorithms.',
+      },
+      {
+        question: 'Why compare file hashes?',
+        answer: 'Hash comparison verifies file integrity and detects any changes or corruption.',
+      },
+      {
+        question: 'Are files uploaded?',
+        answer: 'Hashes are calculated locally in your browser. Files are not uploaded to any server.',
+      },
+      {
+        question: 'Can I compare multiple files?',
+        answer: 'Yes, upload multiple files to compare their hashes.',
+      },
+    ],
+    howTo: {
+      name: 'How to Compare File Hashes',
+      description: 'Step-by-step guide to compare hashes',
+      steps: [
+        {
+          name: 'Upload Files',
+          text: 'Upload the files you want to compare.',
+        },
+        {
+          name: 'Select Algorithm',
+          text: 'Choose the hash algorithm (MD5, SHA-256, etc.).',
+        },
+        {
+          name: 'Generate Hashes',
+          text: 'Click generate to calculate file hashes.',
+        },
+        {
+          name: 'Compare',
+          text: 'Compare the hashes to verify if files are identical.',
+        },
+      ],
+    },
+    relatedTools: ['hash-generator', 'password-strength', 'base64-encoder'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Security Tool',
+      operatingSystem: 'Web',
+      offers: { price: '0', priceCurrency: 'USD' },
+    },
+  },
 };
 
 export const getToolSeoMetadata = (toolSlug: string): ToolSeoMetadata | null => {
@@ -6811,5 +9670,3 @@ export const getToolCategory = (slug: string): string | undefined => {
   const toolData = toolSeoEnhancements[slug];
   return toolData?.category;
 };
-
-

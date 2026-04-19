@@ -555,6 +555,93 @@ ${data.bank_details ? `<div class="notes" style="margin-top:16px"><div class="no
   res.send(html);
 });
 
+router.post('/sip-calculator', (req, res) => {
+  const { monthlyInvestment, annualRate, years } = req.body;
+  if (!monthlyInvestment || !annualRate || !years) {
+    return res.status(400).json({ success: false, error: 'Monthly investment, annual rate, and years required' });
+  }
+
+  const P = parseFloat(monthlyInvestment);
+  const r = parseFloat(annualRate) / 100 / 12; // Monthly rate
+  const n = parseInt(years) * 12; // Total months
+
+  // SIP calculation: A = P × [{(1 + r)^n – 1} / r] × (1 + r)
+  const amount = r === 0 ? P * n : P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+  const totalInvested = P * n;
+  const wealthGain = amount - totalInvested;
+
+  // Generate yearly breakdown
+  const yearlyBreakdown = [];
+  for (let year = 1; year <= parseInt(years); year++) {
+    const months = year * 12;
+    const yearAmount = r === 0 ? P * months : P * ((Math.pow(1 + r, months) - 1) / r) * (1 + r);
+    const yearInvested = P * months;
+    const yearGain = yearAmount - yearInvested;
+    
+    yearlyBreakdown.push({
+      year,
+      invested: Math.round(yearInvested),
+      amount: Math.round(yearAmount),
+      gain: Math.round(yearGain)
+    });
+  }
+
+  res.json({
+    success: true,
+    result: {
+      monthlyInvestment: P,
+      annualRate: parseFloat(annualRate),
+      years: parseInt(years),
+      totalInvested: Math.round(totalInvested),
+      amount: Math.round(amount),
+      wealthGain: Math.round(wealthGain),
+      yearlyBreakdown
+    }
+  });
+});
+
+router.post('/roi-calculator', (req, res) => {
+  const { initialInvestment, finalValue, years, months = 0 } = req.body;
+  if (!initialInvestment || !finalValue || (!years && !months)) {
+    return res.status(400).json({ success: false, error: 'Initial investment, final value, and time period required' });
+  }
+
+  const initial = parseFloat(initialInvestment);
+  const final = parseFloat(finalValue);
+  const yearsVal = parseFloat(years) || 0;
+  const monthsVal = parseFloat(months) || 0;
+  
+  // Convert to years
+  const totalYears = yearsVal + (monthsVal / 12);
+  
+  if (totalYears === 0) {
+    return res.status(400).json({ success: false, error: 'Time period cannot be zero' });
+  }
+
+  // ROI calculation: ROI = [(Final Value - Initial Investment) / Initial Investment] × 100
+  const absoluteGain = final - initial;
+  const roiPercentage = (absoluteGain / initial) * 100;
+  
+  // Annualized ROI: CAGR = (Final Value / Initial Investment)^(1/years) - 1
+  const cagr = Math.pow(final / initial, 1 / totalYears) - 1;
+  const annualizedRoi = cagr * 100;
+
+  res.json({
+    success: true,
+    result: {
+      initialInvestment: initial,
+      finalValue: final,
+      years: yearsVal,
+      months: monthsVal,
+      totalYears: Math.round(totalYears * 100) / 100,
+      absoluteGain: Math.round(absoluteGain * 100) / 100,
+      roiPercentage: Math.round(roiPercentage * 100) / 100,
+      annualizedRoi: Math.round(annualizedRoi * 100) / 100,
+      cagr: Math.round(cagr * 10000) / 10000
+    }
+  });
+});
+
 // Add OPTIONS handler for all endpoints in this router
 router.options('*', (req, res) => {
   res.sendStatus(204);

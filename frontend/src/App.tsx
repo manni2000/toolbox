@@ -164,6 +164,8 @@ const BudgetPlannerTool = lazy(() => import("./pages/tools/finance/BudgetPlanner
 const StockCAGRCalculatorTool = lazy(() => import("./pages/tools/finance/StockCAGRCalculatorTool"));
 const MutualFundCalculatorTool = lazy(() => import("./pages/tools/finance/MutualFundCalculatorTool"));
 const LumpsumCalculatorTool = lazy(() => import("./pages/tools/finance/LumpsumCalculatorTool"));
+const SIPCalculatorTool = lazy(() => import("./pages/tools/finance/SIPCalculatorTool"));
+const ROICalculatorTool = lazy(() => import("./pages/tools/finance/ROICalculatorTool"));
 
 // SEO Tools - Lazy loaded
 const MetaTitleDescriptionTool = lazy(() => import("./pages/tools/seo/MetaTitleDescriptionTool"));
@@ -347,6 +349,8 @@ const AnimatedRoutes = () => {
           <Route path="/stock-cagr-calculator" element={<Suspense fallback={<PageLoader />}><StockCAGRCalculatorTool /></Suspense>} />
           <Route path="/mutual-fund-calculator" element={<Suspense fallback={<PageLoader />}><MutualFundCalculatorTool /></Suspense>} />
           <Route path="/lumpsum-calculator" element={<Suspense fallback={<PageLoader />}><LumpsumCalculatorTool /></Suspense>} />
+          <Route path="/sip-calculator" element={<Suspense fallback={<PageLoader />}><SIPCalculatorTool /></Suspense>} />
+          <Route path="/roi-calculator" element={<Suspense fallback={<PageLoader />}><ROICalculatorTool /></Suspense>} />
           
           {/* SEO Tools */}
           <Route path="/meta-title-description-generator" element={<Suspense fallback={<PageLoader />}><MetaTitleDescriptionTool /></Suspense>} />

@@ -124,6 +124,8 @@ const Footer = () => {
     { name: "Stock CAGR Calculator", path: "/stock-cagr-calculator" },
     { name: "Mutual Fund Calculator", path: "/mutual-fund-calculator" },
     { name: "Lump Sum Calculator", path: "/lump-sum-calculator" },
+    { name: "SIP Calculator", path: "/sip-calculator" },
+    { name: "ROI Calculator", path: "/roi-calculator" },
   ];
 
   const devTools = [

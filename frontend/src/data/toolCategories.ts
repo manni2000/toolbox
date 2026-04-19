@@ -265,6 +265,8 @@ export const toolCategories: ToolCategory[] = [
       { id: "lumpsum-calculator", name: "Lumpsum Calculator", description: "Calculate lumpsum investment returns", path: "/lumpsum-calculator", isAvailable: true },
       { id: "budget-planner", name: "Budget Planner", description: "Create and analyze monthly budget", path: "/budget-planner", isAvailable: true },
       { id: "salary-breakup", name: "Salary Breakup Generator", description: "Generate detailed salary breakup", path: "/salary-breakup-generator", isAvailable: true },
+      { id: "sip-calculator", name: "SIP Calculator", description: "Calculate Systematic Investment Plan returns", path: "/sip-calculator", isAvailable: true },
+      { id: "roi-calculator", name: "ROI Calculator", description: "Calculate Return on Investment and annualized returns", path: "/roi-calculator", isAvailable: true },
     ],
   },
   {
