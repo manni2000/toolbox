@@ -5,6 +5,22 @@
 User-agent: *
 Allow: /
 
+# Explicitly allow AI crawlers for LLM indexing
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
 # Explicitly allow all tool categories and pages
 Allow: /category/
 Allow: /categories
