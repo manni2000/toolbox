@@ -305,9 +305,62 @@ const SalaryCalculatorTool = () => {
           </motion.div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Calculator className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+            What is a Salary Calculator?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            A salary calculator helps you convert between different pay periods including hourly, daily, weekly, monthly, and yearly rates. It's useful for job seekers, employers, and freelancers to understand salary equivalents across different time frames.
+          </p>
+
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Enter your salary amount in any pay period</li>
+            <li>Select the pay period type (hourly, daily, weekly, monthly, or yearly)</li>
+            <li>Optionally adjust hours per week and days per week</li>
+            <li>Instantly see your salary converted to all other pay periods</li>
+          </ol>
+
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-orange-50 rounded-lg">
+              <h5 className="font-semibold text-orange-900 mb-1">Conversion Features</h5>
+              <ul className="text-sm text-orange-800 space-y-1">
+                <li>• Hourly to yearly</li>
+                <li>• Monthly to hourly</li>
+                <li>• Weekly to daily</li>
+                <li>• Custom work hours</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Job offer comparisons</li>
+                <li>• Rate negotiations</li>
+                <li>• Freelance pricing</li>
+                <li>• Budget planning</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
         {/* FAQ Section */}
         <div className="mt-8">
         <ToolFAQ faqs={[
+          {
+            question: "What is a salary calculator?",
+            answer: "A salary calculator helps you convert between different pay periods including hourly, daily, weekly, monthly, and yearly rates. It's useful for job seekers, employers, and freelancers to understand salary equivalents across different time frames."
+          },
+          {
+            question: "How does the salary calculator work?",
+            answer: "Enter your salary amount in any pay period and select the period type. The calculator automatically converts it to all other pay periods using standard work week assumptions. You can also customize hours per week and days per week for accurate calculations."
+          },
           {
             question: "How are hourly and yearly rates calculated?",
             answer: "Hourly to yearly assumes standard working hours (40 hours/week, 52 weeks/year). Yearly = Hourly × 2080. Adjust hours for different work arrangements."
@@ -332,7 +385,7 @@ const SalaryCalculatorTool = () => {
         </div>
       </div>
     </ToolLayout>
-      </>
+    </>
   );
 };
 
