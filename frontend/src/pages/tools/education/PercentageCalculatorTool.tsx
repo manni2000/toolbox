@@ -286,6 +286,14 @@ const PercentageCalculatorTool = () => {
         <div className="mt-8">
         <ToolFAQ faqs={[
           {
+            question: "What is a percentage calculator?",
+            answer: "A percentage calculator helps you perform various percentage calculations including finding what percentage one number is of another, calculating percentage increases/decreases, and finding a percentage of a given number."
+          },
+          {
+            question: "How does the percentage calculator work?",
+            answer: "Select a calculation type from the dropdown menu. Enter the required values in the input fields. Click 'Calculate' to get instant results. The calculator automatically applies the correct percentage formulas based on your selection."
+          },
+          {
             question: "What is the percentage formula?",
             answer: "The basic formula is: (Part / Whole) × 100 = Percentage. For example, if you scored 80 out of 100, the percentage is (80/100) × 100 = 80%."
           },

@@ -210,6 +210,14 @@ const AgeCalculatorTool = () => {
         {/* FAQ Section */}
         <ToolFAQ faqs={[
           {
+            question: "What is an age calculator?",
+            answer: "An age calculator determines the precise time elapsed between a birth date and a target date. It provides detailed breakdowns in years, months, days, and other time units."
+          },
+          {
+            question: "How does the age calculator work?",
+            answer: "Enter your birth date using the date picker. Optionally set a target date (defaults to today). The calculator computes your exact age in multiple units and displays detailed statistics including your next birthday countdown."
+          },
+          {
             question: "How accurate is the age calculation?",
             answer: "The calculation is precise to the second, accounting for leap years and varying month lengths. It provides exact age based on the dates you enter."
           },

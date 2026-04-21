@@ -146,7 +146,7 @@ const DateDifferenceTool = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="rounded-xl border border-border bg-card p-6"
+        className="rounded-xl border border-border bg-card p-6 mt-5"
       >
         <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
           <Calendar className="h-5 w-5 text-blue-500" />
@@ -189,6 +189,14 @@ const DateDifferenceTool = () => {
       <div className="mt-8">
         {/* FAQ Section */}
       <ToolFAQ faqs={[
+        {
+          question: "What is a date difference calculator?",
+          answer: "A date difference calculator determines the exact time elapsed between two dates. It provides comprehensive breakdowns in years, months, days, hours, minutes, and seconds."
+        },
+        {
+          question: "How does the date difference calculator work?",
+          answer: "Select the start and end dates using the date pickers. Click calculate to compute the difference. View results in multiple time units including years, months, days, hours, and minutes."
+        },
         {
           question: "How accurate is the date difference calculation?",
           answer: "The calculation is precise, accounting for leap years, varying month lengths, and exact time differences between the two dates."

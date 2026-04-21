@@ -607,6 +607,14 @@ const WorldTimeTool = () => {
         {/* FAQ Section */}
         <ToolFAQ faqs={[
           {
+            question: "What is world time?",
+            answer: "World time displays current times across different time zones worldwide. It helps you coordinate meetings, schedule international calls, and stay connected with friends and colleagues across the globe by showing real-time clocks for multiple locations."
+          },
+          {
+            question: "How does the world time tool work?",
+            answer: "Search for cities or time zones by name. The tool displays real-time clocks with UTC offsets for multiple locations. You can filter by region, mark favorites, and view day/night indicators. Times update automatically every second."
+          },
+          {
             question: "How accurate are the displayed times?",
             answer: "Times are updated every second based on your browser's clock and the UTC offset for each time zone. This ensures accuracy within seconds."
           },
