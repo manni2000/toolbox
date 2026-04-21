@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import {
   FileText,
   Plus,
@@ -7,6 +8,7 @@ import {
   ChevronDown,
   Sparkles,
 } from "lucide-react";
+import { fadeInUp } from "@/lib/animations";
 import ToolFAQ from "@/components/ToolFAQ";
 import {
   DropdownMenu,
@@ -419,20 +421,70 @@ const MCQGeneratorTool = () => {
           </div>
         )}
 
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-500" />
+            What is MCQ Generator from Text?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            MCQ Generator from Text is a tool that automatically creates multiple choice questions from any text content. It analyzes your text and generates relevant questions with answer options, making it easy to create quizzes, assessments, and educational materials quickly.
+          </p>
+
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Paste your text content into the input field</li>
+            <li>Click "Generate Questions" to auto-create MCQs from the text</li>
+            <li>Review and edit the generated questions as needed</li>
+            <li>Add custom questions manually using the form</li>
+            <li>Export your quiz in PDF, JSON, Word, or Google Form format</li>
+          </ol>
+
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Generator Features</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Auto-generate from text</li>
+                <li>• Custom question creation</li>
+                <li>• Multiple export formats</li>
+                <li>• Correct answer marking</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Common Uses</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Educational quizzes</li>
+                <li>• Training assessments</li>
+                <li>• Exam preparation</li>
+                <li>• Knowledge testing</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
         {/* FAQ Section */}
         <div className="mt-8">
         <ToolFAQ faqs={[
           {
-            question: "How many answer options can I add?",
-            answer: "You can add as many answer options as needed for each question. Typically, MCQs have 4 options, but you can customize based on your requirements."
+            question: "How accurate are the auto-generated questions?",
+            answer: "The auto-generated questions are based on sentence analysis and provide a good starting point. For best results, review and refine the questions to ensure they match your learning objectives and difficulty level."
           },
           {
-            question: "Can I mark multiple correct answers?",
-            answer: "Currently, the tool supports single correct answer questions. For multiple correct answers, you can note it in the question text or create separate questions."
+            question: "Can I mix auto-generated and custom questions?",
+            answer: "Yes, you can generate questions from text and then add your own custom questions. The tool allows you to combine both approaches to create comprehensive quizzes."
           },
           {
             question: "What export formats are available?",
-            answer: "You can export your MCQs as a PDF document for printing or sharing. You can also copy the questions directly to use in other applications."
+            answer: "You can export your MCQs in multiple formats: PDF for printing, JSON for developers, Word documents for editing, and a formatted version for Google Forms with one-click copy."
+          },
+          {
+            question: "How do I mark the correct answer?",
+            answer: "When creating custom questions, click the radio button next to the correct option. The selected option will be highlighted and marked as correct in exports."
           },
           {
             question: "Can I edit questions after adding them?",
@@ -441,6 +493,14 @@ const MCQGeneratorTool = () => {
           {
             question: "Is there a limit on the number of questions?",
             answer: "No, you can add as many questions as you need. There's no limit on the number of MCQs you can generate in a single session."
+          },
+          {
+            question: "How long should the input text be?",
+            answer: "For best results, use text that's at least 100-200 words. Longer texts with clear sentences and distinct concepts will generate better quality questions."
+          },
+          {
+            question: "Can I use this for commercial purposes?",
+            answer: "Yes, you can use the generated questions for any purpose including commercial use, educational materials, training content, and assessments."
           }
         ]} />
         </div>

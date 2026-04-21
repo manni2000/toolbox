@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
-import { Upload, Image as ImageIcon, X, RefreshCw, ArrowRight, FileImage, Sparkles, Zap } from "lucide-react";
+import { useState } from "react";
+import { Image as ImageIcon, X, RefreshCw, ArrowRight, FileImage, Sparkles, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "173 80% 40%";
@@ -16,7 +17,6 @@ const JPGToPNGConverter = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [isConverting, setIsConverting] = useState(false);
   const [preserveTransparency, setPreserveTransparency] = useState(true);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = (file: File) => {
     if (!file.type.startsWith("image/")) {
@@ -35,6 +35,21 @@ const JPGToPNGConverter = () => {
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
     if (file) handleFile(file);
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
   const convert = () => {
@@ -131,27 +146,18 @@ const JPGToPNGConverter = () => {
 
         {/* Upload Area */}
         {!image && (
-          <div
+          <ImageUploadZone
+            isDragging={isDragging}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
-            onClick={() => inputRef.current?.click()}
-            className={`file-drop cursor-pointer ${isDragging ? "drag-over" : ""}`}
-          >
-            <Upload className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 text-lg font-medium">Drop your JPG image here</p>
-            <p className="text-sm text-muted-foreground">
-              Supports JPG, JPEG, WebP, GIF, BMP and other image formats
-            </p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-              title="Select JPG image file to convert"
-            />
-          </div>
+            onClick={() => {}}
+            onFileSelect={handleFile}
+            multiple={false}
+            title="Drop JPG image here or click to browse"
+            subtitle="Supports JPG, JPEG, WebP, GIF, BMP and other image formats up to 10MB"
+          />
         )}
 
         {/* Preview and Convert */}

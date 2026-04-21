@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Upload, Music } from "lucide-react";
+import { Music } from "lucide-react";
 
 interface AudioUploadZoneProps {
   isDragging: boolean;
@@ -80,7 +80,7 @@ export const AudioUploadZone = ({
         </div>
 
         <button className="mt-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
-          Choose Audio{multiple ? ' Files' : ' File'}
+          Choose Audio{multiple ? 's' : ''}
         </button>
       </div>
 

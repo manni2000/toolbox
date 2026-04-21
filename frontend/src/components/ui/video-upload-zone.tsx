@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Upload, Video } from "lucide-react";
+import { Video } from "lucide-react";
 
 interface VideoUploadZoneProps {
   isDragging: boolean;
@@ -80,7 +80,7 @@ export const VideoUploadZone = ({
         </div>
 
         <button className="mt-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
-          Choose Video{multiple ? ' Files' : ' File'}
+          Choose Video{multiple ? 's' : ''}
         </button>
       </div>
 

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Upload } from "lucide-react";
+import { FileText } from "lucide-react";
 
 interface PDFUploadZoneProps {
   isDragging: boolean;
@@ -65,7 +65,7 @@ export const PDFUploadZone = ({
         <div className={`mx-auto w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center ${
           isDragging ? 'bg-primary/20' : 'bg-muted'
         }`}>
-          <Upload className={`w-8 h-8 md:w-10 md:h-10 ${
+          <FileText className={`w-8 h-8 md:w-10 md:h-10 ${
             isDragging ? 'text-primary' : 'text-muted-foreground'
           }`} />
         </div>
@@ -80,7 +80,7 @@ export const PDFUploadZone = ({
         </div>
 
         <button className="mt-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
-          Choose File{multiple ? 's' : ''}
+          Choose PDF{multiple ? 's' : ''}
         </button>
       </div>
 
