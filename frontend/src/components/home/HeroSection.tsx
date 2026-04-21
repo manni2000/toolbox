@@ -20,7 +20,7 @@ const POPULAR_TOOLS = [
   { icon: Image,     title: "Image Tools",     sub: "Compress, convert, resize and edit images easily",    path: "/category/image" },
   { icon: FileText,  title: "PDF Tools",       sub: "Merge, split, compress and convert PDF files",         path: "/category/pdf" },
   { icon: TrendingUp, title: "Education Tools", sub: "Calculators, converters and learning utilities",      path: "/category/education" },
-  { icon: RefreshCw, title: "Developer Tools", sub: "Code formatting, minification, and more",    path: "/category/developer" },
+  { icon: RefreshCw, title: "Developer Tools", sub: "Code formatting, minification, and more",    path: "/category/dev" },
   { icon: TrendingUp, title: "SEO Tools",       sub: "Meta tags, robots.txt, sitemap, keyword analysis",    path: "/category/seo" },
   { icon: Lock,      title: "Zip Tools",       sub: "Create, extract and manage compressed files",        path: "/category/zip" },
 ];
