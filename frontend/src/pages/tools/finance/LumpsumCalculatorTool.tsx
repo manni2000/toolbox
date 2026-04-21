@@ -9,6 +9,7 @@ import { FormulaCard } from "@/components/ui/formula-card";
 import { FinanceChart, generateGrowthData } from "@/components/ui/finance-chart";
 import { EnhancedDownload, downloadJSON, downloadText } from "@/components/EnhancedDownload";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -96,7 +97,13 @@ const LumpsumCalculatorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Lumpsum Calculator",
+        "Calculate returns on one-time lumpsum investments",
+        "lumpsum-calculator"
+      )}
+      <ToolLayout
       title="Lumpsum Calculator"
       description="Calculate returns on one-time lumpsum investments"
       category="Finance Tools"
@@ -475,6 +482,7 @@ const LumpsumCalculatorTool = () => {
       </div>
     </div>
     </ToolLayout>
+      </>
   );
 };
 

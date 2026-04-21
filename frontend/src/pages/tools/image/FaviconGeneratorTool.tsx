@@ -9,6 +9,7 @@ import { saveAs } from "file-saver";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -134,12 +135,18 @@ const FaviconGeneratorTool = () => {
   };
 
   return (
-    <ToolLayout
-      title="Favicon Generator"
-      description="Generate all favicon sizes from a single image"
-      category="Image Tools"
-      categoryPath="/category/image"
-    >
+    <>
+      {CategorySEO.Image(
+        "Favicon Generator",
+        "Generate all favicon sizes from a single image",
+        "favicon-generator"
+      )}
+      <ToolLayout
+        title="Favicon Generator"
+        description="Generate all favicon sizes from a single image"
+        category="Image Tools"
+        categoryPath="/category/image"
+      >
       <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
@@ -353,6 +360,7 @@ const FaviconGeneratorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

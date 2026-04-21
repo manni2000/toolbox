@@ -5,6 +5,7 @@ import { fadeInUp } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "200 85% 50%";
 
@@ -90,7 +91,13 @@ const WebsiteScreenshotTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Internet(
+        "Website Screenshot Tool",
+        "Capture full-page screenshots of any website from top to footer.",
+        "website-screenshot-tool"
+      )}
+      <ToolLayout
       title="Website Screenshot Tool"
       description="Capture full-page screenshots of any website from top to footer."
       category="Internet Tools"
@@ -463,6 +470,7 @@ const WebsiteScreenshotTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

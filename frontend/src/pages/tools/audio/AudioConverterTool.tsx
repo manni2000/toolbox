@@ -13,6 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "290 80% 55%";
 
@@ -139,7 +140,13 @@ const AudioConverterTool = () => {
     }
   };
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Audio(
+        "Audio Format Converter",
+        "Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats",
+        "audio-format-converter"
+      )}
+      <ToolLayout
       title="Audio Format Converter"
       description="Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats"
       category="Audio Tools"
@@ -480,6 +487,7 @@ const AudioConverterTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

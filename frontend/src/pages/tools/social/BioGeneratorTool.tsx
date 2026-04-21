@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "330 80% 55%";
 
@@ -147,7 +148,13 @@ const BioGeneratorTool = () => {
   const currentLimit = platforms.find(p => p.id === platform)?.limit || 150;
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Bio Generator",
+        "Create engaging social media bios with character limits",
+        "bio-generator"
+      )}
+      <ToolLayout
       title="Bio Generator"
       description="Create engaging social media bios with character limits"
       category="Social Media"
@@ -344,6 +351,7 @@ const BioGeneratorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -231,7 +232,13 @@ const DockerfileGeneratorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Dockerfile Generator",
+        "Generate optimized Dockerfiles for different applications and frameworks",
+        "dockerfile-generator"
+      )}
+      <ToolLayout
       title="Dockerfile Generator"
       description="Generate optimized Dockerfiles for different applications and frameworks"
       category="Developer Tools"
@@ -534,6 +541,7 @@ const DockerfileGeneratorTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

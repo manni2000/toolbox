@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -619,7 +620,13 @@ const PageSEOTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "Page SEO Analyzer",
+        "Comprehensive SEO analysis tool to optimize your web pages for better search rankings",
+        "page-seo-analyzer"
+      )}
+      <ToolLayout
       title="Page SEO Analyzer"
       description="Comprehensive SEO analysis tool to optimize your web pages for better search rankings"
       category="SEO Tools"
@@ -1016,6 +1023,7 @@ const PageSEOTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

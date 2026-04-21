@@ -9,6 +9,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 70% 50%";
 
@@ -104,7 +105,13 @@ const PDFRotateTool = () => {
   const hasRotations = Object.values(rotations).some((r) => r !== 0);
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.PDF(
+        "PDF Rotate Pages",
+        "Rotate individual pages or entire PDF documents",
+        "pdf-rotate-pages"
+      )}
+      <ToolLayout
       title="PDF Rotate Pages"
       description="Rotate individual pages or entire PDF documents"
       category="PDF Tools"
@@ -279,6 +286,7 @@ const PDFRotateTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

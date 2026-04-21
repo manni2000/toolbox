@@ -10,7 +10,7 @@
   <meta name="description"
   content="100+ free online tools for PDF, image, video, text & more. No signup required. Fast, private & browser-based." />
   <meta name="keywords"
-  content="free online tools, PDF converter, image compressor, QR code generator, video tools, password generator, JSON formatter, background remover, word counter, age calculator, unit converter, text tools, security tools, SEO tools, developer tools, PDF to Word, webp to JPG, MP4 converter, text to speech, hash generator, URL encoder, base64 converter, scientific calculator, percentage calculator, file converter, online utilities" />
+  content="free online tools, PDF converter, image compressor, QR code generator, video tools, dailytools247" />
   <meta name="author" content="Dailytools247" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
@@ -19,14 +19,17 @@
   <meta name="revisit-after" content="7 days" />
   <meta name="distribution" content="global" />
   <meta name="rating" content="general" />
+  <meta name="geo.region" content="IN" />
+  <meta name="geo.placename" content="India" />
 
+  <link rel="manifest" href="/manifest.json" />
   <link rel="canonical" href="https://www.dailytools247.app/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.dailytools247.app/" />
   <meta property="og:title" content="Free PDF, Image & Video Tools — DailyTools247" />
   <meta property="og:description" content="100+ free online tools for PDF, image, video, text & more. No signup required. Fast, private & browser-based." />
-  <meta property="og:image" content="https://www.dailytools247.app/og-image.jpg" />
+  <meta property="og:image" content="https://www.dailytools247.app/og-image.webp" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Dailytools247 - Free Online Tools Platform" />
@@ -41,7 +44,7 @@
     content="Free PDF, Image & Video Tools — DailyTools247" />
   <meta name="twitter:description"
     content="100+ free online tools for PDF, image, video, text & more. No signup required. Fast, private & browser-based." />
-  <meta name="twitter:image" content="https://www.dailytools247.app/og-image.jpg" />
+  <meta name="twitter:image" content="https://www.dailytools247.app/og-image.webp" />
   <meta name="twitter:image:alt" content="Dailytools247 - Free Online Tools Platform" />
   <meta name="twitter:creator" content="@dailytools247" />
   <meta name="twitter:site" content="@dailytools247" />
@@ -72,53 +75,6 @@
 
   <script defer>
     (function() {
-      const webAppSchema = document.createElement('script');
-      webAppSchema.type = 'application/ld+json';
-      webAppSchema.innerHTML = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Dailytools247",
-        "alternateName": "dailytools247",
-        "url": "https://www.dailytools247.app/",
-        "description": "100+ free online tools for PDF conversion, image editing, video processing, text formatting, QR codes, password generation, JSON formatting and more. No signup required. 100% browser-based, fast & private.",
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Any",
-        "browserRequirements": "Any modern web browser",
-        "softwareVersion": "1.0.0",
-        "author": { "@type": "Organization", "name": "Dailytools247" },
-        "publisher": { "@type": "Organization", "name": "Dailytools247" },
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "INR",
-          "availability": "https://schema.org/InStock",
-          "validFrom": "2024-01-01"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "10000",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "featureList": [
-          "PDF to Word Converter", "Image Compressor", "QR Code Generator", "Video Tools",
-          "Password Generator", "JSON Formatter", "Background Remover", "Word Counter",
-          "Age Calculator", "Unit Converter", "Text Tools", "Security Tools", "SEO Tools",
-          "Developer Tools", "Scientific Calculator", "Percentage Calculator",
-          "Base64 Encoder/Decoder", "URL Encoder/Decoder", "Hash Generator",
-          "Color Converter", "Text Diff Checker", "Case Converter", "Line Sorter",
-          "Duplicate Remover", "Markdown to HTML", "Text Summarizer", "File Converters",
-          "Online Utilities"
-        ],
-        "potentialAction": {
-          "@type": "UseAction",
-          "target": "https://www.dailytools247.app/",
-          "description": "Use free online tools"
-        }
-      });
-      document.head.appendChild(webAppSchema);
-
       const orgSchema = document.createElement('script');
       orgSchema.type = 'application/ld+json';
       orgSchema.innerHTML = JSON.stringify({
@@ -162,108 +118,6 @@
         "publisher": { "@type": "Organization", "name": "Dailytools247" }
       });
       document.head.appendChild(webSiteSchema);
-
-      const breadcrumbSchema = document.createElement('script');
-      breadcrumbSchema.type = 'application/ld+json';
-      breadcrumbSchema.innerHTML = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.dailytools247.app/" },
-          { "@type": "ListItem", "position": 2, "name": "All Tools", "item": "https://www.dailytools247.app/categories" }
-        ]
-      });
-      document.head.appendChild(breadcrumbSchema);
-
-      const faqSchema = document.createElement('script');
-      faqSchema.type = 'application/ld+json';
-      faqSchema.innerHTML = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Is Dailytools247 completely free to use?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, Dailytools247 is 100% free. All 100+ tools are available without any signup, subscription, hidden fees, or premium features. Everything works instantly in your browser."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Do I need to create an account or register to use the tools?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No account or registration required. All tools work instantly without any signup process. Simply visit the tool page and start using it immediately."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Is my data safe and private with Dailytools247?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, your data is completely safe. All processing happens locally in your browser. Your files never leave your device and are not stored on any server. We don't collect any personal information."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Does Dailytools247 work on mobile phones and tablets?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, Dailytools247 is fully responsive and works perfectly on all devices including phones, tablets, laptops, and desktops. All tools are optimized for touch interfaces."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What types of tools are available on Dailytools247?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Dailytools247 offers 100+ free online tools across 14 categories: PDF tools, Image tools, Video tools, Audio tools, Text tools, Security tools, Finance tools, Developer tools, Education tools, Internet tools, SEO tools, Social media tools, ZIP tools, and Date/Time tools."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Are there any file size limits or restrictions?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "File size limits depend on your browser and device capabilities. For best performance, we recommend files under 50MB for most tools. Large files are processed locally in your browser, so performance depends on your device's capabilities."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Do the tools require internet connection to work?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Most tools work offline once loaded. However, some advanced features might require internet for additional resources. The core functionality of all tools works without an internet connection after the initial page load."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How fast are the tools and processing times?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Processing times vary by tool and file size. Most tools process instantly or within seconds. Larger files or complex operations may take longer depending on your device's processing power."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Can I use Dailytools247 for commercial purposes?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, all tools can be used for both personal and commercial purposes. There are no restrictions on usage for business applications."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What browsers are supported?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Dailytools247 works on all modern browsers including Chrome, Firefox, Safari, Edge, and Opera. We recommend keeping your browser updated for the best experience."
-            }
-          }
-        ]
-      });
-      document.head.appendChild(faqSchema);
     })();
   </script>
 

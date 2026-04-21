@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -103,7 +104,13 @@ export default function StartupBurnRateCalculatorTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Startup Burn Rate Calculator",
+        "Calculate your startup's burn rate and cash runway",
+        "startup-burn-rate-calculator"
+      )}
+      <ToolLayout
       title="Startup Burn Rate Calculator"
       description="Calculate your startup's burn rate and cash runway"
       category="Finance Tools"
@@ -411,5 +418,6 @@ export default function StartupBurnRateCalculatorTool() {
         ]} />
         </div>
     </ToolLayout>
+      </>
   );
 }

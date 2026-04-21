@@ -6,6 +6,7 @@ import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -87,12 +88,18 @@ const ImageDPITool = () => {
   };
 
   return (
-    <ToolLayout
-      title="Image DPI Checker"
-      description="Check image dimensions and calculate print sizes at different DPI values"
-      category="Image Tools"
-      categoryPath="/category/image"
-    >
+    <>
+      {CategorySEO.Image(
+        "Image DPI Checker",
+        "Check image dimensions and calculate print sizes at different DPI values",
+        "image-dpi"
+      )}
+      <ToolLayout
+        title="Image DPI Checker"
+        description="Check image dimensions and calculate print sizes at different DPI values"
+        category="Image Tools"
+        categoryPath="/category/image"
+      >
       <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
@@ -307,6 +314,7 @@ const ImageDPITool = () => {
         ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

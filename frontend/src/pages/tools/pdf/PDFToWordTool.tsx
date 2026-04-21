@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 
 const categoryColor = "0 70% 50%";
@@ -139,7 +140,13 @@ const PDFToWordTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.PDF(
+        "PDF to Word",
+        "Convert PDF documents to editable Word files (.docx)",
+        "pdf-to-word"
+      )}
+      <ToolLayout
       title="PDF to Word"
       description="Convert PDF documents to editable Word files (.docx)"
       category="PDF Tools"
@@ -309,6 +316,7 @@ const PDFToWordTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

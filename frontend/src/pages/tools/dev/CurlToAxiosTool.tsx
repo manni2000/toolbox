@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -307,7 +308,13 @@ const CurlToAxiosTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "cURL to Axios Converter",
+        "Convert cURL commands to Axios, Fetch, JavaScript, and Python code",
+        "curl-to-axios-converter"
+      )}
+      <ToolLayout
       title="cURL to Axios Converter"
       description="Convert cURL commands to Axios, Fetch, JavaScript, and Python code"
       category="Developer Tools"
@@ -572,6 +579,7 @@ const CurlToAxiosTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

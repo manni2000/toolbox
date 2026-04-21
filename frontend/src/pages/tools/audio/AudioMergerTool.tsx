@@ -11,6 +11,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "290 80% 55%";
 
@@ -254,7 +255,13 @@ const AudioMergerTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Audio(
+        "Audio Merger",
+        "Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations.",
+        "audio-merger"
+      )}
+      <ToolLayout
       title="Audio Merger"
       description="Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations."
       category="Audio Tools"
@@ -463,6 +470,7 @@ const AudioMergerTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -6,6 +6,7 @@ import { Delete, RotateCcw, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "145 70% 45%";
 
@@ -328,7 +329,13 @@ const ScientificCalculatorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Education(
+        "Scientific Calculator",
+        "Perform advanced mathematical calculations with trigonometry, logarithms, and more",
+        "scientific-calculator"
+      )}
+      <ToolLayout
       title="Scientific Calculator"
       description="Perform advanced mathematical calculations with trigonometry, logarithms, and more"
       category="Education Tools"
@@ -498,6 +505,7 @@ const ScientificCalculatorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

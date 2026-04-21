@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -87,7 +88,13 @@ export default function FileHashComparisonTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "File Hash Comparison",
+        "Compare two files by their hash values to verify integrity",
+        "file-hash-comparison"
+      )}
+      <ToolLayout
       title="File Hash Comparison"
       description="Compare two files by their hash values to verify integrity"
       category="Security Tools"
@@ -478,5 +485,6 @@ export default function FileHashComparisonTool() {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };

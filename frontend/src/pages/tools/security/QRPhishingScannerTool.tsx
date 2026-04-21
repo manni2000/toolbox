@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -88,7 +89,13 @@ export default function QRPhishingScannerTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "QR Phishing Scanner",
+        "Scan QR codes for phishing and other security risks",
+        "qr-phishing-scanner"
+      )}
+      <ToolLayout
       title="QR Phishing Scanner"
       description="Scan QR codes for phishing and other security risks"
       category="Security Tools"
@@ -308,5 +315,6 @@ export default function QRPhishingScannerTool() {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 }

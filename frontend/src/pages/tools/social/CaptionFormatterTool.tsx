@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "330 80% 55%";
 
@@ -88,7 +89,13 @@ const CaptionFormatterTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Caption Formatter",
+        "Format your captions with stylish Unicode fonts",
+        "caption-formatter"
+      )}
+      <ToolLayout
       title="Caption Formatter"
       description="Format your captions with stylish Unicode fonts"
       category="Social Media"
@@ -233,6 +240,7 @@ const CaptionFormatterTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

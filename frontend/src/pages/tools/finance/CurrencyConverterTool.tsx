@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -125,7 +126,13 @@ const CurrencyConverterTool = () => {
   const exchangeRate = convert(1, fromCurrency, toCurrency);
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Currency Converter",
+        "Convert between currencies with real-time exchange rates",
+        "currency-converter"
+      )}
+      <ToolLayout
       title="Currency Converter"
       description="Convert between currencies with real-time exchange rates"
       category="Finance Tools"
@@ -456,6 +463,7 @@ const CurrencyConverterTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

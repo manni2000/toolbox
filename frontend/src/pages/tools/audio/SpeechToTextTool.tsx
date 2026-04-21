@@ -13,6 +13,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "290 80% 55%";
 
@@ -256,7 +257,13 @@ const SpeechToTextTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Audio(
+        "Speech to Text",
+        "Convert audio files to text with language support. Export as TXT or SRT subtitles.",
+        "speech-to-text"
+      )}
+      <ToolLayout
       title="Speech to Text"
       description="Convert audio files to text with language support. Export as TXT or SRT subtitles."
       category="Audio Tools"
@@ -517,6 +524,7 @@ const SpeechToTextTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

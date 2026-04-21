@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -105,7 +106,13 @@ const KeywordDensityTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "Keyword Density Checker",
+        "Analyze keyword density and optimize your content for better SEO performance",
+        "keyword-density-checker"
+      )}
+      <ToolLayout
       title="Keyword Density Checker"
       description="Analyze keyword density and optimize your content for better SEO performance"
       category="SEO Tools"
@@ -477,6 +484,7 @@ const KeywordDensityTool = () => {
 
       </div>
     </ToolLayout>
+      </>
   );
 };
 

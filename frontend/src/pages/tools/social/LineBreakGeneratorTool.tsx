@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "330 80% 55%";
 
@@ -36,7 +37,13 @@ const LineBreakGeneratorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Line Break Generator",
+        "Create invisible line breaks and separators for Instagram captions",
+        "line-break-generator"
+      )}
+      <ToolLayout
       title="Line Break Generator"
       description="Create invisible line breaks and separators for Instagram captions"
       category="Social Media"
@@ -197,6 +204,7 @@ const LineBreakGeneratorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

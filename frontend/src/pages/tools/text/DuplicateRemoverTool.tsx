@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const DuplicateRemoverTool = () => {
   const [input, setInput] = useState("");
@@ -39,7 +40,13 @@ const DuplicateRemoverTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Text(
+        "Duplicate Line Remover",
+        "Remove duplicate lines from your text while preserving order",
+        "duplicate-line-remover"
+      )}
+      <ToolLayout
       title="Duplicate Line Remover"
       description="Remove duplicate lines from your text while preserving order"
       category="Text Tools"
@@ -174,6 +181,7 @@ const DuplicateRemoverTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

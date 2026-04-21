@@ -8,6 +8,7 @@ import { PDFDocument } from "pdf-lib";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 import { useToast } from "@/hooks/use-toast";
 
 const categoryColor = "0 70% 50%";
@@ -185,7 +186,13 @@ const PDFSplitTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.PDF(
+        "PDF Split",
+        "Extract specific pages from a PDF document.",
+        "pdf-split"
+      )}
+      <ToolLayout
       title="PDF Split"
       description="Extract specific pages from a PDF document."
       category="PDF Tools"
@@ -470,6 +477,7 @@ const PDFSplitTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

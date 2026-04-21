@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -85,7 +86,13 @@ const RegexTesterTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Regex Tester",
+        "Test regular expressions with live matching",
+        "regex-tester"
+      )}
+      <ToolLayout
       title="Regex Tester"
       description="Test regular expressions with live matching"
       category="Developer Tools"
@@ -363,6 +370,7 @@ const RegexTesterTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

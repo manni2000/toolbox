@@ -8,6 +8,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { VideoUploadZone } from "@/components/ui/video-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "350 80% 55%";
 
@@ -114,7 +115,13 @@ const VideoTrimTool = () => {
     }
   };
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Video(
+        "Video Trim Tool",
+        "Cut and trim video clips to specific timestamps",
+        "video-trim-tool"
+      )}
+      <ToolLayout
       title="Video Trim Tool"
       description="Cut and trim video clips to specific timestamps"
       category="Video Tools"
@@ -296,6 +303,7 @@ const VideoTrimTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -105,7 +106,13 @@ const HTTPHeaderTool = () => {
     'strict-transport-security', 'content-security-policy', 'server', 'set-cookie'];
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "HTTP Header Checker",
+        "Check HTTP response headers from any URL",
+        "http-header-checker"
+      )}
+      <ToolLayout
       title="HTTP Header Checker"
       description="Check HTTP response headers from any URL"
       category="Developer Tools"
@@ -361,6 +368,7 @@ const HTTPHeaderTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

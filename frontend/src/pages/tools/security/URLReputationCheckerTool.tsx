@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -104,7 +105,13 @@ export default function URLReputationCheckerTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "URL Reputation Checker",
+        "Check website reputation and identify potentially malicious URLs",
+        "url-reputation-checker"
+      )}
+      <ToolLayout
       title="URL Reputation Checker"
       description="Check website reputation and identify potentially malicious URLs"
       category="Security Tools"
@@ -368,5 +375,6 @@ export default function URLReputationCheckerTool() {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 }

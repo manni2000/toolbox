@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "280 70% 55%";
 
@@ -121,7 +122,13 @@ const PasswordZipTool = () => {
     }
   };
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.ZIP(
+        "Password-Protected ZIP",
+        "Create encrypted ZIP archives with password protection",
+        "password-protected-zip"
+      )}
+      <ToolLayout
       title="Password-Protected ZIP"
       description="Create encrypted ZIP archives with password protection"
       category="ZIP Tools"
@@ -459,6 +466,7 @@ const PasswordZipTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

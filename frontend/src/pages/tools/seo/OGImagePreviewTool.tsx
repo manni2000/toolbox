@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -111,7 +112,13 @@ const OGImagePreviewTool = () => {
   const dimensions = getPreviewDimensions();
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "OG Image Preview Tool",
+        "Preview and generate Open Graph meta tags for perfect social media sharing",
+        "og-image-preview-tool"
+      )}
+      <ToolLayout
       title="OG Image Preview Tool"
       description="Preview and generate Open Graph meta tags for perfect social media sharing"
       category="SEO Tools"
@@ -529,6 +536,7 @@ const OGImagePreviewTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

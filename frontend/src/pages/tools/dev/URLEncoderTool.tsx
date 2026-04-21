@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -43,7 +44,13 @@ const URLEncoderTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "URL Encoder/Decoder",
+        "Encode or decode URLs and query parameters",
+        "url-encoderdecoder"
+      )}
+      <ToolLayout
       title="URL Encoder/Decoder"
       description="Encode or decode URLs and query parameters"
       category="Developer Tools"
@@ -241,6 +248,7 @@ const URLEncoderTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

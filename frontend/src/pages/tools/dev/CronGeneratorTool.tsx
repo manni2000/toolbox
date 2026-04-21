@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -75,7 +76,13 @@ const CronGeneratorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Cron Expression Generator",
+        "Build and understand cron schedule expressions",
+        "cron-expression-generator"
+      )}
+      <ToolLayout
       title="Cron Expression Generator"
       description="Build and understand cron schedule expressions"
       category="Developer Tools"
@@ -315,6 +322,7 @@ const CronGeneratorTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

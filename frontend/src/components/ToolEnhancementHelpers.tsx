@@ -1,19 +1,3 @@
-/**
- * Reusable Tool Enhancement Wrapper
- * 
- * This HOC (Higher Order Component) wraps any tool component with modern UI enhancements:
- * - Animated hero section with category-specific colors
- * - Enhanced card layouts
- * - Modern loading states
- * - Smooth animations throughout
- * 
- * Usage:
- * export default withToolEnhancements(YourToolComponent, {
- *   categoryColor: "173 80% 40%",
- *   icon: YourIcon
- * });
- */
-
 import React from "react";
 import { motion } from "framer-motion";
 import { LucideIcon, Sparkles } from "lucide-react";
@@ -37,7 +21,6 @@ export const ToolHeroSection: React.FC<ToolEnhancementConfig & {
       animate="visible"
       className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
     >
-      {/* Animated background blob */}
       <motion.div
         animate={{
           scale: [1, 1.2, 1],
@@ -124,7 +107,6 @@ export const EnhancedButton: React.FC<{
   );
 };
 
-// Category colors for quick reference
 export const CATEGORY_COLORS = {
   image: "173 80% 40%",      // Teal
   pdf: "0 70% 50%",          // Red

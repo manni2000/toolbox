@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -148,7 +149,13 @@ export default function SalaryBreakupGeneratorTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Salary Breakup Generator",
+        "Generate detailed salary breakup with deductions and take-home pay",
+        "salary-breakup-generator"
+      )}
+      <ToolLayout
       title="Salary Breakup Generator"
       description="Generate detailed salary breakup with deductions and take-home pay"
       category="Finance Tools"
@@ -430,5 +437,6 @@ export default function SalaryBreakupGeneratorTool() {
         ]} />
         </div>
     </ToolLayout>
+      </>
   );
 }

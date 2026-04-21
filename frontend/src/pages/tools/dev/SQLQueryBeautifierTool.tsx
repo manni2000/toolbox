@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -142,7 +143,13 @@ const SQLQueryBeautifierTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "SQL Query Beautifier",
+        "Format and beautify SQL queries with customizable indentation and keyword formatting",
+        "sql-query-beautifier"
+      )}
+      <ToolLayout
       title="SQL Query Beautifier"
       description="Format and beautify SQL queries with customizable indentation and keyword formatting"
       category="Developer Tools"
@@ -447,6 +454,7 @@ const SQLQueryBeautifierTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

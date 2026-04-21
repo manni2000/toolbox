@@ -7,6 +7,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 70% 50%";
 
@@ -131,7 +132,13 @@ const HTMLToPDFTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.PDF(
+        "HTML to PDF",
+        "Convert HTML content to PDF documents",
+        "html-to-pdf"
+      )}
+      <ToolLayout
       title="HTML to PDF"
       description="Convert HTML content to PDF documents"
       category="PDF Tools"
@@ -347,6 +354,7 @@ const HTMLToPDFTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

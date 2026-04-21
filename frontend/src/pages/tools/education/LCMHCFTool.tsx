@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "145 70% 45%";
 
@@ -113,7 +114,13 @@ const LCMHCFTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Education(
+        "LCM HCF Calculator Online",
+        "Calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) of multiple numbers",
+        "lcm-hcf-calculator-online"
+      )}
+      <ToolLayout
       title="LCM HCF Calculator Online"
       description="Calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) of multiple numbers"
       category="Education Tools"
@@ -444,6 +451,7 @@ const LCMHCFTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

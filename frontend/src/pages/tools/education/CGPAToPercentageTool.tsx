@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "145 70% 45%";
 
@@ -80,7 +81,13 @@ const CGPAToPercentageTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Education(
+        "CGPA to Percentage Converter",
+        "Convert CGPA to percentage and determine grades",
+        "cgpa-to-percentage-converter"
+      )}
+      <ToolLayout
       title="CGPA to Percentage Converter"
       description="Convert CGPA to percentage and determine grades"
       category="Education Tools"
@@ -317,6 +324,7 @@ const CGPAToPercentageTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

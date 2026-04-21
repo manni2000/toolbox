@@ -10,6 +10,7 @@ import { FinanceChart, generateGrowthData, generatePieData } from "@/components/
 import { EnhancedDownload, downloadText, downloadJSON } from "@/components/EnhancedDownload";
 import SimilarTools from "@/components/SimilarTools";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "262 80% 50%";
 
@@ -113,7 +114,13 @@ const ROICalculatorTool = () => {
   const isPositiveReturn = finalValue > initialInvestment;
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "ROI Calculator",
+        "Calculate Return on Investment and annualized returns",
+        "roi-calculator"
+      )}
+      <ToolLayout
       title="ROI Calculator"
       description="Calculate Return on Investment and annualized returns"
       category="Finance Tools"
@@ -481,6 +488,7 @@ const ROICalculatorTool = () => {
         <SimilarTools currentToolSlug="roi-calculator" />
         </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -512,7 +513,13 @@ const ColorPalettesTool = () => {
   const displayColors = selectedPalette ? selectedPalette.colors : generatedPalette;
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Color Palettes Generator",
+        "Generate beautiful color palettes for your design projects with professional color theory",
+        "color-palettes-generator"
+      )}
+      <ToolLayout
       title="Color Palettes Generator"
       description="Generate beautiful color palettes for your design projects with professional color theory"
       category="Developer Tools"
@@ -893,6 +900,7 @@ const ColorPalettesTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

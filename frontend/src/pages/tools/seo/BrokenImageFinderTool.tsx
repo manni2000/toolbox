@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -226,7 +227,13 @@ const BrokenImageFinderTool = () => {
   const checkingCount = images.filter(img => img.status === 'checking').length;
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "Broken Image Finder",
+        "Find and analyze broken images on your website for better SEO and user experience",
+        "broken-image-finder"
+      )}
+      <ToolLayout
       title="Broken Image Finder"
       description="Find and analyze broken images on your website for better SEO and user experience"
       category="SEO Tools"
@@ -557,6 +564,7 @@ const BrokenImageFinderTool = () => {
 
       </div>
     </ToolLayout>
+      </>
   );
 };
 

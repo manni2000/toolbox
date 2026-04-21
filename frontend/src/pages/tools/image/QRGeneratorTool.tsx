@@ -13,8 +13,6 @@ import ToolFAQ from "@/components/ToolFAQ";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { fadeInUp, scaleIn } from "@/lib/animations";
-import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 
 const QRGeneratorToolEnhanced = () => {
   const toolSeoData = getToolSeoMetadata('qr-code-generator');
@@ -104,8 +102,9 @@ const QRGeneratorToolEnhanced = () => {
   return (
     <>
       {CategorySEO.Image(
-        "QR Code Generator - Free Online QR Code Maker",
-        "Generate custom QR codes from any URL or text instantly. Free, fast, and customizable with color and size options. No signup required."
+        "QR Code Generator",
+        "Generate QR codes from any URL or text instantly with custom colors and sizes",
+        "qr-code-generator"
       )}
       
       <ToolLayout

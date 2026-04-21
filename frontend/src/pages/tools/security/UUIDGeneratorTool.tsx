@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -38,7 +39,13 @@ const UUIDGeneratorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "UUID Generator",
+        "Generate unique UUIDs instantly",
+        "uuid-generator"
+      )}
+      <ToolLayout
       title="UUID Generator"
       description="Generate unique UUIDs instantly"
       category="Security Tools"
@@ -220,6 +227,7 @@ const UUIDGeneratorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

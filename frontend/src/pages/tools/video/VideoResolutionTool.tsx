@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "350 80% 55%";
 
@@ -170,7 +171,13 @@ const VideoResolutionTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Video(
+        "Video Resolution Converter",
+        "Change video resolution and dimensions",
+        "video-resolution-converter"
+      )}
+      <ToolLayout
       title="Video Resolution Converter"
       description="Change video resolution and dimensions"
       category="Video Tools"
@@ -413,6 +420,7 @@ const VideoResolutionTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

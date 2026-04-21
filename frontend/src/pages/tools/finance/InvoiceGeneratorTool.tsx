@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
@@ -175,7 +176,13 @@ export default function InvoiceGeneratorTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Invoice Generator",
+        "Create professional invoices with PDF download",
+        "invoice-generator"
+      )}
+      <ToolLayout
       title="Invoice Generator"
       description="Create professional invoices with PDF download"
       category="Finance Tools"
@@ -559,5 +566,6 @@ export default function InvoiceGeneratorTool() {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 }

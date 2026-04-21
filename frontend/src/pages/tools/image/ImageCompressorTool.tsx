@@ -8,6 +8,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { useToast } from "@/hooks/use-toast";
+import { CategorySEO } from "@/components/ToolSEO";
 import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "173 80% 40%";
@@ -123,12 +124,18 @@ const ImageCompressorTool = () => {
   const reduction = originalSize > 0 ? Math.round((1 - compressedSize / originalSize) * 100) : 0;
 
   return (
-    <ToolLayout
-      title="Image Compressor"
-      description="Compress images while maintaining quality"
-      category="Image Tools"
-      categoryPath="/category/image"
-    >
+    <>
+      {CategorySEO.Image(
+        "Image Compressor",
+        "Compress images while maintaining quality",
+        "image-compressor"
+      )}
+      <ToolLayout
+        title="Image Compressor"
+        description="Compress images while maintaining quality"
+        category="Image Tools"
+        categoryPath="/category/image"
+      >
       <div className="space-y-8">
         {/* Enhanced Hero Section */}
         <motion.div
@@ -430,6 +437,7 @@ const ImageCompressorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

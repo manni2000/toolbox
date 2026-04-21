@@ -9,6 +9,7 @@ import { FormulaCard } from "@/components/ui/formula-card";
 import { FinanceChart, generateEMIData, generatePieData } from "@/components/ui/finance-chart";
 import { EnhancedDownload, downloadText, downloadJSON } from "@/components/EnhancedDownload";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -107,7 +108,13 @@ const EMICalculatorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "EMI Calculator",
+        "Calculate loan EMI payments",
+        "emi-calculator"
+      )}
+      <ToolLayout
       title="EMI Calculator"
       description="Calculate loan EMI payments"
       category="Finance Tools"
@@ -490,6 +497,7 @@ const EMICalculatorTool = () => {
       ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

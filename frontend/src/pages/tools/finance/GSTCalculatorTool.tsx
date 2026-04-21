@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { formatIndianCurrency } from "@/lib/number-formatting";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -48,7 +49,13 @@ const GSTCalculatorTool = () => {
   const gstRates = ["0", "5", "12", "18", "28"];
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "GST Calculator",
+        "Calculate GST, CGST, and SGST amounts with precision",
+        "gst-calculator"
+      )}
+      <ToolLayout
       title="GST Calculator"
       description="Calculate GST, CGST, and SGST amounts with precision"
       category="Finance Tools"
@@ -387,6 +394,7 @@ const GSTCalculatorTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

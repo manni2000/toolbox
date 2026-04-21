@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "330 80% 55%";
 
@@ -293,7 +294,13 @@ const MemeGeneratorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Meme Generator",
+        "Create professional memes with templates, custom text, and advanced styling options",
+        "meme-generator"
+      )}
+      <ToolLayout
       title="Meme Generator"
       description="Create professional memes with templates, custom text, and advanced styling options"
       category="Social Media"
@@ -697,6 +704,7 @@ const MemeGeneratorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

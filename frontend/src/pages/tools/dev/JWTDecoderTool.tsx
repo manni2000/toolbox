@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -62,7 +63,13 @@ const JWTDecoderTool = () => {
     : false;
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "JWT Decoder",
+        "Decode and inspect JSON Web Tokens",
+        "jwt-decoder"
+      )}
+      <ToolLayout
       title="JWT Decoder"
       description="Decode and inspect JSON Web Tokens"
       category="Developer Tools"
@@ -343,6 +350,7 @@ const JWTDecoderTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

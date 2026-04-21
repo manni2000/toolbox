@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -189,7 +190,13 @@ const WhatsAppStatusTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "WhatsApp Status Generator",
+        "Create perfectly sized images for WhatsApp Status with professional design tools",
+        "whatsapp-status-generator"
+      )}
+      <ToolLayout
       title="WhatsApp Status Generator"
       description="Create perfectly sized images for WhatsApp Status with professional design tools"
       category="Social Media"
@@ -704,6 +711,7 @@ const WhatsAppStatusTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

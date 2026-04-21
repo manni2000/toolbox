@@ -10,6 +10,7 @@ import { FinanceChart, generateGrowthData, generatePieData } from "@/components/
 import { EnhancedDownload, downloadText, downloadJSON } from "@/components/EnhancedDownload";
 import SimilarTools from "@/components/SimilarTools";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "145 85% 55%";
 
@@ -105,7 +106,13 @@ const SIPCalculatorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "SIP Calculator",
+        "Calculate Systematic Investment Plan returns",
+        "sip-calculator"
+      )}
+      <ToolLayout
       title="SIP Calculator"
       description="Calculate Systematic Investment Plan returns"
       category="Finance Tools"
@@ -470,6 +477,7 @@ const SIPCalculatorTool = () => {
       <SimilarTools currentToolSlug="sip-calculator" />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

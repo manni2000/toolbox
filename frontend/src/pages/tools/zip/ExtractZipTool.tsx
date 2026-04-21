@@ -8,6 +8,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "280 70% 55%";
 
@@ -123,7 +124,13 @@ const ExtractZipTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.ZIP(
+        "Extract ZIP",
+        "Extract and download files from ZIP archives",
+        "extract-zip"
+      )}
+      <ToolLayout
       title="Extract ZIP"
       description="Extract and download files from ZIP archives"
       category="ZIP Tools"
@@ -342,6 +349,7 @@ const ExtractZipTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

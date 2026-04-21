@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -170,7 +171,13 @@ const TechStackDetectorTool = () => {
     : [];
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "Website Tech Stack Detector",
+        "Analyze websites to detect the technology stack, frameworks, and tools being used",
+        "website-tech-stack-detector"
+      )}
+      <ToolLayout
       title="Website Tech Stack Detector"
       description="Analyze websites to detect the technology stack, frameworks, and tools being used"
       category="SEO Tools"
@@ -546,6 +553,7 @@ const TechStackDetectorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

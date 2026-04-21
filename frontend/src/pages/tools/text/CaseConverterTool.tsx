@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "260 70% 55%";
 
@@ -33,7 +34,13 @@ const CaseConverterTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Text(
+        "Case Converter",
+        "Convert text between different cases",
+        "case-converter"
+      )}
+      <ToolLayout
       title="Case Converter"
       description="Convert text between different cases"
       category="Text Tools"
@@ -161,6 +168,7 @@ const CaseConverterTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

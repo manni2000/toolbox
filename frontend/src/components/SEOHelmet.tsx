@@ -22,7 +22,6 @@ interface SEOHelmetProps {
     }>;
   };
   schema?: any;
-  ogImage?: string;
   ogType?: string;
   canonical?: string;
   noindex?: boolean;
@@ -32,7 +31,7 @@ const SEOHelmet = ({
   title,
   description,
   keywords = [],
-  image = '/og-image.jpg',
+  image = '/og-image.webp',
   url,
   type = 'website',
   toolSlug,
@@ -40,7 +39,6 @@ const SEOHelmet = ({
   faqs = [],
   howTo,
   schema,
-  ogImage = '/dailytools247.png',
   ogType = 'website',
   canonical,
   noindex = false
@@ -90,7 +88,7 @@ const SEOHelmet = ({
       offers: {
         '@type': 'Offer',
         price: '0',
-        priceCurrency: 'USD',
+        priceCurrency: 'INR',
         availability: 'https://schema.org/InStock'
       },
       aggregateRating: {
@@ -103,63 +101,109 @@ const SEOHelmet = ({
       ...finalSchema
     };
 
-    // Add FAQ schema if FAQs exist
-    if (finalFaqs.length > 0) {
-      const schemas = [
-        baseSchema,
+    // Map category to URL slug for breadcrumbs
+    const categorySlugMap: Record<string, string> = {
+      'Image Tools': 'image',
+      'PDF Tools': 'pdf',
+      'Video Tools': 'video',
+      'Audio Tools': 'audio',
+      'Text Tools': 'text',
+      'Security Tools': 'security',
+      'Developer Tools': 'dev',
+      'Finance Tools': 'finance',
+      'Education Tools': 'education',
+      'SEO Tools': 'seo',
+      'Date & Time Tools': 'date-time',
+      'Internet Tools': 'internet',
+      'ZIP Tools': 'zip',
+      'Social Media Tools': 'social',
+    };
+
+    // Generate breadcrumb schema
+    const generateBreadcrumbSchema = () => {
+      const pathSegments = location.pathname.split('/').filter(Boolean);
+      const breadcrumbs = [
         {
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: finalFaqs.map(faq => ({
-            '@type': 'Question',
-            name: faq.question,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: faq.answer
-            }
-          }))
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://www.dailytools247.app'
         }
       ];
 
-      // Add HowTo schema if available
-      if (finalHowTo) {
-        schemas.push({
-          '@context': 'https://schema.org',
-          '@type': 'HowTo',
-          name: finalHowTo.name,
-          description: finalHowTo.description,
-          step: finalHowTo.steps.map(step => ({
-            '@type': 'HowToStep',
-            name: step.name,
-            text: step.text,
-            image: step.image
-          }))
+      // Category page: /category/image
+      if (pathSegments.length > 0 && pathSegments[0] === 'category' && pathSegments[1]) {
+        const categoryName = pathSegments[1].charAt(0).toUpperCase() + pathSegments[1].slice(1) + ' Tools';
+        breadcrumbs.push({
+          '@type': 'ListItem',
+          position: 2,
+          name: categoryName,
+          item: `https://www.dailytools247.app/category/${pathSegments[1]}`
+        });
+      }
+      // Tool page at root level: /pdf-merge — infer category from metadata
+      else if (toolSlug && finalCategory && finalCategory !== 'Online Tools') {
+        const categorySlug = categorySlugMap[finalCategory];
+        if (categorySlug) {
+          breadcrumbs.push({
+            '@type': 'ListItem',
+            position: 2,
+            name: finalCategory,
+            item: `https://www.dailytools247.app/category/${categorySlug}`
+          });
+        }
+        breadcrumbs.push({
+          '@type': 'ListItem',
+          position: breadcrumbs.length + 1,
+          name: finalTitle,
+          item: currentUrl
         });
       }
 
-      return schemas;
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs
+      };
+    };
+
+    const schemas = [baseSchema];
+    
+    if (toolSlug || location.pathname !== '/') {
+      schemas.push(generateBreadcrumbSchema());
     }
 
-    // Add HowTo schema even without FAQs
+    if (finalFaqs.length > 0) {
+      schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: finalFaqs.map(faq => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer
+          }
+        }))
+      });
+    }
+
     if (finalHowTo) {
-      return [
-        baseSchema,
-        {
-          '@context': 'https://schema.org',
-          '@type': 'HowTo',
-          name: finalHowTo.name,
-          description: finalHowTo.description,
-          step: finalHowTo.steps.map(step => ({
-            '@type': 'HowToStep',
-            name: step.name,
-            text: step.text,
-            image: step.image
-          }))
-        }
-      ];
+      schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: finalHowTo.name,
+        description: finalHowTo.description,
+        step: finalHowTo.steps.map(step => ({
+          '@type': 'HowToStep',
+          name: step.name,
+          text: step.text,
+          image: step.image
+        }))
+      });
     }
 
-    return [baseSchema];
+    return schemas;
   };
 
   const structuredData = generateStructuredData();
@@ -175,7 +219,8 @@ const SEOHelmet = ({
       <meta name="robots" content={noindex ? "noindex,nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
       <meta name="googlebot" content={noindex ? "noindex,nofollow" : "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"} />
       <meta name="bingbot" content={noindex ? "noindex,nofollow" : "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"} />
-      <meta name="language" content="English" />
+      <meta name="language" content="en" />
+      <meta name="geo.region" content="IN" />
       <meta name="revisit-after" content="7 days" />
       <meta name="distribution" content="global" />
       <meta name="rating" content="general" />
@@ -194,7 +239,9 @@ const SEOHelmet = ({
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content={fullTitleWithSuffix} />
       <meta property="og:site_name" content="Dailytools247" />
-      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale" content="en_IN" />
+      <meta property="article:author" content="Dailytools247" />
+      <meta property="article:publisher" content="https://www.dailytools247.app/" />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
@@ -226,6 +273,7 @@ const SEOHelmet = ({
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+      <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
       <link rel="preconnect" href="https://unpkg.com" />
       <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
       <link rel="preconnect" href="https://www.google-analytics.com" />

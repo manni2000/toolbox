@@ -13,6 +13,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "290 80% 55%";
 
@@ -192,7 +193,13 @@ const AudioTrimmerTool = () => {
   const playheadPosition = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Audio(
+        "Audio Trimmer",
+        "Cut and trim audio files. Set start and end points, preview before download.",
+        "audio-trimmer"
+      )}
+      <ToolLayout
       title="Audio Trimmer"
       description="Cut and trim audio files. Set start and end points, preview before download."
       category="Audio Tools"
@@ -457,6 +464,7 @@ const AudioTrimmerTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

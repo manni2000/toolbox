@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "260 70% 55%";
 
@@ -63,7 +64,13 @@ const LineSorterTool = () => {
   const lineCount = input.split("\n").filter((l) => l.trim()).length;
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Text(
+        "Line Sorter",
+        "Sort lines alphabetically, numerically, by length, or shuffle them",
+        "line-sorter"
+      )}
+      <ToolLayout
       title="Line Sorter"
       description="Sort lines alphabetically, numerically, by length, or shuffle them"
       category="Text Tools"
@@ -202,6 +209,7 @@ const LineSorterTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

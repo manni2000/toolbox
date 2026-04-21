@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -105,7 +106,13 @@ export default function ProfitMarginCalculatorTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Profit Margin Calculator",
+        "Calculate gross margin, net margin, and markup for your business",
+        "profit-margin-calculator"
+      )}
+      <ToolLayout
       title="Profit Margin Calculator"
       description="Calculate gross margin, net margin, and markup for your business"
       category="Finance Tools"
@@ -455,5 +462,6 @@ export default function ProfitMarginCalculatorTool() {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 }

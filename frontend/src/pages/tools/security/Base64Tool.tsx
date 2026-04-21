@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -50,7 +51,13 @@ const Base64Tool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "Base64 Encode/Decode",
+        "Encode or decode Base64 strings",
+        "base64-encodedecode"
+      )}
+      <ToolLayout
       title="Base64 Encode/Decode"
       description="Encode or decode Base64 strings"
       category="Security Tools"
@@ -295,6 +302,7 @@ const Base64Tool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

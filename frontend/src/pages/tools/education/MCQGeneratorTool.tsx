@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { fadeInUp } from "@/lib/animations";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -244,7 +245,13 @@ const MCQGeneratorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Education(
+        "MCQ Generator from Text",
+        "Generate multiple choice questions from text or create custom questions",
+        "mcq-generator-from-text"
+      )}
+      <ToolLayout
       title="MCQ Generator from Text"
       description="Generate multiple choice questions from text or create custom questions"
       category="Education Tools"
@@ -506,6 +513,7 @@ const MCQGeneratorTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

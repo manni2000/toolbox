@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -117,7 +118,13 @@ export default function FreelancerRateCalculatorTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Freelancer Rate Calculator",
+        "Calculate your optimal freelance rates based on income goals and business expenses",
+        "freelancer-rate-calculator"
+      )}
+      <ToolLayout
       title="Freelancer Rate Calculator"
       description="Calculate your optimal freelance rates based on income goals and business expenses"
       category="Finance Tools"
@@ -455,5 +462,6 @@ export default function FreelancerRateCalculatorTool() {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 }

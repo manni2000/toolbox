@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "260 70% 55%";
 
@@ -23,7 +24,13 @@ const MarkdownHTMLTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Text(
+        "Markdown → HTML",
+        "Convert Markdown to HTML",
+        "markdown--html"
+      )}
+      <ToolLayout
       title="Markdown → HTML"
       description="Convert Markdown to HTML"
       category="Text Tools"
@@ -179,6 +186,7 @@ const MarkdownHTMLTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

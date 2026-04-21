@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "145 70% 45%";
 
@@ -86,7 +87,13 @@ const PercentageCalculatorTool = () => {
   const placeholders = getPlaceholders();
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Education(
+        "Percentage Calculator",
+        "Calculate percentages in multiple ways",
+        "percentage-calculator"
+      )}
+      <ToolLayout
       title="Percentage Calculator"
       description="Calculate percentages in multiple ways"
       category="Education Tools"
@@ -302,6 +309,7 @@ const PercentageCalculatorTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

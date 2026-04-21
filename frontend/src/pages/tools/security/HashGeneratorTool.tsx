@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -29,7 +30,13 @@ const HashGeneratorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "Hash Generator",
+        "Generate MD5, SHA-1, SHA-256, and more hashes",
+        "hash-generator"
+      )}
+      <ToolLayout
       title="Hash Generator"
       description="Generate MD5, SHA-1, SHA-256, and more hashes"
       category="Security Tools"
@@ -226,6 +233,7 @@ const HashGeneratorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

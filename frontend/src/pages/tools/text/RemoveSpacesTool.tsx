@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "260 70% 55%";
 
@@ -32,7 +33,13 @@ const RemoveSpacesTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Text(
+        "Remove Extra Spaces",
+        "Clean up extra whitespace, leading/trailing spaces, and blank lines",
+        "remove-extra-spaces"
+      )}
+      <ToolLayout
       title="Remove Extra Spaces"
       description="Clean up extra whitespace, leading/trailing spaces, and blank lines"
       category="Text Tools"
@@ -156,6 +163,7 @@ const RemoveSpacesTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

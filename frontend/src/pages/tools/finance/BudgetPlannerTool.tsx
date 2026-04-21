@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -161,7 +162,13 @@ export default function BudgetPlannerTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Budget Planner",
+        "Create and analyze your monthly budget for better financial planning",
+        "budget-planner"
+      )}
+      <ToolLayout
       title="Budget Planner"
       description="Create and analyze your monthly budget for better financial planning"
       category="Finance Tools"
@@ -412,5 +419,6 @@ export default function BudgetPlannerTool() {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 }

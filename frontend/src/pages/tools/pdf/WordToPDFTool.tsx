@@ -9,6 +9,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 70% 50%";
 
@@ -95,7 +96,13 @@ const WordToPDFTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.PDF(
+        "Word to PDF",
+        "Convert Word documents to PDF",
+        "word-to-pdf"
+      )}
+      <ToolLayout
       title="Word to PDF"
       description="Convert Word documents to PDF"
       category="PDF Tools"
@@ -237,6 +244,7 @@ const WordToPDFTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

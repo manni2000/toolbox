@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -96,12 +97,18 @@ const ImageBase64Tool = () => {
   };
 
   return (
-    <ToolLayout
-      title="Image ↔ Base64 Converter"
-      description="Convert images to Base64 strings and vice versa"
-      category="Image Tools"
-      categoryPath="/category/image"
-    >
+    <>
+      {CategorySEO.Image(
+        "Image Base64 Converter",
+        "Convert images to Base64 strings and vice versa",
+        "image-base64"
+      )}
+      <ToolLayout
+        title="Image ↔ Base64 Converter"
+        description="Convert images to Base64 strings and vice versa"
+        category="Image Tools"
+        categoryPath="/category/image"
+      >
       <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
@@ -330,6 +337,7 @@ const ImageBase64Tool = () => {
           ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

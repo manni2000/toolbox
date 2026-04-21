@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -111,7 +112,13 @@ const QRScannerTool = () => {
   const isUrl = result?.startsWith("http://") || result?.startsWith("https://");
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "QR Code Scanner",
+        "Upload an image to scan and decode QR codes",
+        "qr-code-scanner"
+      )}
+      <ToolLayout
       title="QR Code Scanner"
       description="Upload an image to scan and decode QR codes"
       category="Image Tools"
@@ -356,6 +363,7 @@ const QRScannerTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

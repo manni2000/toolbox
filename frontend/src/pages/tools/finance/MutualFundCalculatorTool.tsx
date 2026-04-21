@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -56,7 +57,13 @@ const MutualFundCalculatorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Mutual Fund SIP Calculator",
+        "Calculate returns on Systematic Investment Plan (SIP) investments",
+        "mutual-fund-sip-calculator"
+      )}
+      <ToolLayout
       title="Mutual Fund SIP Calculator"
       description="Calculate returns on Systematic Investment Plan (SIP) investments"
       category="Finance Tools"
@@ -401,6 +408,7 @@ const MutualFundCalculatorTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

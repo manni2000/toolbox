@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "260 70% 55%";
 
@@ -56,7 +57,13 @@ const TextDiffTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Text(
+        "Text Diff Checker",
+        "Compare two texts and highlight differences",
+        "text-diff-checker"
+      )}
+      <ToolLayout
       title="Text Diff Checker"
       description="Compare two texts and highlight differences"
       category="Text Tools"
@@ -209,6 +216,7 @@ const TextDiffTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

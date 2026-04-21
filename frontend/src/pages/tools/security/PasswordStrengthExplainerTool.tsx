@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -92,7 +93,13 @@ export default function PasswordStrengthExplainerTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "Password Strength Explainer",
+        "Analyze password strength with detailed feedback and suggestions",
+        "password-strength-explainer"
+      )}
+      <ToolLayout
       title="Password Strength Explainer"
       description="Analyze password strength with detailed feedback and suggestions"
       category="Security Tools"
@@ -388,5 +395,6 @@ export default function PasswordStrengthExplainerTool() {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -128,7 +129,13 @@ export default function StockCAGRCalculatorTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Stock CAGR Calculator",
+        "Calculate Compound Annual Growth Rate for your investments",
+        "stock-cagr-calculator"
+      )}
+      <ToolLayout
       title="Stock CAGR Calculator"
       description="Calculate Compound Annual Growth Rate for your investments"
       category="Finance Tools"
@@ -459,5 +466,6 @@ export default function StockCAGRCalculatorTool() {
         ]} />
         </div>
     </ToolLayout>
+      </>
   );
 }

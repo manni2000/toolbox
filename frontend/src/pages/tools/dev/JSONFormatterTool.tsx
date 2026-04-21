@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -63,7 +64,13 @@ const JSONFormatterTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "JSON Formatter",
+        "Format, validate, and beautify JSON data",
+        "json-formatter"
+      )}
+      <ToolLayout
       title="JSON Formatter"
       description="Format, validate, and beautify JSON data"
       category="Developer Tools"
@@ -292,6 +299,7 @@ const JSONFormatterTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

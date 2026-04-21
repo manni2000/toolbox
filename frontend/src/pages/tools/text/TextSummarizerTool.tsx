@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "260 70% 55%";
 
@@ -65,7 +66,13 @@ const TextSummarizerTool = () => {
   const outputWordCount = output.trim() ? output.trim().split(/\s+/).length : 0;
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Text(
+        "Text Summarizer",
+        "Extract key sentences from your text using rule-based analysis",
+        "text-summarizer"
+      )}
+      <ToolLayout
       title="Text Summarizer"
       description="Extract key sentences from your text using rule-based analysis"
       category="Text Tools"
@@ -215,6 +222,7 @@ const TextSummarizerTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

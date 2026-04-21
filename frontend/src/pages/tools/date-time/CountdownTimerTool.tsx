@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "220 80% 55%";
 
@@ -72,7 +73,13 @@ const CountdownTimerTool = () => {
   );
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.DateTime(
+        "Countdown Timer",
+        "Create a countdown to any date and time",
+        "countdown-timer"
+      )}
+      <ToolLayout
       title="Countdown Timer"
       description="Create a countdown to any date and time"
       category="Date & Time"
@@ -245,6 +252,7 @@ const CountdownTimerTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

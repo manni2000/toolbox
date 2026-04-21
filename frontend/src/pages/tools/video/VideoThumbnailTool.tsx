@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "350 80% 55%";
 
@@ -105,7 +106,13 @@ const VideoThumbnailTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Video(
+        "Video Thumbnail Generator",
+        "Extract thumbnail images from video files at specific timestamps",
+        "video-thumbnail-generator"
+      )}
+      <ToolLayout
       title="Video Thumbnail Generator"
       description="Extract thumbnail images from video files at specific timestamps"
       category="Video Tools"
@@ -285,6 +292,7 @@ const VideoThumbnailTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "200 85% 50%";
 
@@ -85,7 +86,13 @@ const DNSLookupTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Internet(
+        "DNS Lookup",
+        "Query DNS records such as A, MX, TXT, NS, and more for any domain.",
+        "dns-lookup"
+      )}
+      <ToolLayout
       title="DNS Lookup"
       description="Query DNS records such as A, MX, TXT, NS, and more for any domain."
       category="Internet Tools"
@@ -403,7 +410,8 @@ const DNSLookupTool = () => {
 
     </div>
   </ToolLayout>
-);
+    </>
+  );
 };
 
 export default DNSLookupTool;

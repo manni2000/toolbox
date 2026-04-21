@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "200 85% 50%";
 
@@ -83,7 +84,13 @@ const WebsitePingTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Internet(
+        "Website Ping Test",
+        "Test website availability and response time.",
+        "website-ping-test"
+      )}
+      <ToolLayout
       title="Website Ping Test"
       description="Test website availability and response time."
       category="Internet Tools"
@@ -388,6 +395,7 @@ const WebsitePingTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

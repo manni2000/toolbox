@@ -16,6 +16,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "200 85% 50%";
 
@@ -101,7 +102,13 @@ const IPLookupTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Internet(
+        "IP Address Lookup",
+        "Find geographic location, ISP, and other information for any IP address.",
+        "ip-address-lookup"
+      )}
+      <ToolLayout
       title="IP Address Lookup"
       description="Find geographic location, ISP, and other information for any IP address."
       category="Internet Tools"
@@ -400,6 +407,7 @@ const IPLookupTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

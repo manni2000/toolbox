@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -102,7 +103,13 @@ const ColorConverterTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Text(
+        "Color Converter",
+        "Convert between HEX, RGB, and HSL color formats",
+        "color-converter"
+      )}
+      <ToolLayout
       title="Color Converter"
       description="Convert between HEX, RGB, and HSL color formats"
       category="Text Tools"
@@ -392,6 +399,7 @@ const ColorConverterTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

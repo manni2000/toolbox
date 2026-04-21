@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Calendar, Gift } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "220 80% 55%";
 
@@ -84,7 +85,13 @@ const AgeCalculatorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.DateTime(
+        "Age Calculator",
+        "Calculate your exact age from your birthdate",
+        "age-calculator"
+      )}
+      <ToolLayout
       title="Age Calculator"
       description="Calculate your exact age from your birthdate"
       category="Date & Time Tools"
@@ -226,7 +233,8 @@ const AgeCalculatorTool = () => {
       </div>
     </div>
   </ToolLayout>
-);
+    </>
+  );
 };
 
 const AgeUnit = ({ value, label }: { value: number; label: string }) => (

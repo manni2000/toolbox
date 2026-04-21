@@ -8,6 +8,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 70% 50%";
 
@@ -104,7 +105,13 @@ const PDFUnlockTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.PDF(
+        "PDF Unlocker",
+        "Remove password protection from PDF files",
+        "pdf-unlocker"
+      )}
+      <ToolLayout
       title="PDF Unlocker"
       description="Remove password protection from PDF files"
       category="PDF Tools"
@@ -291,6 +298,7 @@ const PDFUnlockTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

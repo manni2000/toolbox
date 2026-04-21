@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "260 70% 55%";
 
@@ -29,7 +30,13 @@ const WordCounterTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Text(
+        "Word & Character Counter",
+        "Count words, characters, sentences, and more",
+        "word--character-counter"
+      )}
+      <ToolLayout
       title="Word & Character Counter"
       description="Count words, characters, sentences, and more"
       category="Text Tools"
@@ -179,6 +186,7 @@ const WordCounterTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "145 70% 45%";
 
@@ -51,7 +52,13 @@ const SimpleInterestTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Education(
+        "Simple Interest Calculator",
+        "Calculate simple interest on principal amount",
+        "simple-interest-calculator"
+      )}
+      <ToolLayout
       title="Simple Interest Calculator"
       description="Calculate simple interest on principal amount"
       category="Education Tools"
@@ -300,6 +307,7 @@ const SimpleInterestTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

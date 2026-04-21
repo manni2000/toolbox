@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -96,7 +97,13 @@ export default function SecureNotesTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "Secure Notes",
+        "Encrypt and decrypt your sensitive notes with password protection",
+        "secure-notes"
+      )}
+      <ToolLayout
       title="Secure Notes"
       description="Encrypt and decrypt your sensitive notes with password protection"
       category="Security Tools"
@@ -432,5 +439,6 @@ export default function SecureNotesTool() {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -83,7 +84,13 @@ const PasswordStrengthTool = () => {
   const result = analyze();
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "Password Strength Checker",
+        "Analyze how strong your password is",
+        "password-strength-checker"
+      )}
+      <ToolLayout
       title="Password Strength Checker"
       description="Analyze how strong your password is"
       category="Security Tools"
@@ -279,6 +286,7 @@ const PasswordStrengthTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

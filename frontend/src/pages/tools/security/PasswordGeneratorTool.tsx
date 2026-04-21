@@ -3,6 +3,7 @@ import { Copy, Check, RefreshCw, Shield, Eye, EyeOff, Sparkles, Settings } from 
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
+import { CategorySEO } from "@/components/ToolSEO";
 import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 80% 55%";
@@ -97,12 +98,18 @@ function PasswordGeneratorTool() {
   const strength = getStrength();
 
   return (
-    <ToolLayout
-      title="Password Generator"
-      description="Generate secure random passwords instantly"
-      category="Security Tools"
-      categoryPath="/category/security"
-    >
+    <>
+      {CategorySEO.Security(
+        "Password Generator",
+        "Generate secure random passwords instantly",
+        "password-generator"
+      )}
+      <ToolLayout
+        title="Password Generator"
+        description="Generate secure random passwords instantly"
+        category="Security Tools"
+        categoryPath="/category/security"
+      >
       <div className="mx-auto max-w-2xl space-y-8">
         {/* Enhanced Hero Section */}
         <motion.div
@@ -331,6 +338,7 @@ function PasswordGeneratorTool() {
         ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

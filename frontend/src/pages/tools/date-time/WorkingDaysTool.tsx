@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "220 80% 55%";
 
@@ -48,7 +49,13 @@ const WorkingDaysTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.DateTime(
+        "Working Days Calculator",
+        "Calculate business days between two dates, excluding weekends",
+        "working-days-calculator"
+      )}
+      <ToolLayout
       title="Working Days Calculator"
       description="Calculate business days between two dates, excluding weekends"
       category="Date & Time"
@@ -187,6 +194,7 @@ const WorkingDaysTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

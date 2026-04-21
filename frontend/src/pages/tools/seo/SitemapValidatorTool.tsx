@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -223,7 +224,13 @@ const SitemapValidatorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "Sitemap Validator",
+        "Validate and analyze XML sitemats for SEO compliance and best practices",
+        "sitemap-validator"
+      )}
+      <ToolLayout
       title="Sitemap Validator"
       description="Validate and analyze XML sitemats for SEO compliance and best practices"
       category="SEO Tools"
@@ -526,6 +533,7 @@ const SitemapValidatorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

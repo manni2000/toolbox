@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PresetButtonGroup, PresetOption } from "@/components/ui/preset-button-group";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "145 70% 45%";
 
@@ -133,7 +134,13 @@ const UnitConverterTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Education(
+        "Unit Converter",
+        "Convert length, weight, temperature and more with precision",
+        "unit-converter"
+      )}
+      <ToolLayout
       title="Unit Converter"
       description="Convert length, weight, temperature and more with precision"
       category="Education Tools"
@@ -426,6 +433,7 @@ const UnitConverterTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

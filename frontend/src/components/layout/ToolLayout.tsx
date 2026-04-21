@@ -1,10 +1,9 @@
 import { ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ChevronRight, Home } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "./Header";
 import Footer from "./Footer";
-import SEOHelmet from "@/components/SEOHelmet";
 
 interface ToolLayoutProps {
   title: string;
@@ -15,22 +14,11 @@ interface ToolLayoutProps {
   children: ReactNode;
 }
 
-const ToolLayout = ({ title, description, category, categoryPath, toolSlug, children }: ToolLayoutProps) => {
-  const location = useLocation();
-  
+const ToolLayout = ({ title, description, category, categoryPath, children }: ToolLayoutProps) => {
   return (
-    <>
-      <SEOHelmet
-        title={title}
-        description={description}
-        category={category}
-        toolSlug={toolSlug}
-        url={`https://www.dailytools247.app${location.pathname}`}
-      />
-      <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col">
         <Header />
         <main id="main-content" className="flex-1" role="main">
-          {/* Breadcrumb */}
           <div className="border-b border-border bg-muted/30">
             <div className="container py-4">
               <nav className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm overflow-x-auto">
@@ -48,7 +36,6 @@ const ToolLayout = ({ title, description, category, categoryPath, toolSlug, chil
             </div>
           </div>
 
-          {/* Tool Header */}
           <section className="border-b border-border bg-gradient-to-b from-muted/50 to-background">
             <div className="container py-6 sm:py-8">
               <motion.div
@@ -62,7 +49,6 @@ const ToolLayout = ({ title, description, category, categoryPath, toolSlug, chil
             </div>
           </section>
 
-          {/* Tool Content */}
           <section className="py-6 sm:py-8">
             <div className="container">
               <motion.div
@@ -77,7 +63,6 @@ const ToolLayout = ({ title, description, category, categoryPath, toolSlug, chil
         </main>
         <Footer />
       </div>
-    </>
   );
 };
 

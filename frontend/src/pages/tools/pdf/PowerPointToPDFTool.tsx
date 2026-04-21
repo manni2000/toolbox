@@ -9,6 +9,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 70% 50%";
 
@@ -95,7 +96,13 @@ const PowerPointToPDFTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.PDF(
+        "PowerPoint to PDF",
+        "Convert PowerPoint presentations to PDF",
+        "powerpoint-to-pdf"
+      )}
+      <ToolLayout
       title="PowerPoint to PDF"
       description="Convert PowerPoint presentations to PDF"
       category="PDF Tools"
@@ -237,6 +244,7 @@ const PowerPointToPDFTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

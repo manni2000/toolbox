@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -71,7 +72,13 @@ const TokenCalculatorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Token Calculator",
+        "Estimate token count for LLM APIs",
+        "token-calculator"
+      )}
+      <ToolLayout
       title="Token Calculator"
       description="Estimate token count for LLM APIs"
       category="Developer Tools"
@@ -325,6 +332,7 @@ const TokenCalculatorTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -8,6 +8,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "280 70% 55%";
 
@@ -87,7 +88,13 @@ const CompressionZipTool = () => {
   const totalSize = files.reduce((acc, file) => acc + file.size, 0);
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.ZIP(
+        "Compression Level ZIP",
+        "Create ZIP archives with custom compression levels",
+        "compression-level-zip"
+      )}
+      <ToolLayout
       title="Compression Level ZIP"
       description="Create ZIP archives with custom compression levels"
       category="ZIP Tools"
@@ -391,6 +398,7 @@ const CompressionZipTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

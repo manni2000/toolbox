@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -319,7 +320,13 @@ Generated: ${new Date().toLocaleDateString()}
   const completionRate = Math.round((completedCount / totalCount) * 100);
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "Page Speed Checklist Generator",
+        "Generate comprehensive page speed optimization checklists for better performance",
+        "page-speed-checklist-generator"
+      )}
+      <ToolLayout
       title="Page Speed Checklist Generator"
       description="Generate comprehensive page speed optimization checklists for better performance"
       category="SEO Tools"
@@ -644,6 +651,7 @@ Generated: ${new Date().toLocaleDateString()}
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

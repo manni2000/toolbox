@@ -8,6 +8,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "280 70% 55%";
 
@@ -67,7 +68,13 @@ const CreateZipTool = () => {
   const totalSize = files.reduce((acc, file) => acc + file.size, 0);
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.ZIP(
+        "Create ZIP",
+        "Create ZIP archives from multiple files",
+        "create-zip"
+      )}
+      <ToolLayout
       title="Create ZIP"
       description="Create ZIP archives from multiple files"
       category="ZIP Tools"
@@ -334,6 +341,7 @@ const CreateZipTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

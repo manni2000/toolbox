@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -233,7 +234,13 @@ const EnvironmentVariableTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Environment Variable Generator",
+        "Generate and manage environment variables for different platforms and frameworks",
+        "environment-variable-generator"
+      )}
+      <ToolLayout
       title="Environment Variable Generator"
       description="Generate and manage environment variables for different platforms and frameworks"
       category="Developer Tools"
@@ -629,6 +636,7 @@ const EnvironmentVariableTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

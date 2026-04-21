@@ -9,6 +9,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { useToast } from "@/hooks/use-toast";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -162,7 +163,13 @@ const ImageResizeTool = () => {
   ];
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Image Resize",
+        "Resize images to any custom dimension or use preset sizes",
+        "image-resize"
+      )}
+      <ToolLayout
       title="Image Resize"
       description="Resize images to any custom dimension or use preset sizes"
       category="Image Tools"
@@ -453,6 +460,7 @@ const ImageResizeTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

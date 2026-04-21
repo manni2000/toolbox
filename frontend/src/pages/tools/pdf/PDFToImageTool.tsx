@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 70% 50%";
 
@@ -172,7 +173,13 @@ const PDFToImageTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.PDF(
+        "PDF to Images",
+        "Convert PDF pages to image files",
+        "pdf-to-images"
+      )}
+      <ToolLayout
       title="PDF to Images"
       description="Convert PDF pages to image files"
       category="PDF Tools"
@@ -372,6 +379,7 @@ const PDFToImageTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

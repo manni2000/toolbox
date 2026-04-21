@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "220 80% 55%";
 
@@ -188,7 +189,13 @@ const WorldTimeTool = () => {
   const popularTimezones = timezones.filter(tz => tz.popularity >= 85).slice(0, 4);
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.DateTime(
+        "World Time",
+        "View current time across different time zones worldwide with real-time updates and advanced features",
+        "world-time"
+      )}
+      <ToolLayout
       title="World Time"
       description="View current time across different time zones worldwide with real-time updates and advanced features"
       category="Date & Time"
@@ -623,6 +630,7 @@ const WorldTimeTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -8,6 +8,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -120,7 +121,13 @@ const ImageCropTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Image Crop Tool",
+        "Crop images with custom dimensions or preset aspect ratios",
+        "image-crop-tool"
+      )}
+      <ToolLayout
       title="Image Crop Tool"
       description="Crop images with custom dimensions or preset aspect ratios"
       category="Image Tools"
@@ -361,6 +368,7 @@ const ImageCropTool = () => {
         ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

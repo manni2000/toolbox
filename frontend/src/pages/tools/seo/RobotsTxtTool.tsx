@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -168,7 +169,13 @@ const RobotsTxtTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "Robots.txt Generator",
+        "Generate professional robots.txt files to control search engine crawling",
+        "robotstxt-generator"
+      )}
+      <ToolLayout
       title="Robots.txt Generator"
       description="Generate professional robots.txt files to control search engine crawling"
       category="SEO Tools"
@@ -581,6 +588,7 @@ const RobotsTxtTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

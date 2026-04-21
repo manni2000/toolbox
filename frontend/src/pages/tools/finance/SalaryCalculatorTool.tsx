@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -73,7 +74,13 @@ const SalaryCalculatorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "Salary Calculator",
+        "Convert salary between hourly, daily, weekly, monthly, and yearly",
+        "salary-calculator"
+      )}
+      <ToolLayout
       title="Salary Calculator"
       description="Convert salary between hourly, daily, weekly, monthly, and yearly"
       category="Finance Tools"
@@ -325,6 +332,7 @@ const SalaryCalculatorTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

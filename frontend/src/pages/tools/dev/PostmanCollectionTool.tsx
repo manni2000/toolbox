@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -274,7 +275,13 @@ const PostmanCollectionTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Postman Collection Generator",
+        "Generate Postman collections for API testing and documentation",
+        "postman-collection-generator"
+      )}
+      <ToolLayout
       title="Postman Collection Generator"
       description="Generate Postman collections for API testing and documentation"
       category="Developer Tools"
@@ -631,6 +638,7 @@ const PostmanCollectionTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

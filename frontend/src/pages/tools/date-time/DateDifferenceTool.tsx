@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "220 80% 55%";
 
@@ -64,7 +65,13 @@ const DateDifferenceTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.DateTime(
+        "Date Difference Calculator",
+        "Calculate the difference between two dates",
+        "date-difference-calculator"
+      )}
+      <ToolLayout
       title="Date Difference Calculator"
       description="Calculate the difference between two dates"
       category="Date & Time"
@@ -205,6 +212,7 @@ const DateDifferenceTool = () => {
       ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

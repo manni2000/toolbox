@@ -14,6 +14,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "200 85% 50%";
 
@@ -128,7 +129,13 @@ const SSLCheckerTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Internet(
+        "SSL Certificate Checker",
+        "Verify SSL certificate validity, issuer, and expiry date for any domain.",
+        "ssl-certificate-checker"
+      )}
+      <ToolLayout
       title="SSL Certificate Checker"
       description="Verify SSL certificate validity, issuer, and expiry date for any domain."
       category="Internet Tools"
@@ -392,6 +399,7 @@ const SSLCheckerTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

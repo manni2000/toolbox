@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -118,7 +119,13 @@ export default function SaaSPricingCalculatorTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "SaaS Pricing Calculator",
+        "Calculate optimal pricing, revenue projections, and unit economics",
+        "saas-pricing-calculator"
+      )}
+      <ToolLayout
       title="SaaS Pricing Calculator"
       description="Calculate optimal pricing, revenue projections, and unit economics"
       category="Finance Tools"
@@ -490,5 +497,6 @@ export default function SaaSPricingCalculatorTool() {
         ]} />
         </div>
     </ToolLayout>
+      </>
   );
 }

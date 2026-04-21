@@ -8,6 +8,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
+import { CategorySEO } from "@/components/ToolSEO";
 import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "350 80% 55%";
@@ -104,28 +105,34 @@ const VideoSpeedTool = () => {
     }
   };
   return (
-    <ToolLayout
-      title="Video Speed Controller"
-      description="Change video playback speed - speed up or slow down videos"
-      category="Video Tools"
-      categoryPath="/category/video"
-    >
-      <div className="space-y-6">
-        {/* Upload Area */}
-        {!file && (
-          <VideoUploadZone
-            isDragging={isDragging}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            onClick={() => {}}
-            onFileSelect={handleFile}
-            multiple={false}
-            title="Drop video file here or click to browse"
-            subtitle="Supports MP4, AVI, MOV, WebM up to 50MB"
-          />
-        )}
+    <>
+      {CategorySEO.Video(
+        "Video Speed Controller",
+        "Change video playback speed from 0.5x to 2x",
+        "video-speed"
+      )}
+      <ToolLayout
+        title="Video Speed Controller"
+        description="Change video playback speed from 0.5x to 2x"
+        category="Video Tools"
+        categoryPath="/category/video"
+      >
+        <div className="space-y-6">
+          {/* Upload Area */}
+          {!file && (
+            <VideoUploadZone
+              isDragging={isDragging}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onClick={() => {}}
+              onFileSelect={handleFile}
+              multiple={false}
+              title="Drop video file here or click to browse"
+              subtitle="Supports MP4, AVI, MOV, WebM up to 50MB"
+            />
+          )}
 
         {file && (
           <div className="space-y-6">
@@ -295,6 +302,7 @@ const VideoSpeedTool = () => {
         ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

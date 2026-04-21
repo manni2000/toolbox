@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "35 85% 55%";
 
@@ -126,7 +127,13 @@ export default function EMIComparisonTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Finance(
+        "EMI Comparison Calculator",
+        "Compare multiple loan options to find the best EMI deal",
+        "emi-comparison-calculator"
+      )}
+      <ToolLayout
       title="EMI Comparison Calculator"
       description="Compare multiple loan options to find the best EMI deal"
       category="Finance Tools"
@@ -507,5 +514,6 @@ export default function EMIComparisonTool() {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 }

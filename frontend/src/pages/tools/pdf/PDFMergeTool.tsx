@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
+import { CategorySEO } from "@/components/ToolSEO";
 import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 70% 50%";
@@ -71,12 +72,18 @@ const PDFMergeTool = () => {
   };
 
   return (
-    <ToolLayout
-      title="PDF Merge"
-      description="Combine multiple PDF files into one document"
-      category="PDF Tools"
-      categoryPath="/category/pdf"
-    >
+    <>
+      {CategorySEO.PDF(
+        "PDF Merge",
+        "Combine multiple PDF files into one document",
+        "pdf-merge"
+      )}
+      <ToolLayout
+        title="PDF Merge"
+        description="Combine multiple PDF files into one document"
+        category="PDF Tools"
+        categoryPath="/category/pdf"
+      >
       <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
@@ -280,6 +287,7 @@ const PDFMergeTool = () => {
         ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

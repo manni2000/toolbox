@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "330 80% 55%";
 
@@ -58,7 +59,13 @@ const HashtagGeneratorTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "Hashtag Generator",
+        "Generate relevant hashtags for social media engagement",
+        "hashtag-generator"
+      )}
+      <ToolLayout
       title="Hashtag Generator"
       description="Generate relevant hashtags for social media engagement"
       category="Social Media"
@@ -344,6 +351,7 @@ const HashtagGeneratorTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

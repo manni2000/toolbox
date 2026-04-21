@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -72,7 +73,13 @@ export default function DataBreachEmailCheckerTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "Data Breach Email Checker",
+        "Check if your email has been exposed in known data breaches",
+        "data-breach-email-checker"
+      )}
+      <ToolLayout
       title="Data Breach Email Checker"
       description="Check if your email has been exposed in known data breaches"
       category="Security Tools"
@@ -372,5 +379,6 @@ export default function DataBreachEmailCheckerTool() {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };

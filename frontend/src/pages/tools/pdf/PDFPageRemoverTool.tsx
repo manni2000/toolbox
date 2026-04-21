@@ -9,6 +9,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 70% 50%";
 
@@ -92,7 +93,13 @@ const PDFPageRemoverTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.PDF(
+        "PDF Page Remover",
+        "Remove specific pages from your PDF document",
+        "pdf-page-remover"
+      )}
+      <ToolLayout
       title="PDF Page Remover"
       description="Remove specific pages from your PDF document"
       category="PDF Tools"
@@ -256,6 +263,7 @@ const PDFPageRemoverTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

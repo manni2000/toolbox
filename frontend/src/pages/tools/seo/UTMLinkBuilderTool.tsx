@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -172,7 +173,13 @@ const UTMLinkBuilderTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "UTM Link Builder",
+        "Create UTM-tagged URLs for tracking marketing campaigns and traffic sources",
+        "utm-link-builder"
+      )}
+      <ToolLayout
       title="UTM Link Builder"
       description="Create UTM-tagged URLs for tracking marketing campaigns and traffic sources"
       category="SEO Tools"
@@ -521,6 +528,7 @@ const UTMLinkBuilderTool = () => {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 };
 

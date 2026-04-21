@@ -12,6 +12,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "290 80% 55%";
 
@@ -172,7 +173,13 @@ const AudioSpeedTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Audio(
+        "Audio Speed Changer",
+        "Change audio playback speed from 0.5x to 2x while keeping pitch intact.",
+        "audio-speed-changer"
+      )}
+      <ToolLayout
       title="Audio Speed Changer"
       description="Change audio playback speed from 0.5x to 2x while keeping pitch intact."
       category="Audio Tools"
@@ -433,6 +440,7 @@ const AudioSpeedTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

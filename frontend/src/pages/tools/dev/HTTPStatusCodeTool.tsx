@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -268,7 +269,13 @@ const HTTPStatusCodeTool = () => {
   ];
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "HTTP Status Code Explainer",
+        "Comprehensive guide to HTTP status codes with meanings, causes, and solutions",
+        "http-status-code-explainer"
+      )}
+      <ToolLayout
       title="HTTP Status Code Explainer"
       description="Comprehensive guide to HTTP status codes with meanings, causes, and solutions"
       category="Developer Tools"
@@ -516,6 +523,7 @@ const HTTPStatusCodeTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { FormulaCard } from "@/components/ui/formula-card";
 import { ComparisonCard } from "@/components/ui/comparison-card";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "145 70% 45%";
 
@@ -63,7 +64,13 @@ const CompoundInterestTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Education(
+        "Compound Interest Calculator",
+        "Calculate compound interest with different compounding frequencies",
+        "compound-interest-calculator"
+      )}
+      <ToolLayout
       title="Compound Interest Calculator"
       description="Calculate compound interest with different compounding frequencies"
       category="Education Tools"
@@ -462,6 +469,7 @@ const CompoundInterestTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

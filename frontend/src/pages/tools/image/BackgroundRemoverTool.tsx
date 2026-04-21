@@ -8,6 +8,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -108,12 +109,18 @@ const BackgroundRemoverTool = () => {
   };
 
   return (
-    <ToolLayout
-      title="Image Background Remover"
-      description="Remove backgrounds from images automatically"
-      category="Image Tools"
-      categoryPath="/category/image"
-    >
+    <>
+      {CategorySEO.Image(
+        "Image Background Remover",
+        "Remove backgrounds from images automatically",
+        "background-remover"
+      )}
+      <ToolLayout
+        title="Image Background Remover"
+        description="Remove backgrounds from images automatically"
+        category="Image Tools"
+        categoryPath="/category/image"
+      >
       <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
@@ -330,6 +337,7 @@ const BackgroundRemoverTool = () => {
         ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "0 80% 55%";
 
@@ -72,7 +73,13 @@ export default function EXIFLocationRemoverTool() {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Security(
+        "EXIF Location Remover",
+        "Remove GPS location data from images to protect privacy",
+        "exif-location-remover"
+      )}
+      <ToolLayout
       title="EXIF Location Remover"
       description="Remove GPS location data from images to protect privacy"
       category="Security Tools"
@@ -365,5 +372,6 @@ export default function EXIFLocationRemoverTool() {
         ]} />
       </div>
     </ToolLayout>
+      </>
   );
 }

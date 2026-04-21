@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { API_URLS } from "@/lib/api-complete";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -153,12 +154,18 @@ const EXIFViewerTool = () => {
   );
 
   return (
-    <ToolLayout
-      title="EXIF Metadata Viewer"
-      description="View camera settings, GPS data, and other metadata from photos"
-      category="Image Tools"
-      categoryPath="/category/image"
-    >
+    <>
+      {CategorySEO.Image(
+        "EXIF Metadata Viewer",
+        "View camera settings, GPS data, and other metadata from photos",
+        "exif-viewer"
+      )}
+      <ToolLayout
+        title="EXIF Metadata Viewer"
+        description="View camera settings, GPS data, and other metadata from photos"
+        category="Image Tools"
+        categoryPath="/category/image"
+      >
       <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
@@ -384,6 +391,7 @@ const EXIFViewerTool = () => {
         ]} />
       </div>
     </ToolLayout>
+    </>
   );
 };
 

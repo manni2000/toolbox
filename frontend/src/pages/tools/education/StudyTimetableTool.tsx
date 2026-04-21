@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "145 70% 45%";
 
@@ -73,7 +74,13 @@ const StudyTimetableTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Education(
+        "Study Timetable Generator",
+        "Create personalized study schedules with break times",
+        "study-timetable-generator"
+      )}
+      <ToolLayout
       title="Study Timetable Generator"
       description="Create personalized study schedules with break times"
       category="Education Tools"
@@ -279,6 +286,7 @@ const StudyTimetableTool = () => {
         </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "173 80% 40%";
 
@@ -91,7 +92,13 @@ const WebPToPNGConverter = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "WebP to PNG Converter",
+        "Convert WebP images to PNG format with full quality preservation",
+        "webp-to-png-converter"
+      )}
+      <ToolLayout
       title="WebP to PNG Converter"
       description="Convert WebP images to PNG format with full quality preservation"
       category="Image Tools"
@@ -365,6 +372,7 @@ const WebPToPNGConverter = () => {
       </div>
     </div>
     </ToolLayout>
+      </>
   );
 };
 

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "210 80% 55%";
 
@@ -157,7 +158,13 @@ const JsonToTypeScriptTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Image(
+        "JSON to TypeScript Interface Generator",
+        "Convert JSON objects to TypeScript interfaces with automatic type inference",
+        "json-to-typescript-interface-generator"
+      )}
+      <ToolLayout
       title="JSON to TypeScript Interface Generator"
       description="Convert JSON objects to TypeScript interfaces with automatic type inference"
       category="Developer Tools"
@@ -438,6 +445,7 @@ const JsonToTypeScriptTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 

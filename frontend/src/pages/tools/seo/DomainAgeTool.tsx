@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "25 90% 50%";
 
@@ -140,7 +141,13 @@ const DomainAgeTool = () => {
   };
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.SEO(
+        "Domain Age Checker",
+        "Check domain age and expiration dates for SEO analysis and domain management",
+        "domain-age-checker"
+      )}
+      <ToolLayout
       title="Domain Age Checker"
       description="Check domain age and expiration dates for SEO analysis and domain management"
       category="SEO Tools"
@@ -457,6 +464,7 @@ const DomainAgeTool = () => {
 
       </div>
     </ToolLayout>
+      </>
   );
 };
 

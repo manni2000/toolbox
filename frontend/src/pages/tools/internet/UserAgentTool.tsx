@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
 
 const categoryColor = "200 85% 50%";
 
@@ -206,7 +207,13 @@ const UserAgentTool = () => {
   const DeviceIcon = parsed?.isMobile ? Smartphone : Laptop;
 
   return (
-    <ToolLayout
+    <>
+      {CategorySEO.Internet(
+        "User-Agent Parser",
+        "Parse and analyze browser user-agent strings for detailed information.",
+        "user-agent-parser"
+      )}
+      <ToolLayout
       title="User-Agent Parser"
       description="Parse and analyze browser user-agent strings for detailed information."
       category="Internet Tools"
@@ -494,6 +501,7 @@ const UserAgentTool = () => {
       </div>
       </div>
     </ToolLayout>
+      </>
   );
 };
 
