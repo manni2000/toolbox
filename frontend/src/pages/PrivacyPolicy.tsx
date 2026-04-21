@@ -19,7 +19,7 @@ const PrivacyPolicy = () => {
                 Privacy Policy
               </h1>
               <p className="mt-4 text-muted-foreground">
-                Last updated: January 22, 2026
+                Last updated: April 18, 2026
               </p>
             </motion.div>
           </div>
@@ -111,8 +111,8 @@ const PrivacyPolicy = () => {
                   <h2 className="text-xl font-semibold mb-4">Contact Us</h2>
                   <p className="text-muted-foreground">
                     If you have any questions about this Privacy Policy, please contact us at{" "}
-                    <a href="mailto:privacy@toolbox.com" className="text-primary hover:underline">
-                      privacy@toolbox.com
+                    <a href="mailto:manishmandal9734@gmail.com" className="text-primary hover:underline">
+                      manishmandal9734@gmail.com
                     </a>
                   </p>
                 </div>

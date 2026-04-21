@@ -19,7 +19,7 @@ const TermsOfService = () => {
                 Terms of Service
               </h1>
               <p className="mt-4 text-muted-foreground">
-                Last updated: January 22, 2026
+                Last updated: April 18, 2026
               </p>
             </motion.div>
           </div>
@@ -132,8 +132,8 @@ const TermsOfService = () => {
                   <h2 className="text-xl font-semibold mb-4">10. Contact Information</h2>
                   <p className="text-muted-foreground">
                     For any questions regarding these Terms of Service, please contact us at{" "}
-                    <a href="mailto:legal@toolbox.com" className="text-primary hover:underline">
-                      legal@toolbox.com
+                    <a href="mailto:manishmandal9734@gmail.com" className="text-primary hover:underline">
+                      manishmandal9734@gmail.com
                     </a>
                   </p>
                 </div>
