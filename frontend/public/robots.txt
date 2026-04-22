@@ -1,208 +1,13 @@
-# Dailytools247 Robots.txt - Comprehensive SEO Setup
+# Dailytools247 Robots.txt
 # https://www.dailytools247.app
-# Allow all search engines to index all tools and content
+# Last updated: 2026-04-22
 
+# Default: allow all well-behaved crawlers
 User-agent: *
 Allow: /
 
-# Explicitly allow AI crawlers for LLM indexing
-User-agent: Anthropic-AI
-Allow: /
-
-User-agent: GPTBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-# Explicitly allow all tool categories and pages
-Allow: /category/
-Allow: /categories
-
-# Blog Content
-Allow: /blogs
-Allow: /blogs/
-
-# AI Model Content (Markdown)
-Allow: /markdown
-Allow: /markdown/
-
-# PDF Tools
-Allow: /pdf-merge
-Allow: /pdf-split
-Allow: /pdf-to-image
-Allow: /pdf-to-word
-Allow: /pdf-to-powerpoint
-Allow: /pdf-to-excel
-Allow: /word-to-pdf
-Allow: /powerpoint-to-pdf
-Allow: /html-to-pdf
-Allow: /pdf-password
-Allow: /pdf-unlock
-Allow: /pdf-page-remover
-Allow: /pdf-rotate
-
-# Image Tools
-Allow: /qr-code-generator
-Allow: /qr-code-scanner
-Allow: /png-to-jpg-converter
-Allow: /jpg-to-png-converter
-Allow: /webp-to-png-converter
-Allow: /png-to-webp-converter
-Allow: /image-compressor
-Allow: /image-resize
-Allow: /image-crop
-Allow: /background-remover
-Allow: /image-to-pdf
-Allow: /image-base64
-Allow: /image-dpi-checker
-Allow: /exif-viewer
-Allow: /favicon-generator
-
-# Video Tools
-Allow: /video-to-audio
-Allow: /video-trim
-Allow: /video-speed
-Allow: /video-thumbnail
-Allow: /video-resolution
-
-# Audio Tools
-Allow: /audio-converter
-Allow: /speech-to-text
-Allow: /audio-trimmer
-Allow: /audio-merger
-
-# Text Tools
-Allow: /word-counter
-Allow: /case-converter
-Allow: /remove-spaces
-Allow: /line-sorter
-Allow: /duplicate-remover
-Allow: /markdown-to-html
-Allow: /text-summarizer
-Allow: /text-diff
-
-# Security Tools
-Allow: /password-generator
-Allow: /password-strength
-Allow: /hash-generator
-Allow: /base64-encoder
-Allow: /uuid-generator
-Allow: /password-strength-explainer
-Allow: /data-breach-email-checker
-Allow: /file-hash-comparison
-Allow: /exif-location-remover
-Allow: /text-redaction
-Allow: /qr-phishing-scanner
-Allow: /secure-notes
-Allow: /url-reputation-checker
-
-# Date & Time Tools
-Allow: /date-difference
-Allow: /age-calculator
-Allow: /working-days-calculator
-Allow: /countdown-timer
-Allow: /world-time
-
-# Developer Tools
-Allow: /json-formatter
-Allow: /regex-tester
-Allow: /jwt-decoder
-Allow: /url-encoder
-Allow: /color-converter
-Allow: /lorem-ipsum-generator
-Allow: /cron-generator
-Allow: /http-header-checker
-Allow: /token-calculator
-Allow: /color-palettes
-Allow: /api-response-formatter
-Allow: /json-to-typescript-interface
-Allow: /sql-query-beautifier
-Allow: /jwt-token-expiry-calculator
-Allow: /environment-variable-generator
-Allow: /postman-collection-generator
-Allow: /dockerfile-generator
-Allow: /curl-to-axios-converter
-Allow: /http-status-code-explainer
-
-# Internet Tools
-Allow: /ip-lookup
-Allow: /user-agent-parser
-Allow: /dns-lookup
-Allow: /ssl-checker
-Allow: /website-ping
-Allow: /website-screenshot
-
-# Education Tools
-Allow: /scientific-calculator
-Allow: /percentage-calculator
-Allow: /unit-converter
-Allow: /compound-interest-calculator
-Allow: /simple-interest-calculator
-Allow: /cgpa-to-percentage
-Allow: /lcm-hcf-calculator
-Allow: /study-timetable-generator
-Allow: /mcq-generator
-
-# Finance Tools
-Allow: /emi-calculator
-Allow: /gst-calculator
-Allow: /salary-calculator
-Allow: /currency-converter
-Allow: /startup-burn-rate-calculator
-Allow: /saas-pricing-calculator
-Allow: /emi-comparison
-Allow: /tax-slab-analyzer
-Allow: /invoice-generator
-Allow: /profit-margin-calculator
-Allow: /freelancer-rate-calculator
-Allow: /stock-cagr-calculator
-Allow: /budget-planner
-Allow: /salary-breakup-generator
-Allow: /mutual-fund-calculator
-Allow: /lumpsum-calculator
-Allow: /recurring-deposit-calculator
-Allow: /inflation-calculator
-Allow: /roi-calculator
-Allow: /sip-calculator
-
-# ZIP Tools
-Allow: /create-zip
-Allow: /extract-zip
-Allow: /password-zip
-Allow: /compression-zip
-
-# Social Media Tools
-Allow: /hashtag-generator
-Allow: /bio-generator
-Allow: /caption-formatter
-Allow: /line-break-generator
-Allow: /link-in-bio
-Allow: /whatsapp-status-generator
-Allow: /meme-generator
-
-# SEO Tools
-Allow: /meta-title-description-generator
-Allow: /keyword-density-checker
-Allow: /robots-txt-generator
-Allow: /sitemap-validator
-Allow: /page-speed-checklist-generator
-Allow: /og-image-preview-tool
-Allow: /broken-image-finder
-Allow: /utm-link-builder
-Allow: /domain-age-checker
-Allow: /tech-stack-detector
-Allow: /page-seo-analyzer
-
-# Disallow sensitive and system directories
+# Block sensitive/system directories
 Disallow: /admin/
-Disallow: /api/
 Disallow: /_next/
 Disallow: /.git/
 Disallow: /node_modules/
@@ -210,12 +15,45 @@ Disallow: /src/
 Disallow: /build/
 Disallow: /dist/
 
-# Allow API documentation (exception to /api/ disallow)
+# Block raw API endpoints (not meant for crawling)
+# Exception: /api/v1/docs is public documentation — handled below
+Disallow: /api/
+
+# Public API docs (more specific rule overrides the /api/ disallow above)
 Allow: /api/v1/docs
 
-# AI crawler directive
-# Refer to llms.txt for AI model content indexing
-# https://www.dailytools247.app/llms.txt
+# AI / LLM crawlers — explicitly permitted
+# Refer to https://www.dailytools247.app/llms.txt
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GoogleExtendedBot
+Allow: /
+ 
+User-agent: cohere-ai
+Allow: /
+ 
+User-agent: meta-externalagent
+Allow: /
 
 # Sitemap location
 Sitemap: https://www.dailytools247.app/sitemap.xml

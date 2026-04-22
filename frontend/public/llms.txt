@@ -44,6 +44,8 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /jpg-to-png-converter - Convert JPG to PNG
 /webp-to-png-converter - Convert WebP to PNG
 /png-to-webp-converter - Convert PNG to WebP
+/webp-to-jpg-converter - Convert WebP to JPG
+/jpg-to-webp-converter - Convert JPG to WebP
 /image-resize - Resize images to desired dimensions
 /image-crop - Crop images to specific areas
 /image-to-pdf - Convert images to PDF
@@ -210,6 +212,8 @@ DailyTools247 provides 100+ free online tools including PDF, image, developer, a
 /markdown/jpg-to-png-converter.md - JPG to PNG converter documentation
 /markdown/webp-to-png-converter.md - WebP to PNG converter documentation
 /markdown/png-to-webp-converter.md - PNG to WebP converter documentation
+/markdown/webp-to-jpg-converter.md - WebP to JPG converter documentation
+/markdown/jpg-to-webp-converter.md - JPG to WebP converter documentation
 /markdown/image-resize.md - Image Resize tool documentation
 /markdown/image-crop.md - Image Crop tool documentation
 /markdown/image-to-pdf.md - Image to PDF converter documentation

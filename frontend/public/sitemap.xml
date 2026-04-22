@@ -2,21 +2,21 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-              http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+              https://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
   <sitemap>
     <loc>https://www.dailytools247.app/sitemap-pages.xml</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-22</lastmod>
   </sitemap>
 
   <sitemap>
     <loc>https://www.dailytools247.app/sitemap-tools.xml</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-22</lastmod>
   </sitemap>
 
   <sitemap>
     <loc>https://www.dailytools247.app/sitemap-blog.xml</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-22</lastmod>
   </sitemap>
 
 </sitemapindex>

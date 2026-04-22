@@ -2,20 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+        https://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
   <!-- Blog Section -->
   <url>
     <loc>https://www.dailytools247.app/blogs</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-22</lastmod>
     <priority>0.8</priority>
   </url>
-  <url><loc>https://www.dailytools247.app/blogs/top-25-free-online-tools-2026</loc><lastmod>2026-04-20</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/blogs/best-free-image-converter-compressor-tools</loc><lastmod>2026-04-20</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/blogs/powerful-online-developer-tools-no-install</loc><lastmod>2026-04-20</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/blogs/how-to-convert-pdf-to-word-online-free</loc><lastmod>2026-04-20</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/blogs/free-online-tools-replace-expensive-software-2026</loc><lastmod>2026-04-20</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/blogs/top-free-seo-tools-online-for-bloggers</loc><lastmod>2026-04-20</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.dailytools247.app/blogs/top-free-text-security-tools-online</loc><lastmod>2026-04-20</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/blogs/top-25-free-online-tools-2026</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/blogs/best-free-image-converter-compressor-tools</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/blogs/powerful-online-developer-tools-no-install</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/blogs/how-to-convert-pdf-to-word-online-free</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/blogs/free-online-tools-replace-expensive-software-2026</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/blogs/top-free-seo-tools-online-for-bloggers</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/blogs/top-free-text-security-tools-online</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
 
 </urlset>
