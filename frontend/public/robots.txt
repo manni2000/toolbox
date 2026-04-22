@@ -219,6 +219,3 @@ Allow: /api/v1/docs
 
 # Sitemap location
 Sitemap: https://www.dailytools247.app/sitemap.xml
-
-# Crawl delay for polite crawling
-Crawl-delay: 1

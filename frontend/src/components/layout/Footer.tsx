@@ -96,6 +96,8 @@ const Footer = () => {
     { name: "JPG to PNG Converter", path: "/jpg-to-png-converter" },
     { name: "WebP to PNG Converter", path: "/webp-to-png-converter" },
     { name: "PNG to WebP Converter", path: "/png-to-webp-converter" },
+    { name: "WebP to JPG Converter", path: "/webp-to-jpg-converter" },
+    { name: "JPG to WebP Converter", path: "/jpg-to-webp-converter" },
     { name: "Image Compressor", path: "/image-compressor" },
     { name: "Image Resize", path: "/image-resize" },
     { name: "Image Crop", path: "/image-crop" },

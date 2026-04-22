@@ -126,7 +126,7 @@ const BlogPostPage = () => {
         description={post.description}
         keywords={[post.keywords]}
         canonical={`https://www.dailytools247.app/blogs/${post.slug}`}
-        ogImage={post.image}
+        image={post.image}
         ogType="article"
       />
       <Helmet>

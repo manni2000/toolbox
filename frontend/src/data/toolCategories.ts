@@ -48,6 +48,8 @@ export const toolCategories: ToolCategory[] = [
       { id: "jpg-to-png-converter", name: "JPG to PNG Converter", description: "Convert JPG images to PNG with transparency support", path: "/jpg-to-png-converter", isAvailable: true },
       { id: "webp-to-png-converter", name: "WebP to PNG Converter", description: "Convert WebP images to PNG for better compatibility", path: "/webp-to-png-converter", isAvailable: true },
       { id: "png-to-webp-converter", name: "PNG to WebP Converter", description: "Convert PNG images to WebP for web optimization", path: "/png-to-webp-converter", isAvailable: true },
+      { id: "webp-to-jpg-converter", name: "WebP to JPG Converter", description: "Convert WebP images to JPG with adjustable quality", path: "/webp-to-jpg-converter", isAvailable: true },
+      { id: "jpg-to-webp-converter", name: "JPG to WebP Converter", description: "Convert JPG images to WebP for better compression", path: "/jpg-to-webp-converter", isAvailable: true },
       { id: "image-compressor", name: "Image Compressor", description: "Compress images while maintaining quality", path: "/image-compressor", isAvailable: true },
       { id: "image-resize", name: "Image Resize Tool", description: "Resize images to any dimension", path: "/image-resize", isAvailable: true },
       { id: "image-crop", name: "Image Crop Tool", description: "Crop images with custom dimensions", path: "/image-crop", isAvailable: true },

@@ -71,6 +71,8 @@ export const existingTools = [
   'jpg-to-png-converter',
   'webp-to-png-converter',
   'png-to-webp-converter',
+  'webp-to-jpg-converter',
+  'jpg-to-webp-converter',
   'image-compressor',
   'image-resize',
   'image-crop',

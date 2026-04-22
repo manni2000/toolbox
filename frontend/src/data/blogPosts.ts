@@ -234,9 +234,9 @@ export const blogPosts: BlogPost[] = [
           "For social use, add quick resize and crop steps so your visuals fit platform dimensions without quality loss.",
         ],
         links: [
-          { label: "webp to JPG Converter", path: "/webp-to-jpg-converter" },
-          { label: "JPG to webp Converter", path: "/jpg-to-webp-converter" },
-          { label: "WebP to webp Converter", path: "/webp-to-webp-converter" },
+          { label: "WebP to JPG Converter", path: "/webp-to-jpg-converter" },
+          { label: "JPG to WebP Converter", path: "/jpg-to-webp-converter" },
+          { label: "WebP to PNG Converter", path: "/webp-to-png-converter" },
           { label: "Image Compressor", path: "/image-compressor" },
           { label: "Image Resize", path: "/image-resize" },
         ],
