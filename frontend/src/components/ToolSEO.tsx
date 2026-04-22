@@ -9,46 +9,36 @@ interface ToolSEOProps {
   toolSlug?: string;
 }
 
-
 export const ToolSEO = ({ toolName, toolDescription, category, keywords = [], toolSlug }: ToolSEOProps) => {
   const enhancedMetadata = toolSlug ? getToolSeoMetadata(toolSlug) : null;
 
   const description = enhancedMetadata?.description || toolDescription;
   const title = enhancedMetadata?.title || toolName;
 
-  // Focus on high-value keywords only (5-10 max)
   const getOptimizedKeywords = () => {
     const keywordSet = new Set<string>();
 
-    // Priority 1: Tool-specific keywords from enhanced metadata (most relevant)
     if (enhancedMetadata?.keywords) {
       enhancedMetadata.keywords.slice(0, 3).forEach(k => keywordSet.add(k.toLowerCase()));
     }
 
-    // Priority 2: Top long-tail keywords (high search intent)
     if (enhancedMetadata?.longTailKeywords) {
       enhancedMetadata.longTailKeywords.slice(0, 2).forEach(k => keywordSet.add(k.toLowerCase()));
     }
 
-    // Priority 3: Tool name (essential)
     keywordSet.add(toolName.toLowerCase());
 
-    // Priority 4: Category (for context)
     keywordSet.add(category.toLowerCase());
 
-    // Priority 5: Category-specific keywords (from passed keywords)
     keywords.slice(0, 5).forEach(k => keywordSet.add(k.toLowerCase()));
 
-    // Priority 6: Brand name
     keywordSet.add('dailytools247');
 
-    // Priority 7: Slug keywords (for URL relevance)
     if (toolSlug) {
       const slugParts = toolSlug.split('-').filter(Boolean);
       slugParts.slice(0, 2).forEach(part => keywordSet.add(part.toLowerCase()));
     }
 
-    // Convert to array and limit to 10
     return Array.from(keywordSet).slice(0, 10);
   };
 
@@ -287,6 +277,45 @@ export const CategorySEO = {
         'link in bio',
         'meme generator',
         'whatsapp status'
+      ]}
+      toolSlug={toolSlug}
+    />
+  ),
+  GovtLegal: (toolName: string, description: string, toolSlug?: string) => (
+    <ToolSEO
+      toolName={toolName}
+      toolDescription={description}
+      category="Govt Legal Tools"
+      keywords={[
+        'passport photo resizer',
+        'aadhaar photo resize',
+        'pdf compressor',
+        'signature maker',
+        'document template',
+        'legal document generator',
+        'rental agreement',
+        'nda template',
+        'loan agreement',
+      ]}
+      toolSlug={toolSlug}
+    />
+  ),
+  Ecommerce: (toolName: string, description: string, toolSlug?: string) => (
+    <ToolSEO
+      toolName={toolName}
+      toolDescription={description}
+      category="E-commerce Tools"
+      keywords={[
+        'product image editor',
+        'background remover',
+        'qr code generator',
+        'barcode generator',
+        'bulk image resizer',
+        'watermark adder',
+        'gst invoice generator',
+        'ecommerce calculator',
+        'product photography',
+        'amazon image tools',
       ]}
       toolSlug={toolSlug}
     />

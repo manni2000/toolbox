@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, Sparkles, Shield, ArrowRight, TrendingUp,
-  Code2, Image, FileText, FileType2, Lock, RefreshCw, Globe, Palette,
+  Code2, Image, FileText, FileType2, Lock, RefreshCw, Globe, Palette, Scale, ShoppingBag,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,9 +20,9 @@ const POPULAR_TOOLS = [
   { icon: Image,     title: "Image Tools",     sub: "Compress, convert, resize and edit images easily",    path: "/category/image" },
   { icon: FileText,  title: "PDF Tools",       sub: "Merge, split, compress and convert PDF files",         path: "/category/pdf" },
   { icon: TrendingUp, title: "Education Tools", sub: "Calculators, converters and learning utilities",      path: "/category/education" },
-  { icon: RefreshCw, title: "Developer Tools", sub: "Code formatting, minification, and more",    path: "/category/dev" },
+  { icon: Scale,     title: "Govt Legal Tools", sub: "Passport photos, signatures, document templates",      path: "/category/govt-legal" },
   { icon: TrendingUp, title: "SEO Tools",       sub: "Meta tags, robots.txt, sitemap, keyword analysis",    path: "/category/seo" },
-  { icon: Lock,      title: "Zip Tools",       sub: "Create, extract and manage compressed files",        path: "/category/zip" },
+  { icon: ShoppingBag, title: "E-commerce Tools", sub: "Barcodes, invoices, calculators, product images",      path: "/category/ecommerce" },
 ];
 
 const STATS = [

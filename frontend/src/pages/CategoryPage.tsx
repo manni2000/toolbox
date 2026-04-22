@@ -39,9 +39,11 @@ const CategoryPage = () => {
       "seo": ["meta-title-description", "keyword-density", "robots-txt", "page-seo"],
       "social": ["hashtag-generator", "bio-generator", "caption-formatter", "meme-generator"],
       "zip": ["create-zip", "extract-zip", "password-zip", "compression-zip"],
-      "date-time": ["date-difference", "age-calculator", "working-days", "countdown"]
+      "date-time": ["date-difference", "age-calculator", "working-days", "countdown"],
+      "govt-legal": ["passport-photo-resizer", "pdf-compressor", "signature-maker", "document-template"],
+      "ecommerce": ["shadow-adder", "barcode-generator", "gst-invoice-generator", "ecommerce-calculator"]
     };
-    
+
     return trendingMap[categoryId || ""] || [];
   };
 

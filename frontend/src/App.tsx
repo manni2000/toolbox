@@ -50,6 +50,20 @@ import WordToPDFTool from "./pages/tools/pdf/WordToPDFTool";
 import PowerPointToPDFTool from "./pages/tools/pdf/PowerPointToPDFTool";
 import HTMLToPDFTool from "./pages/tools/pdf/HTMLToPDFTool";
 
+import PassportPhotoResizerTool from "./pages/tools/govt-legal/PassportPhotoResizerTool";
+import PDFCompressorTool from "./pages/tools/govt-legal/PDFCompressorTool";
+import SignatureMakerTool from "./pages/tools/govt-legal/SignatureMakerTool";
+import DocumentTemplateTool from "./pages/tools/govt-legal/DocumentTemplateTool";
+
+import ShadowAdderTool from "./pages/tools/ecommerce/ShadowAdderTool";
+import BarcodeGeneratorTool from "./pages/tools/ecommerce/BarcodeGeneratorTool";
+import GSTInvoiceGeneratorTool from "./pages/tools/ecommerce/GSTInvoiceGeneratorTool";
+import EcommerceCalculatorTool from "./pages/tools/ecommerce/EcommerceCalculatorTool";
+import WatermarkAdderTool from "./pages/tools/ecommerce/WatermarkAdderTool";
+import WhiteBackgroundAdderTool from "./pages/tools/ecommerce/WhiteBackgroundAdderTool";
+import BulkImageResizerTool from "./pages/tools/ecommerce/BulkImageResizerTool";
+import ImageColorEnhancerTool from "./pages/tools/ecommerce/ImageColorEnhancerTool";
+
 import VideoToAudioTool from "./pages/tools/video/VideoToAudioTool";
 import VideoTrimTool from "./pages/tools/video/VideoTrimTool";
 import VideoSpeedTool from "./pages/tools/video/VideoSpeedTool";
@@ -225,7 +239,23 @@ const AnimatedRoutes = () => {
           <Route path="/word-to-pdf" element={<WordToPDFTool />} />
           <Route path="/powerpoint-to-pdf" element={<PowerPointToPDFTool />} />
           <Route path="/html-to-pdf" element={<HTMLToPDFTool />} />
-          
+
+          {/* Govt Legal Tools */}
+          <Route path="/passport-photo-resizer" element={<PassportPhotoResizerTool />} />
+          <Route path="/pdf-compressor" element={<PDFCompressorTool />} />
+          <Route path="/signature-maker" element={<SignatureMakerTool />} />
+          <Route path="/document-template" element={<DocumentTemplateTool />} />
+
+          {/* E-commerce Seller Tools */}
+          <Route path="/shadow-adder" element={<ShadowAdderTool />} />
+          <Route path="/barcode-generator" element={<BarcodeGeneratorTool />} />
+          <Route path="/gst-invoice-generator" element={<GSTInvoiceGeneratorTool />} />
+          <Route path="/ecommerce-calculator" element={<EcommerceCalculatorTool />} />
+          <Route path="/watermark-adder" element={<WatermarkAdderTool />} />
+          <Route path="/white-background-adder" element={<WhiteBackgroundAdderTool />} />
+          <Route path="/bulk-image-resizer" element={<BulkImageResizerTool />} />
+          <Route path="/image-color-enhancer" element={<ImageColorEnhancerTool />} />
+
           {/* Video Tools */}
           <Route path="/video-to-audio" element={<VideoToAudioTool />} />
           <Route path="/video-trim" element={<VideoTrimTool />} />

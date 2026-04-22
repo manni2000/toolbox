@@ -190,6 +190,24 @@ const Footer = () => {
     { name: "Meme Generator", path: "/meme-generator" },
   ];
 
+  const govtLegalTools = [
+    { name: "Passport Photo Resizer", path: "/passport-photo-resizer" },
+    { name: "PDF Compressor", path: "/pdf-compressor" },
+    { name: "Signature Maker", path: "/signature-maker" },
+    { name: "Document Template", path: "/document-template" },
+  ];
+
+  const ecommerceTools = [
+    { name: "Barcode Generator", path: "/barcode-generator" },
+    { name: "GST Invoice Generator", path: "/gst-invoice-generator" },
+    { name: "Business Calculator", path: "/ecommerce-calculator" },
+    { name: "Shadow Adder", path: "/shadow-adder" },
+    { name: "Watermark Adder", path: "/watermark-adder" },
+    { name: "White Background Adder", path: "/white-background-adder" },
+    { name: "Bulk Image Resizer", path: "/bulk-image-resizer" },
+    { name: "Image Color Enhancer", path: "/image-color-enhancer" },
+  ];
+
   const categories = toolCategories.slice(0, 8).map(cat => ({
     name: cat.name,
     path: `/category/${cat.id}`
@@ -297,6 +315,20 @@ const Footer = () => {
             <h4 className="text-sm font-semibold">Finance Tools</h4>
             <ul className="space-y-2">
               {financeTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Govt Legal Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Govt Legal Tools</h4>
+            <ul className="space-y-2">
+              {govtLegalTools.map(tool => (
                 <li key={tool.path}>
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
                     {tool.name}
@@ -423,6 +455,20 @@ const Footer = () => {
             <h4 className="text-sm font-semibold">Social Media Tools</h4>
             <ul className="space-y-2">
               {socialMediaTools.map(tool => (
+                <li key={tool.path}>
+                  <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* E-commerce Tools */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">E-commerce Tools</h4>
+            <ul className="space-y-2">
+              {ecommerceTools.map(tool => (
                 <li key={tool.path}>
                   <Link to={tool.path} className="text-sm text-muted-foreground hover:text-foreground">
                     {tool.name}

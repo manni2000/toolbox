@@ -19,6 +19,12 @@
   <url><loc>https://www.dailytools247.app/pdf-page-remover</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/pdf-rotate</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
 
+  <!-- Govt Legal Tools -->
+  <url><loc>https://www.dailytools247.app/passport-photo-resizer</loc><lastmod>2026-04-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://www.dailytools247.app/pdf-compressor</loc><lastmod>2026-04-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://www.dailytools247.app/signature-maker</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/document-template</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+
   <!-- Image Tools -->
   <url><loc>https://www.dailytools247.app/qr-code-generator</loc><lastmod>2026-04-22</lastmod><priority>1.0</priority></url>
   <url><loc>https://www.dailytools247.app/qr-code-scanner</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
@@ -144,6 +150,16 @@
   <url><loc>https://www.dailytools247.app/roi-calculator</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/sip-calculator</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
 
+  <!-- E-commerce Tools -->
+  <url><loc>https://www.dailytools247.app/barcode-generator</loc><lastmod>2026-04-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://www.dailytools247.app/ecommerce-calculator</loc><lastmod>2026-04-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://www.dailytools247.app/gst-invoice-generator</loc><lastmod>2026-04-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://www.dailytools247.app/shadow-adder</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/watermark-adder</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/white-background-adder</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/bulk-image-resizer</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.dailytools247.app/image-color-enhancer</loc><lastmod>2026-04-22</lastmod><priority>0.8</priority></url>
+
   <!-- ZIP Tools -->
   <url><loc>https://www.dailytools247.app/create-zip</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/extract-zip</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
@@ -154,7 +170,6 @@
 
   <!-- Additional Image Tools -->
   <url><loc>https://www.dailytools247.app/image-converter</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
-  <url><loc>https://www.dailytools247.app/barcode-generator</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
   <url><loc>https://www.dailytools247.app/qr-scanner</loc><lastmod>2026-04-22</lastmod><priority>0.6</priority></url>
 
   <!-- Social Media Tools -->

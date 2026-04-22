@@ -117,6 +117,7 @@ const SEOHelmet = ({
       'Internet Tools': 'internet',
       'ZIP Tools': 'zip',
       'Social Media Tools': 'social',
+      'Govt Legal Tools': 'govt-legal',
     };
 
     // Generate breadcrumb schema
