@@ -51,7 +51,7 @@ function validateApiKey(req, res, next) {
 const API_DOCUMENTATION = {
   version: '2.0.0',
   baseUrl: '/api/v1',
-  description: 'DailyTools247 Developer API - 80+ tool endpoints across 8 categories - Free tier with 100 requests/day',
+  description: 'DailyTools247 Developer API - 100+ tool endpoints across 10 categories - Free tier with 100 requests/day',
   endpoints: [
     {
       category: 'Text',
@@ -1224,6 +1224,186 @@ const API_DOCUMENTATION = {
           },
         },
               ],
+    },
+    {
+      category: 'Govt & Legal',
+      endpoints: [
+        {
+          method: 'POST', path: '/api/govt-legal/document-template', name: 'Document Template Generator',
+          description: 'Generate legal document and agreement templates',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'templateType', type: 'string', required: true, description: 'Type of document template' },
+            { name: 'data', type: 'object', required: true, description: 'Document data fields' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/govt-legal/document-template -H "X-API-Key: YOUR_KEY" -d \'{"templateType":"nda","data":{"party1":"John Doe","party2":"Jane Smith"}}\'',
+            response: { success: true, result: { document: 'Generated document content...' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/govt-legal/pdf-compressor', name: 'PDF Compressor',
+          description: 'Compress PDF files for document submission',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'pdf', type: 'file', required: true, description: 'PDF file to compress' },
+            { name: 'compressionLevel', type: 'string', required: false, default: 'medium', description: 'low | medium | high' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/govt-legal/pdf-compressor -H "X-API-Key: YOUR_KEY" -F "pdf=@document.pdf" -F "compressionLevel=medium"',
+            response: 'Binary compressed PDF',
+          },
+        },
+        {
+          method: 'POST', path: '/api/govt-legal/passport-photo-resizer', name: 'Passport Photo Resizer',
+          description: 'Resize photos for passport and Aadhaar under 50KB',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Photo to resize' },
+            { name: 'preset', type: 'string', required: false, default: 'passport', description: 'passport | aadhaar | visa | pan | license' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/govt-legal/passport-photo-resizer -H "X-API-Key: YOUR_KEY" -F "image=@photo.jpg" -F "preset=passport"',
+            response: 'Binary resized photo',
+          },
+        },
+        {
+          method: 'POST', path: '/api/govt-legal/signature-maker', name: 'Signature Maker',
+          description: 'Draw and create digital signatures',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'signatureData', type: 'string', required: true, description: 'Base64 encoded signature image' },
+            { name: 'format', type: 'string', required: false, default: 'png', description: 'png | svg | base64' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/govt-legal/signature-maker -H "X-API-Key: YOUR_KEY" -d \'{"signatureData":"data:image/png;base64,...","format":"png"}\'',
+            response: { success: true, result: { signature: 'Processed signature data...' } },
+          },
+        },
+      ],
+    },
+    {
+      category: 'Ecommerce',
+      endpoints: [
+        {
+          method: 'POST', path: '/api/ecommerce/barcode-generator', name: 'Barcode Generator',
+          description: 'Generate barcodes for products and inventory',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'text', type: 'string', required: true, description: 'Text to encode in barcode' },
+            { name: 'format', type: 'string', required: false, default: 'CODE128', description: 'CODE128 | CODE39 | EAN13 | EAN8 | UPC | ITF14 | MSI | pharmacode' },
+            { name: 'width', type: 'number', required: false, default: 2, description: 'Bar width' },
+            { name: 'height', type: 'number', required: false, default: 100, description: 'Barcode height' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/ecommerce/barcode-generator -H "X-API-Key: YOUR_KEY" -d \'{"text":"123456789","format":"CODE128"}\'',
+            response: 'Binary barcode image',
+          },
+        },
+        {
+          method: 'POST', path: '/api/ecommerce/bulk-image-resizer', name: 'Bulk Image Resizer',
+          description: 'Resize multiple images at once for e-commerce',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'images', type: 'file[]', required: true, description: 'Array of image files' },
+            { name: 'width', type: 'number', required: false, default: 800, description: 'Target width' },
+            { name: 'height', type: 'number', required: false, default: 800, description: 'Target height' },
+            { name: 'maintainAspect', type: 'boolean', required: false, default: true, description: 'Maintain aspect ratio' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/ecommerce/bulk-image-resizer -H "X-API-Key: YOUR_KEY" -F "images=@photo1.jpg" -F "images=@photo2.jpg" -F "width=800"',
+            response: { success: true, result: { processedImages: ['data:image/jpeg;base64,...'] } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/ecommerce/calculator', name: 'Ecommerce Calculator',
+          description: 'Calculate GST, profit margins, and EMI for your business',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'type', type: 'string', required: true, description: 'gst | margin | emi' },
+            { name: 'data', type: 'object', required: true, description: 'Calculation data based on type' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/ecommerce/calculator -H "X-API-Key: YOUR_KEY" -d \'{"type":"gst","data":{"amount":1000,"rate":18,"type":"exclusive"}}\'',
+            response: { success: true, result: { gstAmount: 180, totalAmount: 1180 } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/ecommerce/gst-invoice-generator', name: 'GST Invoice Generator',
+          description: 'Create GST-compliant invoices for your business',
+          contentType: 'application/json',
+          parameters: [
+            { name: 'businessName', type: 'string', required: true, description: 'Business name' },
+            { name: 'businessGST', type: 'string', required: true, description: 'Business GST number' },
+            { name: 'clientName', type: 'string', required: true, description: 'Client name' },
+            { name: 'items', type: 'array', required: true, description: 'Array of invoice items' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/ecommerce/gst-invoice-generator -H "X-API-Key: YOUR_KEY" -d \'{"businessName":"ABC Corp","businessGST":"27AAAPL1234C1ZV","clientName":"XYZ Ltd","items":[{"description":"Product A","quantity":2,"price":500}]}\'',
+            response: { success: true, result: { invoicePdf: 'data:application/pdf;base64,...' } },
+          },
+        },
+        {
+          method: 'POST', path: '/api/ecommerce/image-color-enhancer', name: 'Image Color Enhancer',
+          description: 'Enhance colors in product photos',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Product image to enhance' },
+            { name: 'brightness', type: 'number', required: false, default: 0, description: 'Brightness adjustment (-100 to 100)' },
+            { name: 'contrast', type: 'number', required: false, default: 0, description: 'Contrast adjustment (-100 to 100)' },
+            { name: 'saturation', type: 'number', required: false, default: 0, description: 'Saturation adjustment (-100 to 100)' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/ecommerce/image-color-enhancer -H "X-API-Key: YOUR_KEY" -F "image=@product.jpg" -F "brightness=10" -F "contrast=5"',
+            response: 'Binary enhanced image',
+          },
+        },
+        {
+          method: 'POST', path: '/api/ecommerce/shadow-adder', name: 'Shadow Adder',
+          description: 'Add professional shadows to product images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Product image' },
+            { name: 'shadowBlur', type: 'number', required: false, default: 20, description: 'Shadow blur radius' },
+            { name: 'shadowOffsetX', type: 'number', required: false, default: 0, description: 'Horizontal shadow offset' },
+            { name: 'shadowOffsetY', type: 'number', required: false, default: 10, description: 'Vertical shadow offset' },
+            { name: 'shadowColor', type: 'string', required: false, default: '#000000', description: 'Shadow color hex' },
+            { name: 'shadowOpacity', type: 'number', required: false, default: 0.3, description: 'Shadow opacity (0-1)' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/ecommerce/shadow-adder -H "X-API-Key: YOUR_KEY" -F "image=@product.jpg" -F "shadowBlur=20" -F "shadowColor="#000000"',
+            response: 'Binary image with shadow',
+          },
+        },
+        {
+          method: 'POST', path: '/api/ecommerce/watermark-adder', name: 'Watermark Adder',
+          description: 'Add watermarks to protect product images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Product image' },
+            { name: 'watermarkText', type: 'string', required: true, description: 'Watermark text' },
+            { name: 'fontSize', type: 'number', required: false, default: 24, description: 'Font size' },
+            { name: 'opacity', type: 'number', required: false, default: 50, description: 'Opacity percentage (0-100)' },
+            { name: 'position', type: 'string', required: false, default: 'bottom-right', description: 'top-left | top-right | bottom-left | bottom-right | center' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/ecommerce/watermark-adder -H "X-API-Key: YOUR_KEY" -F "image=@product.jpg" -F "watermarkText=© Your Brand" -F "opacity=50"',
+            response: 'Binary watermarked image',
+          },
+        },
+        {
+          method: 'POST', path: '/api/ecommerce/white-background-adder', name: 'White Background Adder',
+          description: 'Add white background to product images',
+          contentType: 'multipart/form-data',
+          parameters: [
+            { name: 'image', type: 'file', required: true, description: 'Product image' },
+          ],
+          example: {
+            curl: 'curl -X POST /api/ecommerce/white-background-adder -H "X-API-Key: YOUR_KEY" -F "image=@product.jpg"',
+            response: 'Binary image with white background',
+          },
+        },
+      ],
     },
   ],
 };
