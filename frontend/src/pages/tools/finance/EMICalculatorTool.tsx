@@ -10,6 +10,7 @@ import { FinanceChart, generateEMIData, generatePieData } from "@/components/ui/
 import { EnhancedDownload, downloadText, downloadJSON } from "@/components/EnhancedDownload";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -23,6 +24,7 @@ const formatIndianCurrency = (value: number) => {
 };
 
 const EMICalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('emi-calculator');
   const [principal, setPrincipal] = useState(2500000);
   const [rate, setRate] = useState(8.5);
   const [tenure, setTenure] = useState(10);
@@ -110,13 +112,13 @@ const EMICalculatorTool = () => {
   return (
     <>
       {CategorySEO.Finance(
-        "EMI Calculator",
-        "Calculate loan EMI payments",
+        toolSeoData?.title || "EMI Calculator",
+        toolSeoData?.description || "Calculate loan EMI payments",
         "emi-calculator"
       )}
       <ToolLayout
-      title="EMI Calculator"
-      description="Calculate loan EMI payments"
+      title={toolSeoData?.title || "EMI Calculator"}
+      description={toolSeoData?.description || "Calculate loan EMI payments"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

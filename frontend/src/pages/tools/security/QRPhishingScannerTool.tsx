@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -19,6 +20,7 @@ interface QRAnalysis {
 }
 
 export default function QRPhishingScannerTool() {
+  const toolSeoData = getToolSeoMetadata('qr-phishing-scanner');
   const [qrData, setQrData] = useState('');
   const [result, setResult] = useState<QRAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
@@ -91,13 +93,13 @@ export default function QRPhishingScannerTool() {
   return (
     <>
       {CategorySEO.Security(
-        "QR Phishing Scanner",
-        "Scan QR codes for phishing and other security risks",
+        toolSeoData?.title || "QR Phishing Scanner",
+        toolSeoData?.description || "Scan QR codes for phishing and other security risks",
         "qr-phishing-scanner"
       )}
       <ToolLayout
-      title="QR Phishing Scanner"
-      description="Scan QR codes for phishing and other security risks"
+      title={toolSeoData?.title || "QR Phishing Scanner"}
+      description={toolSeoData?.description || "Scan QR codes for phishing and other security risks"}
       category="Security Tools"
       categoryPath="/category/security"
     >

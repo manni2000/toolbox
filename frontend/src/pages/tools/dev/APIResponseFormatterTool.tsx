@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -18,6 +19,7 @@ interface APIResponse {
 }
 
 const APIResponseFormatterTool = () => {
+  const toolSeoData = getToolSeoMetadata('api-response-formatter');
   const [response, setResponse] = useState<APIResponse>({
     method: 'GET',
     url: '',
@@ -262,14 +264,14 @@ Date: ${new Date().toUTCString()}
 
   return (
     <>
-      {CategorySEO.Image(
-        "API Response Formatter",
-        "Format and beautify API responses in JSON, XML, HTML, and plain text formats",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "API Response Formatter",
+        toolSeoData?.description || "Format and beautify API responses in JSON, XML, HTML, and plain text formats",
         "api-response-formatter"
       )}
       <ToolLayout
-      title="API Response Formatter"
-      description="Format and beautify API responses in JSON, XML, HTML, and plain text formats"
+      title={toolSeoData?.title || "API Response Formatter"}
+      description={toolSeoData?.description || "Format and beautify API responses in JSON, XML, HTML, and plain text formats"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

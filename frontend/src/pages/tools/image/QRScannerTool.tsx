@@ -8,10 +8,12 @@ import { useToast } from "@/hooks/use-toast";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
 const QRScannerTool = () => {
+  const toolSeoData = getToolSeoMetadata('qr-code-scanner');
   const [image, setImage] = useState<string | null>(null);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -114,13 +116,13 @@ const QRScannerTool = () => {
   return (
     <>
       {CategorySEO.Image(
-        "QR Code Scanner",
-        "Upload an image to scan and decode QR codes",
+        toolSeoData?.title || "QR Code Scanner",
+        toolSeoData?.description || "Upload an image to scan and decode QR codes",
         "qr-code-scanner"
       )}
       <ToolLayout
-      title="QR Code Scanner"
-      description="Upload an image to scan and decode QR codes"
+      title={toolSeoData?.title || "QR Code Scanner"}
+      description={toolSeoData?.description || "Upload an image to scan and decode QR codes"}
       category="Image Tools"
       categoryPath="/category/image"
     >

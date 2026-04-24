@@ -6,10 +6,12 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { formatIndianCurrency } from "@/lib/number-formatting";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
 const GSTCalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('gst-calculator');
   const [amount, setAmount] = useState("");
   const [gstRate, setGstRate] = useState("18");
   const [calcType, setCalcType] = useState<"addGST" | "removeGST">("addGST");
@@ -51,13 +53,13 @@ const GSTCalculatorTool = () => {
   return (
     <>
       {CategorySEO.Finance(
-        "GST Calculator",
-        "Calculate GST, CGST, and SGST amounts with precision",
+        toolSeoData?.title || "GST Calculator",
+        toolSeoData?.description || "Calculate GST, CGST, and SGST amounts with precision",
         "gst-calculator"
       )}
       <ToolLayout
-      title="GST Calculator"
-      description="Calculate GST, CGST, and SGST amounts with precision"
+      title={toolSeoData?.title || "GST Calculator"}
+      description={toolSeoData?.description || "Calculate GST, CGST, and SGST amounts with precision"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

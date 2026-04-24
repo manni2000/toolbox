@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -59,6 +60,7 @@ interface PostmanCollection {
 }
 
 const PostmanCollectionTool = () => {
+  const toolSeoData = getToolSeoMetadata('postman-collection-generator');
   const [collectionName, setCollectionName] = useState('API Collection');
   const [collectionDescription, setCollectionDescription] = useState('');
   const [requests, setRequests] = useState<PostmanRequest[]>([
@@ -276,14 +278,14 @@ const PostmanCollectionTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Postman Collection Generator",
-        "Generate Postman collections for API testing and documentation",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "Postman Collection Generator",
+        toolSeoData?.description || "Generate Postman collections for API testing and documentation",
         "postman-collection-generator"
       )}
       <ToolLayout
-      title="Postman Collection Generator"
-      description="Generate Postman collections for API testing and documentation"
+      title={toolSeoData?.title || "Postman Collection Generator"}
+      description={toolSeoData?.description || "Generate Postman collections for API testing and documentation"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

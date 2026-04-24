@@ -8,11 +8,13 @@ import { PDFDocument } from "pdf-lib";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "0 70% 50%";
 
 const PDFMergeTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-merge');
   const [files, setFiles] = useState<{ file: File; name: string }[]>([]);
   const [mergedUrl, setMergedUrl] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -74,13 +76,13 @@ const PDFMergeTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF Merge",
-        "Combine multiple PDF files into one document",
+        toolSeoData?.title || "PDF Merge",
+        toolSeoData?.description || "Combine multiple PDF files into one document",
         "pdf-merge"
       )}
       <ToolLayout
-        title="PDF Merge"
-        description="Combine multiple PDF files into one document"
+        title={toolSeoData?.title || "PDF Merge"}
+        description={toolSeoData?.description || "Combine multiple PDF files into one document"}
         category="PDF Tools"
         categoryPath="/category/pdf"
       >

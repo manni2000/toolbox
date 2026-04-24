@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "145 70% 45%";
 
@@ -61,6 +62,7 @@ const OperatorButton = ({
 );
 
 const ScientificCalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('scientific-calculator');
   const [display, setDisplay] = useState("0");
   const [expression, setExpression] = useState("");
   const [isRadians, setIsRadians] = useState(true);
@@ -331,13 +333,13 @@ const ScientificCalculatorTool = () => {
   return (
     <>
       {CategorySEO.Education(
-        "Scientific Calculator",
-        "Perform advanced mathematical calculations with trigonometry, logarithms, and more",
+        toolSeoData?.title || "Scientific Calculator",
+        toolSeoData?.description || "Perform advanced mathematical calculations with trigonometry, logarithms, and more",
         "scientific-calculator"
       )}
       <ToolLayout
-      title="Scientific Calculator"
-      description="Perform advanced mathematical calculations with trigonometry, logarithms, and more"
+      title={toolSeoData?.title || "Scientific Calculator"}
+      description={toolSeoData?.description || "Perform advanced mathematical calculations with trigonometry, logarithms, and more"}
       category="Education Tools"
       categoryPath="/category/education"
     >

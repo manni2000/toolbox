@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "330 80% 55%";
 
 const CaptionFormatterTool = () => {
+  const toolSeoData = getToolSeoMetadata('caption-formatter');
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [copied, setCopied] = useState(false);
@@ -90,15 +92,15 @@ const CaptionFormatterTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Caption Formatter",
-        "Format your captions with stylish Unicode fonts",
+      {CategorySEO.Social(
+        toolSeoData?.title || "Caption Formatter",
+        toolSeoData?.description || "Format your captions with stylish Unicode fonts",
         "caption-formatter"
       )}
       <ToolLayout
-      title="Caption Formatter"
-      description="Format your captions with stylish Unicode fonts"
-      category="Social Media"
+      title={toolSeoData?.title || "Caption Formatter"}
+      description={toolSeoData?.description || "Format your captions with stylish Unicode fonts"}
+      category="Social Tools"
       categoryPath="/category/social"
     >
       <div className="mx-auto max-w-2xl space-y-6">

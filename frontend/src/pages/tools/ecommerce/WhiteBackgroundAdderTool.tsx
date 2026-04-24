@@ -117,13 +117,12 @@ const WhiteBackgroundAdderTool = () => {
         "white-background-adder"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "White Background Adder"}
-        description={toolSeoData?.description || "Add white background to product images"}
-        category="E-commerce Tools"
-        categoryPath="/category/ecommerce"
+      title={toolSeoData?.title || "White Background Adder"}
+      description={toolSeoData?.description || "Add white background to product images"}
+      category="Ecommerce Tools"
+      categoryPath="/category/ecommerce"
       >
         <div className="space-y-8">
-          {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}
             initial="hidden"
@@ -165,7 +164,6 @@ const WhiteBackgroundAdderTool = () => {
             </div>
           </motion.div>
 
-          {/* Upload Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -211,7 +209,6 @@ const WhiteBackgroundAdderTool = () => {
             )}
           </motion.div>
 
-          {/* Process Button */}
           {selectedFile && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -264,7 +261,6 @@ const WhiteBackgroundAdderTool = () => {
             </motion.div>
           )}
 
-          {/* Tool Definition */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

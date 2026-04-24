@@ -6,6 +6,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -22,6 +23,7 @@ interface SaaSResult {
 }
 
 export default function SaaSPricingCalculatorTool() {
+  const toolSeoData = getToolSeoMetadata('saas-pricing-calculator');
   const [basePrice, setBasePrice] = useState('');
   const [pricingModel, setPricingModel] = useState<'monthly' | 'annual'>('monthly');
   const [expectedCustomers, setExpectedCustomers] = useState('');
@@ -121,13 +123,13 @@ export default function SaaSPricingCalculatorTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "SaaS Pricing Calculator",
-        "Calculate optimal pricing, revenue projections, and unit economics",
+        toolSeoData?.title || "SaaS Pricing Calculator",
+        toolSeoData?.description || "Calculate optimal pricing, revenue projections, and unit economics",
         "saas-pricing-calculator"
       )}
       <ToolLayout
-      title="SaaS Pricing Calculator"
-      description="Calculate optimal pricing, revenue projections, and unit economics"
+      title={toolSeoData?.title || "SaaS Pricing Calculator"}
+      description={toolSeoData?.description || "Calculate optimal pricing, revenue projections, and unit economics"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

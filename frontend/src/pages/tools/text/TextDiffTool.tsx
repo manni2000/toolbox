@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "260 70% 55%";
 
 const TextDiffTool = () => {
+  const toolSeoData = getToolSeoMetadata('text-diff');
   const [text1, setText1] = useState("");
   const [text2, setText2] = useState("");
   const [diff, setDiff] = useState<{ type: "same" | "added" | "removed"; text: string }[]>([]);
@@ -59,13 +61,13 @@ const TextDiffTool = () => {
   return (
     <>
       {CategorySEO.Text(
-        "Text Diff Checker",
-        "Compare two texts and highlight differences",
-        "text-diff-checker"
+        toolSeoData?.title || "Text Diff Checker",
+        toolSeoData?.description || "Compare two texts and highlight differences",
+        "text-diff"
       )}
       <ToolLayout
-      title="Text Diff Checker"
-      description="Compare two texts and highlight differences"
+      title={toolSeoData?.title || "Text Diff Checker"}
+      description={toolSeoData?.description || "Compare two texts and highlight differences"}
       category="Text Tools"
       categoryPath="/category/text"
     >

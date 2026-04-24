@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { CategorySEO } from "@/components/ToolSEO";
 import ToolFAQ from "@/components/ToolFAQ";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -27,6 +28,7 @@ const ToggleOption = ({ label, checked, onChange }: ToggleOptionProps) => (
 );
 
 function PasswordGeneratorTool() {
+  const toolSeoData = getToolSeoMetadata('password-generator');
   const [password, setPassword] = useState("");
   const [length, setLength] = useState(16);
   const [includeUppercase, setIncludeUppercase] = useState(true);
@@ -100,13 +102,13 @@ function PasswordGeneratorTool() {
   return (
     <>
       {CategorySEO.Security(
-        "Password Generator",
-        "Generate secure random passwords instantly",
+        toolSeoData?.title || "Password Generator",
+        toolSeoData?.description || "Generate secure random passwords instantly",
         "password-generator"
       )}
       <ToolLayout
-        title="Password Generator"
-        description="Generate secure random passwords instantly"
+        title={toolSeoData?.title || "Password Generator"}
+        description={toolSeoData?.description || "Generate secure random passwords instantly"}
         category="Security Tools"
         categoryPath="/category/security"
       >

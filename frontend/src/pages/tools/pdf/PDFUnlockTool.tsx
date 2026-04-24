@@ -9,10 +9,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 70% 50%";
 
 const PDFUnlockTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-unlock');
   const [file, setFile] = useState<File | null>(null);
   const [password, setPassword] = useState("");
   const [isDragging, setIsDragging] = useState(false);
@@ -107,13 +109,13 @@ const PDFUnlockTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF Unlocker",
-        "Remove password protection from PDF files",
+        toolSeoData?.title || "PDF Unlocker",
+        toolSeoData?.description || "Remove password protection from PDF files",
         "pdf-unlocker"
       )}
       <ToolLayout
-      title="PDF Unlocker"
-      description="Remove password protection from PDF files"
+      title={toolSeoData?.title || "PDF Unlocker"}
+      description={toolSeoData?.description || "Remove password protection from PDF files"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

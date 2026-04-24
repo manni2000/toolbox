@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "260 70% 55%";
 
 const TextSummarizerTool = () => {
+  const toolSeoData = getToolSeoMetadata('text-summarizer');
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [copied, setCopied] = useState(false);
@@ -68,13 +70,13 @@ const TextSummarizerTool = () => {
   return (
     <>
       {CategorySEO.Text(
-        "Text Summarizer",
-        "Extract key sentences from your text using rule-based analysis",
+        toolSeoData?.title || "Text Summarizer",
+        toolSeoData?.description || "Extract key sentences from your text using rule-based analysis",
         "text-summarizer"
       )}
       <ToolLayout
-      title="Text Summarizer"
-      description="Extract key sentences from your text using rule-based analysis"
+      title={toolSeoData?.title || "Text Summarizer"}
+      description={toolSeoData?.description || "Extract key sentences from your text using rule-based analysis"}
       category="Text Tools"
       categoryPath="/category/text"
     >

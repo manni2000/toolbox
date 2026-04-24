@@ -297,14 +297,14 @@ export default function DocumentTemplateTool() {
   return (
     <>
       {CategorySEO.GovtLegal(
-        "Document Template Generator",
-        "Generate legal document and agreement templates",
+        toolSeoData?.title || "Document Template Generator",
+        toolSeoData?.description || "Generate legal document and agreement templates",
         "document-template"
       )}
       <ToolLayout
-        title="Document Template Generator"
-        description="Generate legal document and agreement templates"
-        category="Govt Legal Tools"
+        title={toolSeoData?.title || "Document Template Generator"}
+        description={toolSeoData?.description || "Generate legal document and agreement templates"}
+        category="Govt & Legal Tools"
         categoryPath="/category/govt-legal"
         toolSlug="document-template"
       >

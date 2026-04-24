@@ -21,7 +21,7 @@ export const RelatedTools = ({ currentToolSlug, maxItems = 3 }: RelatedToolsProp
   const relatedToolMetadata = currentTool.relatedTools
     .slice(0, maxItems)
     .map(slug => getToolSeoMetadata(slug))
-    .filter(Boolean);
+    .filter((tool): tool is NonNullable<typeof tool> => tool !== null);
 
   if (relatedToolMetadata.length === 0) {
     return null;

@@ -9,10 +9,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { VideoUploadZone } from "@/components/ui/video-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "350 80% 55%";
 
 const VideoTrimTool = () => {
+  const toolSeoData = getToolSeoMetadata('video-trimmer');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [videoData, setVideoData] = useState<string | null>(null);
@@ -117,13 +119,13 @@ const VideoTrimTool = () => {
   return (
     <>
       {CategorySEO.Video(
-        "Video Trim Tool",
-        "Cut and trim video clips to specific timestamps",
-        "video-trim-tool"
+        toolSeoData?.title || "Video Trim Tool",
+        toolSeoData?.description || "Cut and trim video clips to specific timestamps",
+        "video-trim"
       )}
       <ToolLayout
-      title="Video Trim Tool"
-      description="Cut and trim video clips to specific timestamps"
+      title={toolSeoData?.title || "Video Trim Tool"}
+      description={toolSeoData?.description || "Cut and trim video clips to specific timestamps"}
       category="Video Tools"
       categoryPath="/category/video"
     >

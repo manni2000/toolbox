@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -19,6 +20,7 @@ interface RateResult {
 }
 
 export default function FreelancerRateCalculatorTool() {
+  const toolSeoData = getToolSeoMetadata('freelancer-rate-calculator');
   const [desiredIncome, setDesiredIncome] = useState('');
   const [workHours, setWorkHours] = useState('40');
   const [workWeeks, setWorkWeeks] = useState('48');
@@ -120,13 +122,13 @@ export default function FreelancerRateCalculatorTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "Freelancer Rate Calculator",
-        "Calculate your optimal freelance rates based on income goals and business expenses",
+        toolSeoData?.title || "Freelancer Rate Calculator",
+        toolSeoData?.description || "Calculate your optimal freelance rates based on income goals and business expenses",
         "freelancer-rate-calculator"
       )}
       <ToolLayout
-      title="Freelancer Rate Calculator"
-      description="Calculate your optimal freelance rates based on income goals and business expenses"
+      title={toolSeoData?.title || "Freelancer Rate Calculator"}
+      description={toolSeoData?.description || "Calculate your optimal freelance rates based on income goals and business expenses"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

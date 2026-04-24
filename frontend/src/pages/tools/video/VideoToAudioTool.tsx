@@ -10,10 +10,12 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "350 80% 55%";
 
 const VideoToAudioTool = () => {
+  const toolSeoData = getToolSeoMetadata('video-to-audio-converter');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [audioData, setAudioData] = useState<string | null>(null);
@@ -148,13 +150,13 @@ const VideoToAudioTool = () => {
   return (
     <>
       {CategorySEO.Video(
-        "Video to Audio Converter",
-        "Extract audio from video files (MP4, AVI, MOV → MP3, WAV)",
-        "video-to-audio-converter"
+        toolSeoData?.title || "Video to Audio Converter",
+        toolSeoData?.description || "Extract audio from video files (MP4, AVI, MOV → MP3, WAV)",
+        "video-to-audio"
       )}
       <ToolLayout
-      title="Video to Audio Converter"
-      description="Extract audio from video files (MP4, AVI, MOV → MP3, WAV)"
+      title={toolSeoData?.title || "Video to Audio Converter"}
+      description={toolSeoData?.description || "Extract audio from video files (MP4, AVI, MOV → MP3, WAV)"}
       category="Video Tools"
       categoryPath="/category/video"
     >

@@ -11,6 +11,7 @@ import { EnhancedDownload, downloadText, downloadJSON } from "@/components/Enhan
 import SimilarTools from "@/components/SimilarTools";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "145 85% 55%";
 
@@ -24,6 +25,7 @@ const formatIndianCurrency = (value: number) => {
 };
 
 const SIPCalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('sip-calculator');
   const [monthlyInvestment, setMonthlyInvestment] = useState(5000);
   const [annualRate, setAnnualRate] = useState(12);
   const [years, setYears] = useState(10);
@@ -108,13 +110,13 @@ const SIPCalculatorTool = () => {
   return (
     <>
       {CategorySEO.Finance(
-        "SIP Calculator",
-        "Calculate Systematic Investment Plan returns",
+        toolSeoData?.title || "SIP Calculator",
+        toolSeoData?.description || "Calculate Systematic Investment Plan returns",
         "sip-calculator"
       )}
       <ToolLayout
-      title="SIP Calculator"
-      description="Calculate Systematic Investment Plan returns"
+      title={toolSeoData?.title || "SIP Calculator"}
+      description={toolSeoData?.description || "Calculate Systematic Investment Plan returns"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

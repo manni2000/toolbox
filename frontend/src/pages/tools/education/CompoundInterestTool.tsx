@@ -7,10 +7,12 @@ import { FormulaCard } from "@/components/ui/formula-card";
 import { ComparisonCard } from "@/components/ui/comparison-card";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "145 70% 45%";
 
 const CompoundInterestTool = () => {
+  const toolSeoData = getToolSeoMetadata('compound-interest-calculator');
   const [principal, setPrincipal] = useState("");
   const [rate, setRate] = useState("");
   const [time, setTime] = useState("");
@@ -66,13 +68,13 @@ const CompoundInterestTool = () => {
   return (
     <>
       {CategorySEO.Education(
-        "Compound Interest Calculator",
-        "Calculate compound interest with different compounding frequencies",
+        toolSeoData?.title || "Compound Interest Calculator",
+        toolSeoData?.description || "Calculate compound interest with different compounding frequencies",
         "compound-interest-calculator"
       )}
       <ToolLayout
-      title="Compound Interest Calculator"
-      description="Calculate compound interest with different compounding frequencies"
+      title={toolSeoData?.title || "Compound Interest Calculator"}
+      description={toolSeoData?.description || "Calculate compound interest with different compounding frequencies"}
       category="Education Tools"
       categoryPath="/category/education"
     >

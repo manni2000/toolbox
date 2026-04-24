@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -18,6 +19,7 @@ const formatIndianCurrency = (value: number) => {
 };
 
 const MutualFundCalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('mutual-fund-calculator');
   const [monthlyInvestment, setMonthlyInvestment] = useState("");
   const [expectedReturn, setExpectedReturn] = useState("12");
   const [timePeriod, setTimePeriod] = useState("10");
@@ -59,13 +61,13 @@ const MutualFundCalculatorTool = () => {
   return (
     <>
       {CategorySEO.Finance(
-        "Mutual Fund SIP Calculator",
-        "Calculate returns on Systematic Investment Plan (SIP) investments",
-        "mutual-fund-sip-calculator"
+        toolSeoData?.title || "Mutual Fund SIP Calculator",
+        toolSeoData?.description || "Calculate returns on Systematic Investment Plan (SIP) investments",
+        "mutual-fund-calculator"
       )}
       <ToolLayout
-      title="Mutual Fund SIP Calculator"
-      description="Calculate returns on Systematic Investment Plan (SIP) investments"
+      title={toolSeoData?.title || "Mutual Fund SIP Calculator"}
+      description={toolSeoData?.description || "Calculate returns on Systematic Investment Plan (SIP) investments"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

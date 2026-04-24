@@ -10,10 +10,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { useToast } from "@/hooks/use-toast";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
 const ImageResizeTool = () => {
+  const toolSeoData = getToolSeoMetadata('image-resize');
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [originalSize, setOriginalSize] = useState<{ width: number; height: number } | null>(null);
@@ -165,13 +167,13 @@ const ImageResizeTool = () => {
   return (
     <>
       {CategorySEO.Image(
-        "Image Resize",
-        "Resize images to any custom dimension or use preset sizes",
+        toolSeoData?.title || "Image Resize",
+        toolSeoData?.description || "Resize images to any custom dimension or use preset sizes",
         "image-resize"
       )}
       <ToolLayout
-      title="Image Resize"
-      description="Resize images to any custom dimension or use preset sizes"
+      title={toolSeoData?.title || "Image Resize"}
+      description={toolSeoData?.description || "Resize images to any custom dimension or use preset sizes"}
       category="Image Tools"
       categoryPath="/category/image"
     >

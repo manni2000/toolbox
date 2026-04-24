@@ -7,6 +7,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
@@ -19,6 +20,7 @@ interface ImageInfo {
 }
 
 const ImageDPITool = () => {
+  const toolSeoData = getToolSeoMetadata('image-dpi');
   const [image, setImage] = useState<string | null>(null);
   const [imageInfo, setImageInfo] = useState<ImageInfo | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -90,13 +92,13 @@ const ImageDPITool = () => {
   return (
     <>
       {CategorySEO.Image(
-        "Image DPI Checker",
-        "Check image dimensions and calculate print sizes at different DPI values",
+        toolSeoData?.title || "Image DPI Checker",
+        toolSeoData?.description || "Check image dimensions and calculate print sizes at different DPI values",
         "image-dpi"
       )}
       <ToolLayout
-        title="Image DPI Checker"
-        description="Check image dimensions and calculate print sizes at different DPI values"
+        title={toolSeoData?.title || "Image DPI Checker"}
+        description={toolSeoData?.description || "Check image dimensions and calculate print sizes at different DPI values"}
         category="Image Tools"
         categoryPath="/category/image"
       >

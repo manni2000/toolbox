@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -64,6 +65,7 @@ const getLinkHrefByRel = (doc: Document, rel: string) => {
 const clampScore = (score: number) => Math.max(0, Math.min(100, score));
 
 const PageSEOTool = () => {
+  const toolSeoData = getToolSeoMetadata('page-seo-analyzer');
   const [url, setUrl] = useState("");
   const [htmlContent, setHtmlContent] = useState("");
   const [analysis, setAnalysis] = useState<SEOAnalysis | null>(null);
@@ -622,13 +624,13 @@ const PageSEOTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "Page SEO Analyzer",
-        "Comprehensive SEO analysis tool to optimize your web pages for better search rankings",
-        "page-seo-analyzer"
+        toolSeoData?.title || "Page SEO Analyzer",
+        toolSeoData?.description || "Comprehensive SEO analysis tool to optimize your web pages for better search rankings",
+        "page-seo"
       )}
       <ToolLayout
-      title="Page SEO Analyzer"
-      description="Comprehensive SEO analysis tool to optimize your web pages for better search rankings"
+      title={toolSeoData?.title || "Page SEO Analyzer"}
+      description={toolSeoData?.description || "Comprehensive SEO analysis tool to optimize your web pages for better search rankings"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

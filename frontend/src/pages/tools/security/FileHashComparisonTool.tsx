@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -22,6 +23,7 @@ interface ComparisonResult {
 }
 
 export default function FileHashComparisonTool() {
+  const toolSeoData = getToolSeoMetadata('file-hash-comparison');
   const [file1, setFile1] = useState<File | null>(null);
   const [file2, setFile2] = useState<File | null>(null);
   const [result, setResult] = useState<ComparisonResult | null>(null);
@@ -90,13 +92,13 @@ export default function FileHashComparisonTool() {
   return (
     <>
       {CategorySEO.Security(
-        "File Hash Comparison",
-        "Compare two files by their hash values to verify integrity",
+        toolSeoData?.title || "File Hash Comparison",
+        toolSeoData?.description || "Compare two files by their hash values to verify integrity",
         "file-hash-comparison"
       )}
       <ToolLayout
-      title="File Hash Comparison"
-      description="Compare two files by their hash values to verify integrity"
+      title={toolSeoData?.title || "File Hash Comparison"}
+      description={toolSeoData?.description || "Compare two files by their hash values to verify integrity"}
       category="Security Tools"
       categoryPath="/category/security"
     >

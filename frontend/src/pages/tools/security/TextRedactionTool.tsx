@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -22,6 +23,7 @@ interface RedactionResult {
 }
 
 export default function TextRedactionTool() {
+  const toolSeoData = getToolSeoMetadata('text-redaction');
   const [text, setText] = useState('');
   const [redactionTypes, setRedactionTypes] = useState({
     email: true,
@@ -80,13 +82,13 @@ export default function TextRedactionTool() {
   return (
     <>
       {CategorySEO.Security(
-        "Text Redaction Tool",
-        "Redact sensitive information from text documents",
-        "text-redaction-tool"
+        toolSeoData?.title || "Text Redaction",
+        toolSeoData?.description || "Remove sensitive information from text documents",
+        "text-redaction"
       )}
       <ToolLayout
-      title="Text Redaction Tool"
-      description="Redact sensitive information from text documents"
+      title={toolSeoData?.title || "Text Redaction"}
+      description={toolSeoData?.description || "Remove sensitive information from text documents"}
       category="Security Tools"
       categoryPath="/category/security"
     >

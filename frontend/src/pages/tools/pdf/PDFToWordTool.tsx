@@ -10,6 +10,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 
 const categoryColor = "0 70% 50%";
@@ -22,6 +23,7 @@ interface ConversionResult {
 }
 
 const PDFToWordTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-to-word');
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [docxData, setDocxData] = useState<string | null>(null);
@@ -142,13 +144,13 @@ const PDFToWordTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF to Word",
-        "Convert PDF documents to editable Word files (.docx)",
+        toolSeoData?.title || "PDF to Word",
+        toolSeoData?.description || "Convert PDF documents to editable Word files (.docx)",
         "pdf-to-word"
       )}
       <ToolLayout
-      title="PDF to Word"
-      description="Convert PDF documents to editable Word files (.docx)"
+      title={toolSeoData?.title || "PDF to Word"}
+      description={toolSeoData?.description || "Convert PDF documents to editable Word files (.docx)"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

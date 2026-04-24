@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -18,6 +19,7 @@ interface EMIResult {
 }
 
 export default function EMIComparisonTool() {
+  const toolSeoData = getToolSeoMetadata('emi-comparison');
   const [loanAmount, setLoanAmount] = useState('');
   const [loan1Rate, setLoan1Rate] = useState('');
   const [loan1Tenure, setLoan1Tenure] = useState('');
@@ -129,13 +131,13 @@ export default function EMIComparisonTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "EMI Comparison Calculator",
-        "Compare multiple loan options to find the best EMI deal",
-        "emi-comparison-calculator"
+        toolSeoData?.title || "EMI Comparison Calculator",
+        toolSeoData?.description || "Compare multiple loan options to find the best EMI deal",
+        "emi-comparison"
       )}
       <ToolLayout
-      title="EMI Comparison Calculator"
-      description="Compare multiple loan options to find the best EMI deal"
+      title={toolSeoData?.title || "EMI Comparison Calculator"}
+      description={toolSeoData?.description || "Compare multiple loan options to find the best EMI deal"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

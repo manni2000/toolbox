@@ -8,9 +8,9 @@ import {
   ChevronDown,
   Sparkles,
 } from "lucide-react";
-import { fadeInUp } from "@/lib/animations";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -30,7 +30,9 @@ interface Question {
 }
 
 const MCQGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('mcq-generator');
   const [inputText, setInputText] = useState("");
+  const [topic, setTopic] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState({
     question: "",
@@ -41,7 +43,6 @@ const MCQGeneratorTool = () => {
   const generateQuestionsFromText = () => {
     if (!inputText.trim()) return;
 
-    // Simple text-based question generation (basic implementation)
     const sentences = inputText.split(".").filter((s) => s.trim().length > 20);
     const newQuestions: Question[] = [];
 
@@ -70,14 +71,11 @@ const MCQGeneratorTool = () => {
   };
 
   const addCustomQuestion = () => {
-    // console.log("addCustomQuestion called");
-    // console.log("currentQuestion:", currentQuestion);
 
     if (
       !currentQuestion.question ||
       currentQuestion.options.some((opt) => !opt.trim())
     ) {
-      // console.log("Validation failed - missing question or empty options");
       return;
     }
 
@@ -88,7 +86,6 @@ const MCQGeneratorTool = () => {
       correctAnswer: currentQuestion.correctAnswer,
     };
 
-    // console.log("Adding new question:", newQuestion);
     setQuestions([...questions, newQuestion]);
     setCurrentQuestion({
       question: "",
@@ -128,7 +125,6 @@ const MCQGeneratorTool = () => {
     const margin = 20;
     let yPosition = 30;
 
-    // Title
     pdf.setFontSize(20);
     pdf.setFont("helvetica", "bold");
     pdf.text("Multiple Choice Questions", pageWidth / 2, yPosition, {
@@ -136,23 +132,19 @@ const MCQGeneratorTool = () => {
     });
     yPosition += 20;
 
-    // Questions
     pdf.setFontSize(12);
     pdf.setFont("helvetica", "normal");
 
     questions.forEach((q, index) => {
-      // Check if we need a new page
       if (yPosition > 250) {
         pdf.addPage();
         yPosition = 30;
       }
 
-      // Question number and text
       pdf.setFont("helvetica", "bold");
       pdf.text(`${index + 1}. ${q.question}`, margin, yPosition);
       yPosition += 10;
 
-      // Options
       pdf.setFont("helvetica", "normal");
       q.options.forEach((option, optIndex) => {
         if (yPosition > 270) {
@@ -164,10 +156,10 @@ const MCQGeneratorTool = () => {
         const optionText = `   ${String.fromCharCode(65 + optIndex)}. ${option}${isCorrect ? " ✓" : ""}`;
 
         if (isCorrect) {
-          pdf.setTextColor(0, 128, 0); // Green color for correct answer
+          pdf.setTextColor(0, 128, 0);
           pdf.setFont("helvetica", "bold");
         } else {
-          pdf.setTextColor(0, 0, 0); // Black color
+          pdf.setTextColor(0, 0, 0); 
           pdf.setFont("helvetica", "normal");
         }
 
@@ -175,17 +167,15 @@ const MCQGeneratorTool = () => {
         yPosition += 8;
       });
 
-      yPosition += 10; // Space between questions
+      yPosition += 10; 
     });
 
-    // Save the PDF
     pdf.save("mcq-questions.pdf");
   };
 
   const exportToGoogleForm = () => {
     if (questions.length === 0) return;
 
-    // Format questions for easy copying into Google Forms
     let formattedText = "MCQ Quiz\n\n";
 
     questions.forEach((q, index) => {
@@ -199,20 +189,16 @@ const MCQGeneratorTool = () => {
       formattedText += "\n";
     });
 
-    // Copy to clipboard
     navigator.clipboard
       .writeText(formattedText)
       .then(() => {
-        // Open Google Forms in a new tab
         window.open("https://docs.google.com/forms/create", "_blank");
 
-        // Show success message
         alert(
           "Questions copied to clipboard! Paste them into your Google Form.",
         );
       })
       .catch((err) => {
-        // console.error("Failed to copy text: ", err);
         alert("Failed to copy questions. Please copy them manually.");
       });
   };
@@ -247,18 +233,17 @@ const MCQGeneratorTool = () => {
   return (
     <>
       {CategorySEO.Education(
-        "MCQ Generator from Text",
-        "Generate multiple choice questions from text or create custom questions",
-        "mcq-generator-from-text"
+        toolSeoData?.title || "MCQ Generator from Text",
+        toolSeoData?.description || "Generate multiple choice questions from text or create custom questions",
+        "mcq-generator"
       )}
       <ToolLayout
-      title="MCQ Generator from Text"
-      description="Generate multiple choice questions from text or create custom questions"
+      title={toolSeoData?.title || "MCQ Generator from Text"}
+      description={toolSeoData?.description || "Generate multiple choice questions from text or create custom questions"}
       category="Education Tools"
       categoryPath="/category/education"
     >
       <div className="mx-auto max-w-4xl space-y-8">
-        {/* Text Input Section */}
         <div className="rounded-xl border border-border bg-card p-6">
           <h3 className="mb-4 text-lg font-semibold flex items-center gap-2">
             <FileText className="h-5 w-5" />
@@ -280,7 +265,6 @@ const MCQGeneratorTool = () => {
           </button>
         </div>
 
-        {/* Custom Question Form */}
         <div className="rounded-xl border border-border bg-card p-6">
           <h3 className="mb-4 text-lg font-semibold flex items-center gap-2">
             <Plus className="h-5 w-5" />
@@ -428,7 +412,6 @@ const MCQGeneratorTool = () => {
           </div>
         )}
 
-        {/* Tool Definition Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -474,7 +457,6 @@ const MCQGeneratorTool = () => {
           </div>
         </motion.div>
 
-        {/* FAQ Section */}
         <div className="mt-8">
         <ToolFAQ faqs={[
           {

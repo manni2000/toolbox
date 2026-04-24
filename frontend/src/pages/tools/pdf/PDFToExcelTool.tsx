@@ -8,10 +8,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 70% 50%";
 
 const PDFToExcelTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-to-excel');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [resultData, setResultData] = useState<string | null>(null);
@@ -96,13 +98,13 @@ const PDFToExcelTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF to Excel",
-        "Extract tables from PDF to Excel spreadsheets",
+        toolSeoData?.title || "PDF to Excel",
+        toolSeoData?.description || "Extract tables from PDF to Excel spreadsheets",
         "pdf-to-excel"
       )}
       <ToolLayout
-      title="PDF to Excel"
-      description="Extract tables from PDF to Excel spreadsheets"
+      title={toolSeoData?.title || "PDF to Excel"}
+      description={toolSeoData?.description || "Extract tables from PDF to Excel spreadsheets"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

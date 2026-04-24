@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
 const SalaryCalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('salary-calculator');
   const [amount, setAmount] = useState("");
   const [period, setPeriod] = useState<"hourly" | "daily" | "weekly" | "monthly" | "yearly">("monthly");
   const [hoursPerWeek, setHoursPerWeek] = useState("40");
@@ -76,13 +78,13 @@ const SalaryCalculatorTool = () => {
   return (
     <>
       {CategorySEO.Finance(
-        "Salary Calculator",
-        "Convert salary between hourly, daily, weekly, monthly, and yearly",
+        toolSeoData?.title || "Salary Calculator",
+        toolSeoData?.description || "Convert salary between hourly, daily, weekly, monthly, and yearly",
         "salary-calculator"
       )}
       <ToolLayout
-      title="Salary Calculator"
-      description="Convert salary between hourly, daily, weekly, monthly, and yearly"
+      title={toolSeoData?.title || "Salary Calculator"}
+      description={toolSeoData?.description || "Convert salary between hourly, daily, weekly, monthly, and yearly"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

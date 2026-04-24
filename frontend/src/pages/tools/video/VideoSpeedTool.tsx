@@ -9,11 +9,13 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 import ToolFAQ from "@/components/ToolFAQ";
 
 const categoryColor = "350 80% 55%";
 
 const VideoSpeedTool = () => {
+  const toolSeoData = getToolSeoMetadata('video-speed-changer');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [videoData, setVideoData] = useState<string | null>(null);
@@ -107,13 +109,13 @@ const VideoSpeedTool = () => {
   return (
     <>
       {CategorySEO.Video(
-        "Video Speed Controller",
-        "Change video playback speed from 0.5x to 2x",
+        toolSeoData?.title || "Video Speed Controller",
+        toolSeoData?.description || "Change video playback speed from 0.5x to 2x",
         "video-speed"
       )}
       <ToolLayout
-        title="Video Speed Controller"
-        description="Change video playback speed from 0.5x to 2x"
+        title={toolSeoData?.title || "Video Speed Controller"}
+        description={toolSeoData?.description || "Change video playback speed from 0.5x to 2x"}
         category="Video Tools"
         categoryPath="/category/video"
       >

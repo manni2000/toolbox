@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -22,6 +23,7 @@ interface DockerfileTemplate {
 }
 
 const DockerfileGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('dockerfile-generator');
   const [baseImage, setBaseImage] = useState('node:18-alpine');
   const [instructions, setInstructions] = useState<DockerfileInstruction[]>([
     {
@@ -233,14 +235,14 @@ const DockerfileGeneratorTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Dockerfile Generator",
-        "Generate optimized Dockerfiles for different applications and frameworks",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "Dockerfile Generator",
+        toolSeoData?.description || "Generate optimized Dockerfiles for different applications and frameworks",
         "dockerfile-generator"
       )}
       <ToolLayout
-      title="Dockerfile Generator"
-      description="Generate optimized Dockerfiles for different applications and frameworks"
+      title={toolSeoData?.title || "Dockerfile Generator"}
+      description={toolSeoData?.description || "Generate optimized Dockerfiles for different applications and frameworks"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

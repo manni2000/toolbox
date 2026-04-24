@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "220 80% 55%";
 
@@ -30,6 +31,7 @@ interface TimeData {
 }
 
 const WorldTimeTool = () => {
+  const toolSeoData = getToolSeoMetadata('world-time');
   const [timezones, setTimezones] = useState<TimeZone[]>([
     { id: "UTC", name: "UTC", city: "Universal", country: "World", offset: 0, flag: "🌍", region: "Global", popularity: 100 },
     { id: "EST", name: "Eastern Time", city: "New York", country: "USA", offset: -5, flag: "🇺🇸", region: "Americas", popularity: 95 },
@@ -191,13 +193,13 @@ const WorldTimeTool = () => {
   return (
     <>
       {CategorySEO.DateTime(
-        "World Time",
-        "View current time across different time zones worldwide with real-time updates and advanced features",
+        toolSeoData?.title || "World Time",
+        toolSeoData?.description || "View current time across different time zones worldwide with real-time updates and advanced features",
         "world-time"
       )}
       <ToolLayout
-      title="World Time"
-      description="View current time across different time zones worldwide with real-time updates and advanced features"
+      title={toolSeoData?.title || "World Time"}
+      description={toolSeoData?.description || "View current time across different time zones worldwide with real-time updates and advanced features"}
       category="Date & Time"
       categoryPath="/category/date-time"
     >

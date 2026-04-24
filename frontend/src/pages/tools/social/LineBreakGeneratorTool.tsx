@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "330 80% 55%";
 
 const LineBreakGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('line-break-generator');
   const [copied, setCopied] = useState<string | null>(null);
 
   const lineBreaks = [
@@ -38,15 +40,15 @@ const LineBreakGeneratorTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Line Break Generator",
-        "Create invisible line breaks and separators for Instagram captions",
-        "line-break-generator"
+      {CategorySEO.Social(
+        toolSeoData?.title || "Line Break Generator",
+        toolSeoData?.description || "Create invisible line breaks and separators for Instagram captions",
+        "line-break"
       )}
       <ToolLayout
-      title="Line Break Generator"
-      description="Create invisible line breaks and separators for Instagram captions"
-      category="Social Media"
+      title={toolSeoData?.title || "Line Break Generator"}
+      description={toolSeoData?.description || "Create invisible line breaks and separators for Instagram captions"}
+      category="Social Tools"
       categoryPath="/category/social"
     >
       <div className="mx-auto max-w-2xl space-y-8">

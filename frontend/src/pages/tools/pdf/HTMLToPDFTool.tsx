@@ -8,10 +8,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 70% 50%";
 
 const HTMLToPDFTool = () => {
+  const toolSeoData = getToolSeoMetadata('html-to-pdf');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [urlInput, setUrlInput] = useState("");
@@ -134,13 +136,13 @@ const HTMLToPDFTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "HTML to PDF",
-        "Convert HTML content to PDF documents",
+        toolSeoData?.title || "HTML to PDF",
+        toolSeoData?.description || "Convert HTML content to PDF documents",
         "html-to-pdf"
       )}
       <ToolLayout
-      title="HTML to PDF"
-      description="Convert HTML content to PDF documents"
+      title={toolSeoData?.title || "HTML to PDF"}
+      description={toolSeoData?.description || "Convert HTML content to PDF documents"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

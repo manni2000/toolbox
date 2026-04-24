@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -24,6 +25,7 @@ interface EnvTemplate {
 }
 
 const EnvironmentVariableTool = () => {
+  const toolSeoData = getToolSeoMetadata('environment-variable-generator');
   const [variables, setVariables] = useState<EnvVariable[]>([
     {
       id: '1',
@@ -235,14 +237,14 @@ const EnvironmentVariableTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Environment Variable Generator",
-        "Generate and manage environment variables for different platforms and frameworks",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "Environment Variable Generator",
+        toolSeoData?.description || "Generate and manage environment variables for different platforms and frameworks",
         "environment-variable-generator"
       )}
       <ToolLayout
-      title="Environment Variable Generator"
-      description="Generate and manage environment variables for different platforms and frameworks"
+      title={toolSeoData?.title || "Environment Variable Generator"}
+      description={toolSeoData?.description || "Generate and manage environment variables for different platforms and frameworks"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

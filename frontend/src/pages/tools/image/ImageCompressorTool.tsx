@@ -10,10 +10,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { useToast } from "@/hooks/use-toast";
 import { CategorySEO } from "@/components/ToolSEO";
 import ToolFAQ from "@/components/ToolFAQ";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
 const ImageCompressorTool = () => {
+  const toolSeoData = getToolSeoMetadata('image-compressor');
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [compressedUrl, setCompressedUrl] = useState<string | null>(null);
@@ -126,13 +128,13 @@ const ImageCompressorTool = () => {
   return (
     <>
       {CategorySEO.Image(
-        "Image Compressor",
-        "Compress images while maintaining quality",
+        toolSeoData?.title || "Image Compressor",
+        toolSeoData?.description || "Compress images while maintaining quality",
         "image-compressor"
       )}
       <ToolLayout
-        title="Image Compressor"
-        description="Compress images while maintaining quality"
+        title={toolSeoData?.title || "Image Compressor"}
+        description={toolSeoData?.description || "Compress images while maintaining quality"}
         category="Image Tools"
         categoryPath="/category/image"
       >

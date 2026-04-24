@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -18,6 +19,7 @@ interface HeaderResult {
 }
 
 const HTTPHeaderTool = () => {
+  const toolSeoData = getToolSeoMetadata('http-header-checker');
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<HeaderResult | null>(null);
@@ -107,14 +109,14 @@ const HTTPHeaderTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "HTTP Header Checker",
-        "Check HTTP response headers from any URL",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "HTTP Header Checker",
+        toolSeoData?.description || "Check HTTP response headers from any URL",
         "http-header-checker"
       )}
       <ToolLayout
-      title="HTTP Header Checker"
-      description="Check HTTP response headers from any URL"
+      title={toolSeoData?.title || "HTTP Header Checker"}
+      description={toolSeoData?.description || "Check HTTP response headers from any URL"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

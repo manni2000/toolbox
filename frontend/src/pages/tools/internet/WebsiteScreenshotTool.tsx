@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "200 85% 50%";
 
@@ -19,6 +20,7 @@ interface ScreenshotResult {
 }
 
 const WebsiteScreenshotTool = () => {
+  const toolSeoData = getToolSeoMetadata('website-screenshot');
   const [url, setUrl] = useState("");
   const [width, setWidth] = useState(1440);
   const [height, setHeight] = useState(900);
@@ -93,13 +95,13 @@ const WebsiteScreenshotTool = () => {
   return (
     <>
       {CategorySEO.Internet(
-        "Website Screenshot Tool",
-        "Capture full-page screenshots of any website from top to footer.",
-        "website-screenshot-tool"
+        toolSeoData?.title || "Website Screenshot Tool",
+        toolSeoData?.description || "Capture full-page screenshots of any website from top to footer.",
+        "website-screenshot"
       )}
       <ToolLayout
-      title="Website Screenshot Tool"
-      description="Capture full-page screenshots of any website from top to footer."
+      title={toolSeoData?.title || "Website Screenshot Tool"}
+      description={toolSeoData?.description || "Capture full-page screenshots of any website from top to footer."}
       category="Internet Tools"
       categoryPath="/category/internet"
     >

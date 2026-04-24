@@ -9,11 +9,13 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 import { useToast } from "@/hooks/use-toast";
 
 const categoryColor = "0 70% 50%";
 
 const PDFSplitTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-split');
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [splitMode, setSplitMode] = useState<"range" | "extract">("range");
@@ -188,13 +190,13 @@ const PDFSplitTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF Split",
-        "Extract specific pages from a PDF document.",
+        toolSeoData?.title || "PDF Split",
+        toolSeoData?.description || "Extract specific pages from a PDF document.",
         "pdf-split"
       )}
       <ToolLayout
-      title="PDF Split"
-      description="Extract specific pages from a PDF document."
+      title={toolSeoData?.title || "PDF Split"}
+      description={toolSeoData?.description || "Extract specific pages from a PDF document."}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

@@ -10,10 +10,12 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "350 80% 55%";
 
 const VideoThumbnailTool = () => {
+  const toolSeoData = getToolSeoMetadata('video-thumbnail-extractor');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [thumbnailData, setThumbnailData] = useState<string | null>(null);
@@ -108,13 +110,13 @@ const VideoThumbnailTool = () => {
   return (
     <>
       {CategorySEO.Video(
-        "Video Thumbnail Generator",
-        "Extract thumbnail images from video files at specific timestamps",
-        "video-thumbnail-generator"
+        toolSeoData?.title || "Video Thumbnail Generator",
+        toolSeoData?.description || "Extract thumbnail images from video files at specific timestamps",
+        "video-thumbnail"
       )}
       <ToolLayout
-      title="Video Thumbnail Generator"
-      description="Extract thumbnail images from video files at specific timestamps"
+      title={toolSeoData?.title || "Video Thumbnail Generator"}
+      description={toolSeoData?.description || "Extract thumbnail images from video files at specific timestamps"}
       category="Video Tools"
       categoryPath="/category/video"
     >

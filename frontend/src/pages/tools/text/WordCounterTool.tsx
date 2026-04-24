@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "260 70% 55%";
 
 const WordCounterTool = () => {
+  const toolSeoData = getToolSeoMetadata('word-counter');
   const [text, setText] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -32,13 +34,13 @@ const WordCounterTool = () => {
   return (
     <>
       {CategorySEO.Text(
-        "Word & Character Counter",
-        "Count words, characters, sentences, and more",
-        "word--character-counter"
+        toolSeoData?.title || "Word & Character Counter",
+        toolSeoData?.description || "Count words, characters, sentences, and more",
+        "word-counter"
       )}
       <ToolLayout
-      title="Word & Character Counter"
-      description="Count words, characters, sentences, and more"
+      title={toolSeoData?.title || "Word & Character Counter"}
+      description={toolSeoData?.description || "Count words, characters, sentences, and more"}
       category="Text Tools"
       categoryPath="/category/text"
     >

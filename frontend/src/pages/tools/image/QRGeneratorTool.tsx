@@ -102,14 +102,14 @@ const QRGeneratorToolEnhanced = () => {
   return (
     <>
       {CategorySEO.Image(
-        "QR Code Generator",
-        "Generate QR codes from any URL or text instantly with custom colors and sizes",
+        toolSeoData?.title || "QR Code Generator",
+        toolSeoData?.description || "Generate QR codes from any URL or text instantly with custom colors and sizes",
         "qr-code-generator"
       )}
       
       <ToolLayout
-        title="QR Code Generator"
-        description="Generate QR codes from any URL or text instantly with custom colors and sizes"
+        title={toolSeoData?.title || "QR Code Generator"}
+        description={toolSeoData?.description || "Generate QR codes from any URL or text instantly with custom colors and sizes"}
         category="Image Tools"
         categoryPath="/category/image"
       >

@@ -8,10 +8,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
 const JPGToWebPConverter = () => {
+  const toolSeoData = getToolSeoMetadata('jpg-to-webp');
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [convertedUrl, setConvertedUrl] = useState<string | null>(null);
@@ -108,13 +110,13 @@ const JPGToWebPConverter = () => {
   return (
     <>
       {CategorySEO.Image(
-        "JPG to WebP Converter",
-        "Convert JPG images to WebP format for better compression and web performance",
+        toolSeoData?.title || "JPG to WebP Converter",
+        toolSeoData?.description || "Convert JPG images to WebP format for better compression and web performance",
         "jpg-to-webp-converter"
       )}
       <ToolLayout
-      title="JPG to WebP Converter"
-      description="Convert JPG images to WebP format for better compression and web performance"
+      title={toolSeoData?.title || "JPG to WebP Converter"}
+      description={toolSeoData?.description || "Convert JPG images to WebP format for better compression and web performance"}
       category="Image Tools"
       categoryPath="/category/image"
     >

@@ -10,10 +10,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 70% 50%";
 
 const PDFRotateTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-rotate');
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [rotations, setRotations] = useState<Record<number, number>>({});
@@ -107,13 +109,13 @@ const PDFRotateTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF Rotate Pages",
-        "Rotate individual pages or entire PDF documents",
-        "pdf-rotate-pages"
+        toolSeoData?.title || "PDF Rotate Pages",
+        toolSeoData?.description || "Rotate individual pages or entire PDF documents",
+        "pdf-rotate"
       )}
       <ToolLayout
-      title="PDF Rotate Pages"
-      description="Rotate individual pages or entire PDF documents"
+      title={toolSeoData?.title || "PDF Rotate Pages"}
+      description={toolSeoData?.description || "Rotate individual pages or entire PDF documents"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

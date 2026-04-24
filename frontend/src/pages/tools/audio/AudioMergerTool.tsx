@@ -12,6 +12,7 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "290 80% 55%";
 
@@ -23,6 +24,7 @@ interface AudioItem {
 }
 
 const AudioMergerTool = () => {
+  const toolSeoData = getToolSeoMetadata('audio-merger');
   const [audioFiles, setAudioFiles] = useState<AudioItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -257,13 +259,13 @@ const AudioMergerTool = () => {
   return (
     <>
       {CategorySEO.Audio(
-        "Audio Merger",
-        "Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations.",
+        toolSeoData?.title || "Audio Merger",
+        toolSeoData?.description || "Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations.",
         "audio-merger"
       )}
       <ToolLayout
-      title="Audio Merger"
-      description="Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations."
+      title={toolSeoData?.title || "Audio Merger"}
+      description={toolSeoData?.description || "Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations."}
       category="Audio Tools"
       categoryPath="/category/audio"
     >

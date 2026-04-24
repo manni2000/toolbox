@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -28,6 +29,7 @@ interface TaxResult {
 }
 
 export default function TaxSlabAnalyzerTool() {
+  const toolSeoData = getToolSeoMetadata('tax-slab-analyzer');
   const [income, setIncome] = useState('');
   const [regime, setRegime] = useState<'old' | 'new'>('old');
   const [ageGroup, setAgeGroup] = useState<'regular' | 'senior' | 'super_senior'>('regular');
@@ -102,13 +104,13 @@ export default function TaxSlabAnalyzerTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "Tax Slab Analyzer",
-        "Calculate your tax liability under different tax regimes",
+        toolSeoData?.title || "Tax Slab Analyzer",
+        toolSeoData?.description || "Calculate your tax liability under different tax regimes",
         "tax-slab-analyzer"
       )}
       <ToolLayout
-      title="Tax Slab Analyzer"
-      description="Calculate your tax liability under different tax regimes"
+      title={toolSeoData?.title || "Tax Slab Analyzer"}
+      description={toolSeoData?.description || "Calculate your tax liability under different tax regimes"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

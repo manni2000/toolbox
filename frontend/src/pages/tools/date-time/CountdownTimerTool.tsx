@@ -5,10 +5,12 @@ import { fadeInUp } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "220 80% 55%";
 
 const CountdownTimerTool = () => {
+  const toolSeoData = getToolSeoMetadata('countdown-timer');
   const [targetDate, setTargetDate] = useState("");
   const [targetTime, setTargetTime] = useState("00:00");
   const [eventName, setEventName] = useState("");
@@ -75,13 +77,13 @@ const CountdownTimerTool = () => {
   return (
     <>
       {CategorySEO.DateTime(
-        "Countdown Timer",
-        "Create a countdown to any date and time",
+        toolSeoData?.title || "Countdown Timer",
+        toolSeoData?.description || "Create a countdown to any date and time",
         "countdown-timer"
       )}
       <ToolLayout
-      title="Countdown Timer"
-      description="Create a countdown to any date and time"
+      title={toolSeoData?.title || "Countdown Timer"}
+      description={toolSeoData?.description || "Create a countdown to any date and time"}
       category="Date & Time"
       categoryPath="/category/date-time"
     >

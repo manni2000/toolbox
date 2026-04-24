@@ -10,10 +10,12 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "350 80% 55%";
 
 const VideoResolutionTool = () => {
+  const toolSeoData = getToolSeoMetadata('video-resolution-changer');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [resultData, setResultData] = useState<string | null>(null);
@@ -173,13 +175,13 @@ const VideoResolutionTool = () => {
   return (
     <>
       {CategorySEO.Video(
-        "Video Resolution Converter",
-        "Change video resolution and dimensions",
-        "video-resolution-converter"
+        toolSeoData?.title || "Video Resolution Converter",
+        toolSeoData?.description || "Change video resolution and dimensions",
+        "video-resolution"
       )}
       <ToolLayout
-      title="Video Resolution Converter"
-      description="Change video resolution and dimensions"
+      title={toolSeoData?.title || "Video Resolution Converter"}
+      description={toolSeoData?.description || "Change video resolution and dimensions"}
       category="Video Tools"
       categoryPath="/category/video"
     >

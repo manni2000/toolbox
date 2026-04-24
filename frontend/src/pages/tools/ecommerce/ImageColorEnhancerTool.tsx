@@ -130,10 +130,10 @@ const ImageColorEnhancerTool = () => {
         "image-color-enhancer"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Image Color Enhancer"}
-        description={toolSeoData?.description || "Enhance colors in product photos"}
-        category="E-commerce Tools"
-        categoryPath="/category/ecommerce"
+      title={toolSeoData?.title || "Image Color Enhancer"}
+      description={toolSeoData?.description || "Enhance colors in product photos"}
+      category="Ecommerce Tools"
+      categoryPath="/category/ecommerce"
       >
         <div className="space-y-8">
           {/* Enhanced Hero Section */}

@@ -166,10 +166,10 @@ const WatermarkAdderTool = () => {
         "watermark-adder"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Watermark Adder"}
-        description={toolSeoData?.description || "Add watermarks to protect product images"}
-        category="E-commerce Tools"
-        categoryPath="/category/ecommerce"
+      title={toolSeoData?.title || "Watermark Adder"}
+      description={toolSeoData?.description || "Add watermarks to protect product images"}
+      category="Ecommerce Tools"
+      categoryPath="/category/ecommerce"
       >
         <div className="space-y-8">
           {/* Enhanced Hero Section */}

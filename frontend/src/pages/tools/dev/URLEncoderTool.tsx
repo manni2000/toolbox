@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
 const URLEncoderTool = () => {
+  const toolSeoData = getToolSeoMetadata('url-encoder-decoder');
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [mode, setMode] = useState<"encode" | "decode">("encode");
@@ -45,14 +47,14 @@ const URLEncoderTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "URL Encoder/Decoder",
-        "Encode or decode URLs and query parameters",
-        "url-encoderdecoder"
+      {CategorySEO.Dev(
+        toolSeoData?.title || "URL Encoder/Decoder",
+        toolSeoData?.description || "Encode or decode URLs and query parameters",
+        "url-encoder-decoder"
       )}
       <ToolLayout
-      title="URL Encoder/Decoder"
-      description="Encode or decode URLs and query parameters"
+      title={toolSeoData?.title || "URL Encoder/Decoder"}
+      description={toolSeoData?.description || "Encode or decode URLs and query parameters"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

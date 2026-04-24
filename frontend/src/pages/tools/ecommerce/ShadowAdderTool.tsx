@@ -77,25 +77,20 @@ const ShadowAdderTool = () => {
         canvas.width = img.width;
         canvas.height = img.height;
 
-        // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Parse shadow color with opacity
         const r = parseInt(shadowColor.slice(1, 3), 16);
         const g = parseInt(shadowColor.slice(3, 5), 16);
         const b = parseInt(shadowColor.slice(5, 7), 16);
         const shadowColorRgba = `rgba(${r}, ${g}, ${b}, ${shadowOpacity})`;
 
-        // Add shadow
         ctx.shadowColor = shadowColorRgba;
         ctx.shadowBlur = shadowBlur;
         ctx.shadowOffsetX = shadowOffsetX;
         ctx.shadowOffsetY = shadowOffsetY;
 
-        // Draw image
         ctx.drawImage(img, 0, 0);
 
-        // Convert to blob and set as processed URL
         canvas.toBlob((blob) => {
           if (blob) {
             const url = URL.createObjectURL(blob);
@@ -160,13 +155,12 @@ const ShadowAdderTool = () => {
         "shadow-adder"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Shadow Adder"}
-        description={toolSeoData?.description || "Add professional shadows to product images"}
-        category="E-commerce Tools"
-        categoryPath="/category/ecommerce"
+      title={toolSeoData?.title || "Shadow Adder"}
+      description={toolSeoData?.description || "Add professional shadows to product images"}
+      category="Ecommerce Tools"
+      categoryPath="/category/ecommerce"
       >
       <div className="space-y-8">
-        {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}
           initial="hidden"

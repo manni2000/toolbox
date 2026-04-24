@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -40,6 +41,7 @@ interface JWTInfo {
 }
 
 const JWTExpiryTool = () => {
+  const toolSeoData = getToolSeoMetadata('jwt-expiry-calculator');
   const [jwtInput, setJwtInput] = useState('');
   const [jwtInfo, setJwtInfo] = useState<JWTInfo | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
@@ -188,14 +190,14 @@ const JWTExpiryTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "JWT Token Expiry Calculator",
-        "Analyze JWT tokens, check expiry times, and decode payload information",
-        "jwt-token-expiry-calculator"
+      {CategorySEO.Dev(
+        toolSeoData?.title || "JWT Token Expiry Calculator",
+        toolSeoData?.description || "Analyze JWT tokens, check expiry times, and decode payload information",
+        "jwt-expiry-calculator"
       )}
       <ToolLayout
-      title="JWT Token Expiry Calculator"
-      description="Analyze JWT tokens, check expiry times, and decode payload information"
+      title={toolSeoData?.title || "JWT Token Expiry Calculator"}
+      description={toolSeoData?.description || "Analyze JWT tokens, check expiry times, and decode payload information"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

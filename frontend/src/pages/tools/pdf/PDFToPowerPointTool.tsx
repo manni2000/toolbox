@@ -10,10 +10,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 70% 50%";
 
 const PDFToPowerPointTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-to-powerpoint');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [resultData, setResultData] = useState<string | null>(null);
@@ -106,13 +108,13 @@ const PDFToPowerPointTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF to PowerPoint",
-        "Convert PDF to PowerPoint presentations",
+        toolSeoData?.title || "PDF to PowerPoint",
+        toolSeoData?.description || "Convert PDF to PowerPoint presentations",
         "pdf-to-powerpoint"
       )}
       <ToolLayout
-      title="PDF to PowerPoint"
-      description="Convert PDF to PowerPoint presentations"
+      title={toolSeoData?.title || "PDF to PowerPoint"}
+      description={toolSeoData?.description || "Convert PDF to PowerPoint presentations"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

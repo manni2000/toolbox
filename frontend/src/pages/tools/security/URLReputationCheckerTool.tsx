@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -20,6 +21,7 @@ interface URLReputation {
 }
 
 export default function URLReputationCheckerTool() {
+  const toolSeoData = getToolSeoMetadata('url-reputation-checker');
   const [url, setUrl] = useState('');
   const [result, setResult] = useState<URLReputation | null>(null);
   const [loading, setLoading] = useState(false);
@@ -107,13 +109,13 @@ export default function URLReputationCheckerTool() {
   return (
     <>
       {CategorySEO.Security(
-        "URL Reputation Checker",
-        "Check website reputation and identify potentially malicious URLs",
+        toolSeoData?.title || "URL Reputation Checker",
+        toolSeoData?.description || "Check website reputation and identify potentially malicious URLs",
         "url-reputation-checker"
       )}
       <ToolLayout
-      title="URL Reputation Checker"
-      description="Check website reputation and identify potentially malicious URLs"
+      title={toolSeoData?.title || "URL Reputation Checker"}
+      description={toolSeoData?.description || "Check website reputation and identify potentially malicious URLs"}
       category="Security Tools"
       categoryPath="/category/security"
     >

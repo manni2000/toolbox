@@ -9,10 +9,12 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "280 70% 55%";
 
 const CompressionZipTool = () => {
+  const toolSeoData = getToolSeoMetadata('zip-compression');
   const [files, setFiles] = useState<File[]>([]);
   const [zipName, setZipName] = useState("archive");
   const [compressionLevel, setCompressionLevel] = useState<number>(6);
@@ -90,13 +92,13 @@ const CompressionZipTool = () => {
   return (
     <>
       {CategorySEO.ZIP(
-        "Compression Level ZIP",
-        "Create ZIP archives with custom compression levels",
-        "compression-level-zip"
+        toolSeoData?.title || "Compression Level ZIP",
+        toolSeoData?.description || "Create ZIP archives with custom compression levels",
+        "compression-zip"
       )}
       <ToolLayout
-      title="Compression Level ZIP"
-      description="Create ZIP archives with custom compression levels"
+      title={toolSeoData?.title || "Compression Level ZIP"}
+      description={toolSeoData?.description || "Create ZIP archives with custom compression levels"}
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

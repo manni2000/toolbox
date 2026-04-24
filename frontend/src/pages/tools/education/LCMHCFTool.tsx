@@ -8,10 +8,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "145 70% 45%";
 
 const LCMHCFTool = () => {
+  const toolSeoData = getToolSeoMetadata('lcm-hcf-calculator');
   const [numbers, setNumbers] = useState<string[]>(["", ""]);
   const [lcm, setLcm] = useState<number | null>(null);
   const [hcf, setHcf] = useState<number | null>(null);
@@ -116,13 +118,13 @@ const LCMHCFTool = () => {
   return (
     <>
       {CategorySEO.Education(
-        "LCM HCF Calculator Online",
-        "Calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) of multiple numbers",
-        "lcm-hcf-calculator-online"
+        toolSeoData?.title || "LCM HCF Calculator Online",
+        toolSeoData?.description || "Calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) of multiple numbers",
+        "lcm-hcf-calculator"
       )}
       <ToolLayout
-      title="LCM HCF Calculator Online"
-      description="Calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) of multiple numbers"
+      title={toolSeoData?.title || "LCM HCF Calculator Online"}
+      description={toolSeoData?.description || "Calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) of multiple numbers"}
       category="Education Tools"
       categoryPath="/category/education"
     >

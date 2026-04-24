@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
 const RegexTesterTool = () => {
+  const toolSeoData = getToolSeoMetadata('regex-tester');
   const [pattern, setPattern] = useState("");
   const [flags, setFlags] = useState("g");
   const [testString, setTestString] = useState("");
@@ -87,14 +89,14 @@ const RegexTesterTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Regex Tester",
-        "Test regular expressions with live matching",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "Regex Tester",
+        toolSeoData?.description || "Test regular expressions with live matching",
         "regex-tester"
       )}
       <ToolLayout
-      title="Regex Tester"
-      description="Test regular expressions with live matching"
+      title={toolSeoData?.title || "Regex Tester"}
+      description={toolSeoData?.description || "Test regular expressions with live matching"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

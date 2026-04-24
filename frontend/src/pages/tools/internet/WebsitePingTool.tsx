@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "200 85% 50%";
 
@@ -33,6 +34,7 @@ interface PingInfo {
 }
 
 const WebsitePingTool = () => {
+  const toolSeoData = getToolSeoMetadata('website-ping');
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PingInfo | null>(null);
@@ -86,13 +88,13 @@ const WebsitePingTool = () => {
   return (
     <>
       {CategorySEO.Internet(
-        "Website Ping Test",
-        "Test website availability and response time.",
-        "website-ping-test"
+        toolSeoData?.title || "Website Ping Tool",
+        toolSeoData?.description || "Check website availability and response time.",
+        "website-ping"
       )}
       <ToolLayout
-      title="Website Ping Test"
-      description="Test website availability and response time."
+      title={toolSeoData?.title || "Website Ping Tool"}
+      description={toolSeoData?.description || "Check website availability and response time."}
       category="Internet Tools"
       categoryPath="/category/internet"
     >

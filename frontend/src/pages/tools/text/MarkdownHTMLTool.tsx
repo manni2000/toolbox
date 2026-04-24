@@ -6,10 +6,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "260 70% 55%";
 
 const MarkdownHTMLTool = () => {
+  const toolSeoData = getToolSeoMetadata('markdown-html-converter');
   const [markdown, setMarkdown] = useState("");
   const [copied, setCopied] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -26,13 +28,13 @@ const MarkdownHTMLTool = () => {
   return (
     <>
       {CategorySEO.Text(
-        "Markdown → HTML",
-        "Convert Markdown to HTML",
-        "markdown--html"
+        toolSeoData?.title || "Markdown → HTML",
+        toolSeoData?.description || "Convert Markdown to HTML",
+        "markdown-html-converter"
       )}
       <ToolLayout
-      title="Markdown → HTML"
-      description="Convert Markdown to HTML"
+      title={toolSeoData?.title || "Markdown → HTML"}
+      description={toolSeoData?.description || "Convert Markdown to HTML"}
       category="Text Tools"
       categoryPath="/category/text"
     >

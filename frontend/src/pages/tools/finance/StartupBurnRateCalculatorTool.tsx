@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -17,6 +18,7 @@ interface BurnRateResult {
 }
 
 export default function StartupBurnRateCalculatorTool() {
+  const toolSeoData = getToolSeoMetadata('startup-burn-rate-calculator');
   const [monthlyExpenses, setMonthlyExpenses] = useState('');
   const [monthlyRevenue, setMonthlyRevenue] = useState('');
   const [currentCash, setCurrentCash] = useState('');
@@ -106,13 +108,13 @@ export default function StartupBurnRateCalculatorTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "Startup Burn Rate Calculator",
-        "Calculate your startup's burn rate and cash runway",
+        toolSeoData?.title || "Startup Burn Rate Calculator",
+        toolSeoData?.description || "Calculate your startup's burn rate and cash runway",
         "startup-burn-rate-calculator"
       )}
       <ToolLayout
-      title="Startup Burn Rate Calculator"
-      description="Calculate your startup's burn rate and cash runway"
+      title={toolSeoData?.title || "Startup Burn Rate Calculator"}
+      description={toolSeoData?.description || "Calculate your startup's burn rate and cash runway"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

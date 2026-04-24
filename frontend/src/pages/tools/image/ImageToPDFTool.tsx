@@ -6,8 +6,6 @@ import { motion } from "framer-motion";
 
 import { fadeInUp, scaleIn } from "@/lib/animations";
 
-import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
-
 import ToolLayout from "@/components/layout/ToolLayout";
 
 import { PDFDocument } from "pdf-lib";
@@ -17,6 +15,8 @@ import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 
 
@@ -37,6 +37,7 @@ interface ImageFile {
 
 
 const ImageToPDFTool = () => {
+  const toolSeoData = getToolSeoMetadata('image-to-pdf');
 
   const [images, setImages] = useState<ImageFile[]>([]);
 
@@ -387,12 +388,17 @@ const ImageToPDFTool = () => {
 
 
   return (
+    <>
+      {CategorySEO.Image(
+        toolSeoData?.title || "Image to PDF",
+        toolSeoData?.description || "Convert multiple images to a single PDF document",
+        "image-to-pdf"
+      )}
+      <ToolLayout
 
-    <ToolLayout
+      title={toolSeoData?.title || "Image to PDF"}
 
-      title="Image to PDF"
-
-      description="Convert multiple images to a single PDF document"
+      description={toolSeoData?.description || "Convert multiple images to a single PDF document"}
 
       category="Image Tools"
 
@@ -872,7 +878,8 @@ const ImageToPDFTool = () => {
 
 </ToolLayout>
 
-);
+    </>
+  );
 
 }
 

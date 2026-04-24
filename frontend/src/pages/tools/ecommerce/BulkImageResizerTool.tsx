@@ -166,10 +166,10 @@ const BulkImageResizerTool = () => {
         "bulk-image-resizer"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Bulk Image Resizer"}
-        description={toolSeoData?.description || "Resize multiple images at once for e-commerce"}
-        category="E-commerce Tools"
-        categoryPath="/category/ecommerce"
+      title={toolSeoData?.title || "Bulk Image Resizer"}
+      description={toolSeoData?.description || "Resize multiple images at once for e-commerce"}
+      category="Ecommerce Tools"
+      categoryPath="/category/ecommerce"
       >
         <div className="space-y-8">
           {/* Enhanced Hero Section */}

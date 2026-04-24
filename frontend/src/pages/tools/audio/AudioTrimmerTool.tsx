@@ -14,10 +14,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "290 80% 55%";
 
 const AudioTrimmerTool = () => {
+  const toolSeoData = getToolSeoMetadata('audio-trimmer');
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState<string>("");
   const [duration, setDuration] = useState(0);
@@ -195,13 +197,13 @@ const AudioTrimmerTool = () => {
   return (
     <>
       {CategorySEO.Audio(
-        "Audio Trimmer",
-        "Cut and trim audio files. Set start and end points, preview before download.",
+        toolSeoData?.title || "Audio Trimmer",
+        toolSeoData?.description || "Cut and trim audio files. Set start and end points, preview before download.",
         "audio-trimmer"
       )}
       <ToolLayout
-      title="Audio Trimmer"
-      description="Cut and trim audio files. Set start and end points, preview before download."
+      title={toolSeoData?.title || "Audio Trimmer"}
+      description={toolSeoData?.description || "Cut and trim audio files. Set start and end points, preview before download."}
       category="Audio Tools"
       categoryPath="/category/audio"
     >

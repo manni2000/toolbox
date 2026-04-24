@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -25,6 +26,7 @@ interface UTMLink {
 }
 
 const UTMLinkBuilderTool = () => {
+  const toolSeoData = getToolSeoMetadata('utm-link-builder');
   const [links, setLinks] = useState<UTMLink[]>([
     {
       id: '1',
@@ -175,13 +177,13 @@ const UTMLinkBuilderTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "UTM Link Builder",
-        "Create UTM-tagged URLs for tracking marketing campaigns and traffic sources",
-        "utm-link-builder"
+        toolSeoData?.title || "UTM Link Builder",
+        toolSeoData?.description || "Create UTM-tagged URLs for tracking marketing campaigns and traffic sources",
+        "utm-builder"
       )}
       <ToolLayout
-      title="UTM Link Builder"
-      description="Create UTM-tagged URLs for tracking marketing campaigns and traffic sources"
+      title={toolSeoData?.title || "UTM Link Builder"}
+      description={toolSeoData?.description || "Create UTM-tagged URLs for tracking marketing campaigns and traffic sources"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

@@ -14,6 +14,7 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "290 80% 55%";
 
@@ -52,6 +53,7 @@ declare global {
 }
 
 const SpeechToTextTool = () => {
+  const toolSeoData = getToolSeoMetadata('speech-to-text');
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [transcription, setTranscription] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -259,13 +261,13 @@ const SpeechToTextTool = () => {
   return (
     <>
       {CategorySEO.Audio(
-        "Speech to Text",
-        "Convert audio files to text with language support. Export as TXT or SRT subtitles.",
+        toolSeoData?.title || "Speech to Text",
+        toolSeoData?.description || "Convert audio files to text with language support. Export as TXT or SRT subtitles.",
         "speech-to-text"
       )}
       <ToolLayout
-      title="Speech to Text"
-      description="Convert audio files to text with language support. Export as TXT or SRT subtitles."
+      title={toolSeoData?.title || "Speech to Text"}
+      description={toolSeoData?.description || "Convert audio files to text with language support. Export as TXT or SRT subtitles."}
       category="Audio Tools"
       categoryPath="/category/audio"
     >

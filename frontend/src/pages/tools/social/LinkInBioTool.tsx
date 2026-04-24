@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "330 80% 55%";
 
@@ -15,6 +16,7 @@ interface LinkItem {
 }
 
 const LinkInBioTool = () => {
+  const toolSeoData = getToolSeoMetadata('link-in-bio');
   const [profileName, setProfileName] = useState("");
   const [profileBio, setProfileBio] = useState("");
   const [links, setLinks] = useState<LinkItem[]>([
@@ -118,15 +120,15 @@ const LinkInBioTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Link-in-Bio Page Generator",
-        "Create a beautiful link-in-bio page for your social profiles",
-        "link-in-bio-page-generator"
+      {CategorySEO.Social(
+        toolSeoData?.title || "Link-in-Bio Page Generator",
+        toolSeoData?.description || "Create a beautiful link-in-bio page for your social profiles",
+        "link-in-bio"
       )}
       <ToolLayout
-      title="Link-in-Bio Page Generator"
-      description="Create a beautiful link-in-bio page for your social profiles"
-      category="Social Media"
+      title={toolSeoData?.title || "Link-in-Bio Page Generator"}
+      description={toolSeoData?.description || "Create a beautiful link-in-bio page for your social profiles"}
+      category="Social Tools"
       categoryPath="/category/social"
     >
       <div className="mx-auto max-w-4xl">

@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "145 70% 45%";
 
 const SimpleInterestTool = () => {
+  const toolSeoData = getToolSeoMetadata('simple-interest-calculator');
   const [principal, setPrincipal] = useState("");
   const [rate, setRate] = useState("");
   const [time, setTime] = useState("");
@@ -54,13 +56,13 @@ const SimpleInterestTool = () => {
   return (
     <>
       {CategorySEO.Education(
-        "Simple Interest Calculator",
-        "Calculate simple interest on principal amount",
+        toolSeoData?.title || "Simple Interest Calculator",
+        toolSeoData?.description || "Calculate simple interest on principal amount",
         "simple-interest-calculator"
       )}
       <ToolLayout
-      title="Simple Interest Calculator"
-      description="Calculate simple interest on principal amount"
+      title={toolSeoData?.title || "Simple Interest Calculator"}
+      description={toolSeoData?.description || "Calculate simple interest on principal amount"}
       category="Education Tools"
       categoryPath="/category/education"
     >

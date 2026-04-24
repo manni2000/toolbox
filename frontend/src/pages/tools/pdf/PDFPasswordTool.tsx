@@ -10,6 +10,7 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 70% 50%";
 
@@ -21,6 +22,7 @@ interface ConversionResult {
 }
 
 const PDFPasswordTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-password');
   const [file, setFile] = useState<File | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -115,13 +117,13 @@ const PDFPasswordTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF Password Protector",
-        "Add password protection to your PDF files",
-        "pdf-password-protector"
+        toolSeoData?.title || "PDF Password Protector",
+        toolSeoData?.description || "Add password protection to your PDF files",
+        "pdf-password"
       )}
       <ToolLayout
-      title="PDF Password Protector"
-      description="Add password protection to your PDF files"
+      title={toolSeoData?.title || "PDF Password Protector"}
+      description={toolSeoData?.description || "Add password protection to your PDF files"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

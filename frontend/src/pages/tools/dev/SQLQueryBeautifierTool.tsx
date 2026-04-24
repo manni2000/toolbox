@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
 const SQLQueryBeautifierTool = () => {
+  const toolSeoData = getToolSeoMetadata('sql-query-beautifier');
   const [sqlInput, setSqlInput] = useState('');
   const [formattedSQL, setFormattedSQL] = useState('');
   const [indentSize, setIndentSize] = useState(2);
@@ -144,14 +146,14 @@ const SQLQueryBeautifierTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "SQL Query Beautifier",
-        "Format and beautify SQL queries with customizable indentation and keyword formatting",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "SQL Query Beautifier",
+        toolSeoData?.description || "Format and beautify SQL queries with customizable indentation and keyword formatting",
         "sql-query-beautifier"
       )}
       <ToolLayout
-      title="SQL Query Beautifier"
-      description="Format and beautify SQL queries with customizable indentation and keyword formatting"
+      title={toolSeoData?.title || "SQL Query Beautifier"}
+      description={toolSeoData?.description || "Format and beautify SQL queries with customizable indentation and keyword formatting"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

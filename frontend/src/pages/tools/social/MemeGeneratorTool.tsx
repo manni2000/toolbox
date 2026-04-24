@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "330 80% 55%";
 
 const MemeGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('meme-generator');
   const [topText, setTopText] = useState("");
   const [bottomText, setBottomText] = useState("");
   const [image, setImage] = useState<string | null>(null);
@@ -295,15 +297,15 @@ const MemeGeneratorTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Meme Generator",
-        "Create professional memes with templates, custom text, and advanced styling options",
+      {CategorySEO.Social(
+        toolSeoData?.title || "Meme Generator",
+        toolSeoData?.description || "Create professional memes with templates, custom text, and advanced styling options",
         "meme-generator"
       )}
       <ToolLayout
-      title="Meme Generator"
-      description="Create professional memes with templates, custom text, and advanced styling options"
-      category="Social Media"
+      title={toolSeoData?.title || "Meme Generator"}
+      description={toolSeoData?.description || "Create professional memes with templates, custom text, and advanced styling options"}
+      category="Social Tools"
       categoryPath="/category/social"
     >
       <canvas ref={canvasRef} className="hidden" />

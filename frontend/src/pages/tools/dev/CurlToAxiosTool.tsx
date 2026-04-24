@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -24,6 +25,7 @@ interface ParsedCurlCommand {
 }
 
 const CurlToAxiosTool = () => {
+  const toolSeoData = getToolSeoMetadata('curl-to-axios-converter');
   const [curlCommand, setCurlCommand] = useState('');
   const [conversionResult, setConversionResult] = useState<ConversionResult | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<'axios' | 'fetch' | 'javascript' | 'python'>('axios');
@@ -309,14 +311,14 @@ const CurlToAxiosTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "cURL to Axios Converter",
-        "Convert cURL commands to Axios, Fetch, JavaScript, and Python code",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "cURL to Axios Converter",
+        toolSeoData?.description || "Convert cURL commands to Axios, Fetch, JavaScript, and Python code",
         "curl-to-axios-converter"
       )}
       <ToolLayout
-      title="cURL to Axios Converter"
-      description="Convert cURL commands to Axios, Fetch, JavaScript, and Python code"
+      title={toolSeoData?.title || "cURL to Axios Converter"}
+      description={toolSeoData?.description || "Convert cURL commands to Axios, Fetch, JavaScript, and Python code"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

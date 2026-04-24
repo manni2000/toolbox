@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
 const CronGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('cron-generator');
   const [minute, setMinute] = useState("*");
   const [hour, setHour] = useState("*");
   const [dayOfMonth, setDayOfMonth] = useState("*");
@@ -77,14 +79,14 @@ const CronGeneratorTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Cron Expression Generator",
-        "Build and understand cron schedule expressions",
-        "cron-expression-generator"
+      {CategorySEO.Dev(
+        toolSeoData?.title || "Cron Expression Generator",
+        toolSeoData?.description || "Build and understand cron schedule expressions",
+        "cron-generator"
       )}
       <ToolLayout
-      title="Cron Expression Generator"
-      description="Build and understand cron schedule expressions"
+      title={toolSeoData?.title || "Cron Expression Generator"}
+      description={toolSeoData?.description || "Build and understand cron schedule expressions"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

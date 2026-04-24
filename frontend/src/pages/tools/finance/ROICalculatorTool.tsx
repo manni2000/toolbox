@@ -11,6 +11,7 @@ import { EnhancedDownload, downloadText, downloadJSON } from "@/components/Enhan
 import SimilarTools from "@/components/SimilarTools";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "262 80% 50%";
 
@@ -24,6 +25,7 @@ const formatIndianCurrency = (value: number) => {
 };
 
 const ROICalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('roi-calculator');
   const [initialInvestment, setInitialInvestment] = useState(100000);
   const [finalValue, setFinalValue] = useState(150000);
   const [years, setYears] = useState(3);
@@ -116,13 +118,13 @@ const ROICalculatorTool = () => {
   return (
     <>
       {CategorySEO.Finance(
-        "ROI Calculator",
-        "Calculate Return on Investment and annualized returns",
+        toolSeoData?.title || "ROI Calculator",
+        toolSeoData?.description || "Calculate Return on Investment and annualized returns",
         "roi-calculator"
       )}
       <ToolLayout
-      title="ROI Calculator"
-      description="Calculate Return on Investment and annualized returns"
+      title={toolSeoData?.title || "ROI Calculator"}
+      description={toolSeoData?.description || "Calculate Return on Investment and annualized returns"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

@@ -29,7 +29,6 @@ import ImageCompressorTool from "./pages/tools/image/ImageCompressorTool";
 import ImageResizeTool from "./pages/tools/image/ImageResizeTool";
 import ImageCropTool from "./pages/tools/image/ImageCropTool";
 import BackgroundRemoverTool from "./pages/tools/image/BackgroundRemoverTool";
-import WhatsAppStatusTool from "./pages/tools/image/WhatsAppStatusTool";
 import ImageBase64Tool from "./pages/tools/image/ImageBase64Tool";
 import ImageDPITool from "./pages/tools/image/ImageDPITool";
 import EXIFViewerTool from "./pages/tools/image/EXIFViewerTool";
@@ -185,6 +184,7 @@ import CaptionFormatterTool from "./pages/tools/social/CaptionFormatterTool";
 import LineBreakGeneratorTool from "./pages/tools/social/LineBreakGeneratorTool";
 import LinkInBioTool from "./pages/tools/social/LinkInBioTool";
 import MemeGeneratorTool from "./pages/tools/social/MemeGeneratorTool";
+import WhatsAppStatusTool from "./pages/tools/social/WhatsAppStatusTool";
 
 const queryClient = new QueryClient();
 
@@ -218,7 +218,6 @@ const AnimatedRoutes = () => {
           <Route path="/image-resize" element={<ImageResizeTool />} />
           <Route path="/image-crop" element={<ImageCropTool />} />
           <Route path="/background-remover" element={<BackgroundRemoverTool />} />
-          <Route path="/whatsapp-status-generator" element={<WhatsAppStatusTool />} />
           <Route path="/image-base64" element={<ImageBase64Tool />} />
           <Route path="/image-dpi-checker" element={<ImageDPITool />} />
           <Route path="/exif-viewer" element={<EXIFViewerTool />} />
@@ -388,6 +387,7 @@ const AnimatedRoutes = () => {
           <Route path="/line-break-generator" element={<LineBreakGeneratorTool />} />
           <Route path="/link-in-bio" element={<LinkInBioTool />} />
           <Route path="/meme-generator" element={<MemeGeneratorTool />} />
+          <Route path="/whatsapp-status-generator" element={<WhatsAppStatusTool />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>

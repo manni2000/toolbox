@@ -318,7 +318,7 @@ const GSTInvoiceGeneratorTool = () => {
       <ToolLayout
         title={toolSeoData?.title || "GST Invoice Generator"}
         description={toolSeoData?.description || "Create GST-compliant invoices for your business"}
-        category="E-commerce Tools"
+        category="Ecommerce Tools"
         categoryPath="/category/ecommerce"
       >
       <div className="space-y-8">

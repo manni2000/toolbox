@@ -8,10 +8,12 @@ import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
 const ImageBase64Tool = () => {
+  const toolSeoData = getToolSeoMetadata('image-base64');
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [image, setImage] = useState<string | null>(null);
   const [base64, setBase64] = useState("");
@@ -99,13 +101,13 @@ const ImageBase64Tool = () => {
   return (
     <>
       {CategorySEO.Image(
-        "Image Base64 Converter",
-        "Convert images to Base64 strings and vice versa",
+        toolSeoData?.title || "Image Base64 Converter",
+        toolSeoData?.description || "Convert images to Base64 strings and vice versa",
         "image-base64"
       )}
       <ToolLayout
-        title="Image ↔ Base64 Converter"
-        description="Convert images to Base64 strings and vice versa"
+        title={toolSeoData?.title || "Image ↔ Base64 Converter"}
+        description={toolSeoData?.description || "Convert images to Base64 strings and vice versa"}
         category="Image Tools"
         categoryPath="/category/image"
       >

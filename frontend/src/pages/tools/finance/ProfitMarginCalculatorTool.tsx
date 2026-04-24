@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -19,6 +20,7 @@ interface MarginResult {
 }
 
 export default function ProfitMarginCalculatorTool() {
+  const toolSeoData = getToolSeoMetadata('profit-margin-calculator');
   const [revenue, setRevenue] = useState('');
   const [cost, setCost] = useState('');
   const [operatingExpenses, setOperatingExpenses] = useState('');
@@ -108,13 +110,13 @@ export default function ProfitMarginCalculatorTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "Profit Margin Calculator",
-        "Calculate gross margin, net margin, and markup for your business",
+        toolSeoData?.title || "Profit Margin Calculator",
+        toolSeoData?.description || "Calculate gross margin, net margin, and markup for your business",
         "profit-margin-calculator"
       )}
       <ToolLayout
-      title="Profit Margin Calculator"
-      description="Calculate gross margin, net margin, and markup for your business"
+      title={toolSeoData?.title || "Profit Margin Calculator"}
+      description={toolSeoData?.description || "Calculate gross margin, net margin, and markup for your business"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

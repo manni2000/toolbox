@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "260 70% 55%";
 
 const LineSorterTool = () => {
+  const toolSeoData = getToolSeoMetadata('line-sorter');
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [copied, setCopied] = useState(false);
@@ -66,13 +68,13 @@ const LineSorterTool = () => {
   return (
     <>
       {CategorySEO.Text(
-        "Line Sorter",
-        "Sort lines alphabetically, numerically, by length, or shuffle them",
+        toolSeoData?.title || "Line Sorter",
+        toolSeoData?.description || "Sort lines alphabetically, numerically, by length, or shuffle them",
         "line-sorter"
       )}
       <ToolLayout
-      title="Line Sorter"
-      description="Sort lines alphabetically, numerically, by length, or shuffle them"
+      title={toolSeoData?.title || "Line Sorter"}
+      description={toolSeoData?.description || "Sort lines alphabetically, numerically, by length, or shuffle them"}
       category="Text Tools"
       categoryPath="/category/text"
     >

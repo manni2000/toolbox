@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "290 80% 55%";
 
@@ -26,6 +27,7 @@ const audioFormats = {
 };
 
 const AudioConverterTool = () => {
+  const toolSeoData = getToolSeoMetadata('audio-converter');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [audioData, setAudioData] = useState<string | null>(null);
@@ -142,13 +144,13 @@ const AudioConverterTool = () => {
   return (
     <>
       {CategorySEO.Audio(
-        "Audio Format Converter",
-        "Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats",
-        "audio-format-converter"
+        toolSeoData?.title || "Audio Format Converter",
+        toolSeoData?.description || "Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats",
+        "audio-converter"
       )}
       <ToolLayout
-      title="Audio Format Converter"
-      description="Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats"
+      title={toolSeoData?.title || "Audio Format Converter"}
+      description={toolSeoData?.description || "Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats"}
       category="Audio Tools"
       categoryPath="/category/audio"
     >

@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "220 80% 55%";
 
 const DateDifferenceTool = () => {
+  const toolSeoData = getToolSeoMetadata('date-difference');
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [result, setResult] = useState<{
@@ -67,19 +69,17 @@ const DateDifferenceTool = () => {
   return (
     <>
       {CategorySEO.DateTime(
-        "Date Difference Calculator",
-        "Calculate the difference between two dates",
-        "date-difference-calculator"
+        toolSeoData?.title || "Date Difference Calculator",
+        toolSeoData?.description || "Calculate the difference between two dates",
+        "date-difference"
       )}
       <ToolLayout
-      title="Date Difference Calculator"
-      description="Calculate the difference between two dates"
-      category="Date & Time"
-      categoryPath="/category/date-time"
-    >
-      <div className="mx-auto max-w-2xl space-y-6 sm:space-y-8">
-        {/* Inputs */}
-        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
+        title={toolSeoData?.title || "Date Difference Calculator"}
+        description={toolSeoData?.description || "Calculate difference between two dates"}
+        category="Date & Time"
+        categoryPath="/category/date-time"
+      >
+        <div className="space-y-6">
           <div>
             <label htmlFor="start-date" className="mb-2 block text-xs sm:text-sm font-medium">Start Date</label>
             <div className="relative">
@@ -122,104 +122,103 @@ const DateDifferenceTool = () => {
             <div className="rounded-xl border border-border bg-card p-4 sm:p-6 text-center">
               <p className="text-xs sm:text-sm text-muted-foreground">Time between dates</p>
               <div className="mt-3 sm:mt-4 flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
-                <TimeUnit value={result.years} label="Years" />
+                <TimeUnit value={result?.years || 0} label="Years" />
                 <span className="text-2xl sm:text-3xl font-light text-muted-foreground hidden sm:block">:</span>
-                <TimeUnit value={result.months} label="Months" />
+                <TimeUnit value={result?.months || 0} label="Months" />
                 <span className="text-2xl sm:text-3xl font-light text-muted-foreground hidden sm:block">:</span>
-                <TimeUnit value={result.days} label="Days" />
+                <TimeUnit value={result?.days || 0} label="Days" />
               </div>
             </div>
 
             {/* Detailed Stats */}
             <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
-              <StatCard label="Total Days" value={result.totalDays.toLocaleString()} />
-              <StatCard label="Total Weeks" value={result.totalWeeks.toLocaleString()} />
-              <StatCard label="Total Hours" value={result.totalHours.toLocaleString()} />
-              <StatCard label="Total Minutes" value={result.totalMinutes.toLocaleString()} />
+              <StatCard label="Total Days" value={result.totalDays?.toLocaleString() || "0"} />
+              <StatCard label="Total Weeks" value={result.totalWeeks?.toLocaleString() || "0"} />
+              <StatCard label="Total Hours" value={result.totalHours?.toLocaleString() || "0"} />
+              <StatCard label="Total Minutes" value={result.totalMinutes?.toLocaleString() || "0"} />
             </div>
           </div>
         )}
-      </div>
 
-      {/* Tool Definition Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="rounded-xl border border-border bg-card p-6 mt-5"
-      >
-        <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-blue-500" />
-          What is Date Difference?
-        </h3>
-        <p className="text-muted-foreground mb-4">
-          Date difference calculation determines the exact time elapsed between two dates. It provides comprehensive breakdowns in years, months, days, hours, minutes, and seconds, useful for project planning, age calculations, or tracking durations.
-        </p>
+        {/* Tool Definition Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-xl border border-border bg-card p-6 mt-5"
+        >
+          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-blue-500" />
+            What is Date Difference?
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Date difference calculation determines the exact time elapsed between two dates. It provides comprehensive breakdowns in years, months, days, hours, minutes, and seconds, useful for project planning, age calculations, or tracking durations.
+          </p>
 
-        <h4 className="font-semibold mb-2">How It Works</h4>
-        <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
-          <li>Select the start date using the date picker</li>
-          <li>Select the end date for your calculation</li>
-          <li>Click calculate to compute the difference</li>
-          <li>View results in multiple time units</li>
-        </ol>
+          <h4 className="font-semibold mb-2">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+            <li>Select the start date using the date picker</li>
+            <li>Select the end date for your calculation</li>
+            <li>Click calculate to compute the difference</li>
+            <li>View results in multiple time units</li>
+          </ol>
 
-        <div className="grid sm:grid-cols-2 gap-4 mt-4">
-          <div className="p-3 bg-blue-50 rounded-lg">
-            <h5 className="font-semibold text-blue-900 mb-1">Difference Metrics</h5>
-            <ul className="text-sm text-blue-800 space-y-1">
-              <li>• Years, months, days</li>
-              <li>• Total days</li>
-              <li>• Total hours</li>
-              <li>• Business days</li>
-            </ul>
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <h5 className="font-semibold text-blue-900 mb-1">Difference Metrics</h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Years, months, days</li>
+                <li>• Total days</li>
+                <li>• Total hours</li>
+                <li>• Business days</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• Project duration</li>
+                <li>• Event planning</li>
+                <li>• Contract periods</li>
+                <li>• Age calculation</li>
+              </ul>
+            </div>
           </div>
-          <div className="p-3 bg-green-50 rounded-lg">
-            <h5 className="font-semibold text-green-900 mb-1">Use Cases</h5>
-            <ul className="text-sm text-green-800 space-y-1">
-              <li>• Project duration</li>
-              <li>• Event planning</li>
-              <li>• Contract periods</li>
-              <li>• Age calculation</li>
-            </ul>
-          </div>
+        </motion.div>
+
+        <div className="mt-8">
+          {/* FAQ Section */}
+          <ToolFAQ faqs={[
+            {
+              question: "What is a date difference calculator?",
+              answer: "A date difference calculator determines the exact time elapsed between two dates. It provides comprehensive breakdowns in years, months, days, hours, minutes, and seconds."
+            },
+            {
+              question: "How does the date difference calculator work?",
+              answer: "Select the start and end dates using the date pickers. Click calculate to compute the difference. View results in multiple time units including years, months, days, hours, and minutes."
+            },
+            {
+              question: "How accurate is the date difference calculation?",
+              answer: "The calculation is precise, accounting for leap years, varying month lengths, and exact time differences between the two dates."
+            },
+            {
+              question: "Can I calculate difference for past dates?",
+              answer: "Yes, you can calculate the difference between any two dates, whether both are in the past, future, or one in each."
+            },
+            {
+              question: "What are business days?",
+              answer: "Business days typically exclude weekends (Saturday and Sunday). This helps calculate working days between dates for business purposes."
+            },
+            {
+              question: "Does order of dates matter?",
+              answer: "The tool automatically handles date order. If the end date is before the start date, it will show a negative difference or swap the dates."
+            },
+            {
+              question: "Can I include time in the calculation?",
+              answer: "Currently, the tool calculates date differences. For time-specific calculations, you may need a tool that includes time components."
+            }
+          ]} />
         </div>
-      </motion.div>
-
-      <div className="mt-8">
-        {/* FAQ Section */}
-      <ToolFAQ faqs={[
-        {
-          question: "What is a date difference calculator?",
-          answer: "A date difference calculator determines the exact time elapsed between two dates. It provides comprehensive breakdowns in years, months, days, hours, minutes, and seconds."
-        },
-        {
-          question: "How does the date difference calculator work?",
-          answer: "Select the start and end dates using the date pickers. Click calculate to compute the difference. View results in multiple time units including years, months, days, hours, and minutes."
-        },
-        {
-          question: "How accurate is the date difference calculation?",
-          answer: "The calculation is precise, accounting for leap years, varying month lengths, and exact time differences between the two dates."
-        },
-        {
-          question: "Can I calculate difference for past dates?",
-          answer: "Yes, you can calculate the difference between any two dates, whether both are in the past, future, or one in each."
-        },
-        {
-          question: "What are business days?",
-          answer: "Business days typically exclude weekends (Saturday and Sunday). This helps calculate working days between dates for business purposes."
-        },
-        {
-          question: "Does order of dates matter?",
-          answer: "The tool automatically handles date order. If the end date is before the start date, it will show a negative difference or swap the dates."
-        },
-        {
-          question: "Can I include time in the calculation?",
-          answer: "Currently, the tool calculates date differences. For time-specific calculations, you may need a tool that includes time components."
-        }
-      ]} />
-      </div>
-    </ToolLayout>
+      </ToolLayout>
       </>
   );
 };

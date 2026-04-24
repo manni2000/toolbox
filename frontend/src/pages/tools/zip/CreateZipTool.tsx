@@ -9,10 +9,12 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "280 70% 55%";
 
 const CreateZipTool = () => {
+  const toolSeoData = getToolSeoMetadata('zip-creator');
   const [files, setFiles] = useState<File[]>([]);
   const [zipName, setZipName] = useState("archive");
   const [isCreating, setIsCreating] = useState(false);
@@ -70,13 +72,13 @@ const CreateZipTool = () => {
   return (
     <>
       {CategorySEO.ZIP(
-        "Create ZIP",
-        "Create ZIP archives from multiple files",
+        toolSeoData?.title || "Create ZIP",
+        toolSeoData?.description || "Create ZIP archives from multiple files",
         "create-zip"
       )}
       <ToolLayout
-      title="Create ZIP"
-      description="Create ZIP archives from multiple files"
+      title={toolSeoData?.title || "Create ZIP"}
+      description={toolSeoData?.description || "Create ZIP archives from multiple files"}
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

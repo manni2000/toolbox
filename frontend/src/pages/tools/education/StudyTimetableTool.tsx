@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "145 70% 45%";
 
@@ -18,6 +19,7 @@ interface StudySession {
 }
 
 const StudyTimetableTool = () => {
+  const toolSeoData = getToolSeoMetadata('study-timetable-generator');
   const [sessions, setSessions] = useState<StudySession[]>([]);
   const [currentSession, setCurrentSession] = useState({
     subject: "",
@@ -76,13 +78,13 @@ const StudyTimetableTool = () => {
   return (
     <>
       {CategorySEO.Education(
-        "Study Timetable Generator",
-        "Create personalized study schedules with break times",
+        toolSeoData?.title || "Study Timetable Generator",
+        toolSeoData?.description || "Create personalized study schedules with break times",
         "study-timetable-generator"
       )}
       <ToolLayout
-      title="Study Timetable Generator"
-      description="Create personalized study schedules with break times"
+      title={toolSeoData?.title || "Study Timetable Generator"}
+      description={toolSeoData?.description || "Create personalized study schedules with break times"}
       category="Education Tools"
       categoryPath="/category/education"
     >

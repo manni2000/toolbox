@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -18,6 +19,7 @@ interface PasswordAnalysis {
 }
 
 export default function PasswordStrengthExplainerTool() {
+  const toolSeoData = getToolSeoMetadata('password-strength-explainer');
   const [password, setPassword] = useState('');
   const [analysis, setAnalysis] = useState<PasswordAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
@@ -95,13 +97,13 @@ export default function PasswordStrengthExplainerTool() {
   return (
     <>
       {CategorySEO.Security(
-        "Password Strength Explainer",
-        "Analyze password strength with detailed feedback and suggestions",
+        toolSeoData?.title || "Password Strength Explainer",
+        toolSeoData?.description || "Analyze password strength with detailed feedback and suggestions",
         "password-strength-explainer"
       )}
       <ToolLayout
-      title="Password Strength Explainer"
-      description="Analyze password strength with detailed feedback and suggestions"
+      title={toolSeoData?.title || "Password Strength Explainer"}
+      description={toolSeoData?.description || "Analyze password strength with detailed feedback and suggestions"}
       category="Security Tools"
       categoryPath="/category/security"
     >

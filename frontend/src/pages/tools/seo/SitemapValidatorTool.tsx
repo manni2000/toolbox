@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -24,6 +25,7 @@ interface SitemapStats {
 }
 
 const SitemapValidatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('sitemap-validator');
   const [sitemapUrl, setSitemapUrl] = useState("");
   const [sitemapContent, setSitemapContent] = useState("");
   const [issues, setIssues] = useState<SitemapIssue[]>([]);
@@ -226,13 +228,13 @@ const SitemapValidatorTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "Sitemap Validator",
-        "Validate and analyze XML sitemats for SEO compliance and best practices",
+        toolSeoData?.title || "Sitemap Validator",
+        toolSeoData?.description || "Validate and analyze XML sitemaps for SEO compliance and best practices",
         "sitemap-validator"
       )}
       <ToolLayout
-      title="Sitemap Validator"
-      description="Validate and analyze XML sitemats for SEO compliance and best practices"
+      title={toolSeoData?.title || "Sitemap Validator"}
+      description={toolSeoData?.description || "Validate and analyze XML sitemaps for SEO compliance and best practices"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

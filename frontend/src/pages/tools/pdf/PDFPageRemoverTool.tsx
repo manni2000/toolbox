@@ -10,10 +10,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 70% 50%";
 
 const PDFPageRemoverTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-page-remover');
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [pagesToRemove, setPagesToRemove] = useState<number[]>([]);
@@ -95,13 +97,13 @@ const PDFPageRemoverTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF Page Remover",
-        "Remove specific pages from your PDF document",
+        toolSeoData?.title || "PDF Page Remover",
+        toolSeoData?.description || "Remove specific pages from your PDF document",
         "pdf-page-remover"
       )}
       <ToolLayout
-      title="PDF Page Remover"
-      description="Remove specific pages from your PDF document"
+      title={toolSeoData?.title || "PDF Page Remover"}
+      description={toolSeoData?.description || "Remove specific pages from your PDF document"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

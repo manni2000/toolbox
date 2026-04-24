@@ -8,10 +8,12 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "280 70% 55%";
 
 const PasswordZipTool = () => {
+  const toolSeoData = getToolSeoMetadata('password-protector-zip');
   const [files, setFiles] = useState<File[]>([]);
   const [fileName, setFileName] = useState("");
   const [zipData, setZipData] = useState<string | null>(null);
@@ -124,13 +126,13 @@ const PasswordZipTool = () => {
   return (
     <>
       {CategorySEO.ZIP(
-        "Password-Protected ZIP",
-        "Create encrypted ZIP archives with password protection",
-        "password-protected-zip"
+        toolSeoData?.title || "Password-Protected ZIP",
+        toolSeoData?.description || "Create encrypted ZIP archives with password protection",
+        "password-zip"
       )}
       <ToolLayout
-      title="Password-Protected ZIP"
-      description="Create encrypted ZIP archives with password protection"
+      title={toolSeoData?.title || "Password-Protected ZIP"}
+      description={toolSeoData?.description || "Create encrypted ZIP archives with password protection"}
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

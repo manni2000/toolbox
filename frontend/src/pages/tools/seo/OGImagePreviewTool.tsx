@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -20,6 +21,7 @@ interface OGData {
 }
 
 const OGImagePreviewTool = () => {
+  const toolSeoData = getToolSeoMetadata('og-image-preview');
   const [ogData, setOgData] = useState<OGData>({
     title: "",
     description: "",
@@ -114,13 +116,13 @@ const OGImagePreviewTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "OG Image Preview Tool",
-        "Preview and generate Open Graph meta tags for perfect social media sharing",
-        "og-image-preview-tool"
+        toolSeoData?.title || "OG Image Preview",
+        toolSeoData?.description || "Preview how your content looks when shared on social media",
+        "og-image-preview"
       )}
       <ToolLayout
-      title="OG Image Preview Tool"
-      description="Preview and generate Open Graph meta tags for perfect social media sharing"
+      title={toolSeoData?.title || "OG Image Preview"}
+      description={toolSeoData?.description || "Preview how your content looks when shared on social media"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

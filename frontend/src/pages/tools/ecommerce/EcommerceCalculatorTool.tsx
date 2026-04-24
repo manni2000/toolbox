@@ -67,15 +67,15 @@ const EcommerceCalculatorTool = () => {
   return (
     <>
       {CategorySEO.Ecommerce(
-        toolSeoData?.title || "GST/Margin/EMI Calculator",
+        toolSeoData?.title || "GST-Margin/EMI Calculator",
         toolSeoData?.description || "Calculate GST, profit margins, and EMI for your business",
         "ecommerce-calculator"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "GST/Margin/EMI Calculator"}
-        description={toolSeoData?.description || "Calculate GST, profit margins, and EMI for your business"}
-        category="E-commerce Tools"
-        categoryPath="/category/ecommerce"
+      title={toolSeoData?.title || "GST-Margin/EMI Calculator"}
+      description={toolSeoData?.description || "Calculate GST, profit margins, and EMI for your business"}
+      category="Ecommerce Tools"
+      categoryPath="/category/ecommerce"
       >
       <div className="space-y-8">
         {/* Enhanced Hero Section */}

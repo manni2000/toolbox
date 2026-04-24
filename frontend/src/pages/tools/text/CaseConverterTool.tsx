@@ -5,12 +5,14 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "260 70% 55%";
 
 type CaseType = "upper" | "lower" | "title" | "sentence" | "camel" | "snake" | "kebab" | "constant" | "alternating" | "inverse";
 
 const CaseConverterTool = () => {
+  const toolSeoData = getToolSeoMetadata('case-converter');
   const [input, setInput] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
 
@@ -36,13 +38,13 @@ const CaseConverterTool = () => {
   return (
     <>
       {CategorySEO.Text(
-        "Case Converter",
-        "Convert text between different cases",
+        toolSeoData?.title || "Case Converter",
+        toolSeoData?.description || "Convert text between different cases",
         "case-converter"
       )}
       <ToolLayout
-      title="Case Converter"
-      description="Convert text between different cases"
+      title={toolSeoData?.title || "Case Converter"}
+      description={toolSeoData?.description || "Convert text between different cases"}
       category="Text Tools"
       categoryPath="/category/text"
     >

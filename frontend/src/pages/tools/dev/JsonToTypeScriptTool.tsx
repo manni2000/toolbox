@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -22,6 +23,7 @@ interface GeneratedInterface {
 }
 
 const JsonToTypeScriptTool = () => {
+  const toolSeoData = getToolSeoMetadata('json-to-typescript');
   const [jsonInput, setJsonInput] = useState('');
   const [interfaceName, setInterfaceName] = useState('ApiResponse');
   const [generatedInterface, setGeneratedInterface] = useState<GeneratedInterface | null>(null);
@@ -159,14 +161,14 @@ const JsonToTypeScriptTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "JSON to TypeScript Interface Generator",
-        "Convert JSON objects to TypeScript interfaces with automatic type inference",
-        "json-to-typescript-interface-generator"
+      {CategorySEO.Dev(
+        toolSeoData?.title || "JSON to TypeScript Interface Generator",
+        toolSeoData?.description || "Convert JSON objects to TypeScript interfaces with automatic type inference",
+        "json-to-typescript"
       )}
       <ToolLayout
-      title="JSON to TypeScript Interface Generator"
-      description="Convert JSON objects to TypeScript interfaces with automatic type inference"
+      title={toolSeoData?.title || "JSON to TypeScript Interface Generator"}
+      description={toolSeoData?.description || "Convert JSON objects to TypeScript interfaces with automatic type inference"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

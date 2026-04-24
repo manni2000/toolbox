@@ -13,10 +13,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { AudioUploadZone } from "@/components/ui/audio-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "290 80% 55%";
 
 const AudioSpeedTool = () => {
+  const toolSeoData = getToolSeoMetadata('audio-speed');
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState<string>("");
   const [speed, setSpeed] = useState(1.0);
@@ -175,13 +177,13 @@ const AudioSpeedTool = () => {
   return (
     <>
       {CategorySEO.Audio(
-        "Audio Speed Changer",
-        "Change audio playback speed from 0.5x to 2x while keeping pitch intact.",
-        "audio-speed-changer"
+        toolSeoData?.title || "Audio Speed Changer",
+        toolSeoData?.description || "Change audio playback speed from 0.5x to 2x while keeping pitch intact.",
+        "audio-speed"
       )}
       <ToolLayout
-      title="Audio Speed Changer"
-      description="Change audio playback speed from 0.5x to 2x while keeping pitch intact."
+      title={toolSeoData?.title || "Audio Speed Changer"}
+      description={toolSeoData?.description || "Change audio playback speed from 0.5x to 2x while keeping pitch intact."}
       category="Audio Tools"
       categoryPath="/category/audio"
     >

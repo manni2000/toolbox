@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Upload, Camera, MapPin, Calendar, Settings, X, Sparkles, Info } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
-import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { API_URLS } from "@/lib/api-complete";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
@@ -28,6 +28,7 @@ interface EXIFData {
 }
 
 const EXIFViewerTool = () => {
+  const toolSeoData = getToolSeoMetadata('exif-viewer');
   const [image, setImage] = useState<string | null>(null);
   const [fileName, setFileName] = useState("");
   const [exifData, setExifData] = useState<EXIFData | null>(null);
@@ -44,19 +45,15 @@ const EXIFViewerTool = () => {
       const dataUrl = e.target?.result as string;
       setImage(dataUrl);
 
-      // Call backend API for EXIF data
       try {
         const formData = new FormData();
         formData.append('image', file);
-        
-        // console.log('Calling EXIF API:', `${API_URLS.BASE_URL}${API_URLS.EXIF_VIEWER}`);
-        
+                
         const response = await fetch(`${API_URLS.BASE_URL}${API_URLS.EXIF_VIEWER}`, {
           method: 'POST',
           body: formData,
         });
 
-        // console.log('EXIF API response status:', response.status);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -83,13 +80,9 @@ const EXIFViewerTool = () => {
             gps: exifResult.gps,
           });
           
-          // Only show "limited EXIF" if no detailed data is available
           const hasDetailedExif = exifResult.make || exifResult.model || exifResult.software || 
                                 exifResult.dateTime || exifResult.lensModel || exifResult.aperture ||
                                 exifResult.shutterSpeed || exifResult.iso || exifResult.focalLength || exifResult.gps;
-          
-          // console.log('Has detailed EXIF:', hasDetailedExif);
-          // console.log('Setting noExif to:', !hasDetailedExif);
           
           if (!hasDetailedExif) {
             setNoExif(true);
@@ -98,8 +91,6 @@ const EXIFViewerTool = () => {
           throw new Error(result.error || 'Failed to extract EXIF data');
         }
       } catch (error) {
-        // console.error('EXIF API Error:', error);
-        // Fallback to basic image info
         const img = new Image();
         img.onload = () => {
           setExifData({
@@ -156,18 +147,17 @@ const EXIFViewerTool = () => {
   return (
     <>
       {CategorySEO.Image(
-        "EXIF Metadata Viewer",
-        "View camera settings, GPS data, and other metadata from photos",
+        toolSeoData?.title || "EXIF Metadata Viewer",
+        toolSeoData?.description || "View camera settings, GPS data, and other metadata from photos",
         "exif-viewer"
       )}
       <ToolLayout
-        title="EXIF Metadata Viewer"
-        description="View camera settings, GPS data, and other metadata from photos"
+        title={toolSeoData?.title || "EXIF Metadata Viewer"}
+        description={toolSeoData?.description || "View camera settings, GPS data, and other metadata from photos"}
         category="Image Tools"
         categoryPath="/category/image"
       >
       <div className="space-y-6">
-        {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}
           initial="hidden"

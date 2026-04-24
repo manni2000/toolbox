@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "220 80% 55%";
 
 const WorkingDaysTool = () => {
+  const toolSeoData = getToolSeoMetadata('working-days-calculator');
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [excludeWeekends, setExcludeWeekends] = useState(true);
@@ -51,13 +53,13 @@ const WorkingDaysTool = () => {
   return (
     <>
       {CategorySEO.DateTime(
-        "Working Days Calculator",
-        "Calculate business days between two dates, excluding weekends",
+        toolSeoData?.title || "Working Days Calculator",
+        toolSeoData?.description || "Calculate business days between two dates, excluding weekends",
         "working-days-calculator"
       )}
       <ToolLayout
-        title="Working Days Calculator"
-        description="Calculate business days between two dates, excluding weekends"
+        title={toolSeoData?.title || "Working Days Calculator"}
+        description={toolSeoData?.description || "Calculate business days between two dates, excluding weekends"}
         category="Date & Time"
         categoryPath="/category/date-time"
       >

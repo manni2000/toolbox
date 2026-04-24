@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -20,6 +21,7 @@ interface StatusCodeInfo {
 }
 
 const HTTPStatusCodeTool = () => {
+  const toolSeoData = getToolSeoMetadata('http-status-code-explainer');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [copied, setCopied] = useState<string | null>(null);
@@ -270,14 +272,14 @@ const HTTPStatusCodeTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "HTTP Status Code Explainer",
-        "Comprehensive guide to HTTP status codes with meanings, causes, and solutions",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "HTTP Status Code Explainer",
+        toolSeoData?.description || "Comprehensive guide to HTTP status codes with meanings, causes, and solutions",
         "http-status-code-explainer"
       )}
       <ToolLayout
-      title="HTTP Status Code Explainer"
-      description="Comprehensive guide to HTTP status codes with meanings, causes, and solutions"
+      title={toolSeoData?.title || "HTTP Status Code Explainer"}
+      description={toolSeoData?.description || "Comprehensive guide to HTTP status codes with meanings, causes, and solutions"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

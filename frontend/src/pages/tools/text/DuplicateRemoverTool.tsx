@@ -5,8 +5,10 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const DuplicateRemoverTool = () => {
+  const toolSeoData = getToolSeoMetadata('duplicate-remover');
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [copied, setCopied] = useState(false);
@@ -42,13 +44,13 @@ const DuplicateRemoverTool = () => {
   return (
     <>
       {CategorySEO.Text(
-        "Duplicate Line Remover",
-        "Remove duplicate lines from your text while preserving order",
-        "duplicate-line-remover"
+        toolSeoData?.title || "Duplicate Line Remover",
+        toolSeoData?.description || "Remove duplicate lines from your text while preserving order",
+        "duplicate-remover"
       )}
       <ToolLayout
-      title="Duplicate Line Remover"
-      description="Remove duplicate lines from your text while preserving order"
+      title={toolSeoData?.title || "Duplicate Line Remover"}
+      description={toolSeoData?.description || "Remove duplicate lines from your text while preserving order"}
       category="Text Tools"
       categoryPath="/category/text"
     >

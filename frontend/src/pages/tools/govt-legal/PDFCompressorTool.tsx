@@ -163,17 +163,16 @@ export default function PDFCompressorTool() {
 
   return (
     <>
-      {CategorySEO.Finance(
-        "PDF Compressor",
-        "Compress PDF files for document submission",
+      {CategorySEO.GovtLegal(
+        toolSeoData?.title || "PDF Compressor",
+        toolSeoData?.description || "Compress PDF files for document submission",
         "pdf-compressor"
       )}
       <ToolLayout
-        title="PDF Compressor"
-        description="Compress PDF files for document submission"
-        category="Govt Legal Tools"
-        categoryPath="/category/govt-legal"
-        toolSlug="pdf-compressor"
+      title={toolSeoData?.title || "PDF Compressor"}
+      description={toolSeoData?.description || "Compress PDF files for document submission"}
+      category="Govt & Legal Tools"
+      categoryPath="/category/govt-legal"
       >
         <div className="space-y-8">
           {/* Enhanced Hero Section */}

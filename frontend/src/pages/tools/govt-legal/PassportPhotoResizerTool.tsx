@@ -212,14 +212,14 @@ export default function PassportPhotoResizerTool() {
   return (
     <>
       {CategorySEO.GovtLegal(
-        "Passport/Aadhaar Photo Resizer",
-        "Resize photos for passport and Aadhaar under 50KB",
+        toolSeoData?.title || "Passport/Aadhaar Photo Resizer",
+        toolSeoData?.description || "Resize photos for passport and Aadhaar under 50KB",
         "passport-photo-resizer"
       )}
       <ToolLayout
-        title="Passport/Aadhaar Photo Resizer"
-        description="Resize photos for passport and Aadhaar under 50KB"
-        category="Govt Legal Tools"
+        title={toolSeoData?.title || "Passport/Aadhaar Photo Resizer"}
+        description={toolSeoData?.description || "Resize photos for passport and Aadhaar under 50KB"}
+        category="Govt & Legal Tools"
         categoryPath="/category/govt-legal"
         toolSlug="passport-photo-resizer"
       >

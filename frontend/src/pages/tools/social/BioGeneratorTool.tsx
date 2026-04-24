@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "330 80% 55%";
 
 const BioGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('bio-generator');
   const [name, setName] = useState("");
   const [profession, setProfession] = useState("");
   const [interests, setInterests] = useState("");
@@ -149,15 +151,15 @@ const BioGeneratorTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Bio Generator",
-        "Create engaging social media bios with character limits",
+      {CategorySEO.Social(
+        toolSeoData?.title || "Bio Generator",
+        toolSeoData?.description || "Create engaging social media bios with character limits",
         "bio-generator"
       )}
       <ToolLayout
-      title="Bio Generator"
-      description="Create engaging social media bios with character limits"
-      category="Social Media"
+      title={toolSeoData?.title || "Bio Generator"}
+      description={toolSeoData?.description || "Create engaging social media bios with character limits"}
+      category="Social Tools"
       categoryPath="/category/social"
     >
       <div className="mx-auto max-w-2xl space-y-6">

@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -15,6 +16,7 @@ interface RobotRule {
 }
 
 const RobotsTxtTool = () => {
+  const toolSeoData = getToolSeoMetadata('robots-txt-generator');
   const [rules, setRules] = useState<RobotRule[]>([
     {
       userAgent: "*",
@@ -171,13 +173,13 @@ const RobotsTxtTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "Robots.txt Generator",
-        "Generate professional robots.txt files to control search engine crawling",
+        toolSeoData?.title || "Robots.txt Generator",
+        toolSeoData?.description || "Generate professional robots.txt files to control search engine crawling",
         "robotstxt-generator"
       )}
       <ToolLayout
-      title="Robots.txt Generator"
-      description="Generate professional robots.txt files to control search engine crawling"
+      title={toolSeoData?.title || "Robots.txt Generator"}
+      description={toolSeoData?.description || "Generate professional robots.txt files to control search engine crawling"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

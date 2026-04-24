@@ -10,6 +10,7 @@ import { FinanceChart, generateGrowthData } from "@/components/ui/finance-chart"
 import { EnhancedDownload, downloadJSON, downloadText } from "@/components/EnhancedDownload";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -23,6 +24,7 @@ const formatIndianCurrency = (value: number) => {
 };
 
 const LumpsumCalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('lumpsum-calculator');
   const [principalAmount, setPrincipalAmount] = useState(100000);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [timePeriod, setTimePeriod] = useState(10);
@@ -99,13 +101,13 @@ const LumpsumCalculatorTool = () => {
   return (
     <>
       {CategorySEO.Finance(
-        "Lumpsum Calculator",
-        "Calculate returns on one-time lumpsum investments",
+        toolSeoData?.title || "Lumpsum Calculator",
+        toolSeoData?.description || "Calculate returns on one-time lumpsum investments",
         "lumpsum-calculator"
       )}
       <ToolLayout
-      title="Lumpsum Calculator"
-      description="Calculate returns on one-time lumpsum investments"
+      title={toolSeoData?.title || "Lumpsum Calculator"}
+      description={toolSeoData?.description || "Calculate returns on one-time lumpsum investments"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

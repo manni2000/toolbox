@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
 const Base64Tool = () => {
+  const toolSeoData = getToolSeoMetadata('base64-encoder-decoder');
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [mode, setMode] = useState<"encode" | "decode">("encode");
@@ -53,13 +55,13 @@ const Base64Tool = () => {
   return (
     <>
       {CategorySEO.Security(
-        "Base64 Encode/Decode",
-        "Encode or decode Base64 strings",
-        "base64-encodedecode"
+        toolSeoData?.title || "Base64 Encode/Decode",
+        toolSeoData?.description || "Encode or decode Base64 strings",
+        "base64-tool"
       )}
       <ToolLayout
-      title="Base64 Encode/Decode"
-      description="Encode or decode Base64 strings"
+      title={toolSeoData?.title || "Base64 Encode/Decode"}
+      description={toolSeoData?.description || "Encode or decode Base64 strings"}
       category="Security Tools"
       categoryPath="/category/security"
     >

@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { PresetButtonGroup, PresetOption } from "@/components/ui/preset-button-group";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "145 70% 45%";
 
@@ -66,6 +67,7 @@ const categories: { id: Category; label: string }[] = [
 ];
 
 const UnitConverterTool = () => {
+  const toolSeoData = getToolSeoMetadata('unit-converter');
   const [category, setCategory] = useState<Category>("length");
   const [fromUnit, setFromUnit] = useState(0);
   const [toUnit, setToUnit] = useState(1);
@@ -136,13 +138,13 @@ const UnitConverterTool = () => {
   return (
     <>
       {CategorySEO.Education(
-        "Unit Converter",
-        "Convert length, weight, temperature and more with precision",
+        toolSeoData?.title || "Unit Converter",
+        toolSeoData?.description || "Convert length, weight, temperature and more with precision",
         "unit-converter"
       )}
       <ToolLayout
-      title="Unit Converter"
-      description="Convert length, weight, temperature and more with precision"
+      title={toolSeoData?.title || "Unit Converter"}
+      description={toolSeoData?.description || "Convert length, weight, temperature and more with precision"}
       category="Education Tools"
       categoryPath="/category/education"
     >

@@ -8,6 +8,7 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 70% 50%";
 
@@ -33,6 +34,7 @@ interface ConversionResult {
 }
 
 const PDFToImageTool = () => {
+  const toolSeoData = getToolSeoMetadata('pdf-to-image');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [resultImages, setResultImages] = useState<ImageResult[]>([]);
@@ -175,13 +177,13 @@ const PDFToImageTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "PDF to Images",
-        "Convert PDF pages to image files",
-        "pdf-to-images"
+        toolSeoData?.title || "PDF to Images",
+        toolSeoData?.description || "Convert PDF pages to image files",
+        "pdf-to-image"
       )}
       <ToolLayout
-      title="PDF to Images"
-      description="Convert PDF pages to image files"
+      title={toolSeoData?.title || "PDF to Images"}
+      description={toolSeoData?.description || "Convert PDF pages to image files"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

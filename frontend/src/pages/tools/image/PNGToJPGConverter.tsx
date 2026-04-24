@@ -7,10 +7,13 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
+import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
 const PNGToJPGConverter = () => {
+  const toolSeoData = getToolSeoMetadata('png-to-jpg');
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [convertedUrl, setConvertedUrl] = useState<string | null>(null);
@@ -93,9 +96,15 @@ const PNGToJPGConverter = () => {
   };
 
   return (
-    <ToolLayout
-      title="PNG to JPG Converter"
-      description="Convert PNG images to JPG format with adjustable quality settings"
+    <>
+      {CategorySEO.Image(
+        toolSeoData?.title || "PNG to JPG Converter",
+        toolSeoData?.description || "Convert PNG images to JPG format with adjustable quality settings",
+        "png-to-jpg"
+      )}
+      <ToolLayout
+      title={toolSeoData?.title || "PNG to JPG Converter"}
+      description={toolSeoData?.description || "Convert PNG images to JPG format with adjustable quality settings"}
       category="Image Tools"
       categoryPath="/category/image"
     >
@@ -375,6 +384,7 @@ const PNGToJPGConverter = () => {
       </div>
     </div>
     </ToolLayout>
+    </>
   );
 };
 

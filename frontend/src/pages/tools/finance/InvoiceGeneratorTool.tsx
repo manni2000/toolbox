@@ -178,13 +178,13 @@ export default function InvoiceGeneratorTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "Invoice Generator",
-        "Create professional invoices with PDF download",
+        toolSeoData?.title || "Invoice Generator",
+        toolSeoData?.description || "Create professional invoices with PDF download",
         "invoice-generator"
       )}
       <ToolLayout
-      title="Invoice Generator"
-      description="Create professional invoices with PDF download"
+      title={toolSeoData?.title || "Invoice Generator"}
+      description={toolSeoData?.description || "Create professional invoices with PDF download"}
       category="Finance Tools"
       categoryPath="/category/finance"
       toolSlug="invoice-generator"

@@ -157,6 +157,22 @@ export const API_URLS = {
   TEXT_SUMMARIZER: `/api/text/text-summarizer`,
   TEXT_DIFF: `/api/text/text-diff`,
 
+  // Govt & Legal Tools
+  DOCUMENT_TEMPLATE: `/api/govt-legal/document-template`,
+  PDF_COMPRESSOR_GOV: `/api/govt-legal/pdf-compressor`,
+  PASSPORT_PHOTO_RESIZER: `/api/govt-legal/passport-photo-resizer`,
+  SIGNATURE_MAKER: `/api/govt-legal/signature-maker`,
+
+  // Ecommerce Tools
+  BARCODE_GENERATOR: `/api/ecommerce/barcode-generator`,
+  BULK_IMAGE_RESIZER: `/api/ecommerce/bulk-image-resizer`,
+  ECOMMERCE_CALCULATOR: `/api/ecommerce/calculator`,
+  GST_INVOICE_GENERATOR: `/api/ecommerce/gst-invoice-generator`,
+  IMAGE_COLOR_ENHANCER: `/api/ecommerce/image-color-enhancer`,
+  SHADOW_ADDER: `/api/ecommerce/shadow-adder`,
+  WATERMARK_ADDER: `/api/ecommerce/watermark-adder`,
+  WHITE_BACKGROUND_ADDER: `/api/ecommerce/white-background-adder`,
+
   CREATE_ZIP: `/api/zip/create`,
   EXTRACT_ZIP: `/api/zip/extract`,
   PASSWORD_ZIP: `/api/zip/password`,

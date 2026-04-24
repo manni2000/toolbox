@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { toast } from "sonner";
 import { Copy, Key, Code2, Zap, Shield, Clock, ChevronDown, ChevronRight, Eye, EyeOff, ExternalLink, Terminal, Rocket, Sparkles, ArrowRight, CheckCircle } from "lucide-react";
 import APIPlayground from "../components/APIPlayground";
+import { ToolSEO } from "../components/ToolSEO";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
@@ -83,7 +84,6 @@ const APIDocs = () => {
       const data = await response.json();
       setApiDocs(data);
     } catch (error) {
-      // console.error("Failed to fetch API docs:", error);
       toast.error("Failed to load API documentation");
     } finally {
       setLoading(false);
@@ -178,12 +178,17 @@ const APIDocs = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <>
+      <ToolSEO
+        toolName="API Documentation"
+        toolDescription="Complete API documentation for Dailytools247 tools. Learn how to integrate our tools into your applications. Perfect for developers."
+        category="Developer Tools"
+        toolSlug="api-docs"
+      />
+      <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <Header />
       <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8">
-        {/* Hero Section */}
         <div className="text-center mb-8 sm:mb-12 px-2 relative">
-          {/* Background gradient effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-3xl blur-3xl"></div>
             <motion.div
             variants={itemVariants}
@@ -849,6 +854,7 @@ const APIDocs = () => {
       </main>
       <Footer />
     </div>
+    </>
   );
 };
 

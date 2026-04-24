@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -16,6 +17,7 @@ interface KeywordAnalysis {
 }
 
 const KeywordDensityTool = () => {
+  const toolSeoData = getToolSeoMetadata('keyword-density-analyzer');
   const [text, setText] = useState("");
   const [targetKeyword, setTargetKeyword] = useState("");
   const [analysis, setAnalysis] = useState<KeywordAnalysis[]>([]);
@@ -108,13 +110,13 @@ const KeywordDensityTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "Keyword Density Checker",
-        "Analyze keyword density and optimize your content for better SEO performance",
+        toolSeoData?.title || "Keyword Density Checker",
+        toolSeoData?.description || "Analyze keyword density and optimize your content for better SEO performance",
         "keyword-density-checker"
       )}
       <ToolLayout
-      title="Keyword Density Checker"
-      description="Analyze keyword density and optimize your content for better SEO performance"
+      title={toolSeoData?.title || "Keyword Density Checker"}
+      description={toolSeoData?.description || "Analyze keyword density and optimize your content for better SEO performance"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

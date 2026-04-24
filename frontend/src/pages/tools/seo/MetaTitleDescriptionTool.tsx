@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
 const MetaTitleDescriptionTool = () => {
+  const toolSeoData = getToolSeoMetadata('meta-title-description-generator');
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [keywords, setKeywords] = useState("");
@@ -71,13 +73,13 @@ const MetaTitleDescriptionTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "Meta Title & Description Generator",
-        "Generate SEO-optimized meta titles and descriptions for better search engine rankings",
-        "meta-title--description-generator"
+        toolSeoData?.title || "Meta Title & Description Generator",
+        toolSeoData?.description || "Generate SEO-optimized meta titles and descriptions for better search engine rankings",
+        "meta-title-description-generator"
       )}
       <ToolLayout
-      title="Meta Title & Description Generator"
-      description="Generate SEO-optimized meta titles and descriptions for better search engine rankings"
+      title={toolSeoData?.title || "Meta Title & Description Generator"}
+      description={toolSeoData?.description || "Generate SEO-optimized meta titles and descriptions for better search engine rankings"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

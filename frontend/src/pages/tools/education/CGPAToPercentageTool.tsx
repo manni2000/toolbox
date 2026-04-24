@@ -8,10 +8,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "145 70% 45%";
 
 const CGPAToPercentageTool = () => {
+  const toolSeoData = getToolSeoMetadata('cgpa-to-percentage');
   const [cgpa, setCgpa] = useState("");
   const [scale, setScale] = useState("10"); // 10.0 scale is most common
   const [percentage, setPercentage] = useState<number | null>(null);
@@ -83,13 +85,13 @@ const CGPAToPercentageTool = () => {
   return (
     <>
       {CategorySEO.Education(
-        "CGPA to Percentage Converter",
-        "Convert CGPA to percentage and determine grades",
-        "cgpa-to-percentage-converter"
+        toolSeoData?.title || "CGPA to Percentage Converter",
+        toolSeoData?.description || "Convert CGPA to percentage and determine grades",
+        "cgpa-to-percentage"
       )}
       <ToolLayout
-      title="CGPA to Percentage Converter"
-      description="Convert CGPA to percentage and determine grades"
+      title={toolSeoData?.title || "CGPA to Percentage Converter"}
+      description={toolSeoData?.description || "Convert CGPA to percentage and determine grades"}
       category="Education Tools"
       categoryPath="/category/education"
     >

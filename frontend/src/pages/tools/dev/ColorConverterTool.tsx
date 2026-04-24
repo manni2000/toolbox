@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
 const ColorConverterTool = () => {
+  const toolSeoData = getToolSeoMetadata('color-converter');
   const [hex, setHex] = useState("#3b82f6");
   const [rgb, setRgb] = useState({ r: 59, g: 130, b: 246 });
   const [hsl, setHsl] = useState({ h: 217, s: 91, l: 60 });
@@ -104,16 +106,16 @@ const ColorConverterTool = () => {
 
   return (
     <>
-      {CategorySEO.Text(
-        "Color Converter",
-        "Convert between HEX, RGB, and HSL color formats",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "Color Converter",
+        toolSeoData?.description || "Convert between HEX, RGB, and HSL color formats",
         "color-converter"
       )}
       <ToolLayout
-      title="Color Converter"
-      description="Convert between HEX, RGB, and HSL color formats"
-      category="Text Tools"
-      categoryPath="/category/text"
+      title={toolSeoData?.title || "Color Converter"}
+      description={toolSeoData?.description || "Convert between HEX, RGB, and HSL color formats"}
+      category="Developer Tools"
+      categoryPath="/category/dev"
     >
       <div className="mx-auto max-w-xl space-y-6">
         {/* Enhanced Hero Section */}

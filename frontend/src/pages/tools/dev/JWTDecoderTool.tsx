@@ -5,6 +5,7 @@ import { fadeInUp } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -15,6 +16,7 @@ interface DecodedJWT {
 }
 
 const JWTDecoderTool = () => {
+  const toolSeoData = getToolSeoMetadata('jwt-decoder');
   const [token, setToken] = useState("");
   const [decoded, setDecoded] = useState<DecodedJWT | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -64,14 +66,14 @@ const JWTDecoderTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "JWT Decoder",
-        "Decode and inspect JSON Web Tokens",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "JWT Decoder",
+        toolSeoData?.description || "Decode and inspect JSON Web Tokens",
         "jwt-decoder"
       )}
       <ToolLayout
-      title="JWT Decoder"
-      description="Decode and inspect JSON Web Tokens"
+      title={toolSeoData?.title || "JWT Decoder"}
+      description={toolSeoData?.description || "Decode and inspect JSON Web Tokens"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

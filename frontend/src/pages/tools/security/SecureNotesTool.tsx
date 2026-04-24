@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -20,6 +21,7 @@ interface DecryptionResult {
 }
 
 export default function SecureNotesTool() {
+  const toolSeoData = getToolSeoMetadata('secure-notes');
   const [note, setNote] = useState('');
   const [password, setPassword] = useState('');
   const [encryptedNote, setEncryptedNote] = useState('');
@@ -99,13 +101,13 @@ export default function SecureNotesTool() {
   return (
     <>
       {CategorySEO.Security(
-        "Secure Notes",
-        "Encrypt and decrypt your sensitive notes with password protection",
+        toolSeoData?.title || "Secure Notes",
+        toolSeoData?.description || "Encrypt and decrypt your sensitive notes with password protection",
         "secure-notes"
       )}
       <ToolLayout
-      title="Secure Notes"
-      description="Encrypt and decrypt your sensitive notes with password protection"
+      title={toolSeoData?.title || "Secure Notes"}
+      description={toolSeoData?.description || "Encrypt and decrypt your sensitive notes with password protection"}
       category="Security Tools"
       categoryPath="/category/security"
     >

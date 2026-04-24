@@ -199,14 +199,14 @@ export default function SignatureMakerTool() {
   return (
     <>
       {CategorySEO.GovtLegal(
-        "Signature Maker",
-        "Draw and create digital signatures",
+        toolSeoData?.title || "Signature Maker",
+        toolSeoData?.description || "Draw and create digital signatures",
         "signature-maker"
       )}
       <ToolLayout
-        title="Signature Maker"
-        description="Draw and create digital signatures"
-        category="Govt Legal Tools"
+        title={toolSeoData?.title || "Signature Maker"}
+        description={toolSeoData?.description || "Draw and create digital signatures"}
+        category="Govt & Legal Tools"
         categoryPath="/category/govt-legal"
         toolSlug="signature-maker"
       >

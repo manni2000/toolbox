@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -17,6 +18,7 @@ interface BrokenImage {
 }
 
 const BrokenImageFinderTool = () => {
+  const toolSeoData = getToolSeoMetadata('broken-image-finder');
   const [url, setUrl] = useState("");
   const [htmlContent, setHtmlContent] = useState("");
   const [images, setImages] = useState<BrokenImage[]>([]);
@@ -229,13 +231,13 @@ const BrokenImageFinderTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "Broken Image Finder",
-        "Find and analyze broken images on your website for better SEO and user experience",
-        "broken-image-finder"
+        toolSeoData?.title || "Broken Image Finder",
+        toolSeoData?.description || "Find and analyze broken images on your website for better SEO and user experience",
+        "broken-image"
       )}
       <ToolLayout
-      title="Broken Image Finder"
-      description="Find and analyze broken images on your website for better SEO and user experience"
+      title={toolSeoData?.title || "Broken Image Finder"}
+      description={toolSeoData?.description || "Find and analyze broken images on your website for better SEO and user experience"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

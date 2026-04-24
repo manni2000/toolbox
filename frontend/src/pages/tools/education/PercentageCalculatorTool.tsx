@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "145 70% 45%";
 
 const PercentageCalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('percentage-calculator');
   const [mode, setMode] = useState<"whatIsPercent" | "percentOf" | "increase" | "decrease">("whatIsPercent");
   const [valueA, setValueA] = useState("");
   const [valueB, setValueB] = useState("");
@@ -89,13 +91,13 @@ const PercentageCalculatorTool = () => {
   return (
     <>
       {CategorySEO.Education(
-        "Percentage Calculator",
-        "Calculate percentages in multiple ways",
+        toolSeoData?.title || "Percentage Calculator",
+        toolSeoData?.description || "Calculate percentages in multiple ways",
         "percentage-calculator"
       )}
       <ToolLayout
-      title="Percentage Calculator"
-      description="Calculate percentages in multiple ways"
+      title={toolSeoData?.title || "Percentage Calculator"}
+      description={toolSeoData?.description || "Calculate percentages in multiple ways"}
       category="Education Tools"
       categoryPath="/category/education"
     >

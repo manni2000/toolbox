@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
 const LoremGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('lorem-ipsum-generator');
   const [paragraphs, setParagraphs] = useState(3);
   const [type, setType] = useState<"paragraphs" | "sentences" | "words">("paragraphs");
   const [output, setOutput] = useState("");
@@ -86,14 +88,14 @@ const LoremGeneratorTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Lorem Ipsum Generator",
-        "Generate placeholder text for your designs",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "Lorem Ipsum Generator",
+        toolSeoData?.description || "Generate placeholder text for your designs",
         "lorem-ipsum-generator"
       )}
       <ToolLayout
-      title="Lorem Ipsum Generator"
-      description="Generate placeholder text for your designs"
+      title={toolSeoData?.title || "Lorem Ipsum Generator"}
+      description={toolSeoData?.description || "Generate placeholder text for your designs"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

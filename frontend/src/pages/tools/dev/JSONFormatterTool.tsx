@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
 const JSONFormatterTool = () => {
+  const toolSeoData = getToolSeoMetadata('json-formatter');
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
@@ -65,14 +67,14 @@ const JSONFormatterTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "JSON Formatter",
-        "Format, validate, and beautify JSON data",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "JSON Formatter",
+        toolSeoData?.description || "Format, validate, and beautify JSON data",
         "json-formatter"
       )}
       <ToolLayout
-      title="JSON Formatter"
-      description="Format, validate, and beautify JSON data"
+      title={toolSeoData?.title || "JSON Formatter"}
+      description={toolSeoData?.description || "Format, validate, and beautify JSON data"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -18,6 +19,7 @@ interface ChecklistItem {
 }
 
 const PageSpeedChecklistTool = () => {
+  const toolSeoData = getToolSeoMetadata('page-speed-checklist');
   const [checklist, setChecklist] = useState<ChecklistItem[]>([
     // Performance
     {
@@ -322,13 +324,13 @@ Generated: ${new Date().toLocaleDateString()}
   return (
     <>
       {CategorySEO.SEO(
-        "Page Speed Checklist Generator",
-        "Generate comprehensive page speed optimization checklists for better performance",
-        "page-speed-checklist-generator"
+        toolSeoData?.title || "Page Speed Checklist",
+        toolSeoData?.description || "Optimize website performance with comprehensive speed checklist",
+        "page-speed-checklist"
       )}
       <ToolLayout
-      title="Page Speed Checklist Generator"
-      description="Generate comprehensive page speed optimization checklists for better performance"
+      title={toolSeoData?.title || "Page Speed Checklist"}
+      description={toolSeoData?.description || "Optimize website performance with comprehensive speed checklist"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

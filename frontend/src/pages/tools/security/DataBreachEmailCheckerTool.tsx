@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -23,6 +24,7 @@ interface BreachResult {
 }
 
 export default function DataBreachEmailCheckerTool() {
+  const toolSeoData = getToolSeoMetadata('data-breach-email-checker');
   const [email, setEmail] = useState('');
   const [result, setResult] = useState<BreachResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -75,13 +77,13 @@ export default function DataBreachEmailCheckerTool() {
   return (
     <>
       {CategorySEO.Security(
-        "Data Breach Email Checker",
-        "Check if your email has been exposed in known data breaches",
+        toolSeoData?.title || "Data Breach Email Checker",
+        toolSeoData?.description || "Check if your email has been exposed in known data breaches",
         "data-breach-email-checker"
       )}
       <ToolLayout
-      title="Data Breach Email Checker"
-      description="Check if your email has been exposed in known data breaches"
+      title={toolSeoData?.title || "Data Breach Email Checker"}
+      description={toolSeoData?.description || "Check if your email has been exposed in known data breaches"}
       category="Security Tools"
       categoryPath="/category/security"
     >

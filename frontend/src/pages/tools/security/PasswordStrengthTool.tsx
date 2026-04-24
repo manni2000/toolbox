@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -20,6 +21,7 @@ const CheckItem = ({ passed, label }: { passed: boolean; label: string }) => (
 );
 
 const PasswordStrengthTool = () => {
+  const toolSeoData = getToolSeoMetadata('password-strength-checker');
   const [password, setPassword] = useState("");
 
   const analyze = () => {
@@ -86,13 +88,13 @@ const PasswordStrengthTool = () => {
   return (
     <>
       {CategorySEO.Security(
-        "Password Strength Checker",
-        "Analyze how strong your password is",
-        "password-strength-checker"
+        toolSeoData?.title || "Password Strength Checker",
+        toolSeoData?.description || "Analyze how strong your password is",
+        "password-strength"
       )}
       <ToolLayout
-      title="Password Strength Checker"
-      description="Analyze how strong your password is"
+      title={toolSeoData?.title || "Password Strength Checker"}
+      description={toolSeoData?.description || "Analyze how strong your password is"}
       category="Security Tools"
       categoryPath="/category/security"
     >

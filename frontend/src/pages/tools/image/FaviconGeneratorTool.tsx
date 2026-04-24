@@ -10,10 +10,12 @@ import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
 const FaviconGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('favicon-generator');
   const [image, setImage] = useState<string | null>(null);
   const [fileName, setFileName] = useState("");
   const [favicons, setFavicons] = useState<{ size: number; url: string }[]>([]);
@@ -137,13 +139,13 @@ const FaviconGeneratorTool = () => {
   return (
     <>
       {CategorySEO.Image(
-        "Favicon Generator",
-        "Generate all favicon sizes from a single image",
+        toolSeoData?.title || "Favicon Generator",
+        toolSeoData?.description || "Generate all favicon sizes from a single image",
         "favicon-generator"
       )}
       <ToolLayout
-        title="Favicon Generator"
-        description="Generate all favicon sizes from a single image"
+        title={toolSeoData?.title || "Favicon Generator"}
+        description={toolSeoData?.description || "Generate all favicon sizes from a single image"}
         category="Image Tools"
         categoryPath="/category/image"
       >

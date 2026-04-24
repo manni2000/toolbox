@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -34,6 +35,7 @@ interface SalaryBreakupResult {
 }
 
 export default function SalaryBreakupGeneratorTool() {
+  const toolSeoData = getToolSeoMetadata('salary-breakup-generator');
   const [ctc, setCtc] = useState('');
   const [result, setResult] = useState<SalaryBreakupResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -151,13 +153,13 @@ export default function SalaryBreakupGeneratorTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "Salary Breakup Generator",
-        "Generate detailed salary breakup with deductions and take-home pay",
+        toolSeoData?.title || "Salary Breakup Generator",
+        toolSeoData?.description || "Generate detailed salary breakup with deductions and take-home pay",
         "salary-breakup-generator"
       )}
       <ToolLayout
-      title="Salary Breakup Generator"
-      description="Generate detailed salary breakup with deductions and take-home pay"
+      title={toolSeoData?.title || "Salary Breakup Generator"}
+      description={toolSeoData?.description || "Generate detailed salary breakup with deductions and take-home pay"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

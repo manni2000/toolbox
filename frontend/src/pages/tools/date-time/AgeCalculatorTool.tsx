@@ -3,10 +3,12 @@ import { Calendar, Gift } from "lucide-react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "220 80% 55%";
 
 const AgeCalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('age-calculator');
   const [birthDate, setBirthDate] = useState("");
   const [targetDate, setTargetDate] = useState(
     new Date().toISOString().split("T")[0]
@@ -87,13 +89,13 @@ const AgeCalculatorTool = () => {
   return (
     <>
       {CategorySEO.DateTime(
-        "Age Calculator",
-        "Calculate your exact age from your birthdate",
+        toolSeoData?.title || "Age Calculator",
+        toolSeoData?.description || "Calculate your exact age from your birthdate",
         "age-calculator"
       )}
       <ToolLayout
-      title="Age Calculator"
-      description="Calculate your exact age from your birthdate"
+      title={toolSeoData?.title || "Age Calculator"}
+      description={toolSeoData?.description || "Calculate your exact age from your birthdate"}
       category="Date & Time Tools"
       categoryPath="/category/date-time"
     >

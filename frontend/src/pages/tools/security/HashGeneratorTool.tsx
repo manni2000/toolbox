@@ -6,10 +6,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
 const HashGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('hash-generator');
   const [input, setInput] = useState("");
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
 
@@ -32,13 +34,13 @@ const HashGeneratorTool = () => {
   return (
     <>
       {CategorySEO.Security(
-        "Hash Generator",
-        "Generate MD5, SHA-1, SHA-256, and more hashes",
+        toolSeoData?.title || "Hash Generator",
+        toolSeoData?.description || "Generate MD5, SHA-1, SHA-256, and more hashes",
         "hash-generator"
       )}
       <ToolLayout
-      title="Hash Generator"
-      description="Generate MD5, SHA-1, SHA-256, and more hashes"
+      title={toolSeoData?.title || "Hash Generator"}
+      description={toolSeoData?.description || "Generate MD5, SHA-1, SHA-256, and more hashes"}
       category="Security Tools"
       categoryPath="/category/security"
     >

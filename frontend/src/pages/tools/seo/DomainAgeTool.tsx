@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -21,6 +22,7 @@ interface DomainInfo {
 }
 
 const DomainAgeTool = () => {
+  const toolSeoData = getToolSeoMetadata('domain-age-checker');
   const [domains, setDomains] = useState<DomainInfo[]>([]);
   const [inputDomains, setInputDomains] = useState("");
   const [isChecking, setIsChecking] = useState(false);
@@ -143,13 +145,13 @@ const DomainAgeTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "Domain Age Checker",
-        "Check domain age and expiration dates for SEO analysis and domain management",
-        "domain-age-checker"
+        toolSeoData?.title || "Domain Age Checker",
+        toolSeoData?.description || "Check domain age and expiration dates for SEO analysis and domain management",
+        "domain-age"
       )}
       <ToolLayout
-      title="Domain Age Checker"
-      description="Check domain age and expiration dates for SEO analysis and domain management"
+      title={toolSeoData?.title || "Domain Age Checker"}
+      description={toolSeoData?.description || "Check domain age and expiration dates for SEO analysis and domain management"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >

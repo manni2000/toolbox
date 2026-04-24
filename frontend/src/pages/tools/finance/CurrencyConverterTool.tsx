@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -21,6 +22,7 @@ interface ApiResponse {
 }
 
 const CurrencyConverterTool = () => {
+  const toolSeoData = getToolSeoMetadata('currency-converter');
   const [amount, setAmount] = useState("1");
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("INR");
@@ -128,13 +130,13 @@ const CurrencyConverterTool = () => {
   return (
     <>
       {CategorySEO.Finance(
-        "Currency Converter",
-        "Convert between currencies with real-time exchange rates",
+        toolSeoData?.title || "Currency Converter",
+        toolSeoData?.description || "Convert between currencies with real-time exchange rates",
         "currency-converter"
       )}
       <ToolLayout
-      title="Currency Converter"
-      description="Convert between currencies with real-time exchange rates"
+      title={toolSeoData?.title || "Currency Converter"}
+      description={toolSeoData?.description || "Convert between currencies with real-time exchange rates"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

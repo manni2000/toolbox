@@ -6,6 +6,7 @@ import ToolLayout from "@/components/layout/ToolLayout";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
@@ -17,6 +18,7 @@ interface ExifResult {
 }
 
 export default function EXIFLocationRemoverTool() {
+  const toolSeoData = getToolSeoMetadata('exif-location-remover');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [result, setResult] = useState<ExifResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -75,13 +77,13 @@ export default function EXIFLocationRemoverTool() {
   return (
     <>
       {CategorySEO.Security(
-        "EXIF Location Remover",
-        "Remove GPS location data from images to protect privacy",
+        toolSeoData?.title || "EXIF Location Remover",
+        toolSeoData?.description || "Remove GPS location data from images to protect privacy",
         "exif-location-remover"
       )}
       <ToolLayout
-      title="EXIF Location Remover"
-      description="Remove GPS location data from images to protect privacy"
+      title={toolSeoData?.title || "EXIF Location Remover"}
+      description={toolSeoData?.description || "Remove GPS location data from images to protect privacy"}
       category="Security Tools"
       categoryPath="/category/security"
     >

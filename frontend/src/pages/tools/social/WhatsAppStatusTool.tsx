@@ -8,10 +8,12 @@ import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
 const WhatsAppStatusTool = () => {
+  const toolSeoData = getToolSeoMetadata('whatsapp-status-generator');
   const [image, setImage] = useState<string | null>(null);
   const [text, setText] = useState("");
   const [textPosition, setTextPosition] = useState<"top" | "center" | "bottom">("center");
@@ -192,13 +194,13 @@ const WhatsAppStatusTool = () => {
   return (
     <>
       {CategorySEO.Image(
-        "WhatsApp Status Generator",
-        "Create perfectly sized images for WhatsApp Status with professional design tools",
+        toolSeoData?.title || "WhatsApp Status Generator",
+        toolSeoData?.description || "Create perfectly sized images for WhatsApp Status with professional design tools",
         "whatsapp-status-generator"
       )}
       <ToolLayout
-      title="WhatsApp Status Generator"
-      description="Create perfectly sized images for WhatsApp Status with professional design tools"
+      title={toolSeoData?.title || "WhatsApp Status Generator"}
+      description={toolSeoData?.description || "Create perfectly sized images for WhatsApp Status with professional design tools"}
       category="Social Media"
       categoryPath="/category/social"
     >
@@ -210,27 +212,27 @@ const WhatsAppStatusTool = () => {
           variants={fadeInUp}
           initial="hidden"
           animate="visible"
-          className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+          className="relative mb-6 sm:mb-8 overflow-hidden rounded-2xl sm:rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-4 sm:p-6 lg:p-8"
         >
           <motion.div
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+            className="absolute -right-10 -top-10 sm:-right-20 sm:-top-20 h-40 w-40 sm:h-60 sm:w-60 rounded-full blur-2xl sm:blur-3xl"
             style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
           />
-          <div className="relative flex items-start gap-4">
+          <div className="relative flex items-start gap-3 sm:gap-4">
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              className="flex h-10 w-10 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl"
               style={{ backgroundColor: `hsl(${categoryColor} / 0.15)`, boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)` }}
             >
-              <Smartphone className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+              <Smartphone className="h-5 w-5 sm:h-7 sm:w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">WhatsApp Status Creator</h2>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <h2 className="text-xl sm:text-2xl font-bold">WhatsApp Status Creator</h2>
+              <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
                 Design professional status images with the perfect 1080×1920 resolution for WhatsApp.
               </p>
             </div>
@@ -242,15 +244,15 @@ const WhatsAppStatusTool = () => {
           variants={scaleIn}
           initial="hidden"
           animate="visible"
-          className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-6 shadow-lg"
+          className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-4 sm:p-6 shadow-lg"
         >
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl" style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}>
-              <Smartphone className="h-6 w-6" style={{ color: `hsl(${categoryColor})` }} />
+            <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl" style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}>
+              <Smartphone className="h-5 w-5 sm:h-6 sm:w-6" style={{ color: `hsl(${categoryColor})` }} />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">Perfect for WhatsApp Status</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="text-base sm:text-lg font-semibold text-foreground">Perfect for WhatsApp Status</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Creates images in 1080×1920 pixels (9:16 aspect ratio) - the ideal size for WhatsApp Status
               </p>
             </div>
@@ -262,12 +264,12 @@ const WhatsAppStatusTool = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid gap-6 lg:grid-cols-2"
+          className="grid gap-4 sm:gap-6 lg:grid-cols-2"
         >
           {/* Image Upload */}
           <motion.div 
             whileHover={{ scale: 1.01 }}
-            className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="space-y-3 sm:space-y-4 rounded-xl border border-border bg-card p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <div className="flex items-center gap-3">
               <motion.div
@@ -280,11 +282,11 @@ const WhatsAppStatusTool = () => {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center"
+                className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-blue-100 flex items-center justify-center"
               >
-                <ImageIcon className="h-5 w-5 text-blue-600" />
+                <ImageIcon className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
               </motion.div>
-              <h3 className="text-lg font-semibold">Background Image</h3>
+              <h3 className="text-base sm:text-lg font-semibold">Background Image</h3>
             </div>
             <ImageUploadZone
               isDragging={isDragging}
@@ -304,7 +306,7 @@ const WhatsAppStatusTool = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 className="relative inline-block"
               >
-                <img src={image} alt="Background" className="max-h-40 rounded-lg object-contain shadow-md" />
+                <img src={image} alt="Background" className="max-h-32 sm:max-h-40 rounded-lg object-contain shadow-md" />
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -321,7 +323,7 @@ const WhatsAppStatusTool = () => {
           {/* Background Color */}
           <motion.div 
             whileHover={{ scale: 1.01 }}
-            className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="space-y-3 sm:space-y-4 rounded-xl border border-border bg-card p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <div className="flex items-center gap-3">
               <motion.div
@@ -334,14 +336,14 @@ const WhatsAppStatusTool = () => {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="h-10 w-10 rounded-lg bg-purple-100 flex items-center justify-center"
+                className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-purple-100 flex items-center justify-center"
               >
-                <Palette className="h-5 w-5 text-purple-600" />
+                <Palette className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
               </motion.div>
-              <h3 className="text-lg font-semibold">Background Color</h3>
+              <h3 className="text-base sm:text-lg font-semibold">Background Color</h3>
             </div>
             <div className="space-y-3">
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {presetBackgrounds.map((preset, index) => (
                   <motion.button
                     key={preset.name}
@@ -396,9 +398,9 @@ const WhatsAppStatusTool = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="rounded-xl border border-border bg-card p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+          className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300"
         >
-          <div className="mb-6 flex items-center gap-3">
+          <div className="mb-4 sm:mb-6 flex items-center gap-3">
             <motion.div
               animate={{
                 scale: [1, 1.1, 1],
@@ -409,14 +411,14 @@ const WhatsAppStatusTool = () => {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center"
+              className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-green-100 flex items-center justify-center"
             >
-              <Type className="h-5 w-5 text-green-600" />
+              <Type className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
             </motion.div>
-            <h3 className="text-lg font-semibold">Text Overlay</h3>
+            <h3 className="text-base sm:text-lg font-semibold">Text Overlay</h3>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Text Input */}
             <div>
               <label className="mb-2 block text-sm font-medium">Status Text</label>
@@ -429,7 +431,7 @@ const WhatsAppStatusTool = () => {
             </div>
 
             {/* Enhanced Text Controls */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {/* Position */}
               <div>
                 <label className="mb-2 block text-sm font-medium">Position</label>
@@ -533,9 +535,9 @@ const WhatsAppStatusTool = () => {
             {/* Enhanced Text Color */}
             <div>
               <label className="mb-2 block text-sm font-medium">Text Color</label>
-              <div className="flex gap-2">
-                <div className="flex gap-1">
-                  {presetColors.map((color, index) => (
+              <div className="flex flex-col sm:flex-row gap-2">
+                <div className="flex flex-wrap gap-1">
+                  {presetColors.slice(0, 8).map((color, index) => (
                     <motion.button
                       key={color}
                       whileHover={{ scale: 1.1 }}
@@ -544,7 +546,7 @@ const WhatsAppStatusTool = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.05 * index }}
                       onClick={() => setTextColor(color)}
-                      className={`h-8 w-8 rounded-lg border-2 transition-all shadow-sm hover:shadow-md ${
+                      className={`h-6 w-6 sm:h-8 sm:w-8 rounded-lg border-2 transition-all shadow-sm hover:shadow-md ${
                         textColor === color ? "border-primary ring-2 ring-primary/30" : "border-border"
                       }`}
                       style={{ backgroundColor: color }}
@@ -553,29 +555,31 @@ const WhatsAppStatusTool = () => {
                     />
                   ))}
                 </div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="relative"
-                >
+                <div className="flex gap-2">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="relative"
+                  >
+                    <input
+                      type="color"
+                      value={textColor}
+                      onChange={(e) => setTextColor(e.target.value)}
+                      className="h-6 w-8 sm:h-8 sm:w-12 cursor-pointer rounded-lg border-0 shadow-md"
+                      title="Choose text color"
+                      aria-label="Text color picker"
+                    />
+                  </motion.div>
                   <input
-                    type="color"
+                    type="text"
                     value={textColor}
                     onChange={(e) => setTextColor(e.target.value)}
-                    className="h-8 w-12 cursor-pointer rounded-lg border-0 shadow-md"
-                    title="Choose text color"
-                    aria-label="Text color picker"
+                    className="flex-1 rounded-lg bg-muted px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium"
+                    placeholder="#ffffff"
+                    title="Enter hex color code for text"
+                    aria-label="Text color value"
                   />
-                </motion.div>
-                <input
-                  type="text"
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
-                  className="flex-1 rounded-lg bg-muted px-3 py-2 text-sm font-medium"
-                  placeholder="#ffffff"
-                  title="Enter hex color code for text"
-                  aria-label="Text color value"
-                />
+                </div>
               </div>
             </div>
           </div>
@@ -586,44 +590,44 @@ const WhatsAppStatusTool = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="flex gap-4"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4"
         >
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={generate} 
             disabled={isGenerating}
-            className="flex-1 rounded-lg text-white px-6 py-3 font-medium transition-colors disabled:opacity-50 shadow-lg hover:shadow-xl"
+            className="w-full sm:flex-1 rounded-lg text-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:font-medium transition-colors disabled:opacity-50 shadow-lg hover:shadow-xl"
             style={{
               background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
             }}
             title="Generate WhatsApp status"
           >
-            <Sparkles className={`inline h-5 w-5 mr-2 ${isGenerating ? 'animate-pulse' : ''}`} />
+            <Sparkles className={`inline h-4 w-4 sm:h-5 sm:w-5 mr-2 ${isGenerating ? 'animate-pulse' : ''}`} />
             {isGenerating ? "Generating..." : "Generate Status"}
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={reset} 
-            className="rounded-lg bg-muted px-6 py-3 font-medium transition-colors hover:bg-muted/80 shadow-md hover:shadow-lg"
+            className="w-full sm:w-auto rounded-lg bg-muted px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:font-medium transition-colors hover:bg-muted/80 shadow-md hover:shadow-lg"
             title="Reset all settings"
           >
-            <X className="inline h-5 w-5 mr-2" />
+            <X className="inline h-4 w-4 sm:h-5 sm:w-5 mr-2" />
             Reset
           </motion.button>
         </motion.div>
 
         {/* Result Preview and Download */}
         {resultUrl && (
-          <div ref={downloadSectionRef} className="space-y-6">
+          <div ref={downloadSectionRef} className="space-y-4 sm:space-y-6">
             <div className="text-center">
-              <p className="mb-4 text-lg font-semibold">Preview</p>
-              <div className="inline-block rounded-2xl border border-border bg-muted/30 p-4 shadow-lg">
+              <p className="mb-3 sm:mb-4 text-base sm:text-lg font-semibold">Preview</p>
+              <div className="inline-block rounded-2xl border border-border bg-muted/30 p-3 sm:p-4 shadow-lg">
                 <img
                   src={resultUrl}
                   alt="WhatsApp Status"
-                  className="h-96 rounded-xl object-contain"
+                  className="h-64 sm:h-80 lg:h-96 max-w-full rounded-xl object-contain"
                 />
               </div>
             </div>
@@ -644,28 +648,28 @@ const WhatsAppStatusTool = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="rounded-xl border border-border bg-card p-6"
+          className="rounded-xl border border-border bg-card p-4 sm:p-6"
         >
-          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-            <Smartphone className="h-5 w-5 text-blue-500" />
+          <h3 className="text-base sm:text-lg font-semibold mb-3 flex items-center gap-2">
+            <Smartphone className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
             What is WhatsApp Status Creation?
           </h3>
-          <p className="text-muted-foreground mb-4">
+          <p className="text-muted-foreground mb-4 text-sm">
             WhatsApp Status creator generates custom status images for WhatsApp stories. You can add text, choose colors, and customize the design to create engaging status updates that appear as full-screen stories in WhatsApp.
           </p>
           
-          <h4 className="font-semibold mb-2">How It Works</h4>
-          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-4">
+          <h4 className="font-semibold mb-2 text-sm">How It Works</h4>
+          <ol className="list-decimal list-inside space-y-1 sm:space-y-2 text-xs sm:text-sm text-muted-foreground mb-4">
             <li>Upload your background image or use solid color</li>
             <li>Add your text and customize styling</li>
             <li>Adjust text position, color, and size</li>
             <li>Download the 1080x1920 status image</li>
           </ol>
           
-          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+          <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 mt-4">
             <div className="p-3 bg-blue-50 rounded-lg">
-              <h5 className="font-semibold text-blue-900 mb-1">Customization Options</h5>
-              <ul className="text-sm text-blue-800 space-y-1">
+              <h5 className="font-semibold text-blue-900 mb-1 text-sm">Customization Options</h5>
+              <ul className="text-xs sm:text-sm text-blue-800 space-y-1">
                 <li>• Text overlay with styling</li>
                 <li>• Position and alignment</li>
                 <li>• Color customization</li>
@@ -673,8 +677,8 @@ const WhatsAppStatusTool = () => {
               </ul>
             </div>
             <div className="p-3 bg-green-50 rounded-lg">
-              <h5 className="font-semibold text-green-900 mb-1">Status Features</h5>
-              <ul className="text-sm text-green-800 space-y-1">
+              <h5 className="font-semibold text-green-900 mb-1 text-sm">Status Features</h5>
+              <ul className="text-xs sm:text-sm text-green-800 space-y-1">
                 <li>• 1080x1920 resolution</li>
                 <li>• Full-screen display</li>
                 <li>• Auto-optimized for WhatsApp</li>

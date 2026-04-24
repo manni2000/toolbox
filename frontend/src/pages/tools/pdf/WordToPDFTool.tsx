@@ -10,10 +10,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 70% 50%";
 
 const WordToPDFTool = () => {
+  const toolSeoData = getToolSeoMetadata('word-to-pdf');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [resultData, setResultData] = useState<string | null>(null);
@@ -98,13 +100,13 @@ const WordToPDFTool = () => {
   return (
     <>
       {CategorySEO.PDF(
-        "Word to PDF",
-        "Convert Word documents to PDF",
+        toolSeoData?.title || "Word to PDF",
+        toolSeoData?.description || "Convert Word documents to PDF",
         "word-to-pdf"
       )}
       <ToolLayout
-      title="Word to PDF"
-      description="Convert Word documents to PDF"
+      title={toolSeoData?.title || "Word to PDF"}
+      description={toolSeoData?.description || "Convert Word documents to PDF"}
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

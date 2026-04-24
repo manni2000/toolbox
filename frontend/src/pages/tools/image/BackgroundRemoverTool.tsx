@@ -9,10 +9,12 @@ import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import { ImageUploadZone } from "@/components/ui/image-upload-zone";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "173 80% 40%";
 
 const BackgroundRemoverTool = () => {
+  const toolSeoData = getToolSeoMetadata('background-remover');
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [image, setImage] = useState<string | null>(null);
@@ -79,11 +81,9 @@ const BackgroundRemoverTool = () => {
       });
 
       const result = await response.json();
-      // console.log('Background removal result:', result);
 
       if (result.success && result.result?.image) {
         const imageDataUrl = `data:image/png;base64,${result.result.image}`;
-        // console.log('Image data URL length:', imageDataUrl.length);
         setProcessedImage(imageDataUrl);
         toast({
           title: "Success!",
@@ -93,11 +93,9 @@ const BackgroundRemoverTool = () => {
           downloadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
       } else {
-        // console.error('Background removal failed:', result);
         throw new Error(result.error || result.message || 'Failed to remove background');
       }
     } catch (error) {
-      // console.error('Background removal error:', error);
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Failed to remove background",
@@ -111,18 +109,17 @@ const BackgroundRemoverTool = () => {
   return (
     <>
       {CategorySEO.Image(
-        "Image Background Remover",
-        "Remove backgrounds from images automatically",
+        toolSeoData?.title || "Image Background Remover",
+        toolSeoData?.description || "Remove backgrounds from images automatically",
         "background-remover"
       )}
       <ToolLayout
-        title="Image Background Remover"
-        description="Remove backgrounds from images automatically"
+        title={toolSeoData?.title || "Image Background Remover"}
+        description={toolSeoData?.description || "Remove backgrounds from images automatically"}
         category="Image Tools"
         categoryPath="/category/image"
       >
       <div className="space-y-6">
-        {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}
           initial="hidden"

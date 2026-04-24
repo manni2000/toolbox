@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "200 85% 50%";
 
@@ -24,6 +25,7 @@ interface DNSLookupResult {
 }
 
 const DNSLookupTool = () => {
+  const toolSeoData = getToolSeoMetadata('dns-lookup');
   const [domain, setDomain] = useState("");
   const [selectedRecordType, setSelectedRecordType] = useState("A");
   const [loading, setLoading] = useState(false);
@@ -88,13 +90,13 @@ const DNSLookupTool = () => {
   return (
     <>
       {CategorySEO.Internet(
-        "DNS Lookup",
-        "Query DNS records such as A, MX, TXT, NS, and more for any domain.",
+        toolSeoData?.title || "DNS Lookup",
+        toolSeoData?.description || "Query DNS records such as A, MX, TXT, NS, and more for any domain.",
         "dns-lookup"
       )}
       <ToolLayout
-      title="DNS Lookup"
-      description="Query DNS records such as A, MX, TXT, NS, and more for any domain."
+      title={toolSeoData?.title || "DNS Lookup"}
+      description={toolSeoData?.description || "Query DNS records such as A, MX, TXT, NS, and more for any domain."}
       category="Internet Tools"
       categoryPath="/category/internet"
     >

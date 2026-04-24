@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -32,6 +33,7 @@ interface BudgetResult {
 }
 
 export default function BudgetPlannerTool() {
+  const toolSeoData = getToolSeoMetadata('budget-planner');
   const [income, setIncome] = useState('');
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [newCategory, setNewCategory] = useState('');
@@ -164,13 +166,13 @@ export default function BudgetPlannerTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "Budget Planner",
-        "Create and analyze your monthly budget for better financial planning",
+        toolSeoData?.title || "Budget Planner",
+        toolSeoData?.description || "Create and analyze your monthly budget for better financial planning",
         "budget-planner"
       )}
       <ToolLayout
-      title="Budget Planner"
-      description="Create and analyze your monthly budget for better financial planning"
+      title={toolSeoData?.title || "Budget Planner"}
+      description={toolSeoData?.description || "Create and analyze your monthly budget for better financial planning"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

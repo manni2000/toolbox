@@ -9,6 +9,7 @@ import { API_URLS } from "@/lib/api-complete";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "280 70% 55%";
 
@@ -20,6 +21,7 @@ interface ExtractedFile {
 }
 
 const ExtractZipTool = () => {
+  const toolSeoData = getToolSeoMetadata('zip-extractor');
   const [zipFile, setZipFile] = useState<File | null>(null);
   const [extractedFiles, setExtractedFiles] = useState<ExtractedFile[]>([]);
   const [extractedUrls, setExtractedUrls] = useState<Array<{ url: string; name: string }>>([]);
@@ -126,13 +128,13 @@ const ExtractZipTool = () => {
   return (
     <>
       {CategorySEO.ZIP(
-        "Extract ZIP",
-        "Extract and download files from ZIP archives",
+        toolSeoData?.title || "Extract ZIP",
+        toolSeoData?.description || "Extract and download files from ZIP archives",
         "extract-zip"
       )}
       <ToolLayout
-      title="Extract ZIP"
-      description="Extract and download files from ZIP archives"
+      title={toolSeoData?.title || "Extract ZIP"}
+      description={toolSeoData?.description || "Extract and download files from ZIP archives"}
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

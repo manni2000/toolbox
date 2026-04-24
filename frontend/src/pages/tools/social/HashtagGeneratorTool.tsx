@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "330 80% 55%";
 
 const HashtagGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('hashtag-generator');
   const [topic, setTopic] = useState("");
   const [category, setCategory] = useState("general");
   const [hashtags, setHashtags] = useState<string[]>([]);
@@ -60,15 +62,15 @@ const HashtagGeneratorTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Hashtag Generator",
-        "Generate relevant hashtags for social media engagement",
+      {CategorySEO.Social(
+        toolSeoData?.title || "Hashtag Generator",
+        toolSeoData?.description || "Generate relevant hashtags for social media engagement",
         "hashtag-generator"
       )}
       <ToolLayout
-      title="Hashtag Generator"
-      description="Generate relevant hashtags for social media engagement"
-      category="Social Media"
+      title={toolSeoData?.title || "Hashtag Generator"}
+      description={toolSeoData?.description || "Generate relevant hashtags for social media engagement"}
+      category="Social Tools"
       categoryPath="/category/social"
     >
       <div className="mx-auto max-w-4xl space-y-6">

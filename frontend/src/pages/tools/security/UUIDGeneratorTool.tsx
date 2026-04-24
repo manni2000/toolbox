@@ -6,10 +6,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "0 80% 55%";
 
 const UUIDGeneratorTool = () => {
+  const toolSeoData = getToolSeoMetadata('uuid-generator');
   const [uuids, setUuids] = useState<string[]>([]);
   const [version, setVersion] = useState<"v4" | "v1">("v4");
   const [count, setCount] = useState(1);
@@ -41,13 +43,13 @@ const UUIDGeneratorTool = () => {
   return (
     <>
       {CategorySEO.Security(
-        "UUID Generator",
-        "Generate unique UUIDs instantly",
+        toolSeoData?.title || "UUID Generator",
+        toolSeoData?.description || "Generate unique UUIDs instantly",
         "uuid-generator"
       )}
       <ToolLayout
-      title="UUID Generator"
-      description="Generate unique UUIDs instantly"
+      title={toolSeoData?.title || "UUID Generator"}
+      description={toolSeoData?.description || "Generate unique UUIDs instantly"}
       category="Security Tools"
       categoryPath="/category/security"
     >

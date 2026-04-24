@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "200 85% 50%";
 
@@ -61,6 +62,7 @@ const ResultCard = ({
 );
 
 const SSLCheckerTool = () => {
+  const toolSeoData = getToolSeoMetadata('ssl-checker');
 
   const [domain, setDomain] = useState("");
   const [loading, setLoading] = useState(false);
@@ -131,13 +133,13 @@ const SSLCheckerTool = () => {
   return (
     <>
       {CategorySEO.Internet(
-        "SSL Certificate Checker",
-        "Verify SSL certificate validity, issuer, and expiry date for any domain.",
-        "ssl-certificate-checker"
+        toolSeoData?.title || "SSL Certificate Checker",
+        toolSeoData?.description || "Verify SSL certificate validity, issuer, and expiry date for any domain.",
+        "ssl-checker"
       )}
       <ToolLayout
-      title="SSL Certificate Checker"
-      description="Verify SSL certificate validity, issuer, and expiry date for any domain."
+      title={toolSeoData?.title || "SSL Certificate Checker"}
+      description={toolSeoData?.description || "Verify SSL certificate validity, issuer, and expiry date for any domain."}
       category="Internet Tools"
       categoryPath="/category/internet"
     >

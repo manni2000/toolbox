@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "260 70% 55%";
 
 const RemoveSpacesTool = () => {
+  const toolSeoData = getToolSeoMetadata('remove-spaces');
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [copied, setCopied] = useState(false);
@@ -35,13 +37,13 @@ const RemoveSpacesTool = () => {
   return (
     <>
       {CategorySEO.Text(
-        "Remove Extra Spaces",
-        "Clean up extra whitespace, leading/trailing spaces, and blank lines",
-        "remove-extra-spaces"
+        toolSeoData?.title || "Remove Extra Spaces",
+        toolSeoData?.description || "Clean up extra whitespace, leading/trailing spaces, and blank lines",
+        "remove-spaces"
       )}
       <ToolLayout
-      title="Remove Extra Spaces"
-      description="Clean up extra whitespace, leading/trailing spaces, and blank lines"
+      title={toolSeoData?.title || "Remove Extra Spaces"}
+      description={toolSeoData?.description || "Clean up extra whitespace, leading/trailing spaces, and blank lines"}
       category="Text Tools"
       categoryPath="/category/text"
     >

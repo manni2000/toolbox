@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
@@ -22,6 +23,7 @@ interface Palette {
 }
 
 const ColorPalettesTool = () => {
+  const toolSeoData = getToolSeoMetadata('color-palettes');
   const [baseColor, setBaseColor] = useState("#3b82f6");
   const [generatedPalette, setGeneratedPalette] = useState<Color[]>([]);
   const [selectedPalette, setSelectedPalette] = useState<Palette | null>(null);
@@ -514,14 +516,14 @@ const ColorPalettesTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Color Palettes Generator",
-        "Generate beautiful color palettes for your design projects with professional color theory",
-        "color-palettes-generator"
+      {CategorySEO.Dev(
+        toolSeoData?.title || "Color Palettes Generator",
+        toolSeoData?.description || "Generate beautiful color palettes for your design projects with professional color theory",
+        "color-palettes"
       )}
       <ToolLayout
-      title="Color Palettes Generator"
-      description="Generate beautiful color palettes for your design projects with professional color theory"
+      title={toolSeoData?.title || "Color Palettes Generator"}
+      description={toolSeoData?.description || "Generate beautiful color palettes for your design projects with professional color theory"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

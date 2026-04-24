@@ -5,6 +5,7 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "35 85% 55%";
 
@@ -24,6 +25,7 @@ interface CAGRResult {
 }
 
 export default function StockCAGRCalculatorTool() {
+  const toolSeoData = getToolSeoMetadata('stock-cagr-calculator');
   const [initialValue, setInitialValue] = useState('');
   const [finalValue, setFinalValue] = useState('');
   const [years, setYears] = useState('');
@@ -131,13 +133,13 @@ export default function StockCAGRCalculatorTool() {
   return (
     <>
       {CategorySEO.Finance(
-        "Stock CAGR Calculator",
-        "Calculate Compound Annual Growth Rate for your investments",
+        toolSeoData?.title || "Stock CAGR Calculator",
+        toolSeoData?.description || "Calculate Compound Annual Growth Rate for your investments",
         "stock-cagr-calculator"
       )}
       <ToolLayout
-      title="Stock CAGR Calculator"
-      description="Calculate Compound Annual Growth Rate for your investments"
+      title={toolSeoData?.title || "Stock CAGR Calculator"}
+      description={toolSeoData?.description || "Calculate Compound Annual Growth Rate for your investments"}
       category="Finance Tools"
       categoryPath="/category/finance"
     >

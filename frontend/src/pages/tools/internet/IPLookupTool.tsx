@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "200 85% 50%";
 
@@ -36,6 +37,7 @@ interface IPLookupResult {
 }
 
 const IPLookupTool = () => {
+  const toolSeoData = getToolSeoMetadata('ip-lookup');
   const [ip, setIp] = useState("");
   const [myIp, setMyIp] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -104,19 +106,19 @@ const IPLookupTool = () => {
   return (
     <>
       {CategorySEO.Internet(
-        "IP Address Lookup",
-        "Find geographic location, ISP, and other information for any IP address.",
-        "ip-address-lookup"
+        toolSeoData?.title || "IP Address Lookup",
+        toolSeoData?.description || "Find geographic location, ISP, and other information for any IP address.",
+        "ip-lookup"
       )}
       <ToolLayout
-      title="IP Address Lookup"
-      description="Find geographic location, ISP, and other information for any IP address."
-      category="Internet Tools"
-      categoryPath="/category/internet"
-    >
-      <div className="space-y-6">
+        title={toolSeoData?.title || "IP Address Lookup"}
+        description={toolSeoData?.description || "Find geographic location, ISP, and other information for any IP address."}
+        category="Internet Tools"
+        categoryPath="/category/internet"
+      >
+        <div className="space-y-6">
 
-        {/* Animated Hero Header */}
+          {/* Animated Hero Header */}
         <motion.div
           variants={fadeInUp}
           initial="hidden"

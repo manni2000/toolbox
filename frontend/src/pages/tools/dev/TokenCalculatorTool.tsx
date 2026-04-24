@@ -5,10 +5,12 @@ import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "210 80% 55%";
 
 const TokenCalculatorTool = () => {
+  const toolSeoData = getToolSeoMetadata('token-calculator');
   const [text, setText] = useState("");
   const [model, setModel] = useState<"gpt" | "claude" | "llama">("gpt");
   const [copied, setCopied] = useState(false);
@@ -73,14 +75,14 @@ const TokenCalculatorTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
-        "Token Calculator",
-        "Estimate token count for LLM APIs",
+      {CategorySEO.Dev(
+        toolSeoData?.title || "Token Calculator",
+        toolSeoData?.description || "Estimate token count for LLM APIs",
         "token-calculator"
       )}
       <ToolLayout
-      title="Token Calculator"
-      description="Estimate token count for LLM APIs"
+      title={toolSeoData?.title || "Token Calculator"}
+      description={toolSeoData?.description || "Estimate token count for LLM APIs"}
       category="Developer Tools"
       categoryPath="/category/dev"
     >

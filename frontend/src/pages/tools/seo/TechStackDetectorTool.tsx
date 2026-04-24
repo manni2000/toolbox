@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { API_URLS } from "@/lib/api-complete";
 import ToolFAQ from "@/components/ToolFAQ";
 import { CategorySEO } from "@/components/ToolSEO";
+import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 
 const categoryColor = "25 90% 50%";
 
@@ -32,6 +33,7 @@ interface TechStack {
 }
 
 const TechStackDetectorTool = () => {
+  const toolSeoData = getToolSeoMetadata('tech-stack-detector');
   const [url, setUrl] = useState("");
   const [techStack, setTechStack] = useState<TechStack | null>(null);
   const [isScanning, setIsScanning] = useState(false);
@@ -173,13 +175,13 @@ const TechStackDetectorTool = () => {
   return (
     <>
       {CategorySEO.SEO(
-        "Website Tech Stack Detector",
-        "Analyze websites to detect the technology stack, frameworks, and tools being used",
-        "website-tech-stack-detector"
+        toolSeoData?.title || "Website Tech Stack Detector",
+        toolSeoData?.description || "Analyze websites to detect the technology stack, frameworks, and tools being used",
+        "tech-stack-detector"
       )}
       <ToolLayout
-      title="Website Tech Stack Detector"
-      description="Analyze websites to detect the technology stack, frameworks, and tools being used"
+      title={toolSeoData?.title || "Website Tech Stack Detector"}
+      description={toolSeoData?.description || "Analyze websites to detect the technology stack, frameworks, and tools being used"}
       category="SEO Tools"
       categoryPath="/category/seo"
     >
