@@ -31,11 +31,9 @@ const BlogPostPage = () => {
           const otherCategoryPosts = allOtherPosts.filter((item) => item.category !== localPost.category);
           setRelatedPosts([...sameCategoryPosts, ...otherCategoryPosts]);
         } else {
-          // Fall back to API only when local data is not available
           const response = await api.getBlogPost(slug);
           if (response.success && response.result.post) {
             const apiPost = response.result.post;
-            // API post may lack sections/faqs - provide defaults to prevent crashes
             setPost({
               ...apiPost,
               sections: apiPost.sections || [],
@@ -51,7 +49,6 @@ const BlogPostPage = () => {
           }
         }
       } catch (error) {
-        // console.warn('Failed to load blog post:', error);
       } finally {
         setLoading(false);
       }

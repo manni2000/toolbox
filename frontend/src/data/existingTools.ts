@@ -106,6 +106,9 @@ export const existingTools = [
   'word-to-pdf',
   'powerpoint-to-pdf',
   'html-to-pdf',
+  'pdf-reorder',
+  'pdf-add-signature',
+  'crop-pdf',
   
   // Security Tools
   'password-generator',

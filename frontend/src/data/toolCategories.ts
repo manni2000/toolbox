@@ -81,6 +81,9 @@ export const toolCategories: ToolCategory[] = [
       { id: "pdf-unlock", name: "PDF Unlocker", description: "Remove password from PDFs", path: "/pdf-unlock", isAvailable: true },
       { id: "pdf-remove-pages", name: "PDF Page Remover", description: "Remove specific pages from PDF", path: "/pdf-page-remover", isAvailable: true },
       { id: "pdf-rotate", name: "PDF Rotate Pages", description: "Rotate PDF pages", path: "/pdf-rotate", isAvailable: true },
+      { id: "pdf-reorder", name: "PDF Reorder Pages", description: "Reorder pages in PDF documents", path: "/pdf-reorder", isAvailable: true },
+      { id: "pdf-add-signature", name: "PDF Add Signature", description: "Add signature to PDF documents", path: "/pdf-add-signature", isAvailable: true },
+      { id: "crop-pdf", name: "Crop PDF", description: "Crop margins from PDF pages", path: "/crop-pdf", isAvailable: true },
     ],
   },
   {

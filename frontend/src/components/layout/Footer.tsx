@@ -26,6 +26,9 @@ const Footer = () => {
     { name: "PDF Unlocker", path: "/pdf-unlock" },
     { name: "PDF Page Remover", path: "/pdf-page-remover" },
     { name: "PDF Rotate Pages", path: "/pdf-rotate" },
+    { name: "PDF Reorder Pages", path: "/pdf-reorder" },
+    { name: "PDF Add Signature", path: "/pdf-add-signature" },
+    { name: "Crop PDF", path: "/crop-pdf" },
   ];
 
   const seoTools = [

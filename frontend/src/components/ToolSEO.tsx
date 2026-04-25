@@ -51,6 +51,8 @@ export const ToolSEO = ({ toolName, toolDescription, category, keywords = [], to
       keywords={optimizedKeywords}
       toolSlug={toolSlug}
       category={category}
+      faqs={enhancedMetadata?.faqs}
+      howTo={enhancedMetadata?.howTo}
     />
   );
 };

@@ -810,13 +810,13 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'url-encoder': {
     slug: 'url-encoder',
-    title: 'URL Encoder/Decoder - Encode & Decode URLs Online Free',
+    title: 'URL Encoder Decoder - Encode & Decode URLs Online Free',
     description: 'Encode and decode URLs instantly. Handle special characters, spaces, and international characters. Essential for API development, sharing URLs safely, and debugging.',
     keywords: [
-      'url encoder/decoder',
+      'url encoder decoder',
       'use url encoder/decoder',
       'url encoder/decoder online',
-      'url encoder/decoder free',
+      'url encoder decoder free',
       'free url encoder/decoder',
       'url encoder',
       'url encoder/decoder tool',
@@ -827,11 +827,11 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'url decoder',
     ],
     longTailKeywords: [
-      'best url encoder/decoder tool for developers',
+      'best url encoderd ecoder tool for developers',
       'how to use url encoder/decoder for api debugging',
-      'url encoder/decoder for web development workflows',
-      'free online url encoder/decoder without signup',
-      'url encoder/decoder in browser for code work',
+      'url encoder decoder for web development workflows',
+      'free online url encoderdecoder without signup',
+      'url encoder decoder in browser for code work',
       'url encoder/decoder for testing and validation',
       'how to use url encoder/decoder online free',
       'best free url encoder/decoder tool',
@@ -984,7 +984,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'invoice-generator': {
     slug: 'invoice-generator',
-    title: 'Free Invoice Generator - Create Professional Invoices Online',
+    title: 'Invoice Generator - Create Professional Invoices Online Free',
     description: 'Create professional invoices instantly with PDF download. No registration required. Add items, calculate taxes, choose currency, and generate invoice in seconds. Perfect for freelancers and small businesses.',
     keywords: [
       'free invoice generator',
@@ -1845,6 +1845,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'compress pdf online',
       'online pdf compressor',
       'free pdf compression',
+      'pdf file reducer',
+      'compress pdf files',
+      'pdf size optimizer',
+      'free online pdf compressor',
     ],
     longTailKeywords: [
       'compress pdf files online free',
@@ -1879,6 +1883,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'split pdf online',
       'online pdf splitter',
       'free pdf splitter',
+      'pdf page extractor',
+      'split pdf documents',
+      'pdf file splitter',
+      'free online pdf splitter',
     ],
     longTailKeywords: [
       'split pdf files online free',
@@ -1916,6 +1924,9 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'online word to pdf',
       'free word to pdf converter',
       'document converter',
+      'docx pdf converter',
+      'word file to pdf',
+      'free document converter',
     ],
     longTailKeywords: [
       'convert word documents to pdf online free',
@@ -2025,7 +2036,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'ecommerce-calculator': {
     slug: 'ecommerce-calculator',
-    title: 'E-commerce Calculator - GST, Margin & EMI Calculator Online',
+    title: 'E-commerce Calculator - GST, Margin & EMI Calculator Online Free',
     description: 'Calculate GST, profit margins, markup, and EMI for your e-commerce business. Essential tools for pricing, tax compliance, and financial planning.',
     keywords: [
       'ecommerce calculator',
@@ -2038,6 +2049,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'tax calculator',
       'business calculator',
       'online calculator',
+      'ecommerce tools',
+      'online business tools',
+      'free ecommerce calculator',
+      'gst margin calculator',
     ],
     longTailKeywords: [
       'calculate gst online free',
@@ -2073,6 +2088,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'free invoice generator',
       'gst compliant invoice',
       'business invoice',
+      'tax invoice maker',
+      'gst billing software',
     ],
     longTailKeywords: [
       'create gst invoice online free',
@@ -2095,7 +2112,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'shadow-adder': {
     slug: 'shadow-adder',
-    title: 'Shadow Adder - Add Drop Shadows to Product Images Online',
+    title: 'Shadow Adder - Add Drop Shadows to Product Images Online Free',
     description: 'Add professional drop shadows to product images for e-commerce. Customize blur, offset, opacity, and color for perfect product presentations.',
     keywords: [
       'shadow adder',
@@ -2108,6 +2125,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'ecommerce image tools',
       'shadow generator',
       'online shadow tool',
+      'free shadow tool',
+      'product photography',
+      'image effects',
+      'drop shadow creator',
     ],
     longTailKeywords: [
       'add shadow to product images online',
@@ -2145,6 +2166,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'color converter for web development',
       'color converter for code validation',
       'hex to rgb converter',
+      'rgb hex converter',
     ],
     longTailKeywords: [
       'best color converter tool for developers',
@@ -2187,6 +2209,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'text diff checker for seo content',
       'text diff checker for editing',
       'compare text online',
+      'text comparison tool',
     ],
     longTailKeywords: [
       'best text diff checker tool for writers',
@@ -4170,7 +4193,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
   
   'working-days': {
     slug: 'working-days',
-    title: 'Working Days Calculator - Calculate Business Days',
+    title: 'Working Days Calculator - Calculate Business Days Online',
     description: 'Calculate working days between dates excluding weekends and holidays. Perfect for project planning, payroll, and business calculations.',
     keywords: [
       'working days calculator',
@@ -4250,7 +4273,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
   // Developer Tools
   'api-response-formatter': {
     slug: 'api-response-formatter',
-    title: 'API Response Formatter - Format JSON API Responses Online',
+    title: 'API Response Formatter - Format JSON API Responses Online Free',
     description: 'Format and beautify API responses in JSON format. Validate and structure API data. Perfect for debugging API integrations and web services.',
     keywords: [
       'api response formatter',
@@ -4328,7 +4351,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'color-palettes': {
     slug: 'color-palettes',
-    title: 'Color Palette Generator - Create Color Schemes Online',
+    title: 'Color Palette Generator - Create Color Schemes Online Free',
     description: 'Generate beautiful color palettes and schemes for web design. Create harmonious color combinations. Perfect for designers and developers.',
     keywords: [
       'color palette generator',
@@ -4406,7 +4429,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'cron-generator': {
     slug: 'cron-generator',
-    title: 'Cron Generator - Create Cron Expressions Online',
+    title: 'Cron Generator - Create Cron Expressions Online Free',
     description: 'Generate cron expressions easily with visual builder. Schedule tasks for Unix/Linux systems. Perfect for developers and system administrators.',
     keywords: [
       'cron generator',
@@ -4484,7 +4507,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'curl-to-axios': {
     slug: 'curl-to-axios',
-    title: 'Curl to Axios Converter - Convert Curl Commands Online',
+    title: 'Curl to Axios Converter - Convert Curl Commands Online Free',
     description: 'Convert curl commands to Axios code instantly. Generate JavaScript/TypeScript code for API calls. Perfect for frontend developers.',
     keywords: [
       'curl to axios converter',
@@ -4562,7 +4585,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'dockerfile-generator': {
     slug: 'dockerfile-generator',
-    title: 'Dockerfile Generator - Create Dockerfiles Online',
+    title: 'Dockerfile Generator - Create Dockerfiles Online Free',
     description: 'Generate Dockerfiles for various languages and frameworks. Create optimized container configurations. Perfect for DevOps and developers.',
     keywords: [
       'dockerfile generator',
@@ -4640,7 +4663,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'environment-variable': {
     slug: 'environment-variable',
-    title: 'Environment Variable Manager - Manage .env Files Online',
+    title: 'Environment Variable Manager - Manage .env Files Online Free',
     description: 'Generate and manage environment variables for .env files. Securely store configuration. Perfect for developers managing app configurations.',
     keywords: [
       'environment variable manager',
@@ -4718,7 +4741,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'http-header': {
     slug: 'http-header',
-    title: 'HTTP Header Viewer - Analyze Request Headers Online',
+    title: 'HTTP Header Viewer - Analyze Request Headers Online Free',
     description: 'View and analyze HTTP headers. Debug API requests and responses. Perfect for developers debugging web applications and APIs.',
     keywords: [
       'http header viewer',
@@ -4796,7 +4819,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'http-status-code': {
     slug: 'http-status-code',
-    title: 'HTTP Status Code Reference - Complete List of Status Codes',
+    title: 'HTTP Status Code Reference - Complete List of Status Codes Online Free',
     description: 'Complete reference for HTTP status codes. Lookup meaning of 200, 404, 500 and more. Perfect for developers debugging web applications.',
     keywords: [
       'http status code reference',
@@ -4875,7 +4898,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
   
   'jwt-expiry': {
     slug: 'jwt-expiry',
-    title: 'JWT Expiry Checker - Check Token Expiration Time',
+    title: 'JWT Expiry Checker - Check Token Expiration Time Online Free',
     description: 'Check JWT token expiration time and validity. Decode and analyze token expiry. Perfect for debugging authentication and session management.',
     keywords: [
       'jwt expiry checker',
@@ -4953,7 +4976,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'lorem-generator': {
     slug: 'lorem-generator',
-    title: 'Lorem Ipsum Generator - Generate Dummy Text Online',
+    title: 'Lorem Ipsum Generator - Generate Dummy Text Online Free',
     description: 'Generate Lorem Ipsum placeholder text for design mockups. Customize length and paragraphs. Perfect for designers and developers.',
     keywords: [
       'lorem ipsum generator',
@@ -5031,7 +5054,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'sql-query-beautifier': {
     slug: 'sql-query-beautifier',
-    title: 'SQL Query Beautifier - Format SQL Code Online',
+    title: 'SQL Query Beautifier - Format SQL Code Online Free',
     description: 'Format and beautify SQL queries automatically. Improve code readability. Perfect for database developers and SQL optimization.',
     keywords: [
       'sql query beautifier',
@@ -6752,7 +6775,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'image-crop': {
     slug: 'image-crop',
-    title: 'Image Cropper - Crop Images Online Free',
+    title: 'Image Cropper - Crop Images Free Online',
     description: 'Crop images with precision. Resize and trim photos to perfect dimensions. Perfect for social media and web design.',
     keywords: [
       'image cropper',
@@ -6830,7 +6853,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'image-dpi': {
     slug: 'image-dpi',
-    title: 'Image DPI Converter - Change Image Resolution Online',
+    title: 'Image DPI Converter - Change Image Resolution Free Online',
     description: 'Change image DPI and resolution settings. Optimize for print and web. Perfect for designers and print preparation.',
     keywords: [
       'image dpi converter',
@@ -6908,7 +6931,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'image-to-pdf': {
     slug: 'image-to-pdf',
-    title: 'Image to PDF Converter - Convert Images to PDF Online',
+    title: 'Image to PDF Converter - Convert Images to PDF Online for Free',
     description: 'Convert images to PDF documents. Merge multiple images into one PDF. Perfect for document creation and sharing.',
     keywords: [
       'image to pdf converter',
@@ -6986,7 +7009,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'jpg-to-png': {
     slug: 'jpg-to-png',
-    title: 'JPG to PNG Converter - Convert JPG to PNG Online',
+    title: 'JPG to PNG Converter - Convert JPG to PNG Online for Free',
     description: 'Convert JPG images to PNG format with transparency support. High-quality conversion for web and design. Perfect for image format optimization.',
     keywords: [
       'jpg to png converter',
@@ -7064,7 +7087,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'png-to-webp': {
     slug: 'png-to-webp',
-    title: 'PNG to WebP Converter - Convert PNG to WebP Online',
+    title: 'PNG to WebP Converter - Convert PNG to WebP Online for Free',
     description: 'Convert PNG images to WebP format for better compression and web performance. Modern image format optimization. Perfect for websites.',
     keywords: [
       'png to webp converter',
@@ -7142,7 +7165,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'webp-to-png': {
     slug: 'webp-to-png',
-    title: 'WebP to PNG Converter - Convert WebP to PNG Online',
+    title: 'WebP to PNG Converter - Convert WebP to PNG Online for Free',
     description: 'Convert WebP images to PNG format. Ensure compatibility and transparency support. Perfect for universal image format conversion.',
     keywords: [
       'webp to png converter',
@@ -7220,7 +7243,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'whatsapp-status': {
     slug: 'whatsapp-status',
-    title: 'WhatsApp Status Saver - Download Status Images & Videos',
+    title: 'WhatsApp Status Saver - Download Status Images & Videos Online',
     description: 'Save and download WhatsApp status images and videos. Export status content to your device. Perfect for preserving favorite status updates.',
     keywords: [
       'whatsapp status saver',
@@ -7297,7 +7320,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
   },
   'remove-spaces': {
     slug: 'remove-spaces',
-    title: 'Remove Extra Spaces - Clean Text Formatting Online',
+    title: 'Remove Extra Spaces - Clean Text Formatting Online for Free',
     description: 'Remove extra spaces, line breaks, and formatting from text. Clean up messy text instantly. Perfect for data cleaning and text normalization.',
     keywords: [
       'remove extra spaces',
@@ -7376,14 +7399,14 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
   // Zip Tools
   'zip-compressor': {
     slug: 'zip-compressor',
-    title: 'ZIP Compressor - Compress Files to ZIP Online',
+    title: 'ZIP Compressor - Compress Files to ZIP Online for Free',
     description: 'Compress multiple files into ZIP format. Reduce file size for storage and sharing. Perfect for file organization and transfer.',
     keywords: [
       'zip compressor',
       'zip',
       'compress zip',
       'zip compressor online',
-      'zip compressor free',
+      'zip compressor online for free',
       'free zip compressor',
       'zip compressor tool',
       'zip compressor app',
@@ -7454,11 +7477,12 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'zip-extractor': {
     slug: 'zip-extractor',
-    title: 'ZIP Extractor - Extract ZIP Files Online',
+    title: 'ZIP Extractor - Extract ZIP Files Online for Free',
     description: 'Extract and unzip ZIP archives online. View contents before extraction. Perfect for opening compressed files without software.',
     keywords: [
       'zip extractor',
       'zip',
+      'zip extractor online free',
       'extract zip',
       'zip extractor online',
       'zip extractor free',
@@ -7766,7 +7790,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'compression-zip': {
     slug: 'compression-zip',
-    title: 'Compression ZIP - Optimize File Size Online',
+    title: 'Compression ZIP - Optimize File Size Online Free',
     description: 'Compress and optimize ZIP archives for maximum compression. Reduce file size while maintaining quality. Perfect for storage optimization.',
     keywords: [
       'compression zip',
@@ -7844,7 +7868,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'password-zip': {
     slug: 'password-zip',
-    title: 'Password ZIP - Create Password Protected ZIP Files',
+    title: 'Password ZIP - Create Password Protected ZIP Files Online Free',
     description: 'Create password-protected ZIP archives. Encrypt and secure your files. Perfect for protecting sensitive data and secure sharing.',
     keywords: [
       'password zip',
@@ -7853,6 +7877,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'password zip free',
       'free password zip',
       'password zip tool',
+      'password zip online free',
       'password zip app',
       'password zip for file compression',
       'password zip for archives',
@@ -7924,7 +7949,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'url-reputation-checker': {
     slug: 'url-reputation-checker',
-    title: 'URL Reputation Checker - Analyze Website Safety',
+    title: 'URL Reputation Checker - Analyze Website Safety Online Free',
     description: 'Check URL reputation and website safety. Analyze malicious content and threats. Perfect for online security verification.',
     keywords: [
       'url reputation checker',
@@ -10459,10 +10484,10 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'pdf-to-powerpoint': {
-    slug: 'pdf-to-powerpoint',
-    title: 'PDF to PowerPoint Converter - Convert PDF to PPT Online',
-    description: 'Convert PDF files to editable PowerPoint presentations. Extract content for slides. Perfect for presentations and editing.',
+  'pdf-powerpoint': {
+    slug: 'pdf-powerpoint',
+    title: 'PDF to Powerpoint - Convert Online Free',
+    description: 'Convert PDF to Powerpoint. Drag and drop to change page order. Perfect for organizing reports, presentations, and multi-page documents.',
     keywords: [
       'pdf to powerpoint converter',
       'pdf to powerpoint',

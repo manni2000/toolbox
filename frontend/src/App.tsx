@@ -48,6 +48,9 @@ import PDFToExcelTool from "./pages/tools/pdf/PDFToExcelTool";
 import WordToPDFTool from "./pages/tools/pdf/WordToPDFTool";
 import PowerPointToPDFTool from "./pages/tools/pdf/PowerPointToPDFTool";
 import HTMLToPDFTool from "./pages/tools/pdf/HTMLToPDFTool";
+import PDFReorderTool from "./pages/tools/pdf/PDFReorderTool";
+import PDFAddSignatureTool from "./pages/tools/pdf/PDFAddSignatureTool";
+import CropPDFTool from "./pages/tools/pdf/CropPDFTool";
 
 import PassportPhotoResizerTool from "./pages/tools/govt-legal/PassportPhotoResizerTool";
 import PDFCompressorTool from "./pages/tools/govt-legal/PDFCompressorTool";
@@ -238,6 +241,9 @@ const AnimatedRoutes = () => {
           <Route path="/word-to-pdf" element={<WordToPDFTool />} />
           <Route path="/powerpoint-to-pdf" element={<PowerPointToPDFTool />} />
           <Route path="/html-to-pdf" element={<HTMLToPDFTool />} />
+          <Route path="/pdf-reorder" element={<PDFReorderTool />} />
+          <Route path="/pdf-add-signature" element={<PDFAddSignatureTool />} />
+          <Route path="/crop-pdf" element={<CropPDFTool />} />
 
           {/* Govt Legal Tools */}
           <Route path="/passport-photo-resizer" element={<PassportPhotoResizerTool />} />
