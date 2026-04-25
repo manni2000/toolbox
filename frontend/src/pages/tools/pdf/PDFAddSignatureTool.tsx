@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { Upload, PenTool, X, FileText, Sparkles, Download, RotateCcw } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Upload, PenTool, X, FileText, Sparkles, Download, RotateCcw, Image as ImageIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
@@ -10,23 +10,86 @@ import { PDFUploadZone } from "@/components/ui/pdf-upload-zone";
 import { CategorySEO } from "@/components/ToolSEO";
 import { getToolSeoMetadata } from "@/data/toolSeoEnhancements";
 import ToolFAQ from "@/components/ToolFAQ";
+import { useToast } from "@/hooks/use-toast";
 
 const categoryColor = "0 70% 50%";
 
 const PDFAddSignatureTool = () => {
   const toolSeoData = getToolSeoMetadata('pdf-add-signature');
+  const { toast } = useToast();
   const [file, setFile] = useState<{ file: File; name: string } | null>(null);
   const [signedUrl, setSignedUrl] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const signatureInputRef = useRef<HTMLInputElement>(null);
   
   // Signature canvas state
   const [isDrawing, setIsDrawing] = useState(false);
   const [signatureData, setSignatureData] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState(0);
   const [pageCount, setPageCount] = useState(1);
+  const [signatureMode, setSignatureMode] = useState<'draw' | 'upload'>('draw');
+
+  const getCoordinates = useCallback((event: MouseEvent | TouchEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+
+    const rect = canvas.getBoundingClientRect();
+    let clientX, clientY;
+
+    if ('clientX' in event) {
+      clientX = event.clientX;
+      clientY = event.clientY;
+    } else {
+      clientX = event.touches[0].clientX;
+      clientY = event.touches[0].clientY;
+    }
+
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    };
+  }, []);
+
+  const startDrawing = useCallback((e: MouseEvent | TouchEvent) => {
+    e.preventDefault();
+    setIsDrawing(true);
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const coords = getCoordinates(e);
+    ctx.beginPath();
+    ctx.moveTo(coords.x, coords.y);
+  }, [getCoordinates]);
+
+  const draw = useCallback((e: MouseEvent | TouchEvent) => {
+    if (!isDrawing) return;
+    e.preventDefault();
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const coords = getCoordinates(e);
+    ctx.lineTo(coords.x, coords.y);
+    ctx.stroke();
+  }, [isDrawing, getCoordinates]);
+
+  const stopDrawing = useCallback(() => {
+    setIsDrawing(false);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      setSignatureData(canvas.toDataURL('image/png'));
+    }
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -40,37 +103,12 @@ const PDFAddSignatureTool = () => {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    const startDrawing = (e: MouseEvent | TouchEvent) => {
-      setIsDrawing(true);
-      const rect = canvas.getBoundingClientRect();
-      const x = e instanceof MouseEvent ? e.clientX - rect.left : e.touches[0].clientX - rect.left;
-      const y = e instanceof MouseEvent ? e.clientY - rect.top : e.touches[0].clientY - rect.top;
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-    };
-
-    const draw = (e: MouseEvent | TouchEvent) => {
-      if (!isDrawing) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = e instanceof MouseEvent ? e.clientX - rect.left : e.touches[0].clientX - rect.left;
-      const y = e instanceof MouseEvent ? e.clientY - rect.top : e.touches[0].clientY - rect.top;
-      ctx.lineTo(x, y);
-      ctx.stroke();
-    };
-
-    const stopDrawing = () => {
-      setIsDrawing(false);
-      if (canvas) {
-        setSignatureData(canvas.toDataURL('image/png'));
-      }
-    };
-
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseleave', stopDrawing);
-    canvas.addEventListener('touchstart', startDrawing);
-    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchstart', startDrawing, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
     canvas.addEventListener('touchend', stopDrawing);
 
     return () => {
@@ -82,7 +120,7 @@ const PDFAddSignatureTool = () => {
       canvas.removeEventListener('touchmove', draw);
       canvas.removeEventListener('touchend', stopDrawing);
     };
-  }, [isDrawing]);
+  }, [startDrawing, draw, stopDrawing]);
 
   const clearSignature = () => {
     const canvas = canvasRef.current;
@@ -93,6 +131,49 @@ const PDFAddSignatureTool = () => {
         setSignatureData(null);
       }
     }
+  };
+
+  const handleSignatureUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: 'Invalid File',
+        description: 'Please upload an image file (PNG, JPG, etc.)',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Calculate aspect ratio to fit image in canvas
+        const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+        const x = (canvas.width - img.width * scale) / 2;
+        const y = (canvas.height - img.height * scale) / 2;
+        
+        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+        setSignatureData(canvas.toDataURL('image/png'));
+        
+        toast({
+          title: 'Signature Uploaded',
+          description: 'Your signature image has been loaded successfully',
+        });
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleFile = (newFile: File | null) => {
@@ -263,7 +344,7 @@ const PDFAddSignatureTool = () => {
             {/* Signature Canvas */}
             <div className="rounded-xl border border-border bg-card p-6">
               <div className="flex items-center justify-between mb-4">
-                <label className="text-sm font-medium">Draw Your Signature</label>
+                <label className="text-sm font-medium">Add Your Signature</label>
                 <button
                   onClick={clearSignature}
                   className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
@@ -272,15 +353,61 @@ const PDFAddSignatureTool = () => {
                   Clear
                 </button>
               </div>
-              <canvas
-                ref={canvasRef}
-                width={600}
-                height={150}
-                className="w-full h-[150px] border-2 border-dashed border-border rounded-lg bg-white cursor-crosshair touch-none"
-              />
-              <p className="mt-2 text-xs text-muted-foreground">
-                Draw your signature above using your mouse or touchscreen
-              </p>
+
+              {/* Mode Switcher */}
+              <div className="flex gap-2 mb-4">
+                <button
+                  onClick={() => setSignatureMode('draw')}
+                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition-all ${
+                    signatureMode === 'draw' ? 'border-primary bg-primary/5' : 'border-border'
+                  }`}
+                >
+                  <PenTool className="h-4 w-4 mx-auto mb-1" />
+                  <span className="text-xs">Draw</span>
+                </button>
+                <button
+                  onClick={() => setSignatureMode('upload')}
+                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition-all ${
+                    signatureMode === 'upload' ? 'border-primary bg-primary/5' : 'border-border'
+                  }`}
+                >
+                  <ImageIcon className="h-4 w-4 mx-auto mb-1" />
+                  <span className="text-xs">Upload</span>
+                </button>
+              </div>
+
+              {signatureMode === 'draw' ? (
+                <>
+                  <canvas
+                    ref={canvasRef}
+                    width={600}
+                    height={150}
+                    className="w-full h-[150px] border-2 border-dashed border-border rounded-lg bg-white cursor-crosshair touch-none"
+                    style={{ touchAction: 'none' }}
+                  />
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Draw your signature above using your mouse or touchscreen
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div
+                    onClick={() => signatureInputRef.current?.click()}
+                    className="w-full h-[150px] border-2 border-dashed border-border rounded-lg bg-white flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-colors"
+                  >
+                    <ImageIcon className="h-8 w-8 text-muted-foreground mb-2" />
+                    <p className="text-sm text-muted-foreground">Click to upload signature image</p>
+                    <p className="text-xs text-muted-foreground mt-1">PNG, JPG supported</p>
+                  </div>
+                  <input
+                    ref={signatureInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleSignatureUpload}
+                    className="hidden"
+                  />
+                </>
+              )}
             </div>
 
             {/* Action Button */}

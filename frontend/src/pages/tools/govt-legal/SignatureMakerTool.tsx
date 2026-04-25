@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Pen, Download, Trash2, CheckCircle, Palette, Sliders, Zap, X, Sparkles, PenTool } from 'lucide-react';
+import { Pen, Download, Trash2, CheckCircle, Palette, Sliders, Zap, X, Sparkles, PenTool, Image as ImageIcon } from 'lucide-react';
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -13,11 +13,13 @@ const categoryColor = "220 60% 45%";
 export default function SignatureMakerTool() {
   const toolSeoData = getToolSeoMetadata('signature-maker');
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const signatureInputRef = useRef<HTMLInputElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
   const [penColor, setPenColor] = useState('#000000');
   const [penSize, setPenSize] = useState(3);
   const [backgroundColor, setBackgroundColor] = useState('#ffffff');
+  const [signatureMode, setSignatureMode] = useState<'draw' | 'upload'>('draw');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -134,6 +136,50 @@ export default function SignatureMakerTool() {
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     setHasSignature(false);
+  };
+
+  const handleSignatureUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: 'Invalid File',
+        description: 'Please upload an image file (PNG, JPG, etc.)',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Calculate aspect ratio to fit image in canvas
+        const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+        const x = (canvas.width - img.width * scale) / 2;
+        const y = (canvas.height - img.height * scale) / 2;
+        
+        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+        setHasSignature(true);
+        
+        toast({
+          title: 'Signature Uploaded',
+          description: 'Your signature image has been loaded successfully',
+        });
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleDownload = (format: 'png' | 'jpg' | 'svg') => {
@@ -262,24 +308,64 @@ export default function SignatureMakerTool() {
           >
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <PenTool className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
-              Draw Your Signature
+              Create Your Signature
             </h3>
 
+            {/* Mode Switcher */}
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => setSignatureMode('draw')}
+                className={`flex-1 py-2 px-4 rounded-lg border-2 transition-all ${
+                  signatureMode === 'draw' ? 'border-primary bg-primary/5' : 'border-border'
+                }`}
+              >
+                <PenTool className="h-4 w-4 mx-auto mb-1" style={{ color: signatureMode === 'draw' ? `hsl(${categoryColor})` : '' }} />
+                <span className="text-xs">Draw</span>
+              </button>
+              <button
+                onClick={() => setSignatureMode('upload')}
+                className={`flex-1 py-2 px-4 rounded-lg border-2 transition-all ${
+                  signatureMode === 'upload' ? 'border-primary bg-primary/5' : 'border-border'
+                }`}
+              >
+                <ImageIcon className="h-4 w-4 mx-auto mb-1" style={{ color: signatureMode === 'upload' ? `hsl(${categoryColor})` : '' }} />
+                <span className="text-xs">Upload</span>
+              </button>
+            </div>
+
             <div className="relative">
-              <div className="border-2 border-dashed border-border rounded-2xl overflow-hidden bg-background hover:border-primary/50 transition-colors">
-                <canvas
-                  ref={canvasRef}
-                  onMouseDown={startDrawing}
-                  onMouseMove={draw}
-                  onMouseUp={stopDrawing}
-                  onMouseLeave={stopDrawing}
-                  onTouchStart={startDrawing}
-                  onTouchMove={draw}
-                  onTouchEnd={stopDrawing}
-                  className="w-full cursor-crosshair touch-none"
-                  style={{ touchAction: 'none' }}
-                />
-              </div>
+              {signatureMode === 'draw' ? (
+                <div className="border-2 border-dashed border-border rounded-2xl overflow-hidden bg-background hover:border-primary/50 transition-colors">
+                  <canvas
+                    ref={canvasRef}
+                    onMouseDown={startDrawing}
+                    onMouseMove={draw}
+                    onMouseUp={stopDrawing}
+                    onMouseLeave={stopDrawing}
+                    onTouchStart={startDrawing}
+                    onTouchMove={draw}
+                    onTouchEnd={stopDrawing}
+                    className="w-full cursor-crosshair touch-none"
+                    style={{ touchAction: 'none' }}
+                  />
+                </div>
+              ) : (
+                <div
+                  onClick={() => signatureInputRef.current?.click()}
+                  className="border-2 border-dashed border-border rounded-2xl overflow-hidden bg-background hover:border-primary/50 transition-colors h-[400px] flex flex-col items-center justify-center cursor-pointer"
+                >
+                  <ImageIcon className="h-12 w-12 text-muted-foreground mb-3" />
+                  <p className="text-sm text-muted-foreground">Click to upload signature image</p>
+                  <p className="text-xs text-muted-foreground mt-1">PNG, JPG supported</p>
+                </div>
+              )}
+              <input
+                ref={signatureInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleSignatureUpload}
+                className="hidden"
+              />
               {hasSignature && (
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
@@ -306,7 +392,7 @@ export default function SignatureMakerTool() {
                   <span>Signature captured successfully</span>
                 </>
               ) : (
-                <span>Use your mouse or touch to draw your signature above</span>
+                <span>{signatureMode === 'draw' ? 'Use your mouse or touch to draw your signature above' : 'Upload your signature image above'}</span>
               )}
             </motion.div>
           </motion.div>
