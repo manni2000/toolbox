@@ -8,6 +8,7 @@ import ToolCard from "@/components/ToolCard";
 import { staggerContainer, fadeInUp } from "@/lib/animations";
 import { universalToolFaqs } from "@/data/toolSeoEnhancements";
 import CategoryFAQSection from "@/components/CategoryFAQSection";
+import SEOHelmet from "@/components/SEOHelmet";
 
 const CategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -51,7 +52,14 @@ const CategoryPage = () => {
   const isTrending = (toolId: string) => trendingTools.includes(toolId);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <>
+      <SEOHelmet
+        title={category.name}
+        description={category.description}
+        keywords={[category.name.toLowerCase(), 'online tools', 'free tools', 'dailytools247']}
+        category={category.name}
+      />
+      <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1">
         {/* Breadcrumb */}
@@ -234,6 +242,7 @@ const CategoryPage = () => {
       </main>
       <Footer />
     </div>
+    </>
   );
 };
 
