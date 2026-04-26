@@ -1288,7 +1288,7 @@ export const blogPosts: BlogPost[] = [
           { label: "Developer Tools", path: "/category/dev" },
           { label: "SEO Tools", path: "/category/seo" },
           { label: "Security Tools", path: "/category/security" },
-          { label: "Calculator Tools", path: "/category/calculator" },
+          { label: "Education Tools", path: "/category/education" },
         ],
       },
       {
