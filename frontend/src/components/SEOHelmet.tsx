@@ -259,7 +259,7 @@ const SEOHelmet = ({
       <meta name="msapplication-TileColor" content="#6366f1" />
       <meta name="msapplication-TileImage" content="/dailytools247.png" />
       <meta name="application-name" content="Dailytools247" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="apple-mobile-web-app-title" content="Dailytools247" />
 
