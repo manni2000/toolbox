@@ -153,6 +153,8 @@ const PDFUnlockTool = () => {
               </h3>
               <input
                 type="password"
+                id="pdf-unlock-password"
+                name="pdf-unlock-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter PDF password"

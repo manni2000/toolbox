@@ -483,6 +483,8 @@ const MemeGeneratorTool = () => {
                     </div>
                     <input
                       type="color"
+                      id="meme-text-color"
+                      name="meme-text-color"
                       value={textColor}
                       onChange={(e) => setTextColor(e.target.value)}
                       aria-label="Choose text color"
@@ -498,6 +500,8 @@ const MemeGeneratorTool = () => {
                   <div className="flex gap-2">
                     <input
                       type="color"
+                      id="meme-stroke-color"
+                      name="meme-stroke-color"
                       value={strokeColor}
                       onChange={(e) => setStrokeColor(e.target.value)}
                       aria-label="Choose stroke color"
@@ -506,6 +510,8 @@ const MemeGeneratorTool = () => {
                     />
                     <input
                       type="text"
+                      id="meme-stroke-color-text"
+                      name="meme-stroke-color-text"
                       value={strokeColor}
                       onChange={(e) => setStrokeColor(e.target.value)}
                       className="input-field flex-1 text-sm"
@@ -545,6 +551,8 @@ const MemeGeneratorTool = () => {
                 </span>
                 <input
                   type="file"
+                  id="meme-custom-image"
+                  name="meme-custom-image"
                   accept="image/*"
                   onChange={handleImageUpload}
                   aria-label="Upload custom image"

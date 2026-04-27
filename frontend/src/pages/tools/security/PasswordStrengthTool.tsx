@@ -151,6 +151,8 @@ const PasswordStrengthTool = () => {
           <label className="mb-2 block text-sm font-medium">Enter Password</label>
           <input
             type="text"
+            id="password-strength-input"
+            name="password-strength-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter password to analyze..."

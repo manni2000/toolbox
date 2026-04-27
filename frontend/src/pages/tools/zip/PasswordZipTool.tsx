@@ -246,6 +246,8 @@ const PasswordZipTool = () => {
               <label className="mb-2 block text-xs sm:text-sm font-medium">Password</label>
               <input
                 type="password"
+                id="zip-password"
+                name="zip-password"
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -256,6 +258,8 @@ const PasswordZipTool = () => {
               <label className="mb-2 block text-xs sm:text-sm font-medium">Confirm Password</label>
               <input
                 type="password"
+                id="zip-confirm-password"
+                name="zip-confirm-password"
                 placeholder="Confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}

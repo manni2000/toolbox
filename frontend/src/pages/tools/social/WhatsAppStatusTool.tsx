@@ -371,6 +371,8 @@ const WhatsAppStatusTool = () => {
                 >
                   <input
                     type="color"
+                    id="whatsapp-bg-color"
+                    name="whatsapp-bg-color"
                     value={backgroundColor.startsWith("linear") ? "#1a1a1a" : backgroundColor}
                     onChange={(e) => setBackgroundColor(e.target.value)}
                     className="h-10 w-14 cursor-pointer rounded-lg border-0 shadow-md"
@@ -381,6 +383,8 @@ const WhatsAppStatusTool = () => {
                 </motion.div>
                 <input
                   type="text"
+                  id="whatsapp-bg-color-text"
+                  name="whatsapp-bg-color-text"
                   value={backgroundColor}
                   onChange={(e) => setBackgroundColor(e.target.value)}
                   className="flex-1 rounded-lg bg-muted px-3 py-2 text-sm font-medium"
@@ -504,6 +508,8 @@ const WhatsAppStatusTool = () => {
                 <label className="mb-2 block text-sm font-medium">Font Size</label>
                 <input
                   type="number"
+                  id="whatsapp-font-size"
+                  name="whatsapp-font-size"
                   value={fontSize}
                   onChange={(e) => setFontSize(parseInt(e.target.value) || 48)}
                   className="w-full rounded-lg bg-muted px-3 py-2 text-sm font-medium"
@@ -563,6 +569,8 @@ const WhatsAppStatusTool = () => {
                   >
                     <input
                       type="color"
+                      id="whatsapp-text-color"
+                      name="whatsapp-text-color"
                       value={textColor}
                       onChange={(e) => setTextColor(e.target.value)}
                       className="h-6 w-8 sm:h-8 sm:w-12 cursor-pointer rounded-lg border-0 shadow-md"
@@ -572,6 +580,8 @@ const WhatsAppStatusTool = () => {
                   </motion.div>
                   <input
                     type="text"
+                    id="whatsapp-text-color-text"
+                    name="whatsapp-text-color-text"
                     value={textColor}
                     onChange={(e) => setTextColor(e.target.value)}
                     className="flex-1 rounded-lg bg-muted px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium"

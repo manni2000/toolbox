@@ -143,6 +143,8 @@ export default function DataBreachEmailCheckerTool() {
               <label className="block text-sm font-medium mb-2">Email Address</label>
               <input
                 type="email"
+                id="breach-email-input"
+                name="breach-email-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your.email@example.com"

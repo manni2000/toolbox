@@ -142,6 +142,8 @@ const LinkInBioTool = () => {
                 <label className="mb-2 block text-sm font-medium">Name</label>
                 <input
                   type="text"
+                  id="linkinbio-profile-name"
+                  name="linkinbio-profile-name"
                   value={profileName}
                   onChange={(e) => setProfileName(e.target.value)}
                   placeholder="Your Name"
@@ -152,6 +154,8 @@ const LinkInBioTool = () => {
                 <label className="mb-2 block text-sm font-medium">Bio (optional)</label>
                 <input
                   type="text"
+                  id="linkinbio-profile-bio"
+                  name="linkinbio-profile-bio"
                   value={profileBio}
                   onChange={(e) => setProfileBio(e.target.value)}
                   placeholder="Short description"
@@ -191,6 +195,8 @@ const LinkInBioTool = () => {
                     <div className="flex-1 space-y-2">
                       <input
                         type="text"
+                        id={`linkinbio-title-${link.id}`}
+                        name={`linkinbio-title-${link.id}`}
                         value={link.title}
                         onChange={(e) => updateLink(link.id, "title", e.target.value)}
                         placeholder="Link Title"
@@ -198,6 +204,8 @@ const LinkInBioTool = () => {
                       />
                       <input
                         type="url"
+                        id={`linkinbio-url-${link.id}`}
+                        name={`linkinbio-url-${link.id}`}
                         value={link.url}
                         onChange={(e) => updateLink(link.id, "url", e.target.value)}
                         placeholder="https://example.com"
