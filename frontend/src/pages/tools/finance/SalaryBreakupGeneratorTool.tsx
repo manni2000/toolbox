@@ -158,8 +158,8 @@ export default function SalaryBreakupGeneratorTool() {
         "salary-breakup-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Salary Breakup Generator"}
-      description={toolSeoData?.description || "Generate detailed salary breakup with deductions and take-home pay"}
+      title="Salary Breakup Generator"
+      description="Generate detailed salary breakup with deductions and take-home pay"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

@@ -106,8 +106,8 @@ const LumpsumCalculatorTool = () => {
         "lumpsum-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Lumpsum Calculator"}
-      description={toolSeoData?.description || "Calculate returns on one-time lumpsum investments"}
+      title="Lumpsum Calculator"
+      description="Calculate returns on one-time lumpsum investments"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

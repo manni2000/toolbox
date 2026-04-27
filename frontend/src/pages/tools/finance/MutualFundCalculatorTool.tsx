@@ -66,8 +66,8 @@ const MutualFundCalculatorTool = () => {
         "mutual-fund-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Mutual Fund SIP Calculator"}
-      description={toolSeoData?.description || "Calculate returns on Systematic Investment Plan (SIP) investments"}
+      title="Mutual Fund SIP Calculator"
+      description="Calculate returns on Systematic Investment Plan (SIP) investments"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

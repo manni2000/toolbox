@@ -338,8 +338,8 @@ const ScientificCalculatorTool = () => {
         "scientific-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Scientific Calculator"}
-      description={toolSeoData?.description || "Perform advanced mathematical calculations with trigonometry, logarithms, and more"}
+      title="Scientific Calculator"
+      description="Perform advanced mathematical calculations with trigonometry, logarithms, and more"
       category="Education Tools"
       categoryPath="/category/education"
     >

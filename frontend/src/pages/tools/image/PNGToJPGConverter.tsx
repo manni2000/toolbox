@@ -103,8 +103,8 @@ const PNGToJPGConverter = () => {
         "png-to-jpg"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PNG to JPG Converter"}
-      description={toolSeoData?.description || "Convert PNG images to JPG format with adjustable quality settings"}
+      title="PNG to JPG Converter"
+      description="Convert PNG images to JPG format with adjustable quality settings"
       category="Image Tools"
       categoryPath="/category/image"
     >

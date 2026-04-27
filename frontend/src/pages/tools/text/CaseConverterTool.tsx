@@ -43,8 +43,8 @@ const CaseConverterTool = () => {
         "case-converter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Case Converter"}
-      description={toolSeoData?.description || "Convert text between different cases"}
+      title="Case Converter"
+      description="Convert text between different cases"
       category="Text Tools"
       categoryPath="/category/text"
     >

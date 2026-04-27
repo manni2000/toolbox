@@ -39,8 +39,8 @@ const HashGeneratorTool = () => {
         "hash-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Hash Generator"}
-      description={toolSeoData?.description || "Generate MD5, SHA-1, SHA-256, and more hashes"}
+      title="Hash Generator"
+      description="Generate MD5, SHA-1, SHA-256, and more hashes"
       category="Security Tools"
       categoryPath="/category/security"
     >

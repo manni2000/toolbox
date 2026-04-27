@@ -303,8 +303,8 @@ const MemeGeneratorTool = () => {
         "meme-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Meme Generator"}
-      description={toolSeoData?.description || "Create professional memes with templates, custom text, and advanced styling options"}
+      title="Meme Generator"
+      description="Create professional memes with templates, custom text, and advanced styling options"
       category="Social Tools"
       categoryPath="/category/social"
     >

@@ -97,8 +97,8 @@ const ImageDPITool = () => {
         "image-dpi"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Image DPI Checker"}
-        description={toolSeoData?.description || "Check image dimensions and calculate print sizes at different DPI values"}
+        title="Image DPI Checker"
+        description="Check image dimensions and calculate print sizes at different DPI values"
         category="Image Tools"
         categoryPath="/category/image"
       >

@@ -135,8 +135,8 @@ const CurrencyConverterTool = () => {
         "currency-converter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Currency Converter"}
-      description={toolSeoData?.description || "Convert between currencies with real-time exchange rates"}
+      title="Currency Converter"
+      description="Convert between currencies with real-time exchange rates"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

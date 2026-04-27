@@ -629,8 +629,8 @@ const PageSEOTool = () => {
         "page-seo"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Page SEO Analyzer"}
-      description={toolSeoData?.description || "Comprehensive SEO analysis tool to optimize your web pages for better search rankings"}
+      title="Page SEO Analyzer"
+      description="Comprehensive SEO analysis tool to optimize your web pages for better search rankings"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

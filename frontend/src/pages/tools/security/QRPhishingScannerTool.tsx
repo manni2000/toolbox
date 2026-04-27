@@ -98,8 +98,8 @@ export default function QRPhishingScannerTool() {
         "qr-phishing-scanner"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "QR Phishing Scanner"}
-      description={toolSeoData?.description || "Scan QR codes for phishing and other security risks"}
+      title="QR Phishing Scanner"
+      description="Scan QR codes for phishing and other security risks"
       category="Security Tools"
       categoryPath="/category/security"
     >

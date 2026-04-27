@@ -182,8 +182,8 @@ const UTMLinkBuilderTool = () => {
         "utm-builder"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "UTM Link Builder"}
-      description={toolSeoData?.description || "Create UTM-tagged URLs for tracking marketing campaigns and traffic sources"}
+      title="UTM Link Builder"
+      description="Create UTM-tagged URLs for tracking marketing campaigns and traffic sources"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

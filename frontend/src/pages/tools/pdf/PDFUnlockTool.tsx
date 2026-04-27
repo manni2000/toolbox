@@ -114,8 +114,8 @@ const PDFUnlockTool = () => {
         "pdf-unlocker"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PDF Unlocker"}
-      description={toolSeoData?.description || "Remove password protection from PDF files"}
+      title="PDF Unlocker"
+      description="Remove password protection from PDF files"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

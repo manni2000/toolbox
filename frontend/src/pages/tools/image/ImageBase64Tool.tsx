@@ -106,8 +106,8 @@ const ImageBase64Tool = () => {
         "image-base64"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Image ↔ Base64 Converter"}
-        description={toolSeoData?.description || "Convert images to Base64 strings and vice versa"}
+        title="Image ↔ Base64 Converter"
+        description="Convert images to Base64 strings and vice versa"
         category="Image Tools"
         categoryPath="/category/image"
       >

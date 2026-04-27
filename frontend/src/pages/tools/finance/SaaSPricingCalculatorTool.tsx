@@ -128,8 +128,8 @@ export default function SaaSPricingCalculatorTool() {
         "saas-pricing-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "SaaS Pricing Calculator"}
-      description={toolSeoData?.description || "Calculate optimal pricing, revenue projections, and unit economics"}
+      title="SaaS Pricing Calculator"
+      description="Calculate optimal pricing, revenue projections, and unit economics"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

@@ -152,8 +152,8 @@ const SQLQueryBeautifierTool = () => {
         "sql-query-beautifier"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "SQL Query Beautifier"}
-      description={toolSeoData?.description || "Format and beautify SQL queries with customizable indentation and keyword formatting"}
+      title="SQL Query Beautifier"
+      description="Format and beautify SQL queries with customizable indentation and keyword formatting"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

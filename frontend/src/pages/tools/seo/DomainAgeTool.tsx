@@ -150,8 +150,8 @@ const DomainAgeTool = () => {
         "domain-age"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Domain Age Checker"}
-      description={toolSeoData?.description || "Check domain age and expiration dates for SEO analysis and domain management"}
+      title="Domain Age Checker"
+      description="Check domain age and expiration dates for SEO analysis and domain management"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

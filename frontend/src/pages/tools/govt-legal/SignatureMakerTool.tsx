@@ -250,8 +250,8 @@ export default function SignatureMakerTool() {
         "signature-maker"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Signature Maker"}
-        description={toolSeoData?.description || "Draw and create digital signatures"}
+        title="Signature Maker"
+        description="Draw and create digital signatures"
         category="Govt & Legal Tools"
         categoryPath="/category/govt-legal"
         toolSlug="signature-maker"

@@ -66,8 +66,8 @@ const TextDiffTool = () => {
         "text-diff"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Text Diff Checker"}
-      description={toolSeoData?.description || "Compare two texts and highlight differences"}
+      title="Text Diff Checker"
+      description="Compare two texts and highlight differences"
       category="Text Tools"
       categoryPath="/category/text"
     >

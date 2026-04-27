@@ -91,8 +91,8 @@ const PDFReorderTool = () => {
         "pdf-reorder"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "PDF Reorder Pages"}
-        description={toolSeoData?.description || "Reorder pages in your PDF document"}
+        title="PDF Reorder Pages"
+        description="Reorder pages in your PDF document"
         category="PDF Tools"
         categoryPath="/category/pdf"
       >

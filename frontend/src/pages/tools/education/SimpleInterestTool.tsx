@@ -61,8 +61,8 @@ const SimpleInterestTool = () => {
         "simple-interest-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Simple Interest Calculator"}
-      description={toolSeoData?.description || "Calculate simple interest on principal amount"}
+      title="Simple Interest Calculator"
+      description="Calculate simple interest on principal amount"
       category="Education Tools"
       categoryPath="/category/education"
     >

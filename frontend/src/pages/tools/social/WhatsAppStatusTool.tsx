@@ -199,8 +199,8 @@ const WhatsAppStatusTool = () => {
         "whatsapp-status-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "WhatsApp Status Generator"}
-      description={toolSeoData?.description || "Create perfectly sized images for WhatsApp Status with professional design tools"}
+      title="WhatsApp Status Generator"
+      description="Create perfectly sized images for WhatsApp Status with professional design tools"
       category="Social Media"
       categoryPath="/category/social"
     >

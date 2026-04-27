@@ -127,8 +127,8 @@ export default function FreelancerRateCalculatorTool() {
         "freelancer-rate-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Freelancer Rate Calculator"}
-      description={toolSeoData?.description || "Calculate your optimal freelance rates based on income goals and business expenses"}
+      title="Freelancer Rate Calculator"
+      description="Calculate your optimal freelance rates based on income goals and business expenses"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

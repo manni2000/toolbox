@@ -113,8 +113,8 @@ const CropPDFTool = () => {
         "crop-pdf"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Crop PDF"}
-        description={toolSeoData?.description || "Crop margins from PDF pages"}
+        title="Crop PDF"
+        description="Crop margins from PDF pages"
         category="PDF Tools"
         categoryPath="/category/pdf"
       >

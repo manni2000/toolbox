@@ -243,8 +243,8 @@ const EnvironmentVariableTool = () => {
         "environment-variable-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Environment Variable Generator"}
-      description={toolSeoData?.description || "Generate and manage environment variables for different platforms and frameworks"}
+      title="Environment Variable Generator"
+      description="Generate and manage environment variables for different platforms and frameworks"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

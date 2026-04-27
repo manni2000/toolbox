@@ -171,8 +171,8 @@ export default function BudgetPlannerTool() {
         "budget-planner"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Budget Planner"}
-      description={toolSeoData?.description || "Create and analyze your monthly budget for better financial planning"}
+      title="Budget Planner"
+      description="Create and analyze your monthly budget for better financial planning"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

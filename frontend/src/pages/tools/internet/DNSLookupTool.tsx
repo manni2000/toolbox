@@ -95,8 +95,8 @@ const DNSLookupTool = () => {
         "dns-lookup"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "DNS Lookup"}
-      description={toolSeoData?.description || "Query DNS records such as A, MX, TXT, NS, and more for any domain."}
+      title="DNS Lookup"
+      description="Query DNS records such as A, MX, TXT, NS, and more for any domain."
       category="Internet Tools"
       categoryPath="/category/internet"
     >

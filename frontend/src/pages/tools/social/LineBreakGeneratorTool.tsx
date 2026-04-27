@@ -46,8 +46,8 @@ const LineBreakGeneratorTool = () => {
         "line-break"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Line Break Generator"}
-      description={toolSeoData?.description || "Create invisible line breaks and separators for Instagram captions"}
+      title="Line Break Generator"
+      description="Create invisible line breaks and separators for Instagram captions"
       category="Social Tools"
       categoryPath="/category/social"
     >

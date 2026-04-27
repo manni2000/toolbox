@@ -103,8 +103,8 @@ const WebPToJPGConverter = () => {
         "webp-to-jpg-converter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "WebP to JPG Converter"}
-      description={toolSeoData?.description || "Convert WebP images to JPG format with adjustable quality"}
+      title="WebP to JPG Converter"
+      description="Convert WebP images to JPG format with adjustable quality"
       category="Image Tools"
       categoryPath="/category/image"
     >

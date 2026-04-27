@@ -83,8 +83,8 @@ const StudyTimetableTool = () => {
         "study-timetable-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Study Timetable Generator"}
-      description={toolSeoData?.description || "Create personalized study schedules with break times"}
+      title="Study Timetable Generator"
+      description="Create personalized study schedules with break times"
       category="Education Tools"
       categoryPath="/category/education"
     >

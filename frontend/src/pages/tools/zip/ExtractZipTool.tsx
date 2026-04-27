@@ -133,8 +133,8 @@ const ExtractZipTool = () => {
         "extract-zip"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Extract ZIP"}
-      description={toolSeoData?.description || "Extract and download files from ZIP archives"}
+      title="Extract ZIP"
+      description="Extract and download files from ZIP archives"
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

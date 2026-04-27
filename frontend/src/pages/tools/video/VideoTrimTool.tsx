@@ -124,8 +124,8 @@ const VideoTrimTool = () => {
         "video-trim"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Video Trim Tool"}
-      description={toolSeoData?.description || "Cut and trim video clips to specific timestamps"}
+      title="Video Trim Tool"
+      description="Cut and trim video clips to specific timestamps"
       category="Video Tools"
       categoryPath="/category/video"
     >

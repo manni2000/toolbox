@@ -117,8 +117,8 @@ const WhiteBackgroundAdderTool = () => {
         "white-background-adder"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "White Background Adder"}
-      description={toolSeoData?.description || "Add white background to product images"}
+      title="White Background Adder"
+      description="Add white background to product images"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

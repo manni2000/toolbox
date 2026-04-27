@@ -115,8 +115,8 @@ export default function ProfitMarginCalculatorTool() {
         "profit-margin-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Profit Margin Calculator"}
-      description={toolSeoData?.description || "Calculate gross margin, net margin, and markup for your business"}
+      title="Profit Margin Calculator"
+      description="Calculate gross margin, net margin, and markup for your business"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

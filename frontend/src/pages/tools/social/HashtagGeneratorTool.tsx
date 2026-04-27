@@ -68,8 +68,8 @@ const HashtagGeneratorTool = () => {
         "hashtag-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Hashtag Generator"}
-      description={toolSeoData?.description || "Generate relevant hashtags for social media engagement"}
+      title="Hashtag Generator"
+      description="Generate relevant hashtags for social media engagement"
       category="Social Tools"
       categoryPath="/category/social"
     >

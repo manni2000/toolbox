@@ -100,8 +100,8 @@ const WebsiteScreenshotTool = () => {
         "website-screenshot"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Website Screenshot Tool"}
-      description={toolSeoData?.description || "Capture full-page screenshots of any website from top to footer."}
+      title="Website Screenshot Tool"
+      description="Capture full-page screenshots of any website from top to footer."
       category="Internet Tools"
       categoryPath="/category/internet"
     >

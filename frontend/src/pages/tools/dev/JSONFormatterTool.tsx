@@ -73,8 +73,8 @@ const JSONFormatterTool = () => {
         "json-formatter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "JSON Formatter"}
-      description={toolSeoData?.description || "Format, validate, and beautify JSON data"}
+      title="JSON Formatter"
+      description="Format, validate, and beautify JSON data"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

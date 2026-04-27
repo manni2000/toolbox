@@ -278,8 +278,8 @@ const HTTPStatusCodeTool = () => {
         "http-status-code-explainer"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "HTTP Status Code Explainer"}
-      description={toolSeoData?.description || "Comprehensive guide to HTTP status codes with meanings, causes, and solutions"}
+      title="HTTP Status Code Explainer"
+      description="Comprehensive guide to HTTP status codes with meanings, causes, and solutions"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

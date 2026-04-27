@@ -121,8 +121,8 @@ const OGImagePreviewTool = () => {
         "og-image-preview"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "OG Image Preview"}
-      description={toolSeoData?.description || "Preview how your content looks when shared on social media"}
+      title="OG Image Preview"
+      description="Preview how your content looks when shared on social media"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

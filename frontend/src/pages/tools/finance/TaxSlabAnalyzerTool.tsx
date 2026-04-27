@@ -109,8 +109,8 @@ export default function TaxSlabAnalyzerTool() {
         "tax-slab-analyzer"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Tax Slab Analyzer"}
-      description={toolSeoData?.description || "Calculate your tax liability under different tax regimes"}
+      title="Tax Slab Analyzer"
+      description="Calculate your tax liability under different tax regimes"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

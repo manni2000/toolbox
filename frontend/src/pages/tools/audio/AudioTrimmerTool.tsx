@@ -202,8 +202,8 @@ const AudioTrimmerTool = () => {
         "audio-trimmer"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Audio Trimmer"}
-      description={toolSeoData?.description || "Cut and trim audio files. Set start and end points, preview before download."}
+      title="Audio Trimmer"
+      description="Cut and trim audio files. Set start and end points, preview before download."
       category="Audio Tools"
       categoryPath="/category/audio"
     >

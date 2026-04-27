@@ -182,8 +182,8 @@ const PDFToImageTool = () => {
         "pdf-to-image"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PDF to Images"}
-      description={toolSeoData?.description || "Convert PDF pages to image files"}
+      title="PDF to Images"
+      description="Convert PDF pages to image files"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

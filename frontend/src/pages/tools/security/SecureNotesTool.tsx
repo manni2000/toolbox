@@ -106,8 +106,8 @@ export default function SecureNotesTool() {
         "secure-notes"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Secure Notes"}
-      description={toolSeoData?.description || "Encrypt and decrypt your sensitive notes with password protection"}
+      title="Secure Notes"
+      description="Encrypt and decrypt your sensitive notes with password protection"
       category="Security Tools"
       categoryPath="/category/security"
     >

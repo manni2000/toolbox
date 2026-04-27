@@ -329,8 +329,8 @@ Generated: ${new Date().toLocaleDateString()}
         "page-speed-checklist"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Page Speed Checklist"}
-      description={toolSeoData?.description || "Optimize website performance with comprehensive speed checklist"}
+      title="Page Speed Checklist"
+      description="Optimize website performance with comprehensive speed checklist"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

@@ -83,8 +83,8 @@ const SalaryCalculatorTool = () => {
         "salary-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Salary Calculator"}
-      description={toolSeoData?.description || "Convert salary between hourly, daily, weekly, monthly, and yearly"}
+      title="Salary Calculator"
+      description="Convert salary between hourly, daily, weekly, monthly, and yearly"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

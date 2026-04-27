@@ -97,8 +97,8 @@ export default function FileHashComparisonTool() {
         "file-hash-comparison"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "File Hash Comparison"}
-      description={toolSeoData?.description || "Compare two files by their hash values to verify integrity"}
+      title="File Hash Comparison"
+      description="Compare two files by their hash values to verify integrity"
       category="Security Tools"
       categoryPath="/category/security"
     >

@@ -157,8 +157,8 @@ const BioGeneratorTool = () => {
         "bio-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Bio Generator"}
-      description={toolSeoData?.description || "Create engaging social media bios with character limits"}
+      title="Bio Generator"
+      description="Create engaging social media bios with character limits"
       category="Social Tools"
       categoryPath="/category/social"
     >

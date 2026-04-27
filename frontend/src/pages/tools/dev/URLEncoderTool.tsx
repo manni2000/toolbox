@@ -53,8 +53,8 @@ const URLEncoderTool = () => {
         "url-encoder-decoder"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "URL Encoder/Decoder"}
-      description={toolSeoData?.description || "Encode or decode URLs and query parameters"}
+      title="URL Encoder/Decoder"
+      description="Encode or decode URLs and query parameters"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

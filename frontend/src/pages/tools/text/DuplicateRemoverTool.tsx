@@ -49,8 +49,8 @@ const DuplicateRemoverTool = () => {
         "duplicate-remover"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Duplicate Line Remover"}
-      description={toolSeoData?.description || "Remove duplicate lines from your text while preserving order"}
+      title="Duplicate Line Remover"
+      description="Remove duplicate lines from your text while preserving order"
       category="Text Tools"
       categoryPath="/category/text"
     >

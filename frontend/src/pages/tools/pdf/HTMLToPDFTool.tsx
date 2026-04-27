@@ -141,8 +141,8 @@ const HTMLToPDFTool = () => {
         "html-to-pdf"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "HTML to PDF"}
-      description={toolSeoData?.description || "Convert HTML content to PDF documents"}
+      title="HTML to PDF"
+      description="Convert HTML content to PDF documents"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

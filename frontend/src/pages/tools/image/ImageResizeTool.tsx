@@ -172,8 +172,8 @@ const ImageResizeTool = () => {
         "image-resize"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Image Resize"}
-      description={toolSeoData?.description || "Resize images to any custom dimension or use preset sizes"}
+      title="Image Resize"
+      description="Resize images to any custom dimension or use preset sizes"
       category="Image Tools"
       categoryPath="/category/image"
     >

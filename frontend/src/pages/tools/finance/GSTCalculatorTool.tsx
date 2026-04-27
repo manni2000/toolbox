@@ -58,8 +58,8 @@ const GSTCalculatorTool = () => {
         "gst-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "GST Calculator"}
-      description={toolSeoData?.description || "Calculate GST, CGST, and SGST amounts with precision"}
+      title="GST Calculator"
+      description="Calculate GST, CGST, and SGST amounts with precision"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

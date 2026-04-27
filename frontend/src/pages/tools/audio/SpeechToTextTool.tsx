@@ -266,8 +266,8 @@ const SpeechToTextTool = () => {
         "speech-to-text"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Speech to Text"}
-      description={toolSeoData?.description || "Convert audio files to text with language support. Export as TXT or SRT subtitles."}
+      title="Speech to Text"
+      description="Convert audio files to text with language support. Export as TXT or SRT subtitles."
       category="Audio Tools"
       categoryPath="/category/audio"
     >

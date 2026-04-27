@@ -78,8 +78,8 @@ const MetaTitleDescriptionTool = () => {
         "meta-title-description-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Meta Title & Description Generator"}
-      description={toolSeoData?.description || "Generate SEO-optimized meta titles and descriptions for better search engine rankings"}
+      title="Meta Title & Description Generator"
+      description="Generate SEO-optimized meta titles and descriptions for better search engine rankings"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

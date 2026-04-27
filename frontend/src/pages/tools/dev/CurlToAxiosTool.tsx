@@ -317,8 +317,8 @@ const CurlToAxiosTool = () => {
         "curl-to-axios-converter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "cURL to Axios Converter"}
-      description={toolSeoData?.description || "Convert cURL commands to Axios, Fetch, JavaScript, and Python code"}
+      title="cURL to Axios Converter"
+      description="Convert cURL commands to Axios, Fetch, JavaScript, and Python code"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

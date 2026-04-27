@@ -131,8 +131,8 @@ const PasswordZipTool = () => {
         "password-zip"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Password-Protected ZIP"}
-      description={toolSeoData?.description || "Create encrypted ZIP archives with password protection"}
+      title="Password-Protected ZIP"
+      description="Create encrypted ZIP archives with password protection"
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

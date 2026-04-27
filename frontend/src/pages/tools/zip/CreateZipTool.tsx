@@ -77,8 +77,8 @@ const CreateZipTool = () => {
         "create-zip"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Create ZIP"}
-      description={toolSeoData?.description || "Create ZIP archives from multiple files"}
+      title="Create ZIP"
+      description="Create ZIP archives from multiple files"
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

@@ -167,8 +167,8 @@ const JsonToTypeScriptTool = () => {
         "json-to-typescript"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "JSON to TypeScript Interface Generator"}
-      description={toolSeoData?.description || "Convert JSON objects to TypeScript interfaces with automatic type inference"}
+      title="JSON to TypeScript Interface Generator"
+      description="Convert JSON objects to TypeScript interfaces with automatic type inference"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

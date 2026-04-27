@@ -236,8 +236,8 @@ const BrokenImageFinderTool = () => {
         "broken-image"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Broken Image Finder"}
-      description={toolSeoData?.description || "Find and analyze broken images on your website for better SEO and user experience"}
+      title="Broken Image Finder"
+      description="Find and analyze broken images on your website for better SEO and user experience"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

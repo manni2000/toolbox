@@ -56,7 +56,7 @@ export const universalToolFaqs: Array<{ question: string; answer: string }> = [
 ];
 
 export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
-   'pdf-to-word': {
+  'pdf-to-word': {
     slug: 'pdf-to-word',
     title: 'PDF to Word Converter - Convert PDF to DOCX Online Free',
     description: 'Convert PDF files to editable Word documents (.DOCX) instantly online. Preserve formatting, maintain layout, and download without installation. Perfect for contracts, resumes, and reports.',
@@ -1790,36 +1790,34 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     },
   },
 
-  'pdf-compress': {
-    slug: 'pdf-compress',
-    title: 'PDF Compressor - Reduce PDF File Size Online Free',
-    description: 'Compress PDF files instantly to reduce file size while maintaining quality. Perfect for email attachments and web uploads.',
+  'pdf-compressor': {
+    slug: 'pdf-compressor',
+    title: 'PDF Compressor Tool - Compress PDF Files for Government Documents',
+    description: 'Compress PDF files for government applications, passport photos, and official documents. Reduce file size while maintaining quality for online submissions.',
     keywords: [
-      'pdf compressor',
-      'compress pdf',
-      'reduce pdf size',
-      'pdf size reducer',
-      'pdf optimization',
-      'compress pdf online',
-      'online pdf compressor',
-      'free pdf compression',
-      'pdf file reducer',
-      'compress pdf files',
-      'pdf size optimizer',
-      'free online pdf compressor',
+      'pdf compressor', 
+      'compress pdf for government',
+      'reduce pdf size online',
+      'pdf file compressor',
+      'government document compressor',
+      'passport pdf compressor',
+      'official pdf reducer',
+      'compress pdf without quality loss',
+      'pdf optimizer tool',
+      'online pdf compressor free',
     ],
     longTailKeywords: [
-      'compress pdf files online free',
-      'best pdf compressor for smaller files',
-      'reduce pdf file size fast',
-      'pdf compression without quality loss',
-      'online tool to compress pdf',
-      'how to compress pdf for email',
-      'compress pdf files online',
-      'best pdf compressor tool',
+      'compress pdf for passport application',
+      'reduce pdf file size for government forms',
+      'compress official documents online',
+      'pdf compressor for aadhaar application',
+      'reduce pdf size for online submissions',
+      'compress government documents free',
+      'pdf compressor tool for official use',
+      'compress pdf while maintaining quality',
     ],
-    category: 'PDF Tools',
-    relatedTools: ['pdf-merge', 'pdf-split', 'pdf-to-word'],
+    category: 'Government & Legal Tools',
+    relatedTools: ['pdf-compress', 'signature-maker', 'passport-photo-resizer'],
     schema: {
       type: 'SoftwareApplication',
       appCategory: 'Document Editor',
@@ -11138,6 +11136,100 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       offers: { price: '0', priceCurrency: 'INR' },
     },
   },
+
+  'pdf-add-signature': {
+    slug: 'pdf-add-signature',
+    title: 'Add Signature to PDF - Sign PDF Documents Online Free',
+    description: 'Add digital signatures to PDF documents instantly. Upload your signature as image and place it anywhere on any page. Perfect for contracts, agreements, and official documents. No registration required.',
+    keywords: [
+      'add signature to pdf',
+      'sign pdf online',
+      'pdf signature tool',
+      'digital signature pdf',
+      'pdf signer',
+      'add signature to pdf free',
+      'sign pdf document',
+      'pdf signature adder',
+      'online pdf signature',
+      'free pdf signature tool',
+      'pdf document signer',
+      'electronic signature pdf',
+    ],
+    longTailKeywords: [
+      'how to add signature to pdf online free',
+      'best tool to add signature to pdf documents',
+      'add digital signature to pdf without registration',
+      'free online pdf signature tool for contracts',
+      'sign pdf documents online without software',
+      'add handwritten signature to pdf file',
+      'pdf signature tool for official documents',
+      'how to sign pdf documents electronically',
+      'add signature to pdf forms online',
+      'best free pdf signature tool',
+      'electronic signature for pdf documents',
+      'sign pdf contracts online free',
+    ],
+    category: 'PDF Tools',
+    faqs: [
+      {
+        question: 'Can I add my handwritten signature to PDF?',
+        answer: 'Yes! Simply take a photo of your signature or scan it, upload it as an image, and place it on your PDF document.',
+      },
+      {
+        question: 'Can I resize and position the signature?',
+        answer: 'Yes, you can drag to reposition, resize by dragging corners, and place the signature anywhere on any page of your PDF.',
+      },
+      {
+        question: 'Is my signature and document secure?',
+        answer: 'Absolutely. All processing happens locally in your browser. Your PDF and signature are never uploaded to any server.',
+      },
+      {
+        question: 'What signature formats are supported?',
+        answer: 'We support PNG, JPG, JPEG, and WebP image formats for your signature.',
+      },
+      {
+        question: 'Can I add multiple signatures?',
+        answer: 'Yes, you can add multiple signatures and place them on different pages or positions within the same document.',
+      },
+      {
+        question: 'Will the signature look professional?',
+        answer: 'Yes, our tool maintains high quality and transparency for a professional-looking signature on your documents.',
+      },
+    ],
+    howTo: {
+      name: 'How to Add Signature to PDF',
+      description: 'Step-by-step guide to add your signature to PDF documents',
+      steps: [
+        {
+          name: 'Upload PDF Document',
+          text: 'Click the upload button or drag and drop your PDF file into the designated area. Files up to 50MB are supported.',
+        },
+        {
+          name: 'Upload Your Signature',
+          text: 'Upload your signature image (PNG, JPG, or WebP). For best results, use a signature with transparent background.',
+        },
+        {
+          name: 'Position and Resize',
+          text: 'Drag your signature to the desired position on the page. Resize by dragging the corners to fit perfectly.',
+        },
+        {
+          name: 'Download Signed PDF',
+          text: 'Click the download button to save your signed PDF document with the signature embedded.',
+        },
+      ],
+    },
+    relatedTools: ['pdf-compress', 'pdf-merge', 'signature-maker', 'pdf-to-word'],
+    schema: {
+      type: 'SoftwareApplication',
+      appCategory: 'Document Editor',
+      operatingSystem: 'Web',
+      offers: {
+        price: '0',
+        priceCurrency: 'INR',
+      },
+    },
+  },
+
 };
 
 export const getToolSeoMetadata = (toolSlug: string): ToolSeoMetadata | null => {

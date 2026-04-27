@@ -122,8 +122,8 @@ const PDFPasswordTool = () => {
         "pdf-password"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PDF Password Protector"}
-      description={toolSeoData?.description || "Add password protection to your PDF files"}
+      title="PDF Password Protector"
+      description="Add password protection to your PDF files"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

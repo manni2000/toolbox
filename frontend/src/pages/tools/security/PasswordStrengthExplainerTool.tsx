@@ -102,8 +102,8 @@ export default function PasswordStrengthExplainerTool() {
         "password-strength-explainer"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Password Strength Explainer"}
-      description={toolSeoData?.description || "Analyze password strength with detailed feedback and suggestions"}
+      title="Password Strength Explainer"
+      description="Analyze password strength with detailed feedback and suggestions"
       category="Security Tools"
       categoryPath="/category/security"
     >

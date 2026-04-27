@@ -270,8 +270,8 @@ Date: ${new Date().toUTCString()}
         "api-response-formatter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "API Response Formatter"}
-      description={toolSeoData?.description || "Format and beautify API responses in JSON, XML, HTML, and plain text formats"}
+      title="API Response Formatter"
+      description="Format and beautify API responses in JSON, XML, HTML, and plain text formats"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

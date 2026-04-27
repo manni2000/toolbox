@@ -73,8 +73,8 @@ const CompoundInterestTool = () => {
         "compound-interest-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Compound Interest Calculator"}
-      description={toolSeoData?.description || "Calculate compound interest with different compounding frequencies"}
+      title="Compound Interest Calculator"
+      description="Calculate compound interest with different compounding frequencies"
       category="Education Tools"
       categoryPath="/category/education"
     >

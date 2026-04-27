@@ -155,8 +155,8 @@ const ShadowAdderTool = () => {
         "shadow-adder"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Shadow Adder"}
-      description={toolSeoData?.description || "Add professional shadows to product images"}
+      title="Shadow Adder"
+      description="Add professional shadows to product images"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

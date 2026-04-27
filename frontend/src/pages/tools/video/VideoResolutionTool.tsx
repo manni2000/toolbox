@@ -180,8 +180,8 @@ const VideoResolutionTool = () => {
         "video-resolution"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Video Resolution Converter"}
-      description={toolSeoData?.description || "Change video resolution and dimensions"}
+      title="Video Resolution Converter"
+      description="Change video resolution and dimensions"
       category="Video Tools"
       categoryPath="/category/video"
     >

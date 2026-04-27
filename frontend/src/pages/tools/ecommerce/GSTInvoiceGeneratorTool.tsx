@@ -316,8 +316,8 @@ const GSTInvoiceGeneratorTool = () => {
         "gst-invoice-generator"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "GST Invoice Generator"}
-        description={toolSeoData?.description || "Create GST-compliant invoices for your business"}
+        title="GST Invoice Generator"
+        description="Create GST-compliant invoices for your business"
         category="Ecommerce Tools"
         categoryPath="/category/ecommerce"
       >

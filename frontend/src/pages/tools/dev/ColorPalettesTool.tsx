@@ -522,8 +522,8 @@ const ColorPalettesTool = () => {
         "color-palettes"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Color Palettes Generator"}
-      description={toolSeoData?.description || "Generate beautiful color palettes for your design projects with professional color theory"}
+      title="Color Palettes Generator"
+      description="Generate beautiful color palettes for your design projects with professional color theory"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

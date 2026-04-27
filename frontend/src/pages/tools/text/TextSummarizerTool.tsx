@@ -75,8 +75,8 @@ const TextSummarizerTool = () => {
         "text-summarizer"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Text Summarizer"}
-      description={toolSeoData?.description || "Extract key sentences from your text using rule-based analysis"}
+      title="Text Summarizer"
+      description="Extract key sentences from your text using rule-based analysis"
       category="Text Tools"
       categoryPath="/category/text"
     >

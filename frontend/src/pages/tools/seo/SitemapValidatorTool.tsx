@@ -233,8 +233,8 @@ const SitemapValidatorTool = () => {
         "sitemap-validator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Sitemap Validator"}
-      description={toolSeoData?.description || "Validate and analyze XML sitemaps for SEO compliance and best practices"}
+      title="Sitemap Validator"
+      description="Validate and analyze XML sitemaps for SEO compliance and best practices"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

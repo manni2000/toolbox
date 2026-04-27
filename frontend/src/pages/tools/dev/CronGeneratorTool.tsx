@@ -85,8 +85,8 @@ const CronGeneratorTool = () => {
         "cron-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Cron Expression Generator"}
-      description={toolSeoData?.description || "Build and understand cron schedule expressions"}
+      title="Cron Expression Generator"
+      description="Build and understand cron schedule expressions"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

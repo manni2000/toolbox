@@ -94,8 +94,8 @@ const AgeCalculatorTool = () => {
         "age-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Age Calculator"}
-      description={toolSeoData?.description || "Calculate your exact age from your birthdate"}
+      title="Age Calculator"
+      description="Calculate your exact age from your birthdate"
       category="Date & Time Tools"
       categoryPath="/category/date-time"
     >

@@ -94,8 +94,8 @@ const LoremGeneratorTool = () => {
         "lorem-ipsum-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Lorem Ipsum Generator"}
-      description={toolSeoData?.description || "Generate placeholder text for your designs"}
+      title="Lorem Ipsum Generator"
+      description="Generate placeholder text for your designs"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

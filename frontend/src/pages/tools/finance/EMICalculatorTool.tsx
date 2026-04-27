@@ -117,8 +117,8 @@ const EMICalculatorTool = () => {
         "emi-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "EMI Calculator"}
-      description={toolSeoData?.description || "Calculate loan EMI payments"}
+      title="EMI Calculator"
+      description="Calculate loan EMI payments"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

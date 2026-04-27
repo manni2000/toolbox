@@ -33,8 +33,8 @@ const MarkdownHTMLTool = () => {
         "markdown-html-converter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Markdown → HTML"}
-      description={toolSeoData?.description || "Convert Markdown to HTML"}
+      title="Markdown → HTML"
+      description="Convert Markdown to HTML"
       category="Text Tools"
       categoryPath="/category/text"
     >

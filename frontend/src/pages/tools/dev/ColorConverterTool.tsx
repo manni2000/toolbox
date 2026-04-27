@@ -112,8 +112,8 @@ const ColorConverterTool = () => {
         "color-converter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Color Converter"}
-      description={toolSeoData?.description || "Convert between HEX, RGB, and HSL color formats"}
+      title="Color Converter"
+      description="Convert between HEX, RGB, and HSL color formats"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

@@ -48,8 +48,8 @@ const UUIDGeneratorTool = () => {
         "uuid-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "UUID Generator"}
-      description={toolSeoData?.description || "Generate unique UUIDs instantly"}
+      title="UUID Generator"
+      description="Generate unique UUIDs instantly"
       category="Security Tools"
       categoryPath="/category/security"
     >

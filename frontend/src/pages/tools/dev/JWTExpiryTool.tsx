@@ -196,8 +196,8 @@ const JWTExpiryTool = () => {
         "jwt-expiry-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "JWT Token Expiry Calculator"}
-      description={toolSeoData?.description || "Analyze JWT tokens, check expiry times, and decode payload information"}
+      title="JWT Token Expiry Calculator"
+      description="Analyze JWT tokens, check expiry times, and decode payload information"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

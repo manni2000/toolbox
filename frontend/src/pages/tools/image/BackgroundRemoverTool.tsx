@@ -114,8 +114,8 @@ const BackgroundRemoverTool = () => {
         "background-remover"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Image Background Remover"}
-        description={toolSeoData?.description || "Remove backgrounds from images automatically"}
+        title="Image Background Remover"
+        description="Remove backgrounds from images automatically"
         category="Image Tools"
         categoryPath="/category/image"
       >

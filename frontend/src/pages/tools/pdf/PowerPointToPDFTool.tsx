@@ -105,8 +105,8 @@ const PowerPointToPDFTool = () => {
         "powerpoint-to-pdf"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PowerPoint to PDF"}
-      description={toolSeoData?.description || "Convert PowerPoint presentations to PDF"}
+      title="PowerPoint to PDF"
+      description="Convert PowerPoint presentations to PDF"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

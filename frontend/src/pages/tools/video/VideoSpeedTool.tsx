@@ -114,8 +114,8 @@ const VideoSpeedTool = () => {
         "video-speed"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Video Speed Controller"}
-        description={toolSeoData?.description || "Change video playback speed from 0.5x to 2x"}
+        title="Video Speed Controller"
+        description="Change video playback speed from 0.5x to 2x"
         category="Video Tools"
         categoryPath="/category/video"
       >

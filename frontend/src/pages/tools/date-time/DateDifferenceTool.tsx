@@ -74,8 +74,8 @@ const DateDifferenceTool = () => {
         "date-difference"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Date Difference Calculator"}
-        description={toolSeoData?.description || "Calculate difference between two dates"}
+        title="Date Difference Calculator"
+        description="Calculate difference between two dates"
         category="Date & Time"
         categoryPath="/category/date-time"
       >

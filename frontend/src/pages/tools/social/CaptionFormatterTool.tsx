@@ -98,8 +98,8 @@ const CaptionFormatterTool = () => {
         "caption-formatter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Caption Formatter"}
-      description={toolSeoData?.description || "Format your captions with stylish Unicode fonts"}
+      title="Caption Formatter"
+      description="Format your captions with stylish Unicode fonts"
       category="Social Tools"
       categoryPath="/category/social"
     >

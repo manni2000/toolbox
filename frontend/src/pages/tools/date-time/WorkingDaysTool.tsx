@@ -58,8 +58,8 @@ const WorkingDaysTool = () => {
         "working-days-calculator"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Working Days Calculator"}
-        description={toolSeoData?.description || "Calculate business days between two dates, excluding weekends"}
+        title="Working Days Calculator"
+        description="Calculate business days between two dates, excluding weekends"
         category="Date & Time"
         categoryPath="/category/date-time"
       >

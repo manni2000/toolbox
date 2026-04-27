@@ -155,8 +155,8 @@ const VideoToAudioTool = () => {
         "video-to-audio"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Video to Audio Converter"}
-      description={toolSeoData?.description || "Extract audio from video files (MP4, AVI, MOV → MP3, WAV)"}
+      title="Video to Audio Converter"
+      description="Extract audio from video files (MP4, AVI, MOV → MP3, WAV)"
       category="Video Tools"
       categoryPath="/category/video"
     >

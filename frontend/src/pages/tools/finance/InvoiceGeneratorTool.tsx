@@ -183,8 +183,8 @@ export default function InvoiceGeneratorTool() {
         "invoice-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Invoice Generator"}
-      description={toolSeoData?.description || "Create professional invoices with PDF download"}
+      title="Invoice Generator"
+      description="Create professional invoices with PDF download"
       category="Finance Tools"
       categoryPath="/category/finance"
       toolSlug="invoice-generator"

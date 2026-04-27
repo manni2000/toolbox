@@ -169,8 +169,8 @@ export default function PDFCompressorTool() {
         "pdf-compressor"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PDF Compressor"}
-      description={toolSeoData?.description || "Compress PDF files for document submission"}
+      title="PDF Compressor"
+      description="Compress PDF files for document submission"
       category="Govt & Legal Tools"
       categoryPath="/category/govt-legal"
       >

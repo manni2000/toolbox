@@ -90,8 +90,8 @@ const CGPAToPercentageTool = () => {
         "cgpa-to-percentage"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "CGPA to Percentage Converter"}
-      description={toolSeoData?.description || "Convert CGPA to percentage and determine grades"}
+      title="CGPA to Percentage Converter"
+      description="Convert CGPA to percentage and determine grades"
       category="Education Tools"
       categoryPath="/category/education"
     >

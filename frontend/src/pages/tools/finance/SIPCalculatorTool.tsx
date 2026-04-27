@@ -115,8 +115,8 @@ const SIPCalculatorTool = () => {
         "sip-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "SIP Calculator"}
-      description={toolSeoData?.description || "Calculate Systematic Investment Plan returns"}
+      title="SIP Calculator"
+      description="Calculate Systematic Investment Plan returns"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

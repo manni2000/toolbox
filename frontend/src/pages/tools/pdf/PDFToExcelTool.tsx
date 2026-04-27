@@ -103,8 +103,8 @@ const PDFToExcelTool = () => {
         "pdf-to-excel"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PDF to Excel"}
-      description={toolSeoData?.description || "Extract tables from PDF to Excel spreadsheets"}
+      title="PDF to Excel"
+      description="Extract tables from PDF to Excel spreadsheets"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

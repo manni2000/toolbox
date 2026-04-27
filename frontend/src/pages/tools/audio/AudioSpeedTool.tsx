@@ -182,8 +182,8 @@ const AudioSpeedTool = () => {
         "audio-speed"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Audio Speed Changer"}
-      description={toolSeoData?.description || "Change audio playback speed from 0.5x to 2x while keeping pitch intact."}
+      title="Audio Speed Changer"
+      description="Change audio playback speed from 0.5x to 2x while keeping pitch intact."
       category="Audio Tools"
       categoryPath="/category/audio"
     >

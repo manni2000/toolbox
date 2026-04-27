@@ -127,8 +127,8 @@ const ImageCropTool = () => {
         "image-crop"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Image Crop Tool"}
-      description={toolSeoData?.description || "Crop images with custom dimensions or preset aspect ratios"}
+      title="Image Crop Tool"
+      description="Crop images with custom dimensions or preset aspect ratios"
       category="Image Tools"
       categoryPath="/category/image"
     >

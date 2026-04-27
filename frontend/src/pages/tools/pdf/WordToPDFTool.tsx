@@ -105,8 +105,8 @@ const WordToPDFTool = () => {
         "word-to-pdf"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Word to PDF"}
-      description={toolSeoData?.description || "Convert Word documents to PDF"}
+      title="Word to PDF"
+      description="Convert Word documents to PDF"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

@@ -238,8 +238,8 @@ const MCQGeneratorTool = () => {
         "mcq-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "MCQ Generator from Text"}
-      description={toolSeoData?.description || "Generate multiple choice questions from text or create custom questions"}
+      title="MCQ Generator from Text"
+      description="Generate multiple choice questions from text or create custom questions"
       category="Education Tools"
       categoryPath="/category/education"
     >

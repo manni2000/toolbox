@@ -195,8 +195,8 @@ const PDFSplitTool = () => {
         "pdf-split"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PDF Split"}
-      description={toolSeoData?.description || "Extract specific pages from a PDF document."}
+      title="PDF Split"
+      description="Extract specific pages from a PDF document."
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

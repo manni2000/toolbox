@@ -396,9 +396,9 @@ const ImageToPDFTool = () => {
       )}
       <ToolLayout
 
-      title={toolSeoData?.title || "Image to PDF"}
+      title="Image to PDF"
 
-      description={toolSeoData?.description || "Convert multiple images to a single PDF document"}
+      description="Convert multiple images to a single PDF document"
 
       category="Image Tools"
 

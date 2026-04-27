@@ -120,8 +120,8 @@ const BarcodeGeneratorTool = () => {
         "barcode-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Barcode Generator"}
-      description={toolSeoData?.description || "Generate barcodes for products and inventory"}
+      title="Barcode Generator"
+      description="Generate barcodes for products and inventory"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

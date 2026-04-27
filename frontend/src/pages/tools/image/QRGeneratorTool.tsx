@@ -108,8 +108,8 @@ const QRGeneratorToolEnhanced = () => {
       )}
       
       <ToolLayout
-        title={toolSeoData?.title || "QR Code Generator"}
-        description={toolSeoData?.description || "Generate QR codes from any URL or text instantly with custom colors and sizes"}
+        title="QR Code Generator"
+        description="Generate QR codes from any URL or text instantly with custom colors and sizes"
         category="Image Tools"
         categoryPath="/category/image"
       >

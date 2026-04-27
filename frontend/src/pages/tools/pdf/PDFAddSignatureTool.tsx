@@ -345,8 +345,8 @@ const PDFAddSignatureTool = () => {
         "pdf-add-signature"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "PDF Add Signature"}
-        description={toolSeoData?.description || "Add your signature to PDF documents"}
+        title="PDF Add Signature"
+        description="Add your signature to PDF documents"
         category="PDF Tools"
         categoryPath="/category/pdf"
       >

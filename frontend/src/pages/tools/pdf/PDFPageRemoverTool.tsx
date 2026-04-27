@@ -102,8 +102,8 @@ const PDFPageRemoverTool = () => {
         "pdf-page-remover"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PDF Page Remover"}
-      description={toolSeoData?.description || "Remove specific pages from your PDF document"}
+      title="PDF Page Remover"
+      description="Remove specific pages from your PDF document"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

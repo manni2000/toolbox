@@ -144,8 +144,8 @@ const FaviconGeneratorTool = () => {
         "favicon-generator"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Favicon Generator"}
-        description={toolSeoData?.description || "Generate all favicon sizes from a single image"}
+        title="Favicon Generator"
+        description="Generate all favicon sizes from a single image"
         category="Image Tools"
         categoryPath="/category/image"
       >

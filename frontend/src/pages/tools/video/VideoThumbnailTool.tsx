@@ -115,8 +115,8 @@ const VideoThumbnailTool = () => {
         "video-thumbnail"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Video Thumbnail Generator"}
-      description={toolSeoData?.description || "Extract thumbnail images from video files at specific timestamps"}
+      title="Video Thumbnail Generator"
+      description="Extract thumbnail images from video files at specific timestamps"
       category="Video Tools"
       categoryPath="/category/video"
     >

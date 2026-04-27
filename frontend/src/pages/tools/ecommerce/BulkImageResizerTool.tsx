@@ -166,8 +166,8 @@ const BulkImageResizerTool = () => {
         "bulk-image-resizer"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Bulk Image Resizer"}
-      description={toolSeoData?.description || "Resize multiple images at once for e-commerce"}
+      title="Bulk Image Resizer"
+      description="Resize multiple images at once for e-commerce"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

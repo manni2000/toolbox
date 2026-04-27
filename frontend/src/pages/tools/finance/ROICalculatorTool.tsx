@@ -123,8 +123,8 @@ const ROICalculatorTool = () => {
         "roi-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "ROI Calculator"}
-      description={toolSeoData?.description || "Calculate Return on Investment and annualized returns"}
+      title="ROI Calculator"
+      description="Calculate Return on Investment and annualized returns"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

@@ -82,8 +82,8 @@ export default function EXIFLocationRemoverTool() {
         "exif-location-remover"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "EXIF Location Remover"}
-      description={toolSeoData?.description || "Remove GPS location data from images to protect privacy"}
+      title="EXIF Location Remover"
+      description="Remove GPS location data from images to protect privacy"
       category="Security Tools"
       categoryPath="/category/security"
     >

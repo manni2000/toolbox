@@ -111,8 +111,8 @@ const IPLookupTool = () => {
         "ip-lookup"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "IP Address Lookup"}
-        description={toolSeoData?.description || "Find geographic location, ISP, and other information for any IP address."}
+        title="IP Address Lookup"
+        description="Find geographic location, ISP, and other information for any IP address."
         category="Internet Tools"
         categoryPath="/category/internet"
       >

@@ -152,8 +152,8 @@ const EXIFViewerTool = () => {
         "exif-viewer"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "EXIF Metadata Viewer"}
-        description={toolSeoData?.description || "View camera settings, GPS data, and other metadata from photos"}
+        title="EXIF Metadata Viewer"
+        description="View camera settings, GPS data, and other metadata from photos"
         category="Image Tools"
         categoryPath="/category/image"
       >

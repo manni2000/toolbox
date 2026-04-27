@@ -133,8 +133,8 @@ const ImageCompressorTool = () => {
         "image-compressor"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Image Compressor"}
-        description={toolSeoData?.description || "Compress images while maintaining quality"}
+        title="Image Compressor"
+        description="Compress images while maintaining quality"
         category="Image Tools"
         categoryPath="/category/image"
       >

@@ -39,8 +39,8 @@ const WordCounterTool = () => {
         "word-counter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Word & Character Counter"}
-      description={toolSeoData?.description || "Count words, characters, sentences, and more"}
+      title="Word & Character Counter"
+      description="Count words, characters, sentences, and more"
       category="Text Tools"
       categoryPath="/category/text"
     >

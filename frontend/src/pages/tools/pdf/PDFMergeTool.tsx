@@ -81,8 +81,8 @@ const PDFMergeTool = () => {
         "pdf-merge"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "PDF Merge"}
-        description={toolSeoData?.description || "Combine multiple PDF files into one document"}
+        title="PDF Merge"
+        description="Combine multiple PDF files into one document"
         category="PDF Tools"
         categoryPath="/category/pdf"
       >

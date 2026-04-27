@@ -166,8 +166,8 @@ const WatermarkAdderTool = () => {
         "watermark-adder"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Watermark Adder"}
-      description={toolSeoData?.description || "Add watermarks to protect product images"}
+      title="Watermark Adder"
+      description="Add watermarks to protect product images"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

@@ -73,8 +73,8 @@ const LineSorterTool = () => {
         "line-sorter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Line Sorter"}
-      description={toolSeoData?.description || "Sort lines alphabetically, numerically, by length, or shuffle them"}
+      title="Line Sorter"
+      description="Sort lines alphabetically, numerically, by length, or shuffle them"
       category="Text Tools"
       categoryPath="/category/text"
     >

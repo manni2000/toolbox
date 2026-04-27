@@ -72,8 +72,8 @@ const EcommerceCalculatorTool = () => {
         "ecommerce-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "GST-Margin/EMI Calculator"}
-      description={toolSeoData?.description || "Calculate GST, profit margins, and EMI for your business"}
+      title="GST-Margin/EMI Calculator"
+      description="Calculate GST, profit margins, and EMI for your business"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

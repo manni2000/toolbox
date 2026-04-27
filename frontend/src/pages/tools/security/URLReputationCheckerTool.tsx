@@ -114,8 +114,8 @@ export default function URLReputationCheckerTool() {
         "url-reputation-checker"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "URL Reputation Checker"}
-      description={toolSeoData?.description || "Check website reputation and identify potentially malicious URLs"}
+      title="URL Reputation Checker"
+      description="Check website reputation and identify potentially malicious URLs"
       category="Security Tools"
       categoryPath="/category/security"
     >

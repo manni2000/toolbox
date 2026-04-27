@@ -72,8 +72,8 @@ const JWTDecoderTool = () => {
         "jwt-decoder"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "JWT Decoder"}
-      description={toolSeoData?.description || "Decode and inspect JSON Web Tokens"}
+      title="JWT Decoder"
+      description="Decode and inspect JSON Web Tokens"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

@@ -82,8 +82,8 @@ export default function DataBreachEmailCheckerTool() {
         "data-breach-email-checker"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Data Breach Email Checker"}
-      description={toolSeoData?.description || "Check if your email has been exposed in known data breaches"}
+      title="Data Breach Email Checker"
+      description="Check if your email has been exposed in known data breaches"
       category="Security Tools"
       categoryPath="/category/security"
     >

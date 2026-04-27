@@ -96,8 +96,8 @@ const PercentageCalculatorTool = () => {
         "percentage-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Percentage Calculator"}
-      description={toolSeoData?.description || "Calculate percentages in multiple ways"}
+      title="Percentage Calculator"
+      description="Calculate percentages in multiple ways"
       category="Education Tools"
       categoryPath="/category/education"
     >

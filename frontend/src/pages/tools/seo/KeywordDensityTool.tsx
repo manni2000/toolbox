@@ -115,8 +115,8 @@ const KeywordDensityTool = () => {
         "keyword-density-checker"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Keyword Density Checker"}
-      description={toolSeoData?.description || "Analyze keyword density and optimize your content for better SEO performance"}
+      title="Keyword Density Checker"
+      description="Analyze keyword density and optimize your content for better SEO performance"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

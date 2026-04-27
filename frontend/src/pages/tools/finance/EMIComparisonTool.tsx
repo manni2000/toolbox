@@ -136,8 +136,8 @@ export default function EMIComparisonTool() {
         "emi-comparison"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "EMI Comparison Calculator"}
-      description={toolSeoData?.description || "Compare multiple loan options to find the best EMI deal"}
+      title="EMI Comparison Calculator"
+      description="Compare multiple loan options to find the best EMI deal"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

@@ -143,8 +143,8 @@ const UnitConverterTool = () => {
         "unit-converter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Unit Converter"}
-      description={toolSeoData?.description || "Convert length, weight, temperature and more with precision"}
+      title="Unit Converter"
+      description="Convert length, weight, temperature and more with precision"
       category="Education Tools"
       categoryPath="/category/education"
     >

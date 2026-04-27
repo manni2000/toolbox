@@ -111,8 +111,8 @@ const PNGToWebPConverter = () => {
         "png-to-webp-converter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PNG to WebP Converter"}
-      description={toolSeoData?.description || "Convert PNG images to WebP format for better compression and web performance"}
+      title="PNG to WebP Converter"
+      description="Convert PNG images to WebP format for better compression and web performance"
       category="Image Tools"
       categoryPath="/category/image"
     >

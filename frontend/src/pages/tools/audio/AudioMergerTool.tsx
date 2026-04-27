@@ -264,8 +264,8 @@ const AudioMergerTool = () => {
         "audio-merger"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Audio Merger"}
-      description={toolSeoData?.description || "Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations."}
+      title="Audio Merger"
+      description= "Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations."
       category="Audio Tools"
       categoryPath="/category/audio"
     >

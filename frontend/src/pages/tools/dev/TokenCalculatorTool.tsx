@@ -81,8 +81,8 @@ const TokenCalculatorTool = () => {
         "token-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Token Calculator"}
-      description={toolSeoData?.description || "Estimate token count for LLM APIs"}
+      title="Token Calculator"
+      description="Estimate token count for LLM APIs"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

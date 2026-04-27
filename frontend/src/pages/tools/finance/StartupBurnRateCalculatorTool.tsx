@@ -113,8 +113,8 @@ export default function StartupBurnRateCalculatorTool() {
         "startup-burn-rate-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Startup Burn Rate Calculator"}
-      description={toolSeoData?.description || "Calculate your startup's burn rate and cash runway"}
+      title="Startup Burn Rate Calculator"
+      description="Calculate your startup's burn rate and cash runway"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

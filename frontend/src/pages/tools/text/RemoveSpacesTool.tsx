@@ -42,8 +42,8 @@ const RemoveSpacesTool = () => {
         "remove-spaces"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Remove Extra Spaces"}
-      description={toolSeoData?.description || "Clean up extra whitespace, leading/trailing spaces, and blank lines"}
+      title="Remove Extra Spaces"
+      description="Clean up extra whitespace, leading/trailing spaces, and blank lines"
       category="Text Tools"
       categoryPath="/category/text"
     >

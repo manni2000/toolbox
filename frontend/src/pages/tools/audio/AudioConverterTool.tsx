@@ -149,11 +149,11 @@ const AudioConverterTool = () => {
         "audio-converter"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Audio Format Converter"}
-      description={toolSeoData?.description || "Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats"}
-      category="Audio Tools"
-      categoryPath="/category/audio"
-    >
+        title="Audio Format Converter"
+        description="Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats"
+        category="Audio Tools"
+        categoryPath="/category/audio"
+      >
       <div className="space-y-6">
         {/* Upload Area */}
         {!file && (

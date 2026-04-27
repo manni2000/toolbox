@@ -216,8 +216,8 @@ const UserAgentTool = () => {
         "user-agent-parser"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "User-Agent Parser"}
-      description={toolSeoData?.description || "Parse and analyze browser user-agent strings for detailed information."}
+      title="User-Agent Parser"
+      description="Parse and analyze browser user-agent strings for detailed information."
       category="Internet Tools"
       categoryPath="/category/internet"
     >

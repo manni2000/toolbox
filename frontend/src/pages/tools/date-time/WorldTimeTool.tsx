@@ -198,8 +198,8 @@ const WorldTimeTool = () => {
         "world-time"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "World Time"}
-      description={toolSeoData?.description || "View current time across different time zones worldwide with real-time updates and advanced features"}
+      title="World Time"
+      description="View current time across different time zones worldwide with real-time updates and advanced features"
       category="Date & Time"
       categoryPath="/category/date-time"
     >

@@ -149,8 +149,8 @@ const PDFToWordTool = () => {
         "pdf-to-word"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PDF to Word"}
-      description={toolSeoData?.description || "Convert PDF documents to editable Word files (.docx)"}
+      title="PDF to Word"
+      description="Convert PDF documents to editable Word files (.docx)"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

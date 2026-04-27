@@ -114,8 +114,8 @@ const PDFRotateTool = () => {
         "pdf-rotate"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "PDF Rotate Pages"}
-      description={toolSeoData?.description || "Rotate individual pages or entire PDF documents"}
+      title="PDF Rotate Pages"
+      description="Rotate individual pages or entire PDF documents"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

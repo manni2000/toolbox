@@ -138,8 +138,8 @@ const SSLCheckerTool = () => {
         "ssl-checker"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "SSL Certificate Checker"}
-      description={toolSeoData?.description || "Verify SSL certificate validity, issuer, and expiry date for any domain."}
+      title="SSL Certificate Checker"
+      description="Verify SSL certificate validity, issuer, and expiry date for any domain."
       category="Internet Tools"
       categoryPath="/category/internet"
     >

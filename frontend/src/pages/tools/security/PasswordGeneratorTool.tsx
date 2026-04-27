@@ -107,8 +107,8 @@ function PasswordGeneratorTool() {
         "password-generator"
       )}
       <ToolLayout
-        title={toolSeoData?.title || "Password Generator"}
-        description={toolSeoData?.description || "Generate secure random passwords instantly"}
+        title="Password Generator"
+        description="Generate secure random passwords instantly"
         category="Security Tools"
         categoryPath="/category/security"
       >

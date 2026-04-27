@@ -178,8 +178,8 @@ const RobotsTxtTool = () => {
         "robotstxt-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Robots.txt Generator"}
-      description={toolSeoData?.description || "Generate professional robots.txt files to control search engine crawling"}
+      title="Robots.txt Generator"
+      description="Generate professional robots.txt files to control search engine crawling"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

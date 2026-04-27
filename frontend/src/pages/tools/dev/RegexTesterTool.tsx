@@ -95,8 +95,8 @@ const RegexTesterTool = () => {
         "regex-tester"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Regex Tester"}
-      description={toolSeoData?.description || "Test regular expressions with live matching"}
+      title="Regex Tester"
+      description="Test regular expressions with live matching"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

@@ -138,8 +138,8 @@ export default function StockCAGRCalculatorTool() {
         "stock-cagr-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Stock CAGR Calculator"}
-      description={toolSeoData?.description || "Calculate Compound Annual Growth Rate for your investments"}
+      title="Stock CAGR Calculator"
+      description="Calculate Compound Annual Growth Rate for your investments"
       category="Finance Tools"
       categoryPath="/category/finance"
     >

@@ -87,8 +87,8 @@ export default function TextRedactionTool() {
         "text-redaction"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Text Redaction"}
-      description={toolSeoData?.description || "Remove sensitive information from text documents"}
+      title="Text Redaction"
+      description="Remove sensitive information from text documents"
       category="Security Tools"
       categoryPath="/category/security"
     >

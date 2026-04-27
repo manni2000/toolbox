@@ -284,8 +284,8 @@ const PostmanCollectionTool = () => {
         "postman-collection-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Postman Collection Generator"}
-      description={toolSeoData?.description || "Generate Postman collections for API testing and documentation"}
+      title="Postman Collection Generator"
+      description="Generate Postman collections for API testing and documentation"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

@@ -115,8 +115,8 @@ const HTTPHeaderTool = () => {
         "http-header-checker"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "HTTP Header Checker"}
-      description={toolSeoData?.description || "Check HTTP response headers from any URL"}
+      title="HTTP Header Checker"
+      description="Check HTTP response headers from any URL"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

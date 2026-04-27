@@ -180,8 +180,8 @@ const TechStackDetectorTool = () => {
         "tech-stack-detector"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Website Tech Stack Detector"}
-      description={toolSeoData?.description || "Analyze websites to detect the technology stack, frameworks, and tools being used"}
+      title="Website Tech Stack Detector"
+      description="Analyze websites to detect the technology stack, frameworks, and tools being used"
       category="SEO Tools"
       categoryPath="/category/seo"
     >

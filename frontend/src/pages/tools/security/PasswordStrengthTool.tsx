@@ -93,8 +93,8 @@ const PasswordStrengthTool = () => {
         "password-strength"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Password Strength Checker"}
-      description={toolSeoData?.description || "Analyze how strong your password is"}
+      title="Password Strength Checker"
+      description="Analyze how strong your password is"
       category="Security Tools"
       categoryPath="/category/security"
     >

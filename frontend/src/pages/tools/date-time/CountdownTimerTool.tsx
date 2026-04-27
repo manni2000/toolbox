@@ -82,8 +82,8 @@ const CountdownTimerTool = () => {
         "countdown-timer"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Countdown Timer"}
-      description={toolSeoData?.description || "Create a countdown to any date and time"}
+      title="Countdown Timer"
+      description="Create a countdown to any date and time"
       category="Date & Time"
       categoryPath="/category/date-time"
     >

@@ -93,8 +93,8 @@ const WebsitePingTool = () => {
         "website-ping"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Website Ping Tool"}
-      description={toolSeoData?.description || "Check website availability and response time."}
+      title="Website Ping Tool"
+      description="Check website availability and response time."
       category="Internet Tools"
       categoryPath="/category/internet"
     >

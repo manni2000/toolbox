@@ -123,8 +123,8 @@ const LCMHCFTool = () => {
         "lcm-hcf-calculator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "LCM HCF Calculator Online"}
-      description={toolSeoData?.description || "Calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) of multiple numbers"}
+      title="LCM HCF Calculator Online"
+      description="Calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) of multiple numbers"
       category="Education Tools"
       categoryPath="/category/education"
     >

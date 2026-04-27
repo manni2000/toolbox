@@ -241,8 +241,8 @@ const DockerfileGeneratorTool = () => {
         "dockerfile-generator"
       )}
       <ToolLayout
-      title={toolSeoData?.title || "Dockerfile Generator"}
-      description={toolSeoData?.description || "Generate optimized Dockerfiles for different applications and frameworks"}
+      title="Dockerfile Generator"
+      description="Generate optimized Dockerfiles for different applications and frameworks"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
