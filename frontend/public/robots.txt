@@ -1,6 +1,6 @@
 # Dailytools247 Robots.txt
 # https://www.dailytools247.app
-# Last updated: 2026-04-22
+# Last updated: 2026-04-27
 
 # Default: allow all well-behaved crawlers
 User-agent: *
@@ -21,6 +21,9 @@ Disallow: /api/
 
 # Public API docs (more specific rule overrides the /api/ disallow above)
 Allow: /api/v1/docs
+
+# Block tracking parameters to prevent duplicate indexing
+Disallow: /*?ref=
 
 # AI / LLM crawlers — explicitly permitted
 # Refer to https://www.dailytools247.app/llms.txt
