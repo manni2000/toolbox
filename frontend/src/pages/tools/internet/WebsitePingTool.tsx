@@ -126,6 +126,13 @@ const WebsitePingTool = () => {
             <div>
               <h2 className="text-2xl font-bold">Website Ping Test</h2>
               <p className="mt-2 text-sm text-muted-foreground">Test website availability and response time.</p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">website ping</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">website status</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">server uptime</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">website availability</span>
+              </div>
             </div>
           </div>
         </motion.div>

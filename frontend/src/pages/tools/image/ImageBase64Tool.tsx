@@ -140,6 +140,13 @@ const ImageBase64Tool = () => {
               <p className="mt-2 text-sm text-muted-foreground">
                 Convert images to Base64 strings for embedding in code or data URIs.
               </p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">image to base64</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">base64 converter</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">base64 encoder</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">image encoding</span>
+              </div>
             </div>
           </div>
         </motion.div>

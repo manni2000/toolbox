@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, Calculator, TrendingUp, DollarSign, Target, AlertCircle, Sparkles } from 'lucide-react';
+import { Copy, Check, Calculator, TrendingUp, TrendingDown, DollarSign, Target, AlertCircle, Sparkles } from 'lucide-react';
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -119,6 +119,55 @@ export default function StartupBurnRateCalculatorTool() {
       categoryPath="/category/finance"
     >
       <div className="mx-auto max-w-4xl space-y-8">
+          {/* Enhanced Hero Section */}
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
+            className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+          >
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+            />
+            <div className="relative flex items-start gap-4">
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+                style={{
+                  backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                  boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+                }}
+              >
+                <TrendingDown className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+              </motion.div>
+              <div>
+                <h2 className="text-2xl font-bold">Startup Burn Rate Calculator</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Calculate your startup's burn rate and cash runway.
+                </p>
+                {/* Keyword Tags */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">burn rate</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">cash runway</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">startup metrics</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">burn calculator</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
         {/* Input Section */}
         <div className="rounded-xl border border-border bg-card p-6">
           <h3 className="text-lg font-semibold mb-4">Financial Metrics</h3>

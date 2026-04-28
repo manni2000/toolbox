@@ -113,10 +113,25 @@ const JSONFormatterTool = () => {
               <FileJson className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">JSON Formatter</h2>
+              <h2 className="text-2xl font-bold">JSON Formatter - Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Format, validate, and beautify JSON data with customizable indentation
+                Format, validate, and beautify JSON data with customizable indentation. Perfect for developers debugging APIs and working with JSON.
               </p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                  json formatter
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                  json beautifier
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">
+                  json validator
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">
+                  format json
+                </span>
+              </div>
             </div>
           </div>
         </motion.div>

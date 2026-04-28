@@ -24,11 +24,56 @@ const CategoryPage = () => {
 
   const Icon = category.icon;
 
-  // Define trending tools for each category
+  const getCategoryDescription = () => {
+    const descriptions: Record<string, string> = {
+      "pdf": "Professional PDF tools for editing, converting, merging, and optimizing documents. Free online PDF editor, converter, and organizer tools without watermark.",
+      "image": "Professional image tools for compressing, converting, resizing, and editing images. Free online image editor, converter, and optimizer tools without watermark.",
+      "video": "Professional video tools for converting, trimming, and processing videos. Free online video editor, converter, and processor tools without watermark.",
+      "audio": "Professional audio tools for converting, trimming, and processing audio files. Free online audio editor, converter, and processor tools without watermark.",
+      "text": "Professional text tools for counting, converting, and processing text. Free online text editor, converter, and processor tools without watermark.",
+      "security": "Professional security tools for generating passwords, hashing data, and encryption. Free online security tools, password generator, and encryption tools without watermark.",
+      "finance": "Professional finance tools for calculating GST, EMI, and managing finances. Free online finance calculator, invoice generator, and financial tools without watermark.",
+      "dev": "Professional development tools for formatting JSON, testing regex, and encoding data. Free online developer tools, code formatter, and programming utilities without watermark.",
+      "education": "Professional educational tools for calculations, conversions, and learning. Free online education calculator, converter, and learning tools without watermark.",
+      "internet": "Professional internet tools for IP lookup, DNS checking, and network analysis. Free online network tools, IP checker, and web utilities without watermark.",
+      "seo": "Professional SEO tools for meta tags, keyword analysis, and search optimization. Free online SEO tools, meta generator, and optimization utilities without watermark.",
+      "social": "Professional social media tools for generating hashtags, creating bios, and formatting content. Free online social media tools, hashtag generator, and content utilities without watermark.",
+      "zip": "Professional compression tools for creating ZIP files, extracting archives, and compressing data. Free online compression tools, archive manager, and file utilities without watermark.",
+      "date-time": "Professional date and time tools for calculating dates, managing time, and scheduling. Free online date calculator, time manager, and scheduling tools without watermark.",
+      "govt-legal": "Professional government and legal tools for passport photos, document templates, and signatures. Free online legal tools, document creator, and government utilities without watermark.",
+      "ecommerce": "Professional e-commerce tools for generating barcodes, creating invoices, and managing products. Free online business tools, barcode generator, and seller utilities without watermark."
+    };
+
+    return descriptions[categoryId || ""] || `Free online ${category.name.toLowerCase()} for all your needs. Professional tools without registration or watermark.`;
+  };
+
+  const getCategoryKeywords = () => {
+    const keywords: Record<string, string[]> = {
+      "pdf": ["free pdf editor", "pdf converter", "pdf merger", "pdf compressor", "pdf tools online", "edit pdf free", "convert pdf", "pdf organizer"],
+      "image": ["image compressor", "image converter", "resize image", "crop image", "image editor free", "compress images", "convert images", "image tools"],
+      "video": ["video editor", "video converter", "trim video", "video to audio", "video processing", "edit video free", "video tools", "video editor online"],
+      "audio": ["audio converter", "audio editor", "trim audio", "merge audio", "audio processing", "edit audio free", "audio tools", "audio merger"],
+      "text": ["word counter", "text editor", "case converter", "text tools", "text processing", "edit text free", "text utilities", "writing tools"],
+      "security": ["password generator", "hash calculator", "security tools", "encryption tools", "privacy tools", "security utilities", "online security", "base64 encoder"],
+      "finance": ["gst calculator", "emi calculator", "invoice generator", "finance tools", "business calculator", "tax tools", "currency converter", "financial calculator"],
+      "dev": ["json formatter", "regex tester", "jwt decoder", "url encoder", "developer tools", "programming tools", "web development", "coding utilities"],
+      "education": ["scientific calculator", "unit converter", "percentage calculator", "learning tools", "calculator", "educational utilities", "study tools", "math tools"],
+      "internet": ["ip lookup", "dns checker", "ssl checker", "ping test", "network tools", "web tools", "internet utilities", "network analysis"],
+      "seo": ["meta tags", "keyword analyzer", "robots txt", "page seo", "seo tools", "search optimization", "website seo", "optimization tools"],
+      "social": ["hashtag generator", "bio creator", "caption formatter", "social media tools", "social utilities", "media tools", "content creator", "social marketing"],
+      "zip": ["create zip", "extract zip", "compression zip", "file compression", "zip creator", "archive extractor", "file manager", "compression tools"],
+      "date-time": ["date calculator", "age calculator", "countdown timer", "working days", "time tools", "scheduler", "planning tools", "date utilities"],
+      "govt-legal": ["passport photo", "document creator", "signature maker", "legal tools", "legal utilities", "government forms", "document tools", "legal aid"],
+      "ecommerce": ["barcode generator", "invoice creator", "gst invoice", "business tools", "seller tools", "online store", "e-commerce utilities", "online business tools"]
+    };
+
+    return keywords[categoryId || ""] || ["free online tools", "web utilities", "browser tools", "online applications"];
+  };
+
   const getTrendingTools = () => {
     const trendingMap: Record<string, string[]> = {
-      "pdf": ["pdf-to-word", "pdf-to-image", "pdf-merger", "pdf-compressor"],
-      "image": ["png-to-jpg-converter", "qr-generator", "image-compressor", "background-remover"],
+      "pdf": ["pdf-to-word", "pdf-to-image", "pdf-merge", "pdf-compressor"],
+      "image": ["png-to-jpg-converter", "qr-code-generator", "image-compressor", "background-remover"],
       "video": ["video-to-audio", "video-trim", "video-speed", "video-thumbnail"],
       "audio": ["audio-converter", "speech-to-text", "audio-trimmer", "audio-merger"],
       "text": ["word-counter", "case-converter", "color-converter", "text-diff"],
@@ -36,11 +81,11 @@ const CategoryPage = () => {
       "finance": ["invoice-generator", "gst-calculator", "emi-calculator", "currency-converter"],
       "dev": ["json-formatter", "regex-tester", "jwt-decoder", "url-encoder"],
       "education": ["scientific-calculator", "percentage-calc", "unit-converter", "compound-interest"],
-      "internet": ["ip-lookup", "dns-lookup", "ssl-checker", "website-ping", "website-screenshot"],
-      "seo": ["meta-title-description", "keyword-density", "robots-txt", "page-seo"],
+      "internet": ["ip-lookup", "dns-lookup", "ssl-checker", "ping-test"],
+      "seo": ["meta-title-description-generator", "keyword-density-checker", "robots-txt-generator", "page-seo-analyzer"],
       "social": ["hashtag-generator", "bio-generator", "caption-formatter", "meme-generator"],
       "zip": ["create-zip", "extract-zip", "password-zip", "compression-zip"],
-      "date-time": ["date-difference", "age-calculator", "working-days", "countdown"],
+      "date-time": ["date-difference", "age-calculator", "working-days", "countdown-timer"],
       "govt-legal": ["passport-photo-resizer", "pdf-compressor", "signature-maker", "document-template"],
       "ecommerce": ["shadow-adder", "barcode-generator", "gst-invoice-generator", "ecommerce-calculator"]
     };
@@ -54,9 +99,9 @@ const CategoryPage = () => {
   return (
     <>
       <SEOHelmet
-        title={category.name}
-        description={category.description}
-        keywords={[category.name.toLowerCase(), 'online tools', 'free tools', 'dailytools247']}
+        title={`${category.name} - Free Online Tools Without Watermark`}
+        description={getCategoryDescription()}
+        keywords={getCategoryKeywords()}
         category={category.name}
       />
       <div className="flex min-h-screen flex-col">
@@ -95,6 +140,27 @@ const CategoryPage = () => {
           />
           
           <div className="container relative">
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+              className="text-center max-w-4xl mx-auto mb-12"
+            >
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                {getCategoryDescription()}
+              </p>
+              <div className="flex flex-wrap justify-center gap-2 mt-4">
+                {getCategoryKeywords().slice(0, 6).map((keyword, index) => (
+                  <span 
+                    key={index} 
+                    className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-sans font-medium bg-gray-100 text-gray-800 border border-gray-300 shadow-sm"
+                    style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}
+                  >
+                    {keyword}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
             <motion.div
               variants={fadeInUp}
               initial="hidden"

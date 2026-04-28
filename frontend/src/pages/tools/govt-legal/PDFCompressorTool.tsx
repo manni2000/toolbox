@@ -213,6 +213,13 @@ export default function PDFCompressorTool() {
                 <p className="mt-2 text-sm text-muted-foreground">
                   Reduce PDF file sizes significantly while maintaining quality. Perfect for email attachments and document submissions.
                 </p>
+                {/* Keyword Tags */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">pdf compressor</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">reduce pdf size</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">pdf optimizer</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">compress pdf</span>
+                </div>
               </div>
             </div>
           </motion.div>

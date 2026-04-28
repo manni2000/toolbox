@@ -147,10 +147,25 @@ function PasswordGeneratorTool() {
               <Shield className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Password Generator</h2>
+              <h2 className="text-2xl font-bold">Password Generator - Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Generate secure random passwords with customizable options
+                Generate secure random passwords with customizable options. Perfect for creating strong passwords for accounts and applications.
               </p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                  password generator
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                  strong password generator
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">
+                  random password
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">
+                  secure password
+                </span>
+              </div>
             </div>
           </div>
         </motion.div>

@@ -206,14 +206,27 @@ const WhatsAppStatusTool = () => {
     >
       <canvas ref={canvasRef} className="hidden" />
 
-      <div className="space-y-8">
-        {/* Enhanced Hero Section */}
+      {/* Enhanced Hero Section */}
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        animate="visible"
+        className="relative mb-6 sm:mb-8 overflow-hidden rounded-2xl sm:rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-4 sm:p-6 lg:p-8"
+      >
         <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          animate="visible"
-          className="relative mb-6 sm:mb-8 overflow-hidden rounded-2xl sm:rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-4 sm:p-6 lg:p-8"
-        >
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+          style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+        />
+        <div className="relative flex items-start gap-4">
           <motion.div
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -237,9 +250,10 @@ const WhatsAppStatusTool = () => {
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
 
-        {/* Header Info */}
+      {/* Header Info */}
         <motion.div 
           variants={scaleIn}
           initial="hidden"
@@ -723,9 +737,8 @@ const WhatsAppStatusTool = () => {
           }
         ]} />
       </div>
-      </div>
     </ToolLayout>
-      </>
+    </>
   );
 };
 

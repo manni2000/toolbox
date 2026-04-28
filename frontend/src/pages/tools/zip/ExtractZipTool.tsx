@@ -165,6 +165,13 @@ const ExtractZipTool = () => {
             <div>
               <h2 className="text-2xl font-bold">Extract ZIP</h2>
               <p className="mt-2 text-sm text-muted-foreground">Extract and download files from ZIP archives instantly</p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">extract zip</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">unzip files</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">zip extractor</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">extract archive</span>
+              </div>
             </div>
           </div>
         </motion.div>

@@ -33,36 +33,84 @@ const MarkdownHTMLTool = () => {
         "markdown-html-converter"
       )}
       <ToolLayout
-      title="Markdown → HTML"
-      description="Convert Markdown to HTML"
-      category="Text Tools"
-      categoryPath="/category/text"
-    >
-      <div className="space-y-6">
-        {/* Toggle */}
-        <div className="flex justify-center gap-2">
-          <button
-            onClick={() => setShowPreview(false)}
-            className={`rounded-lg px-6 py-2 text-sm font-medium transition-all ${
-              !showPreview
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-            }`}
+        title="Markdown → HTML"
+        description="Convert Markdown to HTML"
+        category="Text Tools"
+        categoryPath="/category/text"
+      >
+        <div className="mx-auto max-w-4xl space-y-6">
+          {/* Enhanced Hero Section */}
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
+            className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
           >
-            <Code className="mr-2 inline-block h-4 w-4" />
-            HTML Code
-          </button>
-          <button
-            onClick={() => setShowPreview(true)}
-            className={`rounded-lg px-6 py-2 text-sm font-medium transition-all ${
-              showPreview
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-            }`}
-          >
-            Preview
-          </button>
-        </div>
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+            />
+            <div className="relative flex items-start gap-4">
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+                style={{
+                  backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                  boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+                }}
+              >
+                <Code className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+              </motion.div>
+              <div>
+                <h2 className="text-2xl font-bold">Markdown to HTML Converter</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Convert Markdown text to HTML format with syntax highlighting.
+                </p>
+                {/* Keyword Tags */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">markdown converter</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">html generator</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">md to html</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">text markup</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={() => setShowPreview(false)}
+              className={`rounded-lg px-6 py-2 text-sm font-medium transition-all ${
+                !showPreview
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              }`}
+            >
+              <Code className="mr-2 inline-block h-4 w-4" />
+              HTML Code
+            </button>
+            <button
+              onClick={() => setShowPreview(true)}
+              className={`rounded-lg px-6 py-2 text-sm font-medium transition-all ${
+                showPreview
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              }`}
+            >
+              Preview
+            </button>
+          </div>
 
         {/* Input/Output */}
         <div className="grid gap-6 lg:grid-cols-2">

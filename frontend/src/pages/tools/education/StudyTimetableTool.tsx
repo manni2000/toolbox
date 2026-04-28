@@ -89,6 +89,40 @@ const StudyTimetableTool = () => {
       categoryPath="/category/education"
     >
       <div className="mx-auto max-w-4xl space-y-8">
+        {/* Keyword Tags Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gradient-to-br from-muted/50 via-background to-muted/30 rounded-xl border border-border p-6"
+        >
+          <div className="relative flex items-start gap-4">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+              }}
+            >
+              <Calendar className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+            </motion.div>
+            <div>
+              <h2 className="text-2xl font-bold">Study Timetable Generator - Free Online</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Create personalized study schedules with break times for better time management.
+              </p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">study timetable</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">study schedule</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">exam planner</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">study planner</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
         {/* Add Session Form */}
         <div className="rounded-xl border border-border bg-card p-6">
           <h3 className="mb-4 text-lg font-semibold flex items-center gap-2">

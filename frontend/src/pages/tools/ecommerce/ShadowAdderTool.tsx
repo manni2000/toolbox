@@ -198,6 +198,13 @@ const ShadowAdderTool = () => {
               <p className="mt-2 text-sm text-muted-foreground">
                 Add professional drop shadows to product images for e-commerce. Customize blur, offset, opacity, and color for perfect product presentations.
               </p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">shadow adder</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">drop shadow</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">product shadow</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">image shadow effect</span>
+              </div>
             </div>
           </div>
         </motion.div>

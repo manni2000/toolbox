@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, Sparkles, Shield, ArrowRight, TrendingUp,
   Code2, Image, FileText, FileType2, Lock, RefreshCw, Globe, Palette, Scale, ShoppingBag,
+  Eraser, QrCode,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,12 +18,12 @@ const ORBS = [
 ];
 
 const POPULAR_TOOLS = [
-  { icon: Image,     title: "Image Tools",     sub: "Compress, convert, resize and edit images easily",    path: "/category/image" },
-  { icon: FileText,  title: "PDF Tools",       sub: "Merge, split, compress and convert PDF files",         path: "/category/pdf" },
-  { icon: TrendingUp, title: "Education Tools", sub: "Calculators, converters and learning utilities",      path: "/category/education" },
-  { icon: Scale,     title: "Govt Legal Tools", sub: "Passport photos, signatures, document templates",      path: "/category/govt-legal" },
-  { icon: TrendingUp, title: "SEO Tools",       sub: "Meta tags, robots.txt, sitemap, keyword analysis",    path: "/category/seo" },
-  { icon: ShoppingBag, title: "E-commerce Tools", sub: "Barcodes, invoices, calculators, product images",      path: "/category/ecommerce" },
+  { icon: Eraser,    title: "Background Remover", sub: "Remove backgrounds from images automatically",       path: "/background-remover" },
+  { icon: FileType2, title: "PDF to Word",        sub: "Convert PDF files to editable Word documents",       path: "/pdf-to-word" },
+  { icon: Image,     title: "Image Compressor",   sub: "Compress images while maintaining quality",         path: "/image-compressor" },
+  { icon: QrCode,    title: "QR Code Generator",  sub: "Generate QR codes for payments and businesses",     path: "/qr-code-scanner" },
+  { icon: Lock,      title: "Password Generator", sub: "Create strong passwords for security",             path: "/password-generator" },
+  { icon: Code2,     title: "JSON Formatter",     sub: "Format and validate JSON data for developers",     path: "/json-formatter" },
 ];
 
 const STATS = [

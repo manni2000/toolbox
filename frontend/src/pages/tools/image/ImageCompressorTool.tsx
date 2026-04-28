@@ -173,10 +173,25 @@ const ImageCompressorTool = () => {
               <Zap className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Smart Image Compression</h2>
+              <h2 className="text-2xl font-bold">Image Compressor - No Watermark</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Reduce image file sizes by up to 90% while maintaining visual quality. Perfect for web optimization.
+                Reduce image file sizes by up to 90% while maintaining visual quality. Perfect for web optimization without any watermarks.
               </p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                  image compressor no watermark
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                  compress images free
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">
+                  reduce image size
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">
+                  web optimization
+                </span>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -414,6 +429,26 @@ const ImageCompressorTool = () => {
       </div>
 
       <div className="mt-8">
+        {/* SEO Keywords Section */}
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="bg-gray-50 rounded-xl p-6 border border-gray-200"
+        >
+          <h3 className="text-lg font-semibold mb-4 text-center">Image Compression Keywords</h3>
+          <div className="flex flex-wrap justify-center gap-2">
+            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">image compressor no watermark</span>
+            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">compress images online free</span>
+            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">reduce image file size</span>
+            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">image optimizer tool</span>
+            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">web image compression</span>
+            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">image size reducer</span>
+            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">free image compressor</span>
+            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">online image optimizer</span>
+          </div>
+        </motion.div>
+
         {/* FAQ Section */}
         <ToolFAQ faqs={[
           {

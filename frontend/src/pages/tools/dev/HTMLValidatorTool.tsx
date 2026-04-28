@@ -238,6 +238,13 @@ const HTMLValidatorTool = () => {
                 <p className="mt-2 text-sm text-muted-foreground">
                   Validate HTML code for syntax errors, accessibility issues, and best practices
                 </p>
+                {/* Keyword Tags */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">html validator</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">html checker</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">html validation</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">html lint</span>
+                </div>
               </div>
             </div>
           </motion.div>

@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import { Upload, Crop, X, FileText, Sparkles, Scissors } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
-import ModernLoadingSpinner from "@/components/ModernLoadingSpinner";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { PDFDocument } from "pdf-lib";
 import { EnhancedDownload } from "@/components/ui/enhanced-download";
@@ -21,7 +20,6 @@ const CropPDFTool = () => {
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   
-  // Crop settings
   const [marginTop, setMarginTop] = useState(0);
   const [marginBottom, setMarginBottom] = useState(0);
   const [marginLeft, setMarginLeft] = useState(0);
@@ -35,7 +33,6 @@ const CropPDFTool = () => {
     setFile({ file: newFile, name: newFile.name });
     setCroppedUrl(null);
     
-    // Load PDF to get page count
     newFile.arrayBuffer().then(async (buffer) => {
       try {
         const pdf = await PDFDocument.load(buffer);
@@ -69,8 +66,6 @@ const CropPDFTool = () => {
       for (const page of pagesToCrop) {
         const { width, height } = page.getSize();
         
-        // Calculate new crop box (margins are in points, 1 point = 1/72 inch)
-        // Convert margins from pixels to points (assuming 96 DPI for display)
         const dpi = 96;
         const pointsPerPixel = 72 / dpi;
         
@@ -80,12 +75,12 @@ const CropPDFTool = () => {
         const cropBottom = marginBottom * pointsPerPixel;
 
         // Set the crop box
-        page.setCropBox({
-          x: cropLeft,
-          y: cropBottom,
-          width: width - cropLeft - cropRight,
-          height: height - cropTop - cropBottom,
-        });
+        page.setCropBox(
+          cropLeft,
+          cropBottom,
+          width - cropLeft - cropRight,
+          height - cropTop - cropBottom
+        );
       }
 
       const croppedBytes = await pdf.save();
@@ -147,6 +142,13 @@ const CropPDFTool = () => {
               <p className="mt-2 text-sm text-muted-foreground">
                 Remove unwanted margins from PDF pages. Perfect for cleaning up documents, removing headers/footers, and standardizing page sizes.
               </p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">crop pdf</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">pdf cropper</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">trim pdf</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">margin remover</span>
+              </div>
             </div>
           </div>
         </motion.div>

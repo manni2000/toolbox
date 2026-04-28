@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, ArrowUpDown, Sparkles } from "lucide-react";
+import { Copy, Check, ArrowUpDown, Sparkles, Type } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/lib/animations";
 import ToolLayout from "@/components/layout/ToolLayout";
@@ -43,24 +43,69 @@ const CaseConverterTool = () => {
         "case-converter"
       )}
       <ToolLayout
-      title="Case Converter"
-      description="Convert text between different cases"
-      category="Text Tools"
-      categoryPath="/category/text"
-    >
-      <div className="space-y-6">
-        {/* Input */}
-        <div>
-          <label className="mb-2 block text-sm font-medium">Input Text</label>
+        title="Case Converter"
+        description="Convert text between different cases"
+        category="Text Tools"
+        categoryPath="/category/text"
+      >
+        <div className="mx-auto max-w-4xl space-y-6">
+          {/* Enhanced Hero Section */}
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
+            className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-muted/50 via-background to-muted/30 p-6 sm:p-8"
+          >
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl"
+              style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}
+            />
+            <div className="relative flex items-start gap-4">
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl"
+                style={{
+                  backgroundColor: `hsl(${categoryColor} / 0.15)`,
+                  boxShadow: `0 8px 30px hsl(${categoryColor} / 0.3)`,
+                }}
+              >
+                <Type className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
+              </motion.div>
+              <div>
+                <h2 className="text-2xl font-bold">Case Converter Tool</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Convert text between uppercase, lowercase, title case, camelCase, and more formats.
+                </p>
+                {/* Keyword Tags */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">case converter</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">uppercase lowercase</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">camelCase snake_case</span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">text transform</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type or paste your text here..."
             className="input-tool min-h-[120px]"
           />
-        </div>
 
-        {/* Conversions */}
+          {/* Conversions */}
         {input && (
           <div className="grid gap-4 sm:grid-cols-2">
             {conversions.map(({ type, label, convert }) => (
@@ -170,7 +215,7 @@ const CaseConverterTool = () => {
         ]} />
       </div>
     </ToolLayout>
-      </>
+    </>
   );
 };
 

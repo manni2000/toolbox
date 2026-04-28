@@ -144,6 +144,13 @@ const WebPToPNGConverter = () => {
               <p className="mt-2 text-sm text-muted-foreground">
                 Convert modern WebP images to universal PNG format for maximum compatibility.
               </p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">webp to png</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">convert webp to png</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">webp format converter</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">webp image converter</span>
+              </div>
             </div>
           </div>
         </motion.div>
