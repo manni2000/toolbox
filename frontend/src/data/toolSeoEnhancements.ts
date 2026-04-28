@@ -9152,8 +9152,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'ip-lookup': {
     slug: 'ip-lookup',
-    title: 'IP Lookup - Find IP Address Information Online',
-    description: 'Lookup IP address details including location, ISP, and geolocation. Get comprehensive information about any IP address. Perfect for security analysis and geolocation.',
+    title: 'FREE IP Location Lookup - Find IP Address Location Instantly',
+    description: 'Instantly locate any IP address with precise geolocation data. Get ISP info, country, city & more. No signup required. Try our FREE IP lookup tool now!',
     keywords: [
       'ip lookup',
       'ip',
@@ -9808,8 +9808,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'pdf-page-remover': {
     slug: 'pdf-page-remover',
-    title: 'PDF Page Remover - Delete Pages from PDF Online',
-    description: 'Remove specific pages from PDF files instantly. Delete unwanted pages and reorganize PDFs. Perfect for cleaning up documents.',
+    title: 'FREE PDF Page Remover - Delete Pages from PDF Instantly',
+    description: 'Remove unwanted PDF pages in seconds! No software needed. Delete, extract & reorganize PDFs instantly. Try our FREE PDF page remover now!',
     keywords: [
       'pdf page remover',
       'pdf page',

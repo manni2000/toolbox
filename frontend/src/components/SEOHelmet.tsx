@@ -280,6 +280,22 @@ const SEOHelmet = ({
           bestRating: '5',
           worstRating: '1',
           reviewCount: '3'
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'INR',
+          availability: 'https://schema.org/InStock',
+          validFrom: '2024-01-01'
+        },
+        brand: {
+          '@type': 'Brand',
+          name: 'Dailytools247',
+          url: 'https://www.dailytools247.app'
+        },
+        audience: {
+          '@type': 'Audience',
+          audienceType: 'Developers, Designers, Students, Business Users'
         }
       });
     } else if (category && category !== 'Online Tools') {
@@ -333,9 +349,55 @@ const SEOHelmet = ({
           bestRating: '5',
           worstRating: '1',
           reviewCount: '2'
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'INR',
+          availability: 'https://schema.org/InStock',
+          validFrom: '2024-01-01'
+        },
+        brand: {
+          '@type': 'Brand',
+          name: 'Dailytools247',
+          url: 'https://www.dailytools247.app'
         }
       });
     }
+
+    // Add Organization schema for brand authority
+    schemas.push({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Dailytools247',
+      url: 'https://www.dailytools247.app',
+      logo: 'https://www.dailytools247.app/dailytools247.png',
+      description: '130+ Free Online Tools for PDF conversion, image editing, video processing, text formatting, QR codes, password generation, JSON formatting and more.',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        email: 'info@dailytools247.com'
+      },
+      sameAs: [
+        'https://www.dailytools247.app'
+      ]
+    });
+
+    // Add Sitelinks Searchbox schema
+    schemas.push({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Dailytools247',
+      url: 'https://www.dailytools247.app',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: 'https://www.dailytools247.app/?q={search_term_string}'
+        },
+        'query-input': 'required name=search_term_string'
+      }
+    });
 
     return schemas;
   };

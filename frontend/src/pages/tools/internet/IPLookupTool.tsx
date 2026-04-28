@@ -219,12 +219,12 @@ const IPLookupTool = () => {
               {loading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Looking up...
+                  Getting Location Data...
                 </>
               ) : (
                 <>
                   <Search className="h-5 w-5" />
-                  Lookup
+                  🔍 Find IP Location Now
                 </>
               )}
             </motion.button>
