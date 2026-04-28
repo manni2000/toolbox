@@ -212,7 +212,9 @@ export const toolCategories: ToolCategory[] = [
       { id: "postman-collection", name: "Postman Collection Generator", description: "Generate Postman collections for API testing", path: "/postman-collection-generator", isAvailable: true },
       { id: "dockerfile-generator", name: "Dockerfile Generator", description: "Generate optimized Dockerfiles for containerization", path: "/dockerfile-generator", isAvailable: true },
       { id: "curl-axios", name: "cURL to Axios Converter", description: "Convert cURL commands to multiple programming languages", path: "/curl-to-axios-converter", isAvailable: true },
-      { id: "http-status-codes", name: "HTTP Status Code Explainer", description: "Comprehensive guide to HTTP status codes", path: "/http-status-code-explainer", isAvailable: true },    ],
+      { id: "http-status-codes", name: "HTTP Status Code Explainer", description: "Comprehensive guide to HTTP status codes", path: "/http-status-code-explainer", isAvailable: true },
+      { id: "html-validator", name: "HTML Validator", description: "Validate and check HTML code for errors", path: "/html-validator", isAvailable: true },
+      { id: "css-validator", name: "CSS Validator", description: "Validate and check CSS code for errors", path: "/css-validator", isAvailable: true },    ],
   },
   {
     id: "internet",
