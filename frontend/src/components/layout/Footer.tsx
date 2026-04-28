@@ -90,6 +90,7 @@ const Footer = () => {
     { name: "DNS Lookup", path: "/dns-lookup" },
     { name: "SSL Certificate Checker", path: "/ssl-checker" },
     { name: "Website Ping Test", path: "/website-ping" },
+    { name: "Ping Test", path: "/ping-test" },
   ];
 
   const imageTools = [
@@ -152,6 +153,8 @@ const Footer = () => {
     { name: "Dockerfile Generator", path: "/dockerfile-generator" },
     { name: "Curl to Axios Converter", path: "/curl-to-axios-converter" },
     { name: "HTTP Status Code Explainer", path: "/http-status-code-explainer" },
+    { name: "HTML Validator", path: "/html-validator" },
+    { name: "CSS Validator", path: "/css-validator" },
   ];
 
   const educationTools = [

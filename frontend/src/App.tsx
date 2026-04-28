@@ -128,12 +128,15 @@ import PostmanCollectionTool from "./pages/tools/dev/PostmanCollectionTool";
 import DockerfileGeneratorTool from "./pages/tools/dev/DockerfileGeneratorTool";
 import CurlToAxiosTool from "./pages/tools/dev/CurlToAxiosTool";
 import HTTPStatusCodeTool from "./pages/tools/dev/HTTPStatusCodeTool";
+import HTMLValidatorTool from "./pages/tools/dev/HTMLValidatorTool";
+import CSSValidatorTool from "./pages/tools/dev/CSSValidatorTool";
 
 import IPLookupTool from "./pages/tools/internet/IPLookupTool";
 import UserAgentTool from "./pages/tools/internet/UserAgentTool";
 import DNSLookupTool from "./pages/tools/internet/DNSLookupTool";
 import SSLCheckerTool from "./pages/tools/internet/SSLCheckerTool";
 import WebsitePingTool from "./pages/tools/internet/WebsitePingTool";
+import PingTestTool from "./pages/tools/internet/PingTestTool";
 
 import ScientificCalculatorTool from "./pages/tools/education/ScientificCalculatorTool";
 import PercentageCalculatorTool from "./pages/tools/education/PercentageCalculatorTool";
@@ -327,6 +330,8 @@ const AnimatedRoutes = () => {
           <Route path="/dockerfile-generator" element={<DockerfileGeneratorTool />} />
           <Route path="/curl-to-axios-converter" element={<CurlToAxiosTool />} />
           <Route path="/http-status-code-explainer" element={<HTTPStatusCodeTool />} />
+          <Route path="/html-validator" element={<HTMLValidatorTool />} />
+          <Route path="/css-validator" element={<CSSValidatorTool />} />
           
           {/* Internet Tools */}
           <Route path="/ip-lookup" element={<IPLookupTool />} />
@@ -334,6 +339,7 @@ const AnimatedRoutes = () => {
           <Route path="/dns-lookup" element={<DNSLookupTool />} />
           <Route path="/ssl-checker" element={<SSLCheckerTool />} />
           <Route path="/website-ping" element={<WebsitePingTool />} />
+          <Route path="/ping-test" element={<PingTestTool />} />
           <Route path="/website-screenshot" element={<WebsiteScreenshotTool />} />
           
           {/* Education Tools */}
