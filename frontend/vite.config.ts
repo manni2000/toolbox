@@ -34,107 +34,40 @@ export default defineConfig(({ mode }) => ({
     target: 'esnext',
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // React core
-          if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
-            return 'react-vendor';
-          }
-          
-          // Radix UI - split into smaller chunks
-          if (id.includes('@radix-ui')) {
-            if (id.includes('dialog') || id.includes('dropdown') || id.includes('popover')) {
-              return 'ui-dialog';
-            }
-            if (id.includes('select') || id.includes('tabs') || id.includes('navigation')) {
-              return 'ui-navigation';
-            }
-            if (id.includes('toast') || id.includes('alert') || id.includes('label')) {
-              return 'ui-feedback';
-            }
-            return 'ui-base';
-          }
-          
-          // Heavy libraries - lazy load these
-          if (id.includes('pdf-lib') || id.includes('pdfjs-dist') || id.includes('jspdf')) {
-            return 'pdf-vendor';
-          }
-          if (id.includes('recharts')) {
-            return 'chart-vendor';
-          }
-          if (id.includes('@xenova/transformers')) {
-            return 'ai-vendor';
-          }
-          
-          // Utilities
-          if (id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority')) {
-            return 'utils';
-          }
-          
-          // Icons - tree shake
-          if (id.includes('lucide-react')) {
-            return 'icons';
-          }
-          
-          // Forms
-          if (id.includes('react-hook-form') || id.includes('@hookform/resolvers') || id.includes('zod')) {
-            return 'forms';
-          }
-          
-          // Motion/Animation
-          if (id.includes('framer-motion')) {
-            return 'motion';
-          }
-          
-          // File handling
-          if (id.includes('file-saver') || id.includes('jszip')) {
-            return 'files';
-          }
-          
-          // QR codes
-          if (id.includes('qrcode') || id.includes('jsbarcode')) {
-            return 'qr';
-          }
-          
-          // Crypto
-          if (id.includes('crypto-js') || id.includes('uuid')) {
-            return 'crypto';
-          }
-          
-          // Date utilities
-          if (id.includes('date-fns') || id.includes('react-day-picker')) {
-            return 'date';
-          }
-          
-          // DOM manipulation
-          if (id.includes('marked') || id.includes('html2canvas')) {
-            return 'dom';
-          }
-          
-          // TanStack Query
-          if (id.includes('@tanstack/react-query')) {
-            return 'query';
-          }
-          
-          // Node modules that don't fit above
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        },
-        chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
-          return `assets/[name]-[hash].js`;
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-select',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-tooltip',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-label',
+            '@radix-ui/react-progress',
+            '@radix-ui/react-scroll-area',
+            '@radix-ui/react-separator',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-toast',
+          ],
+          'utils': ['clsx', 'tailwind-merge', 'class-variance-authority'],
+          'framer-motion': ['framer-motion'],
+          'tanstack-query': ['@tanstack/react-query'],
+          'pdf-vendor': ['pdf-lib', 'pdfjs-dist', 'jspdf'],
+          'chart-vendor': ['recharts'],
+          'icon-vendor': ['lucide-react'],
+          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          'crypto-vendor': ['crypto-js', 'uuid'],
+          'file-vendor': ['file-saver', 'jszip'],
+          'qr-vendor': ['qrcode', 'jsbarcode'],
+          'date-vendor': ['date-fns'],
+          'dom-vendor': ['marked', 'html2canvas'],
+          'ai-vendor': ['@xenova/transformers'],
         },
       },
     },
-    chunkSizeWarningLimit: 1000, // Lower threshold to catch large chunks
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.log in production
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
-      },
-    },
+    chunkSizeWarningLimit: 3000,
   },
   optimizeDeps: {
     include: ['react', 'react-dom'],
