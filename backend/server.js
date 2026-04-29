@@ -78,10 +78,8 @@ app.use('/api/date-time', require('./routes/datetime'));
 app.use('/api/blog', require('./routes/blog'));
 
 app.use((_req, res, next) => {
-  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-  
-  if (_req.url.endsWith('.html') || _req.url === '/') {
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  if (!_req.url.startsWith('/api')) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
   }
   
   res.setHeader('Last-Modified', new Date().toUTCString());
