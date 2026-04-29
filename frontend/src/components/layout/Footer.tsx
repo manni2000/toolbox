@@ -3,6 +3,20 @@ import { Wrench, Heart } from "lucide-react";
 import { toolCategories } from "@/data/toolCategories";
 
 const Footer = () => {
+  // Category hub links for topical authority - Rule 7: Homepage links to high-value pages only
+  const categoryHubs = [
+    { name: "Free PDF Tools", path: "/category/pdf" },
+    { name: "Online Image Tools", path: "/category/image" },
+    { name: "Finance Calculators", path: "/category/finance" },
+    { name: "Developer Tools", path: "/category/dev" },
+    { name: "Security Tools", path: "/category/security" },
+    { name: "Text Processing Tools", path: "/category/text" },
+    { name: "E-commerce Tools", path: "/category/ecommerce" },
+    { name: "Video Tools", path: "/category/video" },
+    { name: "SEO Tools", path: "/category/seo" },
+    { name: "Date & Time Tools", path: "/category/date-time" },
+  ];
+
   const popularTools = [
     { name: "QR Code Generator", path: "/qr-code-generator" },
     { name: "Image to PDF", path: "/image-to-pdf" },
@@ -486,17 +500,17 @@ const Footer = () => {
 
         </div>
 
-        {/* Categories Row */}
+        {/* Categories Row - Hub Links for Topical Authority */}
         <div className="mt-10 border-t border-border pt-8">
-          <h4 className="mb-4 text-sm font-semibold">All Categories</h4>
-          <div className="flex flex-wrap gap-2">
-            {toolCategories.map(cat => (
-              <Link 
-                key={cat.id}
-                to={`/category/${cat.id}`} 
-                className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground hover:bg-secondary/80"
+          <h4 className="mb-4 text-sm font-semibold">Browse by Category</h4>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            {categoryHubs.map(hub => (
+              <Link
+                key={hub.path}
+                to={hub.path}
+                className="text-sm text-muted-foreground hover:text-foreground hover:text-primary transition-colors"
               >
-                {cat.name}
+                {hub.name}
               </Link>
             ))}
           </div>

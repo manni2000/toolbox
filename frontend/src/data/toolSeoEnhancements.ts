@@ -35,7 +35,7 @@ export const universalToolFaqs: Array<{ question: string; answer: string }> = [
   },
   {
     question: 'Is my data secure and private when using this tool?',
-    answer: 'Absolutely. All processing happens locally in your browser. Your files and data never leave your device and are not stored on any server. We do not collect any personal information.',
+    answer: 'Absolutely. All processing happens locally in your browser. Your files and data never leave your device and are not stored on any server. We do not collect any personal information. For enhanced privacy, consider using our <a href="/secure-notes" className="text-primary hover:underline">secure notes</a> tool for sensitive information.',
   },
   {
     question: 'Do I need to install any software or create an account?',
@@ -112,23 +112,23 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       },
       {
         question: 'Will formatting be preserved?',
-        answer: 'Our tool preserves most formatting, though complex layouts may need minor adjustments in Word.',
+        answer: 'Our tool preserves most formatting, though complex layouts may need minor adjustments in Word. For editing the converted document, you can use our <a href="/word-counter" className="text-primary hover:underline">word counter</a> to check length.',
       },
       {
         question: 'Can I convert scanned PDFs?',
-        answer: 'Scanned PDFs are images. For best results, use our OCR-enabled converter for better text recognition.',
+        answer: 'Scanned PDFs are images. For best results, use our OCR-enabled converter for better text recognition. You can also <a href="/pdf-compressor" className="text-primary hover:underline">compress your PDF</a> first for faster processing.',
       },
       {
         question: 'What is the file size limit?',
-        answer: 'Files up to 50MB are supported. Larger files may take longer but will still convert successfully.',
+        answer: 'Files up to 50MB are supported. Larger files may take longer but will still convert successfully. If your file is too large, try using our <a href="/pdf-compressor" className="text-primary hover:underline">PDF compressor</a> first.',
       },
       {
         question: 'Is my document secure?',
-        answer: 'Yes, conversion happens locally in your browser. Your PDF is never uploaded to any server.',
+        answer: 'Yes, conversion happens locally in your browser. Your PDF is never uploaded to any server. For password-protected PDFs, use our <a href="/pdf-unlock" className="text-primary hover:underline">PDF unlock</a> tool first.',
       },
       {
         question: 'Can I convert multiple PDFs?',
-        answer: 'Yes, you can convert multiple PDFs one at a time. Each conversion is independent and maintains quality.',
+        answer: 'Yes, you can convert multiple PDFs one at a time. Each conversion is independent and maintains quality. After conversion, you can <a href="/pdf-merge" className="text-primary hover:underline">merge PDFs</a> if needed.',
       },
     ],
     howTo: {
