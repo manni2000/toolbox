@@ -32,8 +32,7 @@ export const ToolSEO = ({ toolName, toolDescription, category, keywords = [], to
 
     keywords.slice(0, 5).forEach(k => keywordSet.add(k.toLowerCase()));
 
-    keywordSet.add('dailytools247');
-
+    
     if (toolSlug) {
       const slugParts = toolSlug.split('-').filter(Boolean);
       slugParts.slice(0, 2).forEach(part => keywordSet.add(part.toLowerCase()));

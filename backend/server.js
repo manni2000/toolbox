@@ -77,10 +77,39 @@ app.use('/api/education', require('./routes/education'));
 app.use('/api/date-time', require('./routes/datetime'));
 app.use('/api/blog', require('./routes/blog'));
 
+app.use((_req, res, next) => {
+  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  
+  if (_req.url.endsWith('.html') || _req.url === '/') {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  }
+  
+  res.setHeader('Last-Modified', new Date().toUTCString());
+  
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  
+  next();
+});
+
 if (process.env.NODE_ENV === 'production') {
   const staticPath = path.join(__dirname, 'public');
-  app.use(express.static(staticPath));
+  app.use(express.static(staticPath, {
+    maxAge: '1y',
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, path) => {
+      if (path.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+      }
+    }
+  }));
+  
   app.get('*', (_req, res) => {
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Last-Modified', new Date().toUTCString());
     res.sendFile(path.join(staticPath, 'index.html'));
   });
 } else {

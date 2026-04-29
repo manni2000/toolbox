@@ -59,7 +59,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
   'pdf-to-word': {
     slug: 'pdf-to-word',
     title: 'PDF to Word Converter - Convert PDF to DOCX Online Free',
-    description: 'Convert PDF files to editable Word documents (.DOCX) instantly online. Preserve formatting, maintain layout, and download without installation. Perfect for contracts, resumes, and reports.',
+    description: 'Convert PDF files to editable Word documents (.DOCX) instantly online with 99% accuracy. Preserve formatting, tables, images, and fonts. No installation required. Perfect for contracts, resumes, reports, and academic papers. Process multiple files simultaneously.',
     keywords: [
       'pdf to word converter',
       'convert pdf to word',
@@ -73,20 +73,36 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'edit pdf as word',
       'pdf docx converter',
       'word document from pdf',
+      'pdf to word free',
+      'pdf to word online',
+      'convert pdf to docx',
+      'pdf to word converter online',
+      'pdf to word conversion',
+      'pdf to editable document',
+      'pdf to word tool',
+      'pdf to word software',
     ],
     longTailKeywords: [
-      'convert pdf to word online free',
-      'best pdf to word converter for editable documents',
-      'how to convert pdf to word without losing formatting',
-      'free online pdf to docx converter',
-      'convert scanned pdf to word',
-      'pdf to word converter no signup',
-      'convert pdf to editable word document',
-      'pdf to word converter free no signup',
-      'how to convert pdf to word online',
-      'best pdf to word converter',
-      'fast pdf to word conversion tool',
-      'pdf to docx online free',
+      'convert pdf to word online free without losing formatting',
+      'best pdf to word converter for editable documents 2024',
+      'how to convert pdf to word without losing formatting online',
+      'free online pdf to docx converter with high quality',
+      'convert scanned pdf to word with OCR technology',
+      'pdf to word converter no signup no watermark',
+      'convert pdf to editable word document instantly',
+      'pdf to word converter free no email required',
+      'how to convert pdf to word online step by step',
+      'best pdf to word converter for large files',
+      'fast pdf to word conversion tool with batch processing',
+      'pdf to docx online free with table preservation',
+      'professional pdf to word converter for business documents',
+      'convert password protected pdf to word online',
+      'pdf to word converter that maintains hyperlinks',
+      'academic pdf to word converter for research papers',
+      'legal document pdf to word converter formatting preserved',
+      'pdf to word converter for mobile devices',
+      'cloud based pdf to word conversion service',
+      'pdf to word converter with font preservation',
     ],
     category: 'PDF Tools',
     faqs: [
@@ -335,17 +351,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     description: 'Format, validate, and beautify JSON data. Detect errors, convert to different formats, and export instantly. Essential tool for developers debugging APIs and working with JSON data.',
     keywords: [
       'json formatter',
-      'json',
-      'format json',
-      'json formatter online',
-      'json formatter free',
-      'free json formatter',
-      'json formatter tool',
-      'json formatter app',
-      'json formatter for api debugging',
-      'json formatter for web development',
-      'json formatter for code validation',
       'json validator',
+      'format json online',
     ],
     longTailKeywords: [
       'best json formatter tool for developers',
@@ -1082,17 +1089,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     description: 'Test and debug regular expressions instantly. Supports multiple regex flavors including JavaScript, Python, and PHP. Perfect for validation patterns and text matching.',
     keywords: [
       'regex tester',
-      'regex',
-      'test regex',
-      'regex tester online',
-      'regex tester free',
-      'free regex tester',
-      'regex tester tool',
-      'regex tester app',
-      'regex tester for api debugging',
-      'regex tester for web development',
-      'regex tester for code validation',
       'regular expression tester',
+      'test regex online',
     ],
     longTailKeywords: [
       'best regex tester tool for developers',
@@ -3377,17 +3375,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     description: 'Convert JSON to TypeScript interfaces instantly. Generate type definitions from JSON objects. Perfect for TypeScript developers.',
     keywords: [
       'json to typescript converter',
-      'json to typescript',
-      'convert json to typescript',
-      'json to typescript converter online',
-      'json to typescript converter free',
-      'free json to typescript converter',
-      'json to typescript converter tool',
-      'json to typescript converter app',
-      'json to typescript converter for api debugging',
-      'json to typescript converter for web development',
-      'json to typescript converter for code validation',
       'typescript interface generator',
+      'json to typescript online',
     ],
     longTailKeywords: [
       'best json to typescript converter tool for developers',
@@ -3412,10 +3401,6 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       offers: { price: '0', priceCurrency: 'INR' },
     },
   },
-
-  
-  
-  
   
   'jpg-to-png-converter': {
     slug: 'jpg-to-png-converter',
@@ -11288,6 +11273,62 @@ export const getToolSeoMetadata = (toolSlug: string): ToolSeoMetadata | null => 
 
 export const getAllToolSlugs = (): string[] => {
   return Object.keys(toolSeoEnhancements);
+};
+
+export const generateLongTailVariations = (baseKeywords: string[], toolSlug: string): string[] => {
+  const variations: string[] = [];
+  const qualifiers = [
+    'online free', 'without registration', 'no signup', 'instantly', 'fast', 'secure', 'professional',
+    'high quality', 'best', 'top rated', '2024', 'mobile friendly', 'browser based', 'no watermark',
+    'unlimited', 'batch processing', 'for business', 'for students', 'for developers'
+  ];
+  
+  const intents = [
+    'how to', 'best way to', 'easy way to', 'quick way to', 'step by step', 'tutorial', 'guide',
+    'free tool for', 'online service for', 'web based', 'cloud based', 'automatic', 'instant'
+  ];
+  
+  baseKeywords.forEach(keyword => {
+    qualifiers.forEach(qualifier => {
+      variations.push(`${keyword} ${qualifier}`);
+    });
+    
+    intents.forEach(intent => {
+      if (keyword.includes('converter') || keyword.includes('generator')) {
+        variations.push(`${intent} ${keyword}`);
+      }
+    });
+  });
+  
+  const toolSpecificTerms: Record<string, string[]> = {
+    'pdf-to-word': [
+      'convert pdf to word for editing',
+      'pdf to word for contracts',
+      'academic pdf to word converter',
+      'legal document pdf to word',
+      'resume pdf to word converter'
+    ],
+    'image-compressor': [
+      'compress images for website speed',
+      'reduce image size for SEO',
+      'optimize images for mobile',
+      'compress photos for email',
+      'image compression for social media'
+    ],
+    'qr-code-generator': [
+      'qr code for business cards',
+      'wifi qr code generator',
+      'contact qr code maker',
+      'url qr code for marketing',
+      'product qr code generator'
+    ]
+  };
+  
+  if (toolSpecificTerms[toolSlug]) {
+    variations.push(...toolSpecificTerms[toolSlug]);
+  }
+  
+  return variations.slice(0, 50); 
 };
 
 export const getToolCategory = (slug: string): string | undefined => {

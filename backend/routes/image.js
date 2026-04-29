@@ -430,25 +430,84 @@ router.post('/qr-scanner', upload.single('image'), async (req, res, next) => {
   try {
     if (!req.file) return res.status(400).json({ success: false, error: 'Image file required' });
 
-    const { data, info } = await sharp(req.file.buffer)
-      .resize({ width: 800, withoutEnlargement: true })
-      .ensureAlpha()
-      .raw()
-      .toBuffer({ resolveWithObject: true });
+    // Validate image file type
+    if (!validateImageFile(req.file)) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Invalid image type. Please upload a valid image file (JPEG, PNG, WebP, GIF, AVIF, or TIFF).' 
+      });
+    }
 
-    const code = jsQR(new Uint8ClampedArray(data), info.width, info.height, {
-      inversionAttempts: 'dontInvert',
-    });
+    let data, info;
+    try {
+      const result = await sharp(req.file.buffer)
+        .resize({ width: 800, withoutEnlargement: true })
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+      data = result.data;
+      info = result.info;
+      console.log('[QR Scanner] Image processed successfully:', { width: info.width, height: info.height, dataLength: data.length });
+    } catch (sharpError) {
+      console.error('[QR Scanner] Sharp Error:', sharpError);
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Invalid image file or corrupted image data.' 
+      });
+    }
+
+    // Validate image data before passing to jsQR
+    if (!data || data.length === 0 || !info.width || !info.height) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid image data for QR code scanning.'
+      });
+    }
+
+    // Ensure data length matches expected dimensions
+    const expectedLength = info.width * info.height * 4; // RGBA
+    if (data.length !== expectedLength) {
+      console.log('[QR Scanner] Data length mismatch:', { expected: expectedLength, actual: data.length });
+      // Try to handle the mismatch
+      if (data.length < expectedLength) {
+        return res.status(400).json({
+          success: false,
+          error: 'Image too small for QR code scanning.'
+        });
+      }
+    }
+
+    let code;
+    try {
+      const clampedArray = new Uint8ClampedArray(data);
+      code = jsQR(clampedArray, info.width, info.height, {
+        inversionAttempts: 'dontInvert',
+      });
+      console.log('[QR Scanner] First scan attempt:', code ? 'QR found' : 'No QR found');
+    } catch (jsqrError) {
+      console.error('[QR Scanner] jsQR Error (dontInvert):', jsqrError);
+      // Don't return error here, try the inverted version
+      code = null;
+    }
 
     if (!code) {
-      const codeInvert = jsQR(new Uint8ClampedArray(data), info.width, info.height, {
-        inversionAttempts: 'onlyInvert',
-      });
+      let codeInvert;
+      try {
+        const clampedArray = new Uint8ClampedArray(data);
+        codeInvert = jsQR(clampedArray, info.width, info.height, {
+          inversionAttempts: 'onlyInvert',
+        });
+        console.log('[QR Scanner] Second scan attempt (inverted):', codeInvert ? 'QR found' : 'No QR found');
+      } catch (jsqrError) {
+        console.error('[QR Scanner] jsQR Error (onlyInvert):', jsqrError);
+        // Don't return error here, just return no QR found
+        codeInvert = null;
+      }
 
       if (!codeInvert) {
         return res.json({
           success: false,
-          error: 'No QR code found in image. Make sure the image contains a clear, well-lit QR code.',
+          error: 'No QR code detected in the uploaded image. Please ensure the image contains a clear, well-lit QR code.',
         });
       }
 
@@ -471,7 +530,12 @@ router.post('/qr-scanner', upload.single('image'), async (req, res, next) => {
       },
     });
   } catch (err) {
-    next(err);
+    console.error('[QR Scanner Error]', err);
+    // Don't pass to generic error handler - return specific error
+    return res.status(500).json({ 
+      success: false, 
+      error: 'QR code scanning service is temporarily unavailable. Please try again later.' 
+    });
   }
 });
 

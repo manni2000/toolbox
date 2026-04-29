@@ -57,11 +57,16 @@ const QRScannerTool = () => {
         });
       } else {
         setError(data.error || 'Failed to scan QR code');
-        toast({
-          title: "Scan Failed",
-          description: data.error || "Could not find a QR code in the image.",
-          variant: "destructive",
-        });
+        // Only show red popup for actual errors, not for "no QR code found"
+        if (data.error && data.error.includes('No QR code detected')) {
+          // Don't show toast for no QR code found - the yellow message is enough
+        } else {
+          toast({
+            title: "Scan Failed",
+            description: data.error || "Could not find a QR code in the image.",
+            variant: "destructive",
+          });
+        }
       }
     } catch (error) {
       const errorMessage = "Failed to scan QR code. Please try again.";

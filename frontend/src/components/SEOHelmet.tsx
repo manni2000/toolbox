@@ -1,6 +1,11 @@
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
-import { getToolSeoMetadata } from '@/data/toolSeoEnhancements';
+import { getToolSeoMetadata, generateLongTailVariations } from '@/data/toolSeoEnhancements';
+import { generateSemanticKeywords, generateStructuredData as generateSemanticStructuredData } from '@/data/semanticSEO';
+import { generateInternalLinkingStrategy } from '@/data/topicalAuthority';
+import { generateEEATStructuredData } from '@/data/eeatSignals';
+import { generateUBOTrackingCode, generatePersonalizationEngine } from '@/data/userBehaviorOptimization';
+import { generateCompetitiveAdvantageStrategy } from '@/data/competitiveAnalysis';
 
 interface SEOHelmetProps {
   title?: string;
@@ -46,25 +51,82 @@ const SEOHelmet = ({
   const location = useLocation();
   const currentUrl = url || canonical || `https://www.dailytools247.app${location.pathname}`;
   
-  // Get tool-specific metadata if toolSlug is provided
   const toolMetadata = toolSlug ? getToolSeoMetadata(toolSlug) : null;
   
-  // Use provided props or fallback to tool metadata
   const finalTitle = title || toolMetadata?.title || 'Dailytools247 - 100+ Free Online Tools';
   const finalDescription = description || toolMetadata?.description || '100+ free online tools for PDF conversion, image editing, video processing, text formatting, QR codes, password generation, JSON formatting and more. No signup required.';
-  const finalKeywords = keywords.length > 0 ? keywords : (toolMetadata?.keywords || []);
+  const baseKeywords = [...(toolMetadata?.keywords || []), ...(toolMetadata?.longTailKeywords || [])];
+  const dynamicLongTail = toolSlug ? generateLongTailVariations(toolMetadata?.keywords || [], toolSlug) : [];
+  
+  const semanticKeywords = category ? generateSemanticKeywords(
+    category === 'PDF Tools' ? 'pdf-conversion' : 
+    category === 'Image Tools' ? 'image-optimization' : 
+    category, 
+    baseKeywords
+  ) : [];
+  
+  const finalKeywords = keywords.length > 0 ? keywords : [...baseKeywords, ...dynamicLongTail, ...semanticKeywords];
+  
+  const internalLinks = toolSlug && category ? generateInternalLinkingStrategy(toolSlug, category) : [];
+  
+  const competitiveStrategy = generateCompetitiveAdvantageStrategy();
   const finalCategory = category || toolMetadata?.category || 'Online Tools';
   const finalFaqs = faqs.length > 0 ? faqs : toolMetadata?.faqs || [];
   const finalHowTo = howTo || toolMetadata?.howTo;
   const finalSchema = schema || toolMetadata?.schema;
 
   const siteUrl = 'https://www.dailytools247.app';
-  const fullTitleWithSuffix = finalTitle.includes('Dailytools247') ? finalTitle : `${finalTitle} | Dailytools247`;
+  const fullTitleWithSuffix = finalTitle;
   const finalImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
-  // Generate structured data
   const generateStructuredData = () => {
     const schemas: any[] = [];
+    
+    if (toolSlug || toolMetadata) {
+      const baseSchema = {
+        '@context': 'https://schema.org',
+        '@type': toolMetadata?.schema?.type || 'WebApplication',
+        name: finalTitle,
+        description: finalDescription,
+        url: currentUrl,
+        image: finalImage,
+        applicationCategory: toolMetadata?.schema?.appCategory || 'UtilitiesApplication',
+        operatingSystem: 'Web',
+        browserRequirements: 'Any modern web browser',
+        softwareVersion: '1.0.0',
+        author: {
+          '@type': 'Organization',
+          name: 'Dailytools247',
+          url: 'https://www.dailytools247.app'
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Dailytools247',
+          url: 'https://www.dailytools247.app'
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'INR',
+          availability: 'https://schema.org/InStock'
+        },
+        ...finalSchema
+      };
+      schemas.push(baseSchema);
+    }
+    
+    // Add semantic structured data
+    if (toolSlug && category) {
+      const semanticSchema = generateSemanticStructuredData(toolSlug, 
+        category === 'PDF Tools' ? 'pdf-tools' : 
+        category === 'Image Tools' ? 'image-tools' : 
+        'general'
+      );
+      schemas.push(...semanticSchema['@graph']);
+    }
+    
+    // Add E-E-A-T structured data
+    schemas.push(generateEEATStructuredData());
 
     if (toolSlug || toolMetadata) {
       const baseSchema = {
@@ -99,7 +161,6 @@ const SEOHelmet = ({
       schemas.push(baseSchema);
     }
 
-    // Map category to URL slug for breadcrumbs
     const categorySlugMap: Record<string, string> = {
       'Image Tools': 'image',
       'PDF Tools': 'pdf',
@@ -118,7 +179,6 @@ const SEOHelmet = ({
       'Govt Legal Tools': 'govt-legal',
     };
 
-    // Generate breadcrumb schema
     const generateBreadcrumbSchema = () => {
       const pathSegments = location.pathname.split('/').filter(Boolean);
       const breadcrumbs = [
@@ -130,7 +190,6 @@ const SEOHelmet = ({
         }
       ];
 
-      // Category page: /category/image
       if (pathSegments.length > 0 && pathSegments[0] === 'category' && pathSegments[1]) {
         const categoryName = pathSegments[1].charAt(0).toUpperCase() + pathSegments[1].slice(1) + ' Tools';
         breadcrumbs.push({
@@ -140,7 +199,6 @@ const SEOHelmet = ({
           item: `https://www.dailytools247.app/category/${pathSegments[1]}`
         });
       }
-      // Tool page at root level: /pdf-merge — infer category from metadata
       else if (toolSlug && finalCategory && finalCategory !== 'Online Tools') {
         const categorySlug = categorySlugMap[finalCategory];
         if (categorySlug) {
@@ -200,9 +258,7 @@ const SEOHelmet = ({
       });
     }
 
-    // Add Review schema for rich snippets
     if (toolSlug) {
-      // Generate dynamic rating based on tool slug for variety
       const generateDynamicRating = () => {
         let hash = 0;
         for (let i = 0; i < toolSlug.length; i++) {
@@ -210,8 +266,8 @@ const SEOHelmet = ({
           hash = hash & hash;
         }
         const absHash = Math.abs(hash);
-        const ratingValue = (4.5 + (absHash % 50) / 100).toFixed(1); // 4.5 to 5.0
-        const ratingCount = 1000 + (absHash % 9000); // 1000 to 9999
+        const ratingValue = (4.5 + (absHash % 50) / 100).toFixed(1); 
+        const ratingCount = 1000 + (absHash % 9000); 
         return { ratingValue, ratingCount };
       };
 
@@ -299,7 +355,6 @@ const SEOHelmet = ({
         }
       });
     } else if (category && category !== 'Online Tools') {
-      // Add Product schema for category pages too
       const generateCategoryReviews = () => {
         const sampleReviews = [
           {
@@ -365,7 +420,6 @@ const SEOHelmet = ({
       });
     }
 
-    // Add Organization schema for brand authority
     schemas.push({
       '@context': 'https://schema.org',
       '@type': 'Organization',
@@ -383,7 +437,6 @@ const SEOHelmet = ({
       ]
     });
 
-    // Add Sitelinks Searchbox schema
     schemas.push({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
@@ -406,7 +459,6 @@ const SEOHelmet = ({
 
   return (
     <Helmet>
-      {/* Basic Meta Tags */}
       <title>{fullTitleWithSuffix}</title>
       <meta name="title" content={fullTitleWithSuffix} />
       <meta name="description" content={finalDescription} />
@@ -422,10 +474,8 @@ const SEOHelmet = ({
       <meta name="rating" content="general" />
       <meta name="category" content={finalCategory} />
 
-      {/* Canonical URL */}
       <link rel="canonical" href={currentUrl} />
 
-      {/* Open Graph / Facebook */}
       <meta property="og:type" content={ogType || type} />
       <meta property="og:url" content={currentUrl} />
       <meta property="og:title" content={fullTitleWithSuffix} />
@@ -439,7 +489,6 @@ const SEOHelmet = ({
       <meta property="article:author" content="Dailytools247" />
       <meta property="article:publisher" content="https://www.dailytools247.app/" />
 
-      {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={currentUrl} />
       <meta name="twitter:title" content={fullTitleWithSuffix} />
@@ -449,7 +498,6 @@ const SEOHelmet = ({
       <meta name="twitter:creator" content="@dailytools247" />
       <meta name="twitter:site" content="@dailytools247" />
 
-      {/* Additional Meta Tags */}
       <meta name="theme-color" content="#6366f1" />
       <meta name="msapplication-TileColor" content="#6366f1" />
       <meta name="msapplication-TileImage" content="/dailytools247.png" />
@@ -458,14 +506,12 @@ const SEOHelmet = ({
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="apple-mobile-web-app-title" content="Dailytools247" />
 
-      {/* Structured Data */}
       {structuredData.map((schemaItem, index) => (
         <script key={index} type="application/ld+json">
           {JSON.stringify(schemaItem, null, 2)}
         </script>
       ))}
 
-      {/* Preconnect for performance */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="preconnect" href="https://cdn.jsdelivr.net" />
@@ -474,6 +520,68 @@ const SEOHelmet = ({
       <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
       <link rel="preconnect" href="https://www.google-analytics.com" />
       <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+      {/* EXTREME SEO: User Behavior Optimization Tracking */}
+      <script type="text/javascript">
+        {generateUBOTrackingCode()}
+      </script>
+
+      {/* EXTREME SEO: Personalization Engine */}
+      <script type="text/javascript">
+        {generatePersonalizationEngine()}
+      </script>
+
+      {/* EXTREME SEO: Internal Linking Data */}
+      {internalLinks.length > 0 && (
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Related Tools',
+            description: 'Recommended tools based on your current selection',
+            itemListElement: internalLinks.map((link, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              name: link.anchorText,
+              url: `https://www.dailytools247.app${link.url}`,
+              description: link.context
+            }))
+          })}
+        </script>
+      )}
+
+      {/* EXTREME SEO: Competitive Advantage Signals */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'Dailytools247',
+          description: competitiveStrategy.positioning.primary,
+            knowsAbout: [
+            'PDF Processing',
+            'Image Optimization', 
+            'Document Conversion',
+            'File Compression',
+            'Web Development',
+            'User Experience Design',
+            'Privacy-First Processing',
+            'Client-Side Technology'
+          ],
+            slogan: competitiveStrategy.positioning.secondary,
+            sameAs: [
+            'https://github.com/dailytools247',
+            'https://twitter.com/dailytools247'
+          ],
+            areaServed: 'Worldwide',
+            foundingDate: '2019',
+            contactPoint: {
+            '@type': 'ContactPoint',
+            contactType: 'customer service',
+            email: 'support@dailytools247.com',
+            availableLanguage: ['English']
+          }
+        })}
+      </script>
     </Helmet>
   );
 };
