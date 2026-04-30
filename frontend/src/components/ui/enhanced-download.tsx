@@ -187,7 +187,7 @@ export const EnhancedDownload = ({
           {/* Files display */}
           {viewMode === 'grid' ? (
             /* Grid View - Professional Gallery */
-            <div className={`grid gap-6 ${
+            <div className={`grid gap-4 sm:gap-6 ${
               multipleFiles.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' :
               multipleFiles.length === 2 ? 'grid-cols-1 sm:grid-cols-2 max-w-4xl mx-auto' :
               'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
@@ -196,7 +196,7 @@ export const EnhancedDownload = ({
                 <Card key={index} className="group overflow-hidden hover:shadow-xl transition-all duration-300 border-0 bg-gradient-to-br from-card to-muted/20">
                   {/* Image Preview */}
                   {fileType === 'image' && file.url.startsWith('data:') && (
-                    <div className="relative aspect-[3/4] overflow-hidden bg-muted/30">
+                    <div className="relative aspect-[3/4] sm:aspect-[4/3] overflow-hidden bg-muted/30">
                       <img
                         src={file.url}
                         alt={`Page ${file.page}`}
@@ -205,7 +205,7 @@ export const EnhancedDownload = ({
                       {/* Overlay with page number */}
                       {multipleFiles.length > 1 && (
                         <div className="absolute top-2 left-2">
-                          <Badge className="bg-black/70 text-white border-0">
+                          <Badge className="bg-black/70 text-white border-0 text-xs">
                             Page {file.page}
                           </Badge>
                         </div>
@@ -216,14 +216,14 @@ export const EnhancedDownload = ({
                           size="sm"
                           variant="secondary"
                           onClick={() => setSelectedImage(file.url)}
-                          className="h-8 w-8 p-0"
+                          className="h-8 w-8 p-0 sm:h-10 sm:w-10"
                         >
                           <ZoomIn className="h-4 w-4" />
                         </Button>
                         <Button
                           size="sm"
                           onClick={() => downloadFile(file.url, file.name || 'download')}
-                          className="h-8 w-8 p-0"
+                          className="h-8 w-8 p-0 sm:h-10 sm:w-10"
                         >
                           <Download className="h-4 w-4" />
                         </Button>
@@ -232,14 +232,14 @@ export const EnhancedDownload = ({
                   )}
                   
                   {/* File info */}
-                  <CardContent className="p-4">
-                    <div className="space-y-3">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2 sm:space-y-3">
                       <div>
                         <p className="text-sm font-medium text-foreground truncate" title={file.name}>
                           {file.name}
                         </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline" className="text-xs">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mt-1">
+                          <Badge variant="outline" className="text-xs w-fit">
                             {file.name?.split('.').pop()?.toUpperCase() || 'FILE'}
                           </Badge>
                           {fileSize && (
@@ -265,14 +265,14 @@ export const EnhancedDownload = ({
             </div>
           ) : (
             /* List View - Compact and Professional */
-            <div className="space-y-2 max-w-4xl mx-auto">
+            <div className="space-y-3 max-w-4xl mx-auto">
               {multipleFiles.map((file, index) => (
                 <Card key={index} className="hover:shadow-md transition-all duration-200">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-4">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                       {/* Thumbnail */}
                       {fileType === 'image' && file.url.startsWith('data:') && (
-                        <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-muted/30">
+                        <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-muted/30 mx-auto sm:mx-0">
                           <img
                             src={file.url}
                             alt={`Page ${file.page}`}
@@ -282,25 +282,25 @@ export const EnhancedDownload = ({
                       )}
                       
                       {/* File info */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
+                      <div className="flex-1 min-w-0 text-center sm:text-left">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-2">
                           <p className="text-sm font-medium text-foreground truncate" title={file.name}>
                             {file.name}
                           </p>
                           {multipleFiles.length > 1 && (
-                          <Badge className={getFileColor()} variant="outline">
-                            Page {file.page}
-                          </Badge>
-                        )}
+                            <Badge className={`${getFileColor()} variant="outline text-xs"`}>
+                              Page {file.page}
+                            </Badge>
+                          )}
                         </div>
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <div className="flex items-center justify-center sm:justify-start gap-3 text-xs text-muted-foreground">
                           <span>{fileType.toUpperCase()}</span>
                           {fileSize && <span>{fileSize}</span>}
                         </div>
                       </div>
                       
                       {/* Actions */}
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center justify-center sm:justify-end gap-2">
                         {fileType === 'image' && (
                           <Button
                             variant="outline"
@@ -314,9 +314,10 @@ export const EnhancedDownload = ({
                         <Button
                           size="sm"
                           onClick={() => downloadFile(file.url, file.name || 'download')}
+                          className="flex-1 sm:flex-none px-3 sm:px-4"
                         >
-                          <Download className="h-4 w-4 mr-2" />
-                          Download
+                          <Download className="h-4 w-4 mr-1 sm:mr-2" />
+                          <span className="hidden sm:inline">Download</span>
                         </Button>
                       </div>
                     </div>
