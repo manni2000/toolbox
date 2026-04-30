@@ -323,31 +323,29 @@ export const EnhancedDownload = ({
           )}
         </div>
       ) : (
-        <Card className="max-w-md mx-auto overflow-hidden hover:shadow-lg transition-shadow duration-300">
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                {/* File Icon */}
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${getFileColor()} flex-shrink-0`}>
-                  {getFileIcon()}
-                </div>
-                
-                {/* File Info */}
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-medium text-sm truncate text-foreground">{fileName}</h4>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span>{fileType.toUpperCase()}</span>
-                    {fileSize && <span>•</span>}
-                    {fileSize && <span>{fileSize}</span>}
-                    {pageCount && <span>•</span>}
-                    {pageCount && <span>{pageCount} pages</span>}
-                  </div>
+        <Card className="max-w-md mx-auto overflow-hidden hover:shadow-xl transition-all duration-300 border-0 bg-gradient-to-br from-card to-muted/20">
+          <CardContent className="p-8">
+            <div className="space-y-6 text-center">
+              {/* File Icon */}
+              <div className={`w-20 h-20 rounded-2xl flex items-center justify-center ${getFileColor()} mx-auto shadow-lg`}>
+                {getFileIcon()}
+              </div>
+              
+              {/* File Info */}
+              <div className="space-y-2">
+                <h4 className="font-semibold text-lg text-foreground">{fileName}</h4>
+                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <span className="font-medium">{fileType.toUpperCase()}</span>
+                  {fileSize && <span>•</span>}
+                  {fileSize && <span>{fileSize}</span>}
+                  {pageCount && <span>•</span>}
+                  {pageCount && <span>{pageCount} pages</span>}
                 </div>
               </div>
 
               {/* Image Preview for image types */}
               {fileType === 'image' && data.startsWith('data:') && (
-                <div className="rounded-lg border border-border overflow-hidden bg-muted/30">
+                <div className="rounded-xl border border-border overflow-hidden bg-muted/30 shadow-sm">
                   <img
                     src={data}
                     alt="Preview"
@@ -359,10 +357,10 @@ export const EnhancedDownload = ({
               {/* Action Button */}
               <Button
                 onClick={() => downloadFile(data, fileName)}
-                className="w-full"
-                size="sm"
+                className="w-full h-12 text-base font-medium shadow-lg hover:shadow-xl transition-all duration-200"
+                size="lg"
               >
-                <Download className="h-4 w-4 mr-2" />
+                <Download className="h-5 w-5 mr-2" />
                 Download
               </Button>
             </div>
