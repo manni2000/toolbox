@@ -457,7 +457,8 @@ export const generateUBOTrackingCode = () => {
 export const generatePersonalizationEngine = () => {
   return `
 // EXTREME SEO: Personalization Engine
-class PersonalizationEngine {
+if (typeof PersonalizationEngine === 'undefined') {
+  class PersonalizationEngine {
   constructor() {
     this.userProfile = this.getUserProfile();
     this.behavioralData = this.getBehavioralData();
@@ -540,10 +541,13 @@ class PersonalizationEngine {
     return this.getSimilarTools(patterns);
   }
 }
+}
 
 // Initialize personalization
 document.addEventListener('DOMContentLoaded', () => {
-  new PersonalizationEngine();
+  if (typeof PersonalizationEngine !== 'undefined') {
+    new PersonalizationEngine();
+  }
 });
   `;
 };
