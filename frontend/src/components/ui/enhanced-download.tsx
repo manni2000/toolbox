@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Download, Copy, Share2, Eye, FileText, ImageIcon, Music2, Film, Check } from "lucide-react";
+import { Download, Copy, Share2, Eye, FileText, ImageIcon, Music2, Film, Check, Grid, List, ZoomIn, X } from "lucide-react";
 import { Button } from "./button";
 import { Card, CardContent } from "./card";
 import { Badge } from "./badge";
@@ -29,6 +29,8 @@ export const EnhancedDownload = ({
   multipleFiles
 }: EnhancedDownloadProps) => {
   const [copied, setCopied] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const { toast } = useToast();
 
   const getFileIcon = () => {
@@ -136,6 +138,7 @@ export const EnhancedDownload = ({
     }
   };
 
+  
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -152,37 +155,172 @@ export const EnhancedDownload = ({
       </div>
 
       {multipleFiles && multipleFiles.length > 0 ? (
-        <div className={`grid gap-4 ${multipleFiles.length === 1 ? 'grid-cols-1 justify-center' : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 justify-items-center'} max-w-7xl mx-auto w-full`}>
-          {multipleFiles.map((file, index) => (
-            <Card key={index} className={`overflow-hidden hover:shadow-lg transition-shadow duration-300 ${multipleFiles.length === 1 ? 'max-w-md mx-auto w-full' : ''}`}>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <Badge className={getFileColor()} variant="outline">
-                      {file.page && `Page ${file.page}`}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground font-medium">
-                      {file.name?.split('.').pop()?.toUpperCase() || 'FILE'}
-                    </span>
-                  </div>
-                  <p className="text-sm font-medium truncate text-foreground">{file.name || 'Unknown File'}</p>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span>{fileType.toUpperCase()}</span>
-                    {fileSize && <span>•</span>}
-                    {fileSize && <span>{fileSize}</span>}
-                  </div>
-                  <Button
-                    onClick={() => downloadFile(file.url, file.name || 'download')}
-                    className="w-full"
-                    size="sm"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Download
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="space-y-6">
+          {/* Header with controls */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="text-sm text-muted-foreground">
+              {multipleFiles.length} {multipleFiles.length === 1 ? 'file' : 'files'} converted
+            </div>
+            <div className="flex items-center gap-2">
+              {/* View mode toggle */}
+              <div className="flex items-center border border-border rounded-lg p-1">
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                  className="h-8 w-8 p-0"
+                >
+                  <Grid className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                  className="h-8 w-8 p-0"
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Files display */}
+          {viewMode === 'grid' ? (
+            /* Grid View - Professional Gallery */
+            <div className={`grid gap-6 ${
+              multipleFiles.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' :
+              multipleFiles.length === 2 ? 'grid-cols-1 sm:grid-cols-2 max-w-4xl mx-auto' :
+              'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+            }`}>
+              {multipleFiles.map((file, index) => (
+                <Card key={index} className="group overflow-hidden hover:shadow-xl transition-all duration-300 border-0 bg-gradient-to-br from-card to-muted/20">
+                  {/* Image Preview */}
+                  {fileType === 'image' && file.url.startsWith('data:') && (
+                    <div className="relative aspect-[3/4] overflow-hidden bg-muted/30">
+                      <img
+                        src={file.url}
+                        alt={`Page ${file.page}`}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      {/* Overlay with page number */}
+                      <div className="absolute top-2 left-2">
+                        <Badge className="bg-black/70 text-white border-0">
+                          Page {file.page}
+                        </Badge>
+                      </div>
+                      {/* Quick actions overlay */}
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => setSelectedImage(file.url)}
+                          className="h-8 w-8 p-0"
+                        >
+                          <ZoomIn className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={() => downloadFile(file.url, file.name || 'download')}
+                          className="h-8 w-8 p-0"
+                        >
+                          <Download className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* File info */}
+                  <CardContent className="p-4">
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-sm font-medium text-foreground truncate" title={file.name}>
+                          {file.name}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge variant="outline" className="text-xs">
+                            {file.name?.split('.').pop()?.toUpperCase() || 'FILE'}
+                          </Badge>
+                          {fileSize && (
+                            <span className="text-xs text-muted-foreground">
+                              {fileSize}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <Button
+                        onClick={() => downloadFile(file.url, file.name || 'download')}
+                        className="w-full"
+                        size="sm"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            /* List View - Compact and Professional */
+            <div className="space-y-2 max-w-4xl mx-auto">
+              {multipleFiles.map((file, index) => (
+                <Card key={index} className="hover:shadow-md transition-all duration-200">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-4">
+                      {/* Thumbnail */}
+                      {fileType === 'image' && file.url.startsWith('data:') && (
+                        <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-muted/30">
+                          <img
+                            src={file.url}
+                            alt={`Page ${file.page}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      
+                      {/* File info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="text-sm font-medium text-foreground truncate" title={file.name}>
+                            {file.name}
+                          </p>
+                          <Badge className={getFileColor()} variant="outline">
+                            Page {file.page}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <span>{fileType.toUpperCase()}</span>
+                          {fileSize && <span>{fileSize}</span>}
+                        </div>
+                      </div>
+                      
+                      {/* Actions */}
+                      <div className="flex items-center gap-2">
+                        {fileType === 'image' && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setSelectedImage(file.url)}
+                            className="h-8 w-8 p-0"
+                          >
+                            <ZoomIn className="h-4 w-4" />
+                          </Button>
+                        )}
+                        <Button
+                          size="sm"
+                          onClick={() => downloadFile(file.url, file.name || 'download')}
+                        >
+                          <Download className="h-4 w-4 mr-2" />
+                          Download
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <Card className="max-w-md mx-auto overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -230,6 +368,31 @@ export const EnhancedDownload = ({
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {/* Image Preview Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] w-full">
+            <img
+              src={selectedImage}
+              alt="Preview"
+              className="w-full h-full object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <Button
+              variant="secondary"
+              size="sm"
+              className="absolute top-4 right-4"
+              onClick={() => setSelectedImage(null)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );
