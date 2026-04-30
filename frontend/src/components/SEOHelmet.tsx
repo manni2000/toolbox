@@ -130,13 +130,15 @@ const SEOHelmet = ({
                 '@type': 'QuantitativeValue',
                 minValue: 0,
                 maxValue: 1,
-                unitText: 'Day'
+                unitText: 'Day',
+                unitCode: 'DAY'
               },
               transitTime: {
                 '@type': 'QuantitativeValue',
                 minValue: 0,
                 maxValue: 0,
-                unitText: 'Day'
+                unitText: 'Day',
+                unitCode: 'DAY'
               }
             },
             shippingDestination: {
@@ -211,13 +213,15 @@ const SEOHelmet = ({
                 '@type': 'QuantitativeValue',
                 minValue: 0,
                 maxValue: 1,
-                unitText: 'Day'
+                unitText: 'Day',
+                unitCode: 'DAY'
               },
               transitTime: {
                 '@type': 'QuantitativeValue',
                 minValue: 0,
                 maxValue: 0,
-                unitText: 'Day'
+                unitText: 'Day',
+                unitCode: 'DAY'
               }
             },
             shippingDestination: {
@@ -433,13 +437,15 @@ const SEOHelmet = ({
                 '@type': 'QuantitativeValue',
                 minValue: 0,
                 maxValue: 1,
-                unitText: 'Day'
+                unitText: 'Day',
+                unitCode: 'DAY'
               },
               transitTime: {
                 '@type': 'QuantitativeValue',
                 minValue: 0,
                 maxValue: 0,
-                unitText: 'Day'
+                unitText: 'Day',
+                unitCode: 'DAY'
               }
             },
             shippingDestination: {
@@ -453,10 +459,6 @@ const SEOHelmet = ({
           '@type': 'Brand',
           name: 'Dailytools247',
           url: 'https://www.dailytools247.app'
-        },
-        audience: {
-          '@type': 'EducationalAudience',
-          educationalRole: 'student'
         }
       });
     } else if (category && category !== 'Online Tools') {
@@ -536,13 +538,15 @@ const SEOHelmet = ({
                 '@type': 'QuantitativeValue',
                 minValue: 0,
                 maxValue: 1,
-                unitText: 'Day'
+                unitText: 'Day',
+                unitCode: 'DAY'
               },
               transitTime: {
                 '@type': 'QuantitativeValue',
                 minValue: 0,
                 maxValue: 0,
-                unitText: 'Day'
+                unitText: 'Day',
+                unitCode: 'DAY'
               }
             },
             shippingDestination: {
