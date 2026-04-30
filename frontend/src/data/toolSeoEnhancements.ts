@@ -9179,7 +9179,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'ip-lookup': {
     slug: 'ip-lookup',
-    title: 'FREE IP Location Lookup - Find IP Address Location Instantly',
+    title: 'IP Address Lookup - Find IP Address Location Instantly Online Free',
     description: 'Instantly locate any IP address with precise geolocation data. Get ISP info, country, city & more. No signup required. Try our FREE IP lookup tool now!',
     keywords: [
       'ip lookup',
@@ -9194,6 +9194,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'ip lookup for dns lookup',
       'ip lookup for ssl checks',
       'ip address lookup',
+      'ip location lookup',
     ],
     longTailKeywords: [
       'best ip lookup tool for website testing',

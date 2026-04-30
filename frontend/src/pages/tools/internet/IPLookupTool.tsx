@@ -111,7 +111,7 @@ const IPLookupTool = () => {
         "ip-lookup"
       )}
       <ToolLayout
-      breadcrumbTitle="IP Lookup"
+      breadcrumbTitle="IP Address Lookup"
       category="Internet Tools"
         categoryPath="/category/internet"
       >
@@ -141,7 +141,7 @@ const IPLookupTool = () => {
               <Globe className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">IP Address Lookup</h2>
+              <h2 className="text-2xl font-bold">IP Address Lookup Online Free </h2>
               <p className="mt-2 text-sm text-muted-foreground">Find geographic location, ISP, and other information for any IP address.</p>
               {/* Keyword Tags */}
               <div className="flex flex-wrap gap-2 mt-4">
