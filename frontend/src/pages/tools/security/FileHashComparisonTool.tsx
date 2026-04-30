@@ -97,12 +97,11 @@ export default function FileHashComparisonTool() {
         "file-hash-comparison"
       )}
       <ToolLayout
-      title="File Hash Comparison"
-      description="Compare two files by their hash values to verify integrity"
+      breadcrumbTitle="File Hash Comparison"
       category="Security Tools"
       categoryPath="/category/security"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

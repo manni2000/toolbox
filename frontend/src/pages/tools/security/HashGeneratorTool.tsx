@@ -39,12 +39,11 @@ const HashGeneratorTool = () => {
         "hash-generator"
       )}
       <ToolLayout
-      title="Hash Generator"
-      description="Generate MD5, SHA-1, SHA-256, and more hashes"
+      breadcrumbTitle="Hash Generator"
       category="Security Tools"
       categoryPath="/category/security"
     >
-      <div className="mx-auto max-w-2xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

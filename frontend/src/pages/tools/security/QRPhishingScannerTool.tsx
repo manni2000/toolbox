@@ -98,12 +98,11 @@ export default function QRPhishingScannerTool() {
         "qr-phishing-scanner"
       )}
       <ToolLayout
-      title="QR Phishing Scanner"
-      description="Scan QR codes for phishing and other security risks"
+      breadcrumbTitle="QR Phishing Scanner"
       category="Security Tools"
       categoryPath="/category/security"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

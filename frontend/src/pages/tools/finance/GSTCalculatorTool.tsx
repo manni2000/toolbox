@@ -58,12 +58,11 @@ const GSTCalculatorTool = () => {
         "gst-calculator"
       )}
       <ToolLayout
-      title="GST Calculator"
-      description="Calculate GST, CGST, and SGST amounts with precision"
+      breadcrumbTitle="GST Calculator"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

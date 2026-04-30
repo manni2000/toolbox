@@ -117,12 +117,11 @@ const EMICalculatorTool = () => {
         "emi-calculator"
       )}
       <ToolLayout
-      title="EMI Calculator"
-      description="Calculate loan EMI payments"
+      breadcrumbTitle="EMI Calculator"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

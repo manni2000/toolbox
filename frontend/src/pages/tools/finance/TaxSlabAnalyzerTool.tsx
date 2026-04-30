@@ -109,12 +109,11 @@ export default function TaxSlabAnalyzerTool() {
         "tax-slab-analyzer"
       )}
       <ToolLayout
-      title="Tax Slab Analyzer"
-      description="Calculate your tax liability under different tax regimes"
+      breadcrumbTitle="Tax Slab Analyzer"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

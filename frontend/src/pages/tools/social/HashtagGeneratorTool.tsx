@@ -68,12 +68,11 @@ const HashtagGeneratorTool = () => {
         "hashtag-generator"
       )}
       <ToolLayout
-      title="Hashtag Generator"
-      description="Generate relevant hashtags for social media engagement"
+      breadcrumbTitle="Hashtag Generator"
       category="Social Tools"
       categoryPath="/category/social"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

@@ -33,12 +33,11 @@ const MarkdownHTMLTool = () => {
         "markdown-html-converter"
       )}
       <ToolLayout
-        title="Markdown → HTML"
-        description="Convert Markdown to HTML"
+      breadcrumbTitle="Markdown to HTML"
         category="Text Tools"
         categoryPath="/category/text"
       >
-        <div className="mx-auto max-w-4xl space-y-6">
+        <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

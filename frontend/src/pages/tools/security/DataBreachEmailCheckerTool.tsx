@@ -82,12 +82,11 @@ export default function DataBreachEmailCheckerTool() {
         "data-breach-email-checker"
       )}
       <ToolLayout
-      title="Data Breach Email Checker"
-      description="Check if your email has been exposed in known data breaches"
+      breadcrumbTitle="Data Breach Email Checker"
       category="Security Tools"
       categoryPath="/category/security"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

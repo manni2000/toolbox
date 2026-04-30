@@ -345,9 +345,8 @@ const PDFAddSignatureTool = () => {
         "pdf-add-signature"
       )}
       <ToolLayout
-        title="PDF Add Signature"
-        description="Add your signature to PDF documents"
-        category="PDF Tools"
+      breadcrumbTitle="Add Signature to PDF"
+      category="PDF Tools"
         categoryPath="/category/pdf"
       >
         <div className="space-y-6">

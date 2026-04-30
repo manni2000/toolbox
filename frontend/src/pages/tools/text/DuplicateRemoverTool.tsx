@@ -49,12 +49,11 @@ const DuplicateRemoverTool = () => {
         "duplicate-remover"
       )}
       <ToolLayout
-        title="Duplicate Line Remover"
-        description="Remove duplicate lines from your text while preserving order"
-        category="Text Tools"
+      breadcrumbTitle="Duplicate Remover"
+      category="Text Tools"
         categoryPath="/category/text"
       >
-        <div className="mx-auto max-w-4xl space-y-6">
+        <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

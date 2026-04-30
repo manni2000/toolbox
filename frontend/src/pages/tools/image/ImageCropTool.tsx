@@ -127,8 +127,7 @@ const ImageCropTool = () => {
         "image-crop"
       )}
       <ToolLayout
-      title="Image Crop Tool"
-      description="Crop images with custom dimensions or preset aspect ratios"
+      breadcrumbTitle="Image Crop Tool"
       category="Image Tools"
       categoryPath="/category/image"
     >

@@ -142,8 +142,7 @@ const HTMLToPDFTool = () => {
         "html-to-pdf"
       )}
       <ToolLayout
-      title="HTML to PDF"
-      description="Convert HTML content to PDF documents"
+      breadcrumbTitle="HTML to PDF"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -182,7 +181,7 @@ const HTMLToPDFTool = () => {
               <Code2 className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">HTML to PDF Converter - Free Online</h2>
+              <h2 className="text-2xl font-bold">HTML to PDF Converter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Convert HTML content to PDF documents. Transform web pages, HTML files, or code into PDF format.
               </p>

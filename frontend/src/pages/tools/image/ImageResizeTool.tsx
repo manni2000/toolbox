@@ -172,8 +172,7 @@ const ImageResizeTool = () => {
         "image-resize"
       )}
       <ToolLayout
-      title="Image Resize"
-      description="Resize images to any custom dimension or use preset sizes"
+      breadcrumbTitle="Image Resize"
       category="Image Tools"
       categoryPath="/category/image"
     >

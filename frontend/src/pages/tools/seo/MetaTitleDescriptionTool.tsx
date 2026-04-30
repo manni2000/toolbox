@@ -78,12 +78,11 @@ const MetaTitleDescriptionTool = () => {
         "meta-title-description-generator"
       )}
       <ToolLayout
-      title="Meta Title & Description Generator"
-      description="Generate SEO-optimized meta titles and descriptions for better search engine rankings"
+      breadcrumbTitle="Meta Title & Description"
       category="SEO Tools"
       categoryPath="/category/seo"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

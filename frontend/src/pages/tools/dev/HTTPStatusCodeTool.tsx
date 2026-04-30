@@ -278,12 +278,11 @@ const HTTPStatusCodeTool = () => {
         "http-status-code-explainer"
       )}
       <ToolLayout
-      title="HTTP Status Code Explainer"
-      description="Comprehensive guide to HTTP status codes with meanings, causes, and solutions"
+      breadcrumbTitle="HTTP Status Codes"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

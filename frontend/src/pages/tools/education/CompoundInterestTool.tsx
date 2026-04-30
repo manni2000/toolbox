@@ -73,12 +73,11 @@ const CompoundInterestTool = () => {
         "compound-interest-calculator"
       )}
       <ToolLayout
-      title="Compound Interest Calculator"
-      description="Calculate compound interest with different compounding frequencies"
+      breadcrumbTitle="Compound Interest Calculator"
       category="Education Tools"
       categoryPath="/category/education"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

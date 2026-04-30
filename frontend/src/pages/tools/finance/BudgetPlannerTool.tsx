@@ -171,12 +171,11 @@ export default function BudgetPlannerTool() {
         "budget-planner"
       )}
       <ToolLayout
-      title="Budget Planner"
-      description="Create and analyze your monthly budget for better financial planning"
+      breadcrumbTitle="Budget Planner"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
         {/* Keyword Tags Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -197,7 +196,7 @@ export default function BudgetPlannerTool() {
               <TrendingUp className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Budget Planner - Free Online</h2>
+              <h2 className="text-2xl font-bold">Budget Planner Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Create and analyze your monthly budget for better financial planning.
               </p>

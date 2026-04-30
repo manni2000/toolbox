@@ -182,8 +182,7 @@ const PDFToImageTool = () => {
         "pdf-to-image"
       )}
       <ToolLayout
-      title="PDF to Images"
-      description="Convert PDF pages to image files"
+      breadcrumbTitle="PDF to Image"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

@@ -61,12 +61,11 @@ const SimpleInterestTool = () => {
         "simple-interest-calculator"
       )}
       <ToolLayout
-      title="Simple Interest Calculator"
-      description="Calculate simple interest on principal amount"
+      breadcrumbTitle="Simple Interest Calculator"
       category="Education Tools"
       categoryPath="/category/education"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

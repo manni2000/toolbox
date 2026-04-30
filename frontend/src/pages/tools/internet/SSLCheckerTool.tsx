@@ -138,8 +138,7 @@ const SSLCheckerTool = () => {
         "ssl-checker"
       )}
       <ToolLayout
-      title="SSL Certificate Checker"
-      description="Verify SSL certificate validity, issuer, and expiry date for any domain."
+      breadcrumbTitle="SSL Checker"
       category="Internet Tools"
       categoryPath="/category/internet"
     >

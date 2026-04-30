@@ -114,8 +114,7 @@ const PDFRotateTool = () => {
         "pdf-rotate"
       )}
       <ToolLayout
-      title="PDF Rotate Pages"
-      description="Rotate individual pages or entire PDF documents"
+      breadcrumbTitle="PDF Rotate"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -140,7 +139,7 @@ const PDFRotateTool = () => {
               <RotateCw className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">PDF Rotate Pages - Free Online</h2>
+              <h2 className="text-2xl font-bold">PDF Rotate Pages Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Rotate individual pages or entire PDF documents. Fix upside-down pages and adjust orientation.
               </p>

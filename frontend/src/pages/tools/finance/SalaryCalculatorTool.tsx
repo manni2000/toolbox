@@ -83,12 +83,11 @@ const SalaryCalculatorTool = () => {
         "salary-calculator"
       )}
       <ToolLayout
-      title="Salary Calculator"
-      description="Convert salary between hourly, daily, weekly, monthly, and yearly"
+      breadcrumbTitle="Salary Calculator"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

@@ -208,10 +208,7 @@ const PingTestTool = () => {
         toolSeoData?.description || "Test network connectivity and latency to any host or IP address",
         "ping-test"
       )}
-      <ToolLayout
-        title="Ping Test"
-        description="Test network connectivity and latency to any host or IP address"
-        category="Internet Tools"
+      <ToolLayout        category="Internet Tools"
         categoryPath="/category/internet"
       >
         <div className="space-y-6">
@@ -377,27 +374,19 @@ const PingTestTool = () => {
               className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
             >
               <StatCard
-                icon={<Activity className="h-5 w-5" />}
-                title="Packets Sent"
-                value={stats.total.toString()}
+                icon={<Activity className="h-5 w-5" />}                value={stats.total.toString()}
                 color="blue"
               />
               <StatCard
-                icon={<CheckCircle className="h-5 w-5" />}
-                title="Success Rate"
-                value={`${(100 - stats.packetLoss).toFixed(1)}%`}
+                icon={<CheckCircle className="h-5 w-5" />}                value={`${(100 - stats.packetLoss).toFixed(1)}%`}
                 color="green"
               />
               <StatCard
-                icon={<Clock className="h-5 w-5" />}
-                title="Avg Latency"
-                value={`${stats.avgTime.toFixed(1)}ms`}
+                icon={<Clock className="h-5 w-5" />}                value={`${stats.avgTime.toFixed(1)}ms`}
                 color="amber"
               />
               <StatCard
-                icon={<BarChart3 className="h-5 w-5" />}
-                title="Packet Loss"
-                value={`${stats.packetLoss.toFixed(1)}%`}
+                icon={<BarChart3 className="h-5 w-5" />}                value={`${stats.packetLoss.toFixed(1)}%`}
                 color="red"
               />
             </motion.div>

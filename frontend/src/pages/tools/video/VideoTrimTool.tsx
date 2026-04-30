@@ -124,8 +124,7 @@ const VideoTrimTool = () => {
         "video-trim"
       )}
       <ToolLayout
-      title="Video Trim Tool"
-      description="Cut and trim video clips to specific timestamps"
+      breadcrumbTitle="Video Trim"
       category="Video Tools"
       categoryPath="/category/video"
     >
@@ -150,7 +149,7 @@ const VideoTrimTool = () => {
               <Scissors className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Video Trim Tool - Free Online</h2>
+              <h2 className="text-2xl font-bold">Video Trim Tool Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Cut and trim video clips to specific timestamps. Remove unwanted parts from your videos.
               </p>

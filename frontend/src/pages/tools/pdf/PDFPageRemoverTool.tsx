@@ -102,9 +102,8 @@ const PDFPageRemoverTool = () => {
         "pdf-page-remover"
       )}
       <ToolLayout
-        title="PDF Page Remover"
-        description="Remove specific pages from your PDF document"
-        category="PDF Tools"
+      breadcrumbTitle="PDF Page Remover"
+      category="PDF Tools"
         categoryPath="/category/pdf"
       >
       <div className="space-y-6">
@@ -128,7 +127,7 @@ const PDFPageRemoverTool = () => {
               <Trash2 className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">PDF Page Remover - Free Online</h2>
+              <h2 className="text-2xl font-bold">PDF Page Remover Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Remove specific pages from your PDF document. Delete unwanted pages instantly with preview.
               </p>

@@ -93,12 +93,11 @@ const PasswordStrengthTool = () => {
         "password-strength"
       )}
       <ToolLayout
-      title="Password Strength Checker"
-      description="Analyze how strong your password is"
+      breadcrumbTitle="Password Strength"
       category="Security Tools"
       categoryPath="/category/security"
     >
-      <div className="mx-auto max-w-xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

@@ -202,8 +202,7 @@ const AudioTrimmerTool = () => {
         "audio-trimmer"
       )}
       <ToolLayout
-      title="Audio Trimmer"
-      description="Cut and trim audio files. Set start and end points, preview before download."
+      breadcrumbTitle="Audio Trimmer"
       category="Audio Tools"
       categoryPath="/category/audio"
     >
@@ -228,7 +227,7 @@ const AudioTrimmerTool = () => {
               <Scissors className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Audio Trimmer - Free Online</h2>
+              <h2 className="text-2xl font-bold">Audio Trimmer Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Cut and trim audio files. Set start and end points, preview before download.
               </p>

@@ -3659,7 +3659,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'about': {
     slug: 'about',
-    title: 'About Dailytools247 - Free Online Tools Platform',
+    title: 'About Dailytools247 Free Online Tools Platform',
     description: 'Learn about Dailytools247 - your trusted platform for 100+ free online tools. Discover our mission, features, and commitment to privacy.',
     keywords: [
       'about dailytools247',
@@ -9045,7 +9045,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
       'fast and secure whatsapp status generator',
       'free online whatsapp status generator for social media',
     ],
-    category: 'Image Tools',
+    category: 'Social Media Tools',
     faqs: [
       {
         question: 'What image size is generated?',
@@ -9089,7 +9089,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     relatedTools: ['image-compressor', 'image-resize', 'qr-code-generator'],
     schema: {
       type: 'SoftwareApplication',
-      appCategory: 'Image Editor',
+      appCategory: 'Social Media Tool',
       operatingSystem: 'Web',
       offers: { price: '0', priceCurrency: 'INR' },
     },
@@ -9594,6 +9594,8 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
     keywords: [
       'pdf to image converter',
       'pdf to image',
+      'pdf to png',
+      'pdf to jpg',
       'convert pdf to image',
       'pdf to image converter online',
       'pdf to image converter free',

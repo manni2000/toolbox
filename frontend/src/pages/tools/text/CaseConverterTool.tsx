@@ -43,12 +43,11 @@ const CaseConverterTool = () => {
         "case-converter"
       )}
       <ToolLayout
-        title="Case Converter"
-        description="Convert text between different cases"
+        breadcrumbTitle="Case Converter"
         category="Text Tools"
         categoryPath="/category/text"
       >
-        <div className="mx-auto max-w-4xl space-y-6">
+        <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

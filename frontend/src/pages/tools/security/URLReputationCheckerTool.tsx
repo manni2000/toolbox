@@ -114,12 +114,11 @@ export default function URLReputationCheckerTool() {
         "url-reputation-checker"
       )}
       <ToolLayout
-      title="URL Reputation Checker"
-      description="Check website reputation and identify potentially malicious URLs"
+      breadcrumbTitle="URL Reputation Checker"
       category="Security Tools"
       categoryPath="/category/security"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

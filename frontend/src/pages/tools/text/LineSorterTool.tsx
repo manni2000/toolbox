@@ -73,12 +73,11 @@ const LineSorterTool = () => {
         "line-sorter"
       )}
       <ToolLayout
-        title="Line Sorter"
-        description="Sort lines alphabetically, numerically, by length, or shuffle them"
-        category="Text Tools"
+      breadcrumbTitle="Line Sorter"
+      category="Text Tools"
         categoryPath="/category/text"
       >
-        <div className="mx-auto max-w-4xl space-y-6">
+        <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

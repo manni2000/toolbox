@@ -95,8 +95,7 @@ const RegexTesterTool = () => {
         "regex-tester"
       )}
       <ToolLayout
-      title="Regex Tester"
-      description="Test regular expressions with live matching"
+      breadcrumbTitle="Regex Tester"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

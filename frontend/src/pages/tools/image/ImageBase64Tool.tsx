@@ -106,9 +106,8 @@ const ImageBase64Tool = () => {
         "image-base64"
       )}
       <ToolLayout
-        title="Image ↔ Base64 Converter"
-        description="Convert images to Base64 strings and vice versa"
-        category="Image Tools"
+      breadcrumbTitle="Image Base64 Converter"
+      category="Image Tools"
         categoryPath="/category/image"
       >
       <div className="space-y-6">

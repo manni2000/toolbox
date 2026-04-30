@@ -102,12 +102,11 @@ export default function PasswordStrengthExplainerTool() {
         "password-strength-explainer"
       )}
       <ToolLayout
-      title="Password Strength Explainer"
-      description="Analyze password strength with detailed feedback and suggestions"
+      breadcrumbTitle="Password Strength Explainer"
       category="Security Tools"
       categoryPath="/category/security"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

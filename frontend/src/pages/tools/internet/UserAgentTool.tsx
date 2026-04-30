@@ -216,8 +216,7 @@ const UserAgentTool = () => {
         "user-agent-parser"
       )}
       <ToolLayout
-      title="User-Agent Parser"
-      description="Parse and analyze browser user-agent strings for detailed information."
+      breadcrumbTitle="User Agent Parser"
       category="Internet Tools"
       categoryPath="/category/internet"
     >

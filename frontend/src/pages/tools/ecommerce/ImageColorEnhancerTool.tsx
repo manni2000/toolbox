@@ -130,8 +130,7 @@ const ImageColorEnhancerTool = () => {
         "image-color-enhancer"
       )}
       <ToolLayout
-      title="Image Color Enhancer"
-      description="Enhance colors in product photos"
+      breadcrumbTitle="Image Color Enhancer"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

@@ -81,10 +81,9 @@ const PDFMergeTool = () => {
         "pdf-merge"
       )}
       <ToolLayout
-        title="PDF Merge"
-        description="Combine multiple PDF files into one document"
-        category="PDF Tools"
-        categoryPath="/category/pdf"
+      breadcrumbTitle="PDF Merge"
+      category="PDF Tools"
+      categoryPath="/category/pdf"
       >
       <div className="space-y-6">
         {/* Enhanced Hero Section */}

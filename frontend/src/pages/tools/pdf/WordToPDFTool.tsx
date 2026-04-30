@@ -105,8 +105,7 @@ const WordToPDFTool = () => {
         "word-to-pdf"
       )}
       <ToolLayout
-      title="Word to PDF"
-      description="Convert Word documents to PDF"
+      breadcrumbTitle="Word to PDF"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -131,7 +130,7 @@ const WordToPDFTool = () => {
               <FileText className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Word to PDF Converter - Free Online</h2>
+              <h2 className="text-2xl font-bold">Word to PDF Converter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Convert Word documents to PDF. Transform your DOCX files into universally compatible PDF format.
               </p>

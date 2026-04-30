@@ -108,10 +108,9 @@ const QRGeneratorToolEnhanced = () => {
       )}
       
       <ToolLayout
-        title="QR Code Generator"
-        description="Generate QR codes from any URL or text instantly with custom colors and sizes"
-        category="Image Tools"
-        categoryPath="/category/image"
+      breadcrumbTitle="QR Code Generator"
+      category="Image Tools"
+      categoryPath="/category/image"
       >
         {/* Keyword Tags Section */}
         <motion.div
@@ -133,7 +132,7 @@ const QRGeneratorToolEnhanced = () => {
               <Zap className="h-7 w-7" style={{ color: `hsl(173 80% 40%)` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">QR Code Generator - Free Online</h2>
+              <h2 className="text-2xl font-bold">QR Code Generator Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Generate custom QR codes from URLs, text, or contact info. Perfect for marketing, packaging, and digital campaigns.
               </p>

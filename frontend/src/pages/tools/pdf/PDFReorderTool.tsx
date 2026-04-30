@@ -91,9 +91,8 @@ const PDFReorderTool = () => {
         "pdf-reorder"
       )}
       <ToolLayout
-        title="PDF Reorder Pages"
-        description="Reorder pages in your PDF document"
-        category="PDF Tools"
+      breadcrumbTitle="PDF Reorder"
+      category="PDF Tools"
         categoryPath="/category/pdf"
       >
       <div className="space-y-6">
@@ -146,9 +145,7 @@ const PDFReorderTool = () => {
             onDrop={handleDrop}
             onClick={() => inputRef.current?.click()}
             onFileSelect={(selectedFile) => handleFile(selectedFile)}
-            multiple={false}
-            title="Drop PDF file here or click to browse"
-            subtitle="Select a PDF file to reorder its pages (up to 50MB)"
+            multiple={false}            subtitle="Select a PDF file to reorder its pages (up to 50MB)"
           />
         )}
 
@@ -182,9 +179,7 @@ const PDFReorderTool = () => {
                     {position > 0 && (
                       <button
                         onClick={() => movePage(position, position - 1)}
-                        className="rounded p-1 hover:bg-muted"
-                        title="Move up"
-                        aria-label="Move page up"
+                        className="rounded p-1 hover:bg-muted"                        aria-label="Move page up"
                       >
                         ↑
                       </button>
@@ -192,9 +187,7 @@ const PDFReorderTool = () => {
                     {position < pageOrder.length - 1 && (
                       <button
                         onClick={() => movePage(position, position + 1)}
-                        className="rounded p-1 hover:bg-muted"
-                        title="Move down"
-                        aria-label="Move page down"
+                        className="rounded p-1 hover:bg-muted"                        aria-label="Move page down"
                       >
                         ↓
                       </button>
@@ -225,10 +218,7 @@ const PDFReorderTool = () => {
             <EnhancedDownload
               data={reorderedUrl}
               fileName={file ? `${file.name.replace(/\.[^/.]+$/, "")}-reordered.pdf` : "reordered.pdf"}
-              fileType="pdf"
-              title="PDF Pages Reordered"
-              description="Your PDF pages have been reordered successfully"
-              fileSize={file ? `${(file.file.size / 1024 / 1024).toFixed(2)} MB` : "Unknown"}
+              fileType="pdf"              fileSize={file ? `${(file.file.size / 1024 / 1024).toFixed(2)} MB` : "Unknown"}
             />
           </div>
         )}

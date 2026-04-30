@@ -158,12 +158,11 @@ export default function SalaryBreakupGeneratorTool() {
         "salary-breakup-generator"
       )}
       <ToolLayout
-      title="Salary Breakup Generator"
-      description="Generate detailed salary breakup with deductions and take-home pay"
+      breadcrumbTitle="Salary Breakup Generator"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

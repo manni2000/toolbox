@@ -6,15 +6,16 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 interface ToolLayoutProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  breadcrumbTitle?: string;
   category: string;
   categoryPath: string;
   toolSlug?: string;
   children: ReactNode;
 }
 
-const ToolLayout = ({ title, description, category, categoryPath, children }: ToolLayoutProps) => {
+const ToolLayout = ({ title, description, breadcrumbTitle, category, categoryPath, children }: ToolLayoutProps) => {
   return (
     <div className="flex min-h-screen flex-col">
         <Header />
@@ -30,24 +31,30 @@ const ToolLayout = ({ title, description, category, categoryPath, children }: To
                 <Link to={categoryPath} className="text-muted-foreground hover:text-foreground whitespace-nowrap">
                   {category}
                 </Link>
-                <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-foreground whitespace-nowrap">{title}</span>
+                {(breadcrumbTitle || title) && (
+                  <>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <span className="text-foreground whitespace-nowrap">{breadcrumbTitle || title}</span>
+                  </>
+                )}
               </nav>
             </div>
           </div>
 
-          <section className="border-b border-border bg-gradient-to-b from-muted/50 to-background">
-            <div className="container py-6 sm:py-8">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">{title}</h1>
-                <p className="mt-2 text-base sm:text-lg text-muted-foreground">{description}</p>
-              </motion.div>
-            </div>
-          </section>
+          {title && (
+            <section className="border-b border-border bg-gradient-to-b from-muted/50 to-background">
+              <div className="container py-6 sm:py-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">{title}</h1>
+                  {description && <p className="mt-2 text-base sm:text-lg text-muted-foreground">{description}</p>}
+                </motion.div>
+              </div>
+            </section>
+          )}
 
           <section className="py-6 sm:py-8">
             <div className="container">

@@ -120,8 +120,7 @@ const BarcodeGeneratorTool = () => {
         "barcode-generator"
       )}
       <ToolLayout
-      title="Barcode Generator"
-      description="Generate barcodes for products and inventory"
+      breadcrumbTitle="Barcode Generator"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

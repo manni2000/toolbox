@@ -96,12 +96,11 @@ const AgeCalculatorTool = () => {
         "age-calculator"
       )}
       <ToolLayout
-      title="Age Calculator"
-      description="Calculate your exact age from your birthdate"
+      breadcrumbTitle="Age Calculator"
       category="Date & Time Tools"
       categoryPath="/category/date-time"
     >
-      <div className="mx-auto max-w-2xl space-y-6 sm:space-y-8">
+      <div className="space-y-6">
         {/* Keyword Tags Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -122,7 +121,7 @@ const AgeCalculatorTool = () => {
               <Calendar className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Age Calculator - Free Online</h2>
+              <h2 className="text-2xl font-bold">Age Calculator Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Calculate your exact age from your birthdate with detailed breakdown in years, months, and days.
               </p>

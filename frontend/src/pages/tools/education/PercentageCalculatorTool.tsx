@@ -96,12 +96,11 @@ const PercentageCalculatorTool = () => {
         "percentage-calculator"
       )}
       <ToolLayout
-      title="Percentage Calculator"
-      description="Calculate percentages in multiple ways"
+      breadcrumbTitle="Percentage Calculator"
       category="Education Tools"
       categoryPath="/category/education"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

@@ -182,12 +182,11 @@ const UTMLinkBuilderTool = () => {
         "utm-builder"
       )}
       <ToolLayout
-      title="UTM Link Builder"
-      description="Create UTM-tagged URLs for tracking marketing campaigns and traffic sources"
+      breadcrumbTitle="UTM Link Builder"
       category="SEO Tools"
       categoryPath="/category/seo"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

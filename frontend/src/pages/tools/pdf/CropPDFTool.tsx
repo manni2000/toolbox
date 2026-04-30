@@ -108,9 +108,8 @@ const CropPDFTool = () => {
         "crop-pdf"
       )}
       <ToolLayout
-        title="Crop PDF"
-        description="Crop margins from PDF pages"
-        category="PDF Tools"
+      breadcrumbTitle="Crop PDF"
+      category="PDF Tools"
         categoryPath="/category/pdf"
       >
       <div className="space-y-6">

@@ -196,12 +196,11 @@ const JWTExpiryTool = () => {
         "jwt-expiry-calculator"
       )}
       <ToolLayout
-      title="JWT Token Expiry Calculator"
-      description="Analyze JWT tokens, check expiry times, and decode payload information"
+      breadcrumbTitle="JWT Expiry Checker"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

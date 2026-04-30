@@ -113,8 +113,7 @@ const PDFToPowerPointTool = () => {
         "pdf-to-powerpoint"
       )}
       <ToolLayout
-      title="PDF to PowerPoint"
-      description="Convert PDF to PowerPoint presentations"
+      breadcrumbTitle="PDF to PowerPoint"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -139,7 +138,7 @@ const PDFToPowerPointTool = () => {
               <Presentation className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">PDF to PowerPoint Converter - Free Online</h2>
+              <h2 className="text-2xl font-bold">PDF to PowerPoint Converter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Convert PDF to PowerPoint presentations. Transform your PDF documents into editable slides.
               </p>

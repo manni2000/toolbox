@@ -270,12 +270,11 @@ Date: ${new Date().toUTCString()}
         "api-response-formatter"
       )}
       <ToolLayout
-      title="API Response Formatter"
-      description="Format and beautify API responses in JSON, XML, HTML, and plain text formats"
+      breadcrumbTitle="API Response Formatter"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

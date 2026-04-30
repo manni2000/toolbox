@@ -73,8 +73,7 @@ const JSONFormatterTool = () => {
         "json-formatter"
       )}
       <ToolLayout
-      title="JSON Formatter"
-      description="Format, validate, and beautify JSON data"
+      breadcrumbTitle="JSON Formatter"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
@@ -113,7 +112,7 @@ const JSONFormatterTool = () => {
               <FileJson className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">JSON Formatter - Free Online</h2>
+              <h2 className="text-2xl font-bold">JSON Formatter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Format, validate, and beautify JSON data with customizable indentation. Perfect for developers debugging APIs and working with JSON.
               </p>

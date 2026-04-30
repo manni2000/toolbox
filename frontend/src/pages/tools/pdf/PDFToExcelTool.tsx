@@ -103,8 +103,7 @@ const PDFToExcelTool = () => {
         "pdf-to-excel"
       )}
       <ToolLayout
-      title="PDF to Excel"
-      description="Extract tables from PDF to Excel spreadsheets"
+      breadcrumbTitle="PDF to Excel"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -129,7 +128,7 @@ const PDFToExcelTool = () => {
               <Table className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">PDF to Excel Converter - Free Online</h2>
+              <h2 className="text-2xl font-bold">PDF to Excel Converter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Extract tables from PDF to Excel spreadsheets. Convert PDF data into editable Excel files.
               </p>

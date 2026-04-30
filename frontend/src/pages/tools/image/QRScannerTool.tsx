@@ -126,8 +126,7 @@ const QRScannerTool = () => {
         "qr-code-scanner"
       )}
       <ToolLayout
-      title="QR Code Scanner"
-      description="Upload an image to scan and decode QR codes"
+      breadcrumbTitle="QR Code Scanner"
       category="Image Tools"
       categoryPath="/category/image"
     >

@@ -39,8 +39,7 @@ const WordCounterTool = () => {
         "word-counter"
       )}
       <ToolLayout
-      title="Word & Character Counter"
-      description="Count words, characters, sentences, and more"
+      breadcrumbTitle="Word Counter"
       category="Text Tools"
       categoryPath="/category/text"
     >
@@ -64,7 +63,7 @@ const WordCounterTool = () => {
             <Type className="h-7 w-7" style={{ color: `hsl(217 91% 60%)` }} />
           </motion.div>
           <div>
-            <h2 className="text-2xl font-bold">Word Counter - Free Online</h2>
+            <h2 className="text-2xl font-bold">Word Counter Free Online</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Count words, characters, sentences, and paragraphs instantly. Perfect for writers, bloggers, and content creators.
             </p>

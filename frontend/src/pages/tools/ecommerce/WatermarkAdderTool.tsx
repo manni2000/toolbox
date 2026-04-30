@@ -166,8 +166,7 @@ const WatermarkAdderTool = () => {
         "watermark-adder"
       )}
       <ToolLayout
-      title="Watermark Adder"
-      description="Add watermarks to protect product images"
+      breadcrumbTitle="Watermark Adder"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

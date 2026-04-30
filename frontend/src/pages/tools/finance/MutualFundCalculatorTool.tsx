@@ -66,12 +66,11 @@ const MutualFundCalculatorTool = () => {
         "mutual-fund-calculator"
       )}
       <ToolLayout
-      title="Mutual Fund SIP Calculator"
-      description="Calculate returns on Systematic Investment Plan (SIP) investments"
+      breadcrumbTitle="Mutual Fund Calculator"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

@@ -238,12 +238,11 @@ const MCQGeneratorTool = () => {
         "mcq-generator"
       )}
       <ToolLayout
-      title="MCQ Generator from Text"
-      description="Generate multiple choice questions from text or create custom questions"
+      breadcrumbTitle="MCQ Generator"
       category="Education Tools"
       categoryPath="/category/education"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
         {/* Keyword Tags Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -264,7 +263,7 @@ const MCQGeneratorTool = () => {
               <FileText className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">MCQ Generator - Free Online</h2>
+              <h2 className="text-2xl font-bold">MCQ Generator Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Generate multiple choice questions from text or create custom questions.
               </p>

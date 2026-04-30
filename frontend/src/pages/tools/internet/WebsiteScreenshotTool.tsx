@@ -100,8 +100,7 @@ const WebsiteScreenshotTool = () => {
         "website-screenshot"
       )}
       <ToolLayout
-      title="Website Screenshot Tool"
-      description="Capture full-page screenshots of any website from top to footer."
+      breadcrumbTitle="Website Screenshot"
       category="Internet Tools"
       categoryPath="/category/internet"
     >

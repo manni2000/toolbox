@@ -518,16 +518,15 @@ const ColorPalettesTool = () => {
     <>
       {CategorySEO.Dev(
         toolSeoData?.title || "Color Palettes Generator",
-        toolSeoData?.description || "Generate beautiful color palettes for your design projects with professional color theory",
+        toolSeoData?.description || "Generate beautiful color palettes using professional color theory principles",
         "color-palettes"
       )}
       <ToolLayout
-      title="Color Palettes Generator"
-      description="Generate beautiful color palettes for your design projects with professional color theory"
+      breadcrumbTitle="Color Palettes"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-6xl space-y-8">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

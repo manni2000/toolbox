@@ -167,12 +167,11 @@ const JsonToTypeScriptTool = () => {
         "json-to-typescript"
       )}
       <ToolLayout
-      title="JSON to TypeScript Interface Generator"
-      description="Convert JSON objects to TypeScript interfaces with automatic type inference"
+      breadcrumbTitle="JSON to TypeScript"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

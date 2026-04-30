@@ -48,12 +48,11 @@ const UUIDGeneratorTool = () => {
         "uuid-generator"
       )}
       <ToolLayout
-      title="UUID Generator"
-      description="Generate unique UUIDs instantly"
+      breadcrumbTitle="UUID Generator"
       category="Security Tools"
       categoryPath="/category/security"
     >
-      <div className="mx-auto max-w-2xl space-y-6">
+      <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

@@ -133,10 +133,9 @@ const ImageCompressorTool = () => {
         "image-compressor"
       )}
       <ToolLayout
-        title="Image Compressor"
-        description="Compress images while maintaining quality"
-        category="Image Tools"
-        categoryPath="/category/image"
+      breadcrumbTitle="Image Compressor"
+      category="Image Tools"
+      categoryPath="/category/image"
       >
       <div className="space-y-8">
         {/* Enhanced Hero Section */}

@@ -155,8 +155,7 @@ const VideoToAudioTool = () => {
         "video-to-audio"
       )}
       <ToolLayout
-      title="Video to Audio Converter"
-      description="Extract audio from video files (MP4, AVI, MOV → MP3, WAV)"
+      breadcrumbTitle="Video to Audio"
       category="Video Tools"
       categoryPath="/category/video"
     >
@@ -181,7 +180,7 @@ const VideoToAudioTool = () => {
               <Music className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Video to Audio Converter - Free Online</h2>
+              <h2 className="text-2xl font-bold">Video to Audio Converter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Extract audio from video files. Convert MP4, AVI, MOV to MP3, WAV format with high quality.
               </p>

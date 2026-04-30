@@ -266,8 +266,7 @@ const SpeechToTextTool = () => {
         "speech-to-text"
       )}
       <ToolLayout
-      title="Speech to Text"
-      description="Convert audio files to text with language support. Export as TXT or SRT subtitles."
+      breadcrumbTitle="Speech to Text"
       category="Audio Tools"
       categoryPath="/category/audio"
     >
@@ -292,7 +291,7 @@ const SpeechToTextTool = () => {
               <Mic className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Speech to Text - Free Online</h2>
+              <h2 className="text-2xl font-bold">Speech to Text Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Convert audio files to text with language support. Export as TXT or SRT subtitles.
               </p>

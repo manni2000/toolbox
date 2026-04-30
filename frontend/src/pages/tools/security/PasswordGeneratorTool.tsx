@@ -107,12 +107,11 @@ function PasswordGeneratorTool() {
         "password-generator"
       )}
       <ToolLayout
-        title="Password Generator"
-        description="Generate secure random passwords instantly"
-        category="Security Tools"
+      breadcrumbTitle="Password Generator"
+      category="Security Tools"
         categoryPath="/category/security"
       >
-      <div className="mx-auto max-w-2xl space-y-8">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}
@@ -147,7 +146,7 @@ function PasswordGeneratorTool() {
               <Shield className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Password Generator - Free Online</h2>
+              <h2 className="text-2xl font-bold">Password Generator Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Generate secure random passwords with customizable options. Perfect for creating strong passwords for accounts and applications.
               </p>

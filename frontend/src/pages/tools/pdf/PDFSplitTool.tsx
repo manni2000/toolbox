@@ -195,8 +195,7 @@ const PDFSplitTool = () => {
         "pdf-split"
       )}
       <ToolLayout
-      title="PDF Split"
-      description="Extract specific pages from a PDF document."
+      breadcrumbTitle="PDF Split"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >

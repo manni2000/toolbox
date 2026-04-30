@@ -115,12 +115,11 @@ const KeywordDensityTool = () => {
         "keyword-density-checker"
       )}
       <ToolLayout
-      title="Keyword Density Checker"
-      description="Analyze keyword density and optimize your content for better SEO performance"
+      breadcrumbTitle="Keyword Density"
       category="SEO Tools"
       categoryPath="/category/seo"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

@@ -135,12 +135,11 @@ const CurrencyConverterTool = () => {
         "currency-converter"
       )}
       <ToolLayout
-      title="Currency Converter"
-      description="Convert between currencies with real-time exchange rates"
+      breadcrumbTitle="Currency Converter"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

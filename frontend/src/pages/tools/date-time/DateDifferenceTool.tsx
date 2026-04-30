@@ -74,8 +74,7 @@ const DateDifferenceTool = () => {
         "date-difference"
       )}
       <ToolLayout
-        title="Date Difference Calculator"
-        description="Calculate difference between two dates"
+      breadcrumbTitle="Date Difference"
         category="Date & Time"
         categoryPath="/category/date-time"
       >
@@ -100,7 +99,7 @@ const DateDifferenceTool = () => {
                 <Calendar className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
               </motion.div>
               <div>
-                <h2 className="text-2xl font-bold">Date Difference Calculator - Free Online</h2>
+                <h2 className="text-2xl font-bold">Date Difference Calculator Free Online</h2>
                 <p className="mt-2 text-sm text-muted-foreground">
                   Calculate the exact difference between two dates in years, months, weeks, and days.
                 </p>

@@ -157,12 +157,11 @@ const BioGeneratorTool = () => {
         "bio-generator"
       )}
       <ToolLayout
-      title="Bio Generator"
-      description="Create engaging social media bios with character limits"
+      breadcrumbTitle="Bio Generator"
       category="Social Tools"
       categoryPath="/category/social"
     >
-      <div className="mx-auto max-w-2xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

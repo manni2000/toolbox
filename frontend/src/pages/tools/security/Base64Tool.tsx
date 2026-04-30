@@ -60,8 +60,7 @@ const Base64Tool = () => {
         "base64-tool"
       )}
       <ToolLayout
-      title="Base64 Encode/Decode"
-      description="Encode or decode Base64 strings"
+      breadcrumbTitle="Base64 Encoder/Decoder"
       category="Security Tools"
       categoryPath="/category/security"
     >

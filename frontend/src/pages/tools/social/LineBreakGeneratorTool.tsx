@@ -46,12 +46,11 @@ const LineBreakGeneratorTool = () => {
         "line-break"
       )}
       <ToolLayout
-      title="Line Break Generator"
-      description="Create invisible line breaks and separators for Instagram captions"
+      breadcrumbTitle="Line Break Generator"
       category="Social Tools"
       categoryPath="/category/social"
     >
-      <div className="mx-auto max-w-2xl space-y-8">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

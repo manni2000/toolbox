@@ -144,9 +144,8 @@ const FaviconGeneratorTool = () => {
         "favicon-generator"
       )}
       <ToolLayout
-        title="Favicon Generator"
-        description="Generate all favicon sizes from a single image"
-        category="Image Tools"
+      breadcrumbTitle="Favicon Generator"
+      category="Image Tools"
         categoryPath="/category/image"
       >
       <div className="space-y-6">

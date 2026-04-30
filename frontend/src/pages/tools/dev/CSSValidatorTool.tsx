@@ -278,9 +278,8 @@ const CSSValidatorTool = () => {
         "css-validator"
       )}
       <ToolLayout
-        title="CSS Validator"
-        description="Validate and optimize CSS code for best practices and performance"
-        category="Developer Tools"
+      breadcrumbTitle="CSS Validator"
+      category="Developer Tools"
         categoryPath="/category/dev"
       >
         <div className="space-y-6">

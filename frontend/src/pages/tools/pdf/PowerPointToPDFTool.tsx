@@ -105,8 +105,7 @@ const PowerPointToPDFTool = () => {
         "powerpoint-to-pdf"
       )}
       <ToolLayout
-      title="PowerPoint to PDF"
-      description="Convert PowerPoint presentations to PDF"
+      breadcrumbTitle="PowerPoint to PDF"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -131,7 +130,7 @@ const PowerPointToPDFTool = () => {
               <Presentation className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">PowerPoint to PDF Converter - Free Online</h2>
+              <h2 className="text-2xl font-bold">PowerPoint to PDF Converter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Convert PowerPoint presentations to PDF. Transform your slides into universally shareable PDF format.
               </p>

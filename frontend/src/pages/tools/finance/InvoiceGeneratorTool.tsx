@@ -183,13 +183,12 @@ export default function InvoiceGeneratorTool() {
         "invoice-generator"
       )}
       <ToolLayout
-      title="Invoice Generator"
-      description="Create professional invoices with PDF download"
+      breadcrumbTitle="Invoice Generator"
       category="Finance Tools"
       categoryPath="/category/finance"
       toolSlug="invoice-generator"
     >
-      <div className="mx-auto max-w-6xl space-y-6 md:space-y-8 px-4 md:px-0">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

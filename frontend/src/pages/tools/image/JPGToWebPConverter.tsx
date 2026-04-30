@@ -115,8 +115,7 @@ const JPGToWebPConverter = () => {
         "jpg-to-webp-converter"
       )}
       <ToolLayout
-      title="JPG to WebP Converter"
-      description="Convert JPG images to WebP format for better compression and web performance"
+      breadcrumbTitle="JPG to WebP Converter"
       category="Image Tools"
       categoryPath="/category/image"
     >

@@ -42,12 +42,11 @@ const RemoveSpacesTool = () => {
         "remove-spaces"
       )}
       <ToolLayout
-        title="Remove Extra Spaces"
-        description="Clean up extra whitespace, leading/trailing spaces, and blank lines"
+      breadcrumbTitle="Remove Spaces"
         category="Text Tools"
         categoryPath="/category/text"
       >
-        <div className="mx-auto max-w-4xl space-y-6">
+        <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

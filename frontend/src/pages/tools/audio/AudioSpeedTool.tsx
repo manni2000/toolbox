@@ -182,8 +182,7 @@ const AudioSpeedTool = () => {
         "audio-speed"
       )}
       <ToolLayout
-      title="Audio Speed Changer"
-      description="Change audio playback speed from 0.5x to 2x while keeping pitch intact."
+      breadcrumbTitle="Audio Speed"
       category="Audio Tools"
       categoryPath="/category/audio"
     >
@@ -208,7 +207,7 @@ const AudioSpeedTool = () => {
               <Gauge className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Audio Speed Changer - Free Online</h2>
+              <h2 className="text-2xl font-bold">Audio Speed Changer Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Change audio playback speed from 0.5x to 2x while keeping pitch intact. Speed up or slow down audio.
               </p>

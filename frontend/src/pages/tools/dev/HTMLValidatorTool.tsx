@@ -194,9 +194,8 @@ const HTMLValidatorTool = () => {
         "html-validator"
       )}
       <ToolLayout
-        title="HTML Validator"
-        description="Validate and check HTML code for errors and best practices"
-        category="Developer Tools"
+      breadcrumbTitle="HTML Validator"
+      category="Developer Tools"
         categoryPath="/category/dev"
       >
         <div className="space-y-6">

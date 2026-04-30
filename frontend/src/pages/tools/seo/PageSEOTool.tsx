@@ -629,12 +629,11 @@ const PageSEOTool = () => {
         "page-seo"
       )}
       <ToolLayout
-      title="Page SEO Analyzer"
-      description="Comprehensive SEO analysis tool to optimize your web pages for better search rankings"
+      breadcrumbTitle="Page SEO Analyzer"
       category="SEO Tools"
       categoryPath="/category/seo"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

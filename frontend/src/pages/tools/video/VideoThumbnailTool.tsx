@@ -115,8 +115,7 @@ const VideoThumbnailTool = () => {
         "video-thumbnail"
       )}
       <ToolLayout
-      title="Video Thumbnail Generator"
-      description="Extract thumbnail images from video files at specific timestamps"
+      breadcrumbTitle="Video Thumbnail"
       category="Video Tools"
       categoryPath="/category/video"
     >
@@ -141,7 +140,7 @@ const VideoThumbnailTool = () => {
               <ImageIcon className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Video Thumbnail Generator - Free Online</h2>
+              <h2 className="text-2xl font-bold">Video Thumbnail Generator Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Extract thumbnail images from video files at specific timestamps. Create preview images for your videos.
               </p>

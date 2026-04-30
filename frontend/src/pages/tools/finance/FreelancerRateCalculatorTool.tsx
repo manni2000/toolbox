@@ -127,12 +127,11 @@ export default function FreelancerRateCalculatorTool() {
         "freelancer-rate-calculator"
       )}
       <ToolLayout
-      title="Freelancer Rate Calculator"
-      description="Calculate your optimal freelance rates based on income goals and business expenses"
+      breadcrumbTitle="Freelancer Rate Calculator"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

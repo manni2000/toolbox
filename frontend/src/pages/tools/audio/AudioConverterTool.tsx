@@ -149,9 +149,8 @@ const AudioConverterTool = () => {
         "audio-converter"
       )}
       <ToolLayout
-        title="Audio Format Converter"
-        description="Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats"
-        category="Audio Tools"
+      breadcrumbTitle="Audio Converter"
+      category="Audio Tools"
         categoryPath="/category/audio"
       >
       <div className="space-y-6">
@@ -175,7 +174,7 @@ const AudioConverterTool = () => {
               <Music className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Audio Format Converter - Free Online</h2>
+              <h2 className="text-2xl font-bold">Audio Format Converter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Convert audio files between MP3, WAV, AAC, OGG, and FLAC formats. High-quality audio conversion.
               </p>

@@ -243,12 +243,11 @@ const EnvironmentVariableTool = () => {
         "environment-variable-generator"
       )}
       <ToolLayout
-      title="Environment Variable Generator"
-      description="Generate and manage environment variables for different platforms and frameworks"
+      breadcrumbTitle="Environment Variables"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

@@ -133,8 +133,7 @@ const ExtractZipTool = () => {
         "extract-zip"
       )}
       <ToolLayout
-      title="Extract ZIP"
-      description="Extract and download files from ZIP archives"
+      breadcrumbTitle="Extract ZIP"
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

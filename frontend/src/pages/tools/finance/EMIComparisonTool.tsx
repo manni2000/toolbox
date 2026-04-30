@@ -136,12 +136,11 @@ export default function EMIComparisonTool() {
         "emi-comparison"
       )}
       <ToolLayout
-      title="EMI Comparison Calculator"
-      description="Compare multiple loan options to find the best EMI deal"
+      breadcrumbTitle="EMI Comparison"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

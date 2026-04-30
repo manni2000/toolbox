@@ -250,11 +250,10 @@ export default function SignatureMakerTool() {
         "signature-maker"
       )}
       <ToolLayout
-        title="Signature Maker"
-        description="Draw and create digital signatures"
-        category="Govt & Legal Tools"
+      breadcrumbTitle="Signature Maker"
+      category="Govt & Legal Tools"
         categoryPath="/category/govt-legal"
-        toolSlug="signature-maker"
+      toolSlug="signature-maker"
       >
         <div className="space-y-8">
           {/* Enhanced Hero Section */}

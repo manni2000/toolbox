@@ -264,8 +264,8 @@ const AudioMergerTool = () => {
         "audio-merger"
       )}
       <ToolLayout
-      title="Audio Merger"
-      description= "Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations."
+      breadcrumbTitle="Audio Merger"
+     description= "Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations."
       category="Audio Tools"
       categoryPath="/category/audio"
     >
@@ -290,7 +290,7 @@ const AudioMergerTool = () => {
               <Layers className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Audio Merger - Free Online</h2>
+              <h2 className="text-2xl font-bold">Audio Merger Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Merge multiple audio files into one. Perfect for podcasts, songs, and audio compilations.
               </p>

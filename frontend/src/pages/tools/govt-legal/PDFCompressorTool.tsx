@@ -169,8 +169,7 @@ export default function PDFCompressorTool() {
         "pdf-compressor"
       )}
       <ToolLayout
-      title="PDF Compressor"
-      description="Compress PDF files for document submission"
+      breadcrumbTitle="PDF Compressor"
       category="Govt & Legal Tools"
       categoryPath="/category/govt-legal"
       >

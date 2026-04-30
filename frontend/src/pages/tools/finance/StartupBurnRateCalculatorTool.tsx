@@ -113,12 +113,11 @@ export default function StartupBurnRateCalculatorTool() {
         "startup-burn-rate-calculator"
       )}
       <ToolLayout
-      title="Startup Burn Rate Calculator"
-      description="Calculate your startup's burn rate and cash runway"
+      breadcrumbTitle="Startup Burn Rate Calculator"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

@@ -178,12 +178,11 @@ const RobotsTxtTool = () => {
         "robotstxt-generator"
       )}
       <ToolLayout
-      title="Robots.txt Generator"
-      description="Generate professional robots.txt files to control search engine crawling"
+      breadcrumbTitle="Robots.txt Generator"
       category="SEO Tools"
       categoryPath="/category/seo"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

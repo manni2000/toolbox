@@ -241,12 +241,11 @@ const DockerfileGeneratorTool = () => {
         "dockerfile-generator"
       )}
       <ToolLayout
-      title="Dockerfile Generator"
-      description="Generate optimized Dockerfiles for different applications and frameworks"
+      breadcrumbTitle="Dockerfile Generator"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

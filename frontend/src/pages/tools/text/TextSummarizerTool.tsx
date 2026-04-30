@@ -75,8 +75,7 @@ const TextSummarizerTool = () => {
         "text-summarizer"
       )}
       <ToolLayout
-      title="Text Summarizer"
-      description="Extract key sentences from your text using rule-based analysis"
+      breadcrumbTitle="Text Summarizer"
       category="Text Tools"
       categoryPath="/category/text"
     >

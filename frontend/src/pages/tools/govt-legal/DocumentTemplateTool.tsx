@@ -301,10 +301,7 @@ export default function DocumentTemplateTool() {
         toolSeoData?.description || "Generate legal document and agreement templates",
         "document-template"
       )}
-      <ToolLayout
-        title="Document Template Generator"
-        description="Generate legal document and agreement templates"
-        category="Govt & Legal Tools"
+      <ToolLayout        category="Govt & Legal Tools"
         categoryPath="/category/govt-legal"
         toolSlug="document-template"
       >

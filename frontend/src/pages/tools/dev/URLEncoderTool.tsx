@@ -53,12 +53,11 @@ const URLEncoderTool = () => {
         "url-encoder-decoder"
       )}
       <ToolLayout
-      title="URL Encoder/Decoder"
-      description="Encode or decode URLs and query parameters"
+      breadcrumbTitle="URL Encoder/Decoder"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-2xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

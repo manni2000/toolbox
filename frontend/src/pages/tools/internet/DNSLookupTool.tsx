@@ -94,10 +94,7 @@ const DNSLookupTool = () => {
         toolSeoData?.description || "Query DNS records such as A, MX, TXT, NS, and more for any domain.",
         "dns-lookup"
       )}
-      <ToolLayout
-        title="DNS Lookup"
-        description="Query DNS records such as A, MX, TXT, NS, and more for any domain."
-        category="Internet Tools"
+      <ToolLayout        category="Internet Tools"
         categoryPath="/category/internet"
       >
         <div className="space-y-6">
@@ -170,9 +167,7 @@ const DNSLookupTool = () => {
               </div>
 
               {/* Record Type Selector */}
-              <select
-                title="DNS record type"
-                aria-label="DNS record type"
+              <select                aria-label="DNS record type"
                 value={selectedRecordType}
                 onChange={(e) =>
                   setSelectedRecordType(e.target.value)

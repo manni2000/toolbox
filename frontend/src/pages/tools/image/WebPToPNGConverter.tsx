@@ -101,8 +101,7 @@ const WebPToPNGConverter = () => {
         "webp-to-png-converter"
       )}
       <ToolLayout
-      title="WebP to PNG Converter"
-      description="Convert WebP images to PNG format with full quality preservation"
+      breadcrumbTitle="WebP to PNG Converter"
       category="Image Tools"
       categoryPath="/category/image"
     >
@@ -165,9 +164,7 @@ const WebPToPNGConverter = () => {
             onDrop={handleDrop}
             onClick={() => {}}
             onFileSelect={handleFile}
-            multiple={false}
-            title="Drop WebP image here or click to browse"
-            subtitle="Supports WebP, JPG, PNG, GIF, BMP and other image formats up to 10MB"
+            multiple={false}            subtitle="Supports WebP, JPG, PNG, GIF, BMP and other image formats up to 10MB"
           />
         )}
 
@@ -193,9 +190,7 @@ const WebPToPNGConverter = () => {
               <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                 <button
                   onClick={reset}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"
-                  title="Clear image and reset converter"
-                >
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted"                >
                   <X className="h-5 w-5" />
                 </button>
               </motion.div>
@@ -284,9 +279,7 @@ const WebPToPNGConverter = () => {
                   className="btn-primary w-full"
                   style={{
                     background: `linear-gradient(135deg, hsl(${categoryColor}) 0%, hsl(${categoryColor} / 0.8) 100%)`,
-                  }}
-                  title="Convert WebP image to PNG format"
-                >
+                  }}                >
                   <RefreshCw className="h-5 w-5" />
                   Convert to PNG
                 </button>
@@ -301,10 +294,7 @@ const WebPToPNGConverter = () => {
             <EnhancedDownload
               data={convertedUrl}
               fileName={getFileName()}
-              fileType="image"
-              title="WebP Converted to PNG Successfully"
-              description="Your WebP image has been converted to PNG format with lossless quality"
-              fileSize={image ? `${(image.size / 1024).toFixed(1)} KB` : 'Unknown size'}
+              fileType="image"              fileSize={image ? `${(image.size / 1024).toFixed(1)} KB` : 'Unknown size'}
             />
           </div>
         )}

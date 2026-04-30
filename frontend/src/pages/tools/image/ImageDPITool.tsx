@@ -97,9 +97,8 @@ const ImageDPITool = () => {
         "image-dpi"
       )}
       <ToolLayout
-        title="Image DPI Checker"
-        description="Check image dimensions and calculate print sizes at different DPI values"
-        category="Image Tools"
+      breadcrumbTitle="Image DPI Checker"
+      category="Image Tools"
         categoryPath="/category/image"
       >
       <div className="space-y-6">

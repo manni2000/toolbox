@@ -114,13 +114,10 @@ const SIPCalculatorTool = () => {
         toolSeoData?.description || "Calculate Systematic Investment Plan returns",
         "sip-calculator"
       )}
-      <ToolLayout
-      title="SIP Calculator"
-      description="Calculate Systematic Investment Plan returns"
-      category="Finance Tools"
+      <ToolLayout      category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}
@@ -212,9 +209,7 @@ const SIPCalculatorTool = () => {
               step={500}
               prefix="₹"
               categoryColor={categoryColor}
-              formatValue={(val) => `₹${val.toLocaleString()}`}
-              description="Amount invested monthly"
-            />
+              formatValue={(val) => `₹${val.toLocaleString()}`}            />
 
             <InteractiveSlider
               label="Expected Annual Return"
@@ -224,9 +219,7 @@ const SIPCalculatorTool = () => {
               max={30}
               step={0.5}
               suffix="% p.a."
-              categoryColor={categoryColor}
-              description="Expected rate of return"
-            />
+              categoryColor={categoryColor}            />
 
             <InteractiveSlider
               label="Investment Period"
@@ -236,9 +229,7 @@ const SIPCalculatorTool = () => {
               max={30}
               step={1}
               suffix=" years"
-              categoryColor={categoryColor}
-              description="Total investment duration"
-            />
+              categoryColor={categoryColor}            />
           </div>
         </motion.div>
 
@@ -366,10 +357,7 @@ const SIPCalculatorTool = () => {
               <div className="grid gap-4 lg:grid-cols-2">
                 <FinanceChart
                   data={chartData}
-                  type="line"
-                  title="Investment Growth"
-                  description="Year-by-year growth projection"
-                  dataKey="sip"
+                  type="line"                  dataKey="sip"
                   xAxisKey="year"
                   categoryColor={categoryColor}
                   height={250}
@@ -381,10 +369,7 @@ const SIPCalculatorTool = () => {
 
                 <FinanceChart
                   data={pieData}
-                  type="pie"
-                  title="Investment Distribution"
-                  description="Total Invested vs Wealth Gain"
-                  dataKey="value"
+                  type="pie"                  dataKey="value"
                   categoryColor={categoryColor}
                   height={250}
                   formatValue={(val) => `₹${(val / 100000).toFixed(1)}L`}
@@ -395,9 +380,7 @@ const SIPCalculatorTool = () => {
         )}
 
         {/* Formula Card */}
-        <FormulaCard
-          title="SIP Calculation Formula"
-          formula="A = P × [{(1 + r)^n – 1} / r] × (1 + r)"
+        <FormulaCard          formula="A = P × [{(1 + r)^n – 1} / r] × (1 + r)"
           variables={[
             { symbol: 'A', description: 'Final amount', example: '₹11,61,695' },
             { symbol: 'P', description: 'Monthly investment amount', example: '₹5,000' },

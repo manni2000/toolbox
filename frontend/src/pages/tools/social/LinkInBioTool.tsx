@@ -126,8 +126,7 @@ const LinkInBioTool = () => {
         "link-in-bio"
       )}
       <ToolLayout
-      title="Link-in-Bio Page Generator"
-      description="Create a beautiful link-in-bio page for your social profiles"
+      breadcrumbTitle="Link in Bio"
       category="Social Tools"
       categoryPath="/category/social"
     >

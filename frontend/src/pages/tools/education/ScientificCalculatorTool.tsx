@@ -338,8 +338,7 @@ const ScientificCalculatorTool = () => {
         "scientific-calculator"
       )}
       <ToolLayout
-      title="Scientific Calculator"
-      description="Perform advanced mathematical calculations with trigonometry, logarithms, and more"
+      breadcrumbTitle="Scientific Calculator"
       category="Education Tools"
       categoryPath="/category/education"
     >
@@ -364,7 +363,7 @@ const ScientificCalculatorTool = () => {
               <Calculator className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Scientific Calculator - Free Online</h2>
+              <h2 className="text-2xl font-bold">Scientific Calculator Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Perform advanced mathematical calculations with trigonometry, logarithms, and more.
               </p>

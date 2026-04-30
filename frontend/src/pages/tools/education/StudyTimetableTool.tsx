@@ -83,12 +83,11 @@ const StudyTimetableTool = () => {
         "study-timetable-generator"
       )}
       <ToolLayout
-      title="Study Timetable Generator"
-      description="Create personalized study schedules with break times"
+      breadcrumbTitle="Study Timetable"
       category="Education Tools"
       categoryPath="/category/education"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
         {/* Keyword Tags Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -109,7 +108,7 @@ const StudyTimetableTool = () => {
               <Calendar className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Study Timetable Generator - Free Online</h2>
+              <h2 className="text-2xl font-bold">Study Timetable Generator Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Create personalized study schedules with break times for better time management.
               </p>

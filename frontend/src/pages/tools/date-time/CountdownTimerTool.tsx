@@ -82,12 +82,11 @@ const CountdownTimerTool = () => {
         "countdown-timer"
       )}
       <ToolLayout
-      title="Countdown Timer"
-      description="Create a countdown to any date and time"
+      breadcrumbTitle="Countdown Timer"
       category="Date & Time"
       categoryPath="/category/date-time"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

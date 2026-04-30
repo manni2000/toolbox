@@ -152,12 +152,11 @@ const SQLQueryBeautifierTool = () => {
         "sql-query-beautifier"
       )}
       <ToolLayout
-      title="SQL Query Beautifier"
-      description="Format and beautify SQL queries with customizable indentation and keyword formatting"
+      breadcrumbTitle="SQL Query Beautifier"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

@@ -114,8 +114,7 @@ const PDFUnlockTool = () => {
         "pdf-unlocker"
       )}
       <ToolLayout
-      title="PDF Unlocker"
-      description="Remove password protection from PDF files"
+      breadcrumbTitle="PDF Unlock"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -140,7 +139,7 @@ const PDFUnlockTool = () => {
               <Unlock className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">PDF Unlocker - Free Online</h2>
+              <h2 className="text-2xl font-bold">PDF Unlocker Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Remove password protection from PDF files. Instantly unlock secured PDFs with the correct password.
               </p>

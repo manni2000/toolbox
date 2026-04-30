@@ -121,12 +121,11 @@ const OGImagePreviewTool = () => {
         "og-image-preview"
       )}
       <ToolLayout
-      title="OG Image Preview"
-      description="Preview how your content looks when shared on social media"
+      breadcrumbTitle="OG Image Preview"
       category="SEO Tools"
       categoryPath="/category/seo"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

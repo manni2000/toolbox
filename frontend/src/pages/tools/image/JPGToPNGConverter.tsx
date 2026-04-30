@@ -106,8 +106,7 @@ const JPGToPNGConverter = () => {
         "jpg-to-png"
       )}
     <ToolLayout
-      title="JPG to PNG Converter"
-      description="Convert JPG images to PNG format with transparency support"
+      breadcrumbTitle="JPG to PNG Converter"
       category="Image Tools"
       categoryPath="/category/image"
     >

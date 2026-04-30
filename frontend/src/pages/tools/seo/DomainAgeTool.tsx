@@ -150,12 +150,11 @@ const DomainAgeTool = () => {
         "domain-age"
       )}
       <ToolLayout
-      title="Domain Age Checker"
-      description="Check domain age and expiration dates for SEO analysis and domain management"
+      breadcrumbTitle="Domain Age Checker"
       category="SEO Tools"
       categoryPath="/category/seo"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

@@ -97,8 +97,7 @@ const CompressionZipTool = () => {
         "compression-zip"
       )}
       <ToolLayout
-      title="Compression Level ZIP"
-      description="Create ZIP archives with custom compression levels"
+      breadcrumbTitle="Compression ZIP"
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

@@ -198,8 +198,7 @@ const WorldTimeTool = () => {
         "world-time"
       )}
       <ToolLayout
-      title="World Time"
-      description="View current time across different time zones worldwide with real-time updates and advanced features"
+      breadcrumbTitle="World Time"
       category="Date & Time"
       categoryPath="/category/date-time"
     >
@@ -224,7 +223,7 @@ const WorldTimeTool = () => {
               <Globe className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">World Time - Free Online</h2>
+              <h2 className="text-2xl font-bold">World Time Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 View current time across different time zones worldwide with real-time updates and advanced features.
               </p>

@@ -117,8 +117,7 @@ const WhiteBackgroundAdderTool = () => {
         "white-background-adder"
       )}
       <ToolLayout
-      title="White Background Adder"
-      description="Add white background to product images"
+      breadcrumbTitle="White Background Adder"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

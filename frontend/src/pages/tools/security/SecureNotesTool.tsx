@@ -106,12 +106,11 @@ export default function SecureNotesTool() {
         "secure-notes"
       )}
       <ToolLayout
-      title="Secure Notes"
-      description="Encrypt and decrypt your sensitive notes with password protection"
+      breadcrumbTitle="Secure Notes"
       category="Security Tools"
       categoryPath="/category/security"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

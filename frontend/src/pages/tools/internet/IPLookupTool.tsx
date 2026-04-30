@@ -111,9 +111,8 @@ const IPLookupTool = () => {
         "ip-lookup"
       )}
       <ToolLayout
-        title="IP Address Lookup"
-        description="Find geographic location, ISP, and other information for any IP address."
-        category="Internet Tools"
+      breadcrumbTitle="IP Lookup"
+      category="Internet Tools"
         categoryPath="/category/internet"
       >
         <div className="space-y-6">

@@ -93,8 +93,7 @@ const WebsitePingTool = () => {
         "website-ping"
       )}
       <ToolLayout
-      title="Website Ping Tool"
-      description="Check website availability and response time."
+      breadcrumbTitle="Website Ping"
       category="Internet Tools"
       categoryPath="/category/internet"
     >

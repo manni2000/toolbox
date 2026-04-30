@@ -122,13 +122,10 @@ const ROICalculatorTool = () => {
         toolSeoData?.description || "Calculate Return on Investment and annualized returns",
         "roi-calculator"
       )}
-      <ToolLayout
-      title="ROI Calculator"
-      description="Calculate Return on Investment and annualized returns"
-      category="Finance Tools"
+      <ToolLayout      category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}
@@ -220,9 +217,7 @@ const ROICalculatorTool = () => {
               step={1000}
               prefix="₹"
               categoryColor={categoryColor}
-              formatValue={(val) => `₹${val.toLocaleString()}`}
-              description="Amount initially invested"
-            />
+              formatValue={(val) => `₹${val.toLocaleString()}`}            />
 
             <InteractiveSlider
               label="Final Value"
@@ -233,9 +228,7 @@ const ROICalculatorTool = () => {
               step={1000}
               prefix="₹"
               categoryColor={categoryColor}
-              formatValue={(val) => `₹${val.toLocaleString()}`}
-              description="Current or expected final value"
-            />
+              formatValue={(val) => `₹${val.toLocaleString()}`}            />
 
             <div className="grid grid-cols-2 gap-4">
               <InteractiveSlider
@@ -246,9 +239,7 @@ const ROICalculatorTool = () => {
                 max={30}
                 step={1}
                 suffix=" years"
-                categoryColor={categoryColor}
-                description="Investment years"
-              />
+                categoryColor={categoryColor}              />
 
               <InteractiveSlider
                 label="Months"
@@ -258,9 +249,7 @@ const ROICalculatorTool = () => {
                 max={11}
                 step={1}
                 suffix=" months"
-                categoryColor={categoryColor}
-                description="Additional months"
-              />
+                categoryColor={categoryColor}              />
             </div>
           </div>
         </motion.div>
@@ -379,10 +368,7 @@ const ROICalculatorTool = () => {
               <div className="grid gap-4 lg:grid-cols-2">
                 <FinanceChart
                   data={chartData}
-                  type="line"
-                  title="Investment Growth Projection"
-                  description="Growth based on calculated CAGR"
-                  dataKey="lumpsum"
+                  type="line"                  dataKey="lumpsum"
                   xAxisKey="year"
                   categoryColor={categoryColor}
                   height={250}
@@ -391,10 +377,7 @@ const ROICalculatorTool = () => {
 
                 <FinanceChart
                   data={pieData}
-                  type="pie"
-                  title="Investment Distribution"
-                  description="Initial Investment vs Absolute Gain"
-                  dataKey="value"
+                  type="pie"                  dataKey="value"
                   categoryColor={categoryColor}
                   height={250}
                   formatValue={(val) => `₹${(val / 100000).toFixed(1)}L`}
@@ -405,9 +388,7 @@ const ROICalculatorTool = () => {
         )}
 
         {/* Formula Card */}
-        <FormulaCard
-          title="ROI Calculation Formulas"
-          formula="ROI = [(Final Value - Initial Investment) / Initial Investment] × 100"
+        <FormulaCard          formula="ROI = [(Final Value - Initial Investment) / Initial Investment] × 100"
           variables={[
             { symbol: 'ROI', description: 'Return on Investment percentage', example: '50%' },
             { symbol: 'CAGR', description: 'Compound Annual Growth Rate', example: '14.47%' },

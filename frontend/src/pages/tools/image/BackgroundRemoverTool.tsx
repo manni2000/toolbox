@@ -114,9 +114,8 @@ const BackgroundRemoverTool = () => {
         "background-remover"
       )}
       <ToolLayout
-        title="Image Background Remover"
-        description="Remove backgrounds from images automatically"
-        category="Image Tools"
+      breadcrumbTitle="Image Background Remover"
+      category="Image Tools"
         categoryPath="/category/image"
       >
       <div className="space-y-6">

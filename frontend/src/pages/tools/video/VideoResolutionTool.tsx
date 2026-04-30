@@ -180,8 +180,7 @@ const VideoResolutionTool = () => {
         "video-resolution"
       )}
       <ToolLayout
-      title="Video Resolution Converter"
-      description="Change video resolution and dimensions"
+      breadcrumbTitle="Video Resolution"
       category="Video Tools"
       categoryPath="/category/video"
     >
@@ -206,7 +205,7 @@ const VideoResolutionTool = () => {
               <Settings className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">Video Resolution Converter - Free Online</h2>
+              <h2 className="text-2xl font-bold">Video Resolution Converter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Change video resolution and dimensions. Upscale or downscale videos for different platforms and devices.
               </p>

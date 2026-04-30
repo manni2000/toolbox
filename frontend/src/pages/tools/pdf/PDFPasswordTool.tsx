@@ -122,8 +122,7 @@ const PDFPasswordTool = () => {
         "pdf-password"
       )}
       <ToolLayout
-      title="PDF Password Protector"
-      description="Add password protection to your PDF files"
+      breadcrumbTitle="PDF Password"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -148,7 +147,7 @@ const PDFPasswordTool = () => {
               <Lock className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">PDF Password Protector - Free Online</h2>
+              <h2 className="text-2xl font-bold">PDF Password Protector Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Add password protection to your PDF files. Secure your documents with strong encryption and access controls.
               </p>

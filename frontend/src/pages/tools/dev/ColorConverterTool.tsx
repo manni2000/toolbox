@@ -112,12 +112,11 @@ const ColorConverterTool = () => {
         "color-converter"
       )}
       <ToolLayout
-      title="Color Converter"
-      description="Convert between HEX, RGB, and HSL color formats"
+      breadcrumbTitle="Color Converter"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

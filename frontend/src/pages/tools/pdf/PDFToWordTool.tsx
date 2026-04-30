@@ -149,8 +149,7 @@ const PDFToWordTool = () => {
         "pdf-to-word"
       )}
       <ToolLayout
-      title="PDF to Word"
-      description="Convert PDF documents to editable Word files (.docx)"
+      breadcrumbTitle="PDF to Word"
       category="PDF Tools"
       categoryPath="/category/pdf"
     >
@@ -189,7 +188,7 @@ const PDFToWordTool = () => {
               <Sparkles className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
             </motion.div>
             <div>
-              <h2 className="text-2xl font-bold">PDF to Word Converter - Free Online</h2>
+              <h2 className="text-2xl font-bold">PDF to Word Converter Free Online</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Convert PDF documents to editable Word files while maintaining formatting. Perfect for editing contracts, reports, and documents.
               </p>
@@ -346,11 +345,10 @@ const PDFToWordTool = () => {
             </div>
           </div>
         </motion.div>
-      </div>
 
-      <div className="mt-8">
         {/* FAQ Section */}
-        <ToolFAQ faqs={[
+        <div className="mt-8">
+          <ToolFAQ faqs={[
           {
             question: "How accurate is the PDF to Word conversion?",
             answer: "Conversion accuracy depends on the PDF structure. Text-based PDFs convert well with good formatting. Scanned PDFs need OCR for text extraction. Complex layouts may require manual adjustment."
@@ -372,6 +370,7 @@ const PDFToWordTool = () => {
             answer: "Password-protected PDFs must be unlocked first. Use the PDF Unlock tool to remove the password, then convert the unlocked PDF to Word format."
           }
         ]} />
+        </div>
       </div>
     </ToolLayout>
       </>

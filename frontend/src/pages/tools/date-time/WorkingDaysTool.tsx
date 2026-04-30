@@ -58,12 +58,11 @@ const WorkingDaysTool = () => {
         "working-days-calculator"
       )}
       <ToolLayout
-        title="Working Days Calculator"
-        description="Calculate business days between two dates, excluding weekends"
-        category="Date & Time"
+      breadcrumbTitle="Working Days Calculator"
+      category="Date & Time"
         categoryPath="/category/date-time"
       >
-        <div className="mx-auto max-w-4xl space-y-6">
+        <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

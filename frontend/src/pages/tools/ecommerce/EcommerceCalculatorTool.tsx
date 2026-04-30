@@ -72,8 +72,7 @@ const EcommerceCalculatorTool = () => {
         "ecommerce-calculator"
       )}
       <ToolLayout
-      title="GST-Margin/EMI Calculator"
-      description="Calculate GST, profit margins, and EMI for your business"
+      breadcrumbTitle="Ecommerce Calculator"
       category="Ecommerce Tools"
       categoryPath="/category/ecommerce"
       >

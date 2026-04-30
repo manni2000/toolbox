@@ -94,12 +94,11 @@ const LoremGeneratorTool = () => {
         "lorem-ipsum-generator"
       )}
       <ToolLayout
-      title="Lorem Ipsum Generator"
-      description="Generate placeholder text for your designs"
+      breadcrumbTitle="Lorem Ipsum Generator"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-2xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

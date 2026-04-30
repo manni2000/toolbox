@@ -329,12 +329,11 @@ Generated: ${new Date().toLocaleDateString()}
         "page-speed-checklist"
       )}
       <ToolLayout
-      title="Page Speed Checklist"
-      description="Optimize website performance with comprehensive speed checklist"
+      breadcrumbTitle="Page Speed Checklist"
       category="SEO Tools"
       categoryPath="/category/seo"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

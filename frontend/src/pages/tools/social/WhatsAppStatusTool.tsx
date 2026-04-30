@@ -193,14 +193,13 @@ const WhatsAppStatusTool = () => {
 
   return (
     <>
-      {CategorySEO.Image(
+      {CategorySEO.Social(
         toolSeoData?.title || "WhatsApp Status Generator",
         toolSeoData?.description || "Create perfectly sized images for WhatsApp Status with professional design tools",
         "whatsapp-status-generator"
       )}
       <ToolLayout
-      title="WhatsApp Status Generator"
-      description="Create perfectly sized images for WhatsApp Status with professional design tools"
+      breadcrumbTitle="WhatsApp Status"
       category="Social Media"
       categoryPath="/category/social"
     >
@@ -248,30 +247,17 @@ const WhatsAppStatusTool = () => {
               <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
                 Design professional status images with the perfect 1080×1920 resolution for WhatsApp.
               </p>
+              {/* Keyword Tags */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">whatsapp status</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">status creator</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">social media</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">image generator</span>
+              </div>
             </div>
           </div>
         </div>
       </motion.div>
-
-      {/* Header Info */}
-        <motion.div 
-          variants={scaleIn}
-          initial="hidden"
-          animate="visible"
-          className="rounded-xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-4 sm:p-6 shadow-lg"
-        >
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl" style={{ backgroundColor: `hsl(${categoryColor} / 0.2)` }}>
-              <Smartphone className="h-5 w-5 sm:h-6 sm:w-6" style={{ color: `hsl(${categoryColor})` }} />
-            </div>
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-foreground">Perfect for WhatsApp Status</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                Creates images in 1080×1920 pixels (9:16 aspect ratio) - the ideal size for WhatsApp Status
-              </p>
-            </div>
-          </div>
-        </motion.div>
 
         {/* Enhanced Background Section */}
         <motion.div 
@@ -614,7 +600,7 @@ const WhatsAppStatusTool = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-3 sm:gap-4"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6"
         >
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -672,7 +658,7 @@ const WhatsAppStatusTool = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="rounded-xl border border-border bg-card p-4 sm:p-6"
+          className="rounded-xl border border-border bg-card p-4 sm:p-6 mt-6"
         >
           <h3 className="text-base sm:text-lg font-semibold mb-3 flex items-center gap-2">
             <Smartphone className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />

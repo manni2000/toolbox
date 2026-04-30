@@ -77,8 +77,7 @@ const CreateZipTool = () => {
         "create-zip"
       )}
       <ToolLayout
-      title="Create ZIP"
-      description="Create ZIP archives from multiple files"
+      breadcrumbTitle="Create ZIP"
       category="ZIP Tools"
       categoryPath="/category/zip"
     >

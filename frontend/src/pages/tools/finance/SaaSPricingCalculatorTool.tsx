@@ -128,12 +128,11 @@ export default function SaaSPricingCalculatorTool() {
         "saas-pricing-calculator"
       )}
       <ToolLayout
-      title="SaaS Pricing Calculator"
-      description="Calculate optimal pricing, revenue projections, and unit economics"
+      breadcrumbTitle="SaaS Pricing Calculator"
       category="Finance Tools"
       categoryPath="/category/finance"
     >
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

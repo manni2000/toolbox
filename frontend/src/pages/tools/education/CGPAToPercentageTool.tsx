@@ -90,12 +90,11 @@ const CGPAToPercentageTool = () => {
         "cgpa-to-percentage"
       )}
       <ToolLayout
-      title="CGPA to Percentage Converter"
-      description="Convert CGPA to percentage and determine grades"
+      breadcrumbTitle="CGPA to Percentage"
       category="Education Tools"
       categoryPath="/category/education"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

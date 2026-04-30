@@ -115,8 +115,7 @@ const HTTPHeaderTool = () => {
         "http-header-checker"
       )}
       <ToolLayout
-      title="HTTP Header Checker"
-      description="Check HTTP response headers from any URL"
+      breadcrumbTitle="HTTP Headers"
       category="Developer Tools"
       categoryPath="/category/dev"
     >

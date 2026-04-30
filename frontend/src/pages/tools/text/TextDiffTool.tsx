@@ -66,12 +66,11 @@ const TextDiffTool = () => {
         "text-diff"
       )}
       <ToolLayout
-        title="Text Diff Checker"
-        description="Compare two texts and highlight differences"
-        category="Text Tools"
+      breadcrumbTitle="Text Diff"
+      category="Text Tools"
         categoryPath="/category/text"
       >
-        <div className="mx-auto max-w-4xl space-y-6">
+        <div className="space-y-6">
           {/* Enhanced Hero Section */}
           <motion.div
             variants={fadeInUp}

@@ -114,9 +114,8 @@ const VideoSpeedTool = () => {
         "video-speed"
       )}
       <ToolLayout
-        title="Video Speed Controller"
-        description="Change video playback speed from 0.5x to 2x"
-        category="Video Tools"
+      breadcrumbTitle="Video Speed"
+      category="Video Tools"
         categoryPath="/category/video"
       >
         <div className="space-y-6">
@@ -140,7 +139,7 @@ const VideoSpeedTool = () => {
                 <Gauge className="h-7 w-7" style={{ color: `hsl(${categoryColor})` }} />
               </motion.div>
               <div>
-                <h2 className="text-2xl font-bold">Video Speed Controller - Free Online</h2>
+                <h2 className="text-2xl font-bold">Video Speed Controller Free Online</h2>
                 <p className="mt-2 text-sm text-muted-foreground">
                   Change video playback speed from 0.5x to 2x. Speed up or slow down videos for different purposes.
                 </p>

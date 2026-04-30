@@ -236,12 +236,11 @@ const BrokenImageFinderTool = () => {
         "broken-image"
       )}
       <ToolLayout
-      title="Broken Image Finder"
-      description="Find and analyze broken images on your website for better SEO and user experience"
+      breadcrumbTitle="Broken Image Finder"
       category="SEO Tools"
       categoryPath="/category/seo"
     >
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

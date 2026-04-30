@@ -81,12 +81,11 @@ const TokenCalculatorTool = () => {
         "token-calculator"
       )}
       <ToolLayout
-      title="Token Calculator"
-      description="Estimate token count for LLM APIs"
+      breadcrumbTitle="Token Calculator"
       category="Developer Tools"
       categoryPath="/category/dev"
     >
-      <div className="mx-auto max-w-3xl space-y-6">
+      <div className="space-y-6">
         {/* Enhanced Hero Section */}
         <motion.div
           variants={fadeInUp}

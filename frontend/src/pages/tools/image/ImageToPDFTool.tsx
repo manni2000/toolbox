@@ -395,16 +395,11 @@ const ImageToPDFTool = () => {
         "image-to-pdf"
       )}
       <ToolLayout
-
-      title="Image to PDF"
-
-      description="Convert multiple images to a single PDF document"
-
+      breadcrumbTitle="Image to PDF"
       category="Image Tools"
 
       categoryPath="/category/image"
-
-    >
+      >
 
       <div className="space-y-6">
 
