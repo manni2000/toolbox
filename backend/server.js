@@ -9,6 +9,12 @@ const { cacheMiddleware } = require('./middleware/cache');
 const app = express();
 const PORT = 8000;
 
+// Console logging for server startup
+console.log('🚀 Starting DailyTools247 Backend Server...');
+console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+console.log(`🔧 Port: ${PORT}`);
+console.log(`📊 Redis URL: ${process.env.UPSTASH_REDIS_REST_URL ? 'Configured' : 'Not configured'}`);
+
 app.set('trust proxy', 1);
 
 app.use(helmet(helmetOptions));
@@ -19,7 +25,10 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(requestSanitizer);
 app.use(generalLimiter);
 
-app.use((req, _res, next) => {
+// Request logging middleware
+app.use((req, res, next) => {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] ${req.method} ${req.url} - IP: ${req.ip || req.connection.remoteAddress}`);
   next();
 });
 
@@ -119,7 +128,30 @@ if (process.env.NODE_ENV === 'production') {
 app.use(errorHandler);
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[Server] Backend running on http://localhost:${PORT}`);
+  console.log(`\n✅ DailyTools247 Backend Server is running successfully!`);
+  console.log(`🌐 Local URL: http://localhost:${PORT}`);
+  console.log(`🌐 Network URL: http://0.0.0.0:${PORT}`);
+  console.log(`📊 Health Check: http://localhost:${PORT}/api/health`);
+  console.log(`🕐 Started at: ${new Date().toLocaleString()}`);
+  console.log(`\n📋 Available API Routes:`);
+  console.log(`   • /api/health - Health check`);
+  console.log(`   • /api/health/all - All endpoints health check`);
+  console.log(`   • /api/pdf/* - PDF tools`);
+  console.log(`   • /api/image/* - Image tools`);
+  console.log(`   • /api/audio/* - Audio tools`);
+  console.log(`   • /api/video/* - Video tools`);
+  console.log(`   • /api/security/* - Security tools`);
+  console.log(`   • /api/dev/* - Developer tools`);
+  console.log(`   • /api/seo/* - SEO tools`);
+  console.log(`   • /api/social/* - Social media tools`);
+  console.log(`   • /api/text/* - Text tools`);
+  console.log(`   • /api/finance/* - Finance tools`);
+  console.log(`   • /api/education/* - Education tools`);
+  console.log(`   • /api/date-time/* - Date & Time tools`);
+  console.log(`   • /api/internet/* - Internet tools`);
+  console.log(`   • /api/zip/* - ZIP tools`);
+  console.log(`   • /api/blog/* - Blog endpoints`);
+  console.log(`\n🔍 Server is ready to accept requests...\n`);
 });
 
 module.exports = app;

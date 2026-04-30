@@ -17,9 +17,6 @@ interface UseApiRetryResult<T> {
   refetch: () => Promise<void>;
 }
 
-/**
- * Hook for API calls with exponential backoff retry logic
- */
 export function useApiRetry<T>(
   fetchFn: () => Promise<T>,
   config: RetryConfig = {}
