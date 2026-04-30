@@ -67,7 +67,7 @@ const ImageCompressorTool = () => {
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+    if (file.size > 10 * 1024 * 1024) { 
       toast({
         title: "File Too Large",
         description: "Please select an image smaller than 10MB.",
@@ -429,24 +429,6 @@ const ImageCompressorTool = () => {
 
       <div className="mt-8">
         {/* SEO Keywords Section */}
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          animate="visible"
-          className="bg-gray-50 rounded-xl p-6 border border-gray-200"
-        >
-          <h3 className="text-lg font-semibold mb-4 text-center">Image Compression Keywords</h3>
-          <div className="flex flex-wrap justify-center gap-2">
-            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">image compressor no watermark</span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">compress images online free</span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">reduce image file size</span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">image optimizer tool</span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">web image compression</span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">image size reducer</span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">free image compressor</span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm border border-gray-300">online image optimizer</span>
-          </div>
-        </motion.div>
 
         {/* FAQ Section */}
         <ToolFAQ faqs={[

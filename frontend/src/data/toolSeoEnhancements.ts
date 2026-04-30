@@ -167,7 +167,7 @@ export const toolSeoEnhancements: Record<string, ToolSeoMetadata> = {
 
   'image-compressor': {
     slug: 'image-compressor',
-    title: 'FREE Image Compressor - Reduce Image Size Without Watermark Online',
+    title: 'Image Compressor - Reduce Image Size Without Watermark Online',
     description: 'Compress images online without watermark. Reduce file size while maintaining quality. Optimize JPG, PNG, WebP images for web. Free forever, no registration required.',
     keywords: [
       'image compressor',
