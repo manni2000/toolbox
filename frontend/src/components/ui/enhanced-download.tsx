@@ -203,11 +203,13 @@ export const EnhancedDownload = ({
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       {/* Overlay with page number */}
-                      <div className="absolute top-2 left-2">
-                        <Badge className="bg-black/70 text-white border-0">
-                          Page {file.page}
-                        </Badge>
-                      </div>
+                      {multipleFiles.length > 1 && (
+                        <div className="absolute top-2 left-2">
+                          <Badge className="bg-black/70 text-white border-0">
+                            Page {file.page}
+                          </Badge>
+                        </div>
+                      )}
                       {/* Quick actions overlay */}
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
                         <Button
@@ -285,9 +287,11 @@ export const EnhancedDownload = ({
                           <p className="text-sm font-medium text-foreground truncate" title={file.name}>
                             {file.name}
                           </p>
+                          {multipleFiles.length > 1 && (
                           <Badge className={getFileColor()} variant="outline">
                             Page {file.page}
                           </Badge>
+                        )}
                         </div>
                         <div className="flex items-center gap-3 text-xs text-muted-foreground">
                           <span>{fileType.toUpperCase()}</span>

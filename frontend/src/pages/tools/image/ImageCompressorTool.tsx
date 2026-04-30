@@ -22,6 +22,8 @@ const ImageCompressorTool = () => {
   const [quality, setQuality] = useState(95);
   const [originalSize, setOriginalSize] = useState(0);
   const [compressedSize, setCompressedSize] = useState(0);
+  const [targetSize, setTargetSize] = useState("");
+  const [useTargetSize, setUseTargetSize] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -103,18 +105,182 @@ const ImageCompressorTool = () => {
       if (!ctx) return;
 
       ctx.drawImage(img, 0, 0);
+      
+      // Determine optimal output format and quality based on original format and quality setting
+      let outputFormat = "image/jpeg";
+      let outputQuality = quality / 100;
+      
+      // For PNG images with transparency, try both WebP and JPEG
+      if (image.type === "image/png") {
+        outputFormat = quality > 70 ? "image/webp" : "image/jpeg";
+        // Lower quality for PNG to JPEG conversion to ensure size reduction
+        if (outputFormat === "image/jpeg") {
+          outputQuality = Math.min(0.8, quality / 100);
+        }
+      }
+      // For JPEG, use same format but adjust quality
+      else if (image.type === "image/jpeg") {
+        outputFormat = "image/jpeg";
+        // Ensure quality is actually lower for compression
+        outputQuality = Math.min(0.9, quality / 100);
+      }
+      // For WebP, use same format
+      else if (image.type === "image/webp") {
+        outputFormat = "image/webp";
+        outputQuality = Math.min(0.9, quality / 100);
+      }
+
+      // If target size is specified, use binary search to find optimal quality
+      if (useTargetSize && targetSize) {
+        const targetBytes = parseTargetSize(targetSize);
+        if (targetBytes > 0) {
+          compressToTargetSize(canvas, outputFormat, targetBytes);
+          return;
+        }
+      }
+
+      // Standard compression without target size
       canvas.toBlob(
         (blob) => {
           if (blob) {
-            setCompressedSize(blob.size);
-            setCompressedUrl(URL.createObjectURL(blob));
+            // If compressed size is larger than original, try more aggressive compression
+            if (blob.size >= originalSize) {
+              // Try again with lower quality
+              const aggressiveQuality = Math.max(0.3, outputQuality - 0.2);
+              canvas.toBlob(
+                (aggressiveBlob) => {
+                  if (aggressiveBlob && aggressiveBlob.size < originalSize) {
+                    setCompressedSize(aggressiveBlob.size);
+                    setCompressedUrl(URL.createObjectURL(aggressiveBlob));
+                  } else if (aggressiveBlob) {
+                    // If still larger, use the smaller of original or compressed
+                    if (aggressiveBlob.size < originalSize) {
+                      setCompressedSize(aggressiveBlob.size);
+                      setCompressedUrl(URL.createObjectURL(aggressiveBlob));
+                    } else {
+                      // Fallback: use original but show warning
+                      setCompressedSize(originalSize);
+                      setCompressedUrl(preview);
+                      toast({
+                        title: "Compression Note",
+                        description: "Image is already optimized. Original size maintained.",
+                      });
+                    }
+                  }
+                },
+                outputFormat,
+                aggressiveQuality
+              );
+            } else {
+              setCompressedSize(blob.size);
+              setCompressedUrl(URL.createObjectURL(blob));
+            }
           }
         },
-        "image/webp",
-        quality / 100
+        outputFormat,
+        outputQuality
       );
     };
     img.src = preview;
+  };
+
+  const parseTargetSize = (sizeStr: string): number => {
+    const match = sizeStr.toLowerCase().match(/^(\d+(?:\.\d+)?)\s*(kb|mb|gb)?$/);
+    if (!match) return 0;
+    
+    const value = parseFloat(match[1]);
+    const unit = match[2] || 'kb';
+    
+    switch (unit) {
+      case 'kb': return Math.round(value * 1024);
+      case 'mb': return Math.round(value * 1024 * 1024);
+      case 'gb': return Math.round(value * 1024 * 1024 * 1024);
+      default: return 0;
+    }
+  };
+
+  const compressToTargetSize = (canvas: HTMLCanvasElement, format: string, targetBytes: number) => {
+    let minQuality = 0.1;
+    let maxQuality = 0.9;
+    let bestBlob: Blob | null = null;
+    let attempts = 0;
+    const maxAttempts = 10;
+
+    const tryQuality = (quality: number) => {
+      return new Promise<Blob | null>((resolve) => {
+        canvas.toBlob(resolve, format, quality);
+      });
+    };
+
+    const binarySearch = async () => {
+      while (minQuality <= maxQuality && attempts < maxAttempts) {
+        attempts++;
+        const midQuality = (minQuality + maxQuality) / 2;
+        const blob = await tryQuality(midQuality);
+        
+        if (!blob) {
+          maxQuality = midQuality - 0.1;
+          continue;
+        }
+
+        if (blob.size <= targetBytes) {
+          bestBlob = blob;
+          minQuality = midQuality + 0.05;
+        } else {
+          maxQuality = midQuality - 0.05;
+        }
+      }
+
+      // If we couldn't reach target size, try resizing the image
+      if (!bestBlob || bestBlob.size > targetBytes) {
+        await compressWithResizing(canvas, format, targetBytes);
+      } else {
+        setCompressedSize(bestBlob.size);
+        setCompressedUrl(URL.createObjectURL(bestBlob));
+      }
+    };
+
+    binarySearch();
+  };
+
+  const compressWithResizing = async (canvas: HTMLCanvasElement, format: string, targetBytes: number) => {
+    let scale = 0.9;
+    let bestBlob: Blob | null = null;
+    
+    while (scale > 0.1) {
+      const resizedCanvas = document.createElement('canvas');
+      const ctx = resizedCanvas.getContext('2d');
+      if (!ctx) break;
+      
+      resizedCanvas.width = canvas.width * scale;
+      resizedCanvas.height = canvas.height * scale;
+      ctx.drawImage(canvas, 0, 0, resizedCanvas.width, resizedCanvas.height);
+      
+      const blob = await new Promise<Blob | null>((resolve) => {
+        resizedCanvas.toBlob(resolve, format, 0.8);
+      });
+      
+      if (blob && blob.size <= targetBytes) {
+        bestBlob = blob;
+        break;
+      }
+      
+      scale -= 0.1;
+    }
+    
+    if (bestBlob) {
+      setCompressedSize(bestBlob.size);
+      setCompressedUrl(URL.createObjectURL(bestBlob));
+    } else {
+      // Fallback to smallest we could get
+      setCompressedSize(originalSize);
+      setCompressedUrl(preview);
+      toast({
+        title: "Target Size Unreachable",
+        description: "Could not reach target size. Original maintained.",
+        variant: "destructive",
+      });
+    }
   };
 
   const formatSize = (bytes: number) => {
@@ -343,6 +509,66 @@ const ImageCompressorTool = () => {
               </div>
             </motion.div>
 
+            {/* Target Size Option */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-lg"
+            >
+              <div className="mb-4">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={useTargetSize}
+                    onChange={(e) => setUseTargetSize(e.target.checked)}
+                    className="w-4 h-4 text-primary rounded focus:ring-primary"
+                  />
+                  <span className="text-sm font-semibold flex items-center gap-2">
+                    <Zap className="h-5 w-5" style={{ color: `hsl(${categoryColor})` }} />
+                    Target File Size
+                  </span>
+                </label>
+                <p className="text-xs text-muted-foreground mt-1 ml-7">
+                  Automatically adjust quality to reach desired file size
+                </p>
+              </div>
+              
+              {useTargetSize && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="space-y-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="text"
+                      value={targetSize}
+                      onChange={(e) => setTargetSize(e.target.value)}
+                      placeholder="e.g., 100KB, 2MB"
+                      className="flex-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                    <select
+                      value={targetSize.toLowerCase().match(/(kb|mb|gb)/)?.[1] || 'kb'}
+                      onChange={(e) => {
+                        const value = targetSize.match(/[\d.]+/)?.[0] || '';
+                        setTargetSize(value + e.target.value.toUpperCase());
+                      }}
+                      className="px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    >
+                      <option value="KB">KB</option>
+                      <option value="MB">MB</option>
+                      <option value="GB">GB</option>
+                    </select>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Examples: 50KB, 200KB, 1MB, 2.5MB
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+
             {/* Actions */}
             <motion.div 
               whileHover={{ scale: 1.02 }} 
@@ -370,7 +596,7 @@ const ImageCompressorTool = () => {
               >
                 <EnhancedDownload
                   data={compressedUrl}
-                  fileName={image.name.replace(/\.[^/.]+$/, ".webp")}
+                  fileName={image.name.replace(/\.[^/.]+$/, quality > 70 && image.type === "image/png" ? ".webp" : ".jpg")}
                   fileType="image"
                   title="Image Compressed Successfully"
                   description={`Original: ${(originalSize / 1024).toFixed(1)}KB → Compressed: ${(compressedSize / 1024).toFixed(1)}KB (${Math.round((1 - compressedSize / originalSize) * 100)}% reduction)`}

@@ -25,6 +25,8 @@ const ImageResizeTool = () => {
   const [resizedUrl, setResizedUrl] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [targetSize, setTargetSize] = useState("");
+  const [useTargetSize, setUseTargetSize] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -140,10 +142,99 @@ const ImageResizeTool = () => {
       if (!ctx) return;
 
       ctx.drawImage(img, 0, 0, width, height);
+      
+      // If target size is specified, use intelligent compression
+      if (useTargetSize && targetSize) {
+        const targetBytes = parseTargetSize(targetSize);
+        if (targetBytes > 0) {
+          resizeToTargetSize(canvas, targetBytes);
+          return;
+        }
+      }
+      
+      // Standard resize without target size
       const url = canvas.toDataURL("image/png", 1);
       setResizedUrl(url);
     };
     img.src = preview;
+  };
+
+  const parseTargetSize = (sizeStr: string): number => {
+    const match = sizeStr.toLowerCase().match(/^(\d+(?:\.\d+)?)\s*(kb|mb|gb)?$/);
+    if (!match) return 0;
+    
+    const value = parseFloat(match[1]);
+    const unit = match[2] || 'kb';
+    
+    switch (unit) {
+      case 'kb': return Math.round(value * 1024);
+      case 'mb': return Math.round(value * 1024 * 1024);
+      case 'gb': return Math.round(value * 1024 * 1024 * 1024);
+      default: return 0;
+    }
+  };
+
+  const resizeToTargetSize = (canvas: HTMLCanvasElement, targetBytes: number) => {
+    let minQuality = 0.1;
+    let maxQuality = 1.0;
+    let bestUrl: string | null = null;
+    let attempts = 0;
+    const maxAttempts = 10;
+
+    const tryQuality = (quality: number): Promise<string | null> => {
+      return new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            resolve(url);
+          } else {
+            resolve(null);
+          }
+        }, 'image/jpeg', quality);
+      });
+    };
+
+    const binarySearch = async () => {
+      while (minQuality <= maxQuality && attempts < maxAttempts) {
+        attempts++;
+        const midQuality = (minQuality + maxQuality) / 2;
+        const url = await tryQuality(midQuality);
+        
+        if (!url) {
+          maxQuality = midQuality - 0.1;
+          continue;
+        }
+
+        // Check size by converting back to blob
+        const response = await fetch(url);
+        const blob = await response.blob();
+        
+        if (blob.size <= targetBytes) {
+          bestUrl = url;
+          minQuality = midQuality + 0.05;
+        } else {
+          maxQuality = midQuality - 0.05;
+          URL.revokeObjectURL(url);
+        }
+      }
+
+      if (bestUrl) {
+        setResizedUrl(bestUrl);
+      } else {
+        // Fallback to lowest quality we could get
+        const fallbackUrl = await tryQuality(0.1);
+        if (fallbackUrl) {
+          setResizedUrl(fallbackUrl);
+          toast({
+            title: "Target Size Unreachable",
+            description: "Could not reach target size. Using smallest possible.",
+            variant: "destructive",
+          });
+        }
+      }
+    };
+
+    binarySearch();
   };
 
   const reset = () => {
