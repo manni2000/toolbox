@@ -93,9 +93,9 @@ export const EnhancedDownload = ({
     try {
       const link = document.createElement('a');
       
-      // Handle base64 data for document files
-      if (fileType === 'word') {
-        // Handle both data URL and raw base64 formats
+      if (url.startsWith('blob:')) {
+        link.href = url;
+      } else if (fileType === 'word') {
         const base64Data = url.startsWith('data:') ? url.split(',')[1] : url;
         const binaryString = atob(base64Data);
         const bytes = new Uint8Array(binaryString.length);
@@ -105,7 +105,6 @@ export const EnhancedDownload = ({
         const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
         link.href = URL.createObjectURL(blob);
       } else if (fileType === 'pdf') {
-        // Handle both data URL and raw base64 formats for PDF
         const base64Data = url.startsWith('data:') ? url.split(',')[1] : url;
         const binaryString = atob(base64Data);
         const bytes = new Uint8Array(binaryString.length);

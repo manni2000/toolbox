@@ -372,13 +372,15 @@ export const generateUBOTrackingCode = () => {
     // Track user interactions
     trackInteraction(type, details = {}) {
       this.interactions++;
-      gtag('event', 'user_interaction', {
-        interaction_type: type,
-        interaction_count: this.interactions,
-        time_on_page: Math.floor((Date.now() - this.startTime) / 1000),
-        page: window.location.pathname,
-        ...details
-      });
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'user_interaction', {
+          interaction_type: type,
+          interaction_count: this.interactions,
+          time_on_page: Math.floor((Date.now() - this.startTime) / 1000),
+          page: window.location.pathname,
+          ...details
+        });
+      }
     },
     
     // Track scroll behavior
@@ -389,11 +391,13 @@ export const generateUBOTrackingCode = () => {
       this.scrollDepth = Math.max(this.scrollDepth, scrollPercent);
       
       if (scrollPercent === 25 || scrollPercent === 50 || scrollPercent === 75 || scrollPercent === 100) {
-        gtag('event', 'scroll_milestone', {
-          scroll_percent: scrollPercent,
-          time_to_milestone: Math.floor((Date.now() - this.startTime) / 1000),
-          page: window.location.pathname
-        });
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'scroll_milestone', {
+            scroll_percent: scrollPercent,
+            time_to_milestone: Math.floor((Date.now() - this.startTime) / 1000),
+            page: window.location.pathname
+          });
+        }
       }
     },
     
@@ -405,24 +409,28 @@ export const generateUBOTrackingCode = () => {
         details: details
       });
       
-      gtag('event', 'funnel_progression', {
-        funnel_step: step,
-        step_number: this.funnelSteps.length,
-        time_to_step: Math.floor((Date.now() - this.startTime) / 1000),
-        tool_name: window.location.pathname,
-        ...details
-      });
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'funnel_progression', {
+          funnel_step: step,
+          step_number: this.funnelSteps.length,
+          time_to_step: Math.floor((Date.now() - this.startTime) / 1000),
+          tool_name: window.location.pathname,
+          ...details
+        });
+      }
     },
     
     // Track page exit
     trackExit() {
-      gtag('event', 'page_exit', {
-        total_time: Math.floor((Date.now() - this.startTime) / 1000),
-        total_interactions: this.interactions,
-        max_scroll_depth: this.scrollDepth,
-        funnel_steps_completed: this.funnelSteps.length,
-        page: window.location.pathname
-      });
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'page_exit', {
+          total_time: Math.floor((Date.now() - this.startTime) / 1000),
+          total_interactions: this.interactions,
+          max_scroll_depth: this.scrollDepth,
+          funnel_steps_completed: this.funnelSteps.length,
+          page: window.location.pathname
+        });
+      }
     }
   };
   
@@ -436,10 +444,12 @@ export const generateUBOTrackingCode = () => {
   window.UBOTracker = UBOTracker;
   
   // Track initial page view
-  gtag('event', 'page_view_ubo', {
-    page: window.location.pathname,
-    timestamp: new Date().toISOString()
-  });
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'page_view_ubo', {
+      page: window.location.pathname,
+      timestamp: new Date().toISOString()
+    });
+  }
 })();
   `;
 };
